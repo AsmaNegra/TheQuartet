@@ -1,5 +1,7 @@
 package entities;
 
+import java.util.List;
+
 public class Utilisateur {
     private int utilisateurId;
     private String nom;
@@ -7,13 +9,26 @@ public class Utilisateur {
     private String motDePasse;
     private String role;
     private String etat;
-    private int noteOrganisateur;
+    private float noteOrganisateur;
     private String entreprise;
+    private List<Evenement> evenements;
+
 
     // Constructeurs
     public Utilisateur() {}
 
-    public Utilisateur(int utilisateurId, String nom, String email, String motDePasse, String role, String etat, int noteOrganisateur, String entreprise) {
+    public Utilisateur(int utilisateurId, String nom, String email, String motDePasse, String role,String etat, float noteOrganisateur, String entreprise, List<Evenement> evenements) {
+        this.utilisateurId = utilisateurId;
+        this.nom = nom;
+        this.email = email;
+        this.motDePasse = motDePasse;
+        this.role = role;
+        this.etat = etat;
+        this.noteOrganisateur = noteOrganisateur;
+        this.entreprise = entreprise;
+        this.evenements = evenements;
+    }
+    public Utilisateur(int utilisateurId, String nom, String email, String motDePasse, String role,String etat, float noteOrganisateur, String entreprise) {
         this.utilisateurId = utilisateurId;
         this.nom = nom;
         this.email = email;
@@ -43,11 +58,14 @@ public class Utilisateur {
     public String getEtat() { return etat; }
     public void setEtat(String etat) { this.etat = etat; }
 
-    public int getNoteOrganisateur() { return noteOrganisateur; }
-    public void setNoteOrganisateur(int noteOrganisateur) { this.noteOrganisateur = noteOrganisateur; }
+    public float getNoteOrganisateur() { return noteOrganisateur; }
+    public void setNoteOrganisateur(float noteOrganisateur) { this.noteOrganisateur = noteOrganisateur; }
 
     public String getEntreprise() { return entreprise; }
     public void setEntreprise(String entreprise) { this.entreprise = entreprise; }
+
+    public List<Evenement> getEvenements() { return evenements; }
+    public void setEvenements(List<Evenement> evenements) { this.evenements = evenements; }
 
     @Override
     public String toString() {
@@ -55,11 +73,11 @@ public class Utilisateur {
                 "utilisateurId=" + utilisateurId +
                 ", nom='" + nom + '\'' +
                 ", email='" + email + '\'' +
-                ", motDePasse='" + motDePasse + '\'' +
-                ", role='" + role + '\'' +
-                ", etat='" + etat + '\'' +
+                ", role=" + role +
+                ", etat=" + etat +
                 ", noteOrganisateur=" + noteOrganisateur +
                 ", entreprise='" + entreprise + '\'' +
+                ", evenements=" + evenements +
                 '}';
     }
 }
