@@ -15,16 +15,16 @@ public class ServiceTicket implements ISevrice<Ticket>{
 
     @Override
     public void ajouter(Ticket ticket) throws SQLException {
-        String sql ="INSERT INTO `ticket`(`id_event`, `id_transaction`, `type`, `statut`,`prix`, `date_validite`) VALUES ("+ticket.getId_event()+","+ticket.getId_transaction()+",'"+ticket.getType()+"','"+ticket.getStatut()+"',"+ticket.getPrix()+",'"+ticket.getDate_validite()+"')";
+        String sql ="INSERT INTO `ticket`(`evenement_id`, `id_transaction`, `type`, `statut`,`prix`, `date_validite`) VALUES ("+ticket.getEvenement_id()+","+ticket.getId_transaction()+",'"+ticket.getType()+"','"+ticket.getStatut()+"',"+ticket.getPrix()+",'"+ticket.getDate_validite()+"')";
         Statement statement= connection.createStatement();
         statement.executeUpdate(sql);
     }
 
     @Override
     public void modifier(Ticket ticket) throws SQLException {
-        String sql = "UPDATE `ticket` SET `id_event`=?, `id_transaction`=?, `type`=?, `statut`=?, `prix`=?, `date_validite`=? WHERE id_ticket = ?";
+        String sql = "UPDATE `ticket` SET `evenement_id`=?, `id_transaction`=?, `type`=?, `statut`=?, `prix`=?, `date_validite`=? WHERE id_ticket = ?";
         PreparedStatement ps = connection.prepareStatement(sql);
-        ps.setInt(1, ticket.getId_event());
+        ps.setInt(1, ticket.getEvenement_id());
         ps.setInt(2, ticket.getId_transaction());
         ps.setString(3, ticket.getType());
         ps.setString(4, ticket.getStatut());
@@ -51,7 +51,7 @@ public class ServiceTicket implements ISevrice<Ticket>{
         while (rs.next()) {
             tickets.add(new Ticket(
                     rs.getInt(1), // id_ticket
-                    rs.getInt(2), // id_event
+                    rs.getInt(2), // evenement_id
                     rs.getInt(3), // id_transaction
                     rs.getString(4), // type
                     rs.getString(5), // statut

@@ -20,7 +20,7 @@ public class ServiceTransaction implements ISevrice<Transaction>{
 
     @Override
     public void ajouter(Transaction transaction) throws SQLException {
-        String sql = "INSERT INTO `transaction`(`id_participant`, `tickets_associes`, `montant_total`, `methode_paiement`, `type_paiement`, `date_paiement`) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO `transaction`(`utilisateur_id`, `tickets_associes`, `montant_total`, `methode_paiement`, `type_paiement`, `date_paiement`) VALUES (?, ?, ?, ?, ?, ?)";
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonTicketsAssocies;
         try {
@@ -30,7 +30,7 @@ public class ServiceTransaction implements ISevrice<Transaction>{
         }
 
         PreparedStatement ps = connection.prepareStatement(sql);
-        ps.setInt(1, transaction.getId_participant());
+        ps.setInt(1, transaction.getUtilisateur_id());
         ps.setString(2, jsonTicketsAssocies); // Insérer les tickets associés en JSON
         ps.setDouble(3, transaction.getMontant_total());
         ps.setString(4, transaction.getMethode_paiement());
@@ -47,7 +47,7 @@ public class ServiceTransaction implements ISevrice<Transaction>{
 
     @Override
     public void modifier(Transaction transaction) throws SQLException {
-        String sql= "UPDATE `transaction` SET `id_participant`=?,`tickets_associes`=?,`montant_total`=?,`methode_paiement`=?,`type_paiement`=?,`date_paiement`=? WHERE id_transaction =?";
+        String sql= "UPDATE `transaction` SET `utilisateur_id`=?,`tickets_associes`=?,`montant_total`=?,`methode_paiement`=?,`type_paiement`=?,`date_paiement`=? WHERE id_transaction =?";
         // Convertir la liste des tickets associés en JSON
         ObjectMapper objectMapper = new ObjectMapper(); // Jackson ObjectMapper
         String jsonTicketsAssocies;
@@ -57,7 +57,7 @@ public class ServiceTransaction implements ISevrice<Transaction>{
             throw new SQLException("Erreur lors de la conversion des tickets associés en JSON", e);
         }
         PreparedStatement ps =connection.prepareStatement(sql);
-        ps.setInt(1, transaction.getId_participant());
+        ps.setInt(1, transaction.getUtilisateur_id());
         ps.setString(2, jsonTicketsAssocies);        ps.setDouble(3,transaction.getMontant_total());
         ps.setString(4,transaction.getMethode_paiement());
         ps.setString(5,transaction.getType_paiement());

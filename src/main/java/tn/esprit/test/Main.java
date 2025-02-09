@@ -50,7 +50,7 @@ public class Main {
             }
 
             // Exemple de modification d'un ticket
-            ticket1.setStatut("Confirmé");
+            ticket1.setStatut("Complété");
             serviceTicket.modifier(ticket1);
             System.out.println("Ticket modifié avec succès.");
 

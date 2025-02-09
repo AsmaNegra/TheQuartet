@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class Ticket {
     private int id_ticket;
-    private int id_event;
+    private int evenement_id;
     private int id_transaction;
     private String type;
     private String statut;
@@ -14,9 +14,9 @@ public class Ticket {
     public Ticket() {
     }
 
-    public Ticket(int id_ticket, int id_event, int id_transaction, String type, String statut,double prix, Date date_validite) {
+    public Ticket(int id_ticket, int evenement_id, int id_transaction, String type, String statut,double prix, Date date_validite) {
         this.id_ticket = id_ticket;
-        this.id_event = id_event;
+        this.evenement_id = evenement_id ;
         this.id_transaction = id_transaction;
         this.type = type;
         this.statut = statut;
@@ -24,8 +24,8 @@ public class Ticket {
         this.date_validite = date_validite;
     }
 
-    public Ticket(int id_event, int id_transaction, String type, String statut,double prix, Date date_validite) {
-        this.id_event = id_event;
+    public Ticket(int evenement_id, int id_transaction, String type, String statut,double prix, Date date_validite) {
+        this.evenement_id = evenement_id;
         this.id_transaction = id_transaction;
         this.type = type;
         this.statut = statut;
@@ -53,8 +53,8 @@ public class Ticket {
         return id_transaction;
     }
 
-    public int getId_event() {
-        return id_event;
+    public int getEvenement_id () {
+        return evenement_id ;
     }
 
     public double getPrix() {
@@ -69,8 +69,8 @@ public class Ticket {
         this.id_ticket = id_ticket;
     }
 
-    public void setId_event(int id_event) {
-        this.id_event = id_event;
+    public void setEvenement_id (int evenement_id ) {
+        this.evenement_id  = evenement_id ;
     }
 
     public void setId_transaction(int id_transaction) {
@@ -93,7 +93,7 @@ public class Ticket {
     public String toString() {
         return "Ticket{" +
                 "id_ticket=" + id_ticket +
-                ", id_event=" + id_event +
+                ", evenement_id =" + evenement_id  +
                 ", id_transaction=" + id_transaction +
                 ", type='" + type + '\'' +
                 ", statut='" + statut + '\'' +
