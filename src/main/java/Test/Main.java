@@ -21,21 +21,22 @@ public class Main {
         ServiceEvenement se =new ServiceEvenement();
 
         try{
-            Utilisateur organisateur = new Utilisateur();
-            organisateur.setUtilisateurId(1);
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+            Date dateDebut = dateFormat.parse("12-05-2025 17:00:00");
+            Date dateFin = dateFormat.parse("15-05-2025 21:00:00");
 
             se.ajouter(new Evenement("Conférence Art",
                 "Conférence sur l Art",
-                new SimpleDateFormat("dd-MM-yyyy").parse("12-05-2025"),
-                new SimpleDateFormat("dd-MM-yyyy").parse("15-05-2025"),
+                dateDebut,
+                dateFin,
                 "Tunis",
                 "Art",
                 10000.0f,
-                "conference.jpg",
-                organisateur));
+                "conference.jpg"
+            ));
             System.out.println("Evenement ajoute");
 
-//             se.modifier(new Evenement(1, "Concert", "Événement musical", new Date(), new Date(), "Tunis", "Fun", 5000.0f, "concert.jpg", organisateur));
+//             se.modifier(new Evenement(1, "Concert", "Événement musical", new Date(), new Date(), "Tunis", "Fun", 5000.0f, "concert.jpg"));
 //            System.out.println("Evenement modifie");
 //             se.supprimer(1);
 //             System.out.println("Evenement supprime");

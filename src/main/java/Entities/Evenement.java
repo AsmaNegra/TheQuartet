@@ -12,7 +12,6 @@ public class Evenement {
     private String categorie;
     private float budget;
     private String image_event;
-    private Utilisateur organisateur_id;
     private List<Ticket> tickets;
     private List<Tache> taches;
     private List<Fournisseur> fournisseurs;
@@ -21,7 +20,7 @@ public class Evenement {
 
     public Evenement() {}
 
-    public Evenement(int evenement_id, String nom, String description, Date date_debut, Date date_fin, String lieu, String categorie, float budget, String image_event, Utilisateur organisateur_id) {
+    public Evenement(int evenement_id, String nom, String description, Date date_debut, Date date_fin, String lieu, String categorie, float budget, String image_event) {
         this.evenement_id = evenement_id;
         this.nom = nom;
         this.description = description;
@@ -31,10 +30,9 @@ public class Evenement {
         this.categorie = categorie;
         this.budget = budget;
         this.image_event = image_event;
-        this.organisateur_id = organisateur_id;
     }
 
-    public Evenement(String nom, String description, Date date_debut, Date date_fin, String lieu, String categorie, float budget, String image_event, Utilisateur organisateur_id) {
+    public Evenement(String nom, String description, Date date_debut, Date date_fin, String lieu, String categorie, float budget, String image_event) {
         this.nom = nom;
         this.description = description;
         this.date_debut = date_debut;
@@ -43,10 +41,9 @@ public class Evenement {
         this.categorie = categorie;
         this.budget = budget;
         this.image_event = image_event;
-        this.organisateur_id = organisateur_id;
     }
 
-    public Evenement(int evenement_id, String nom, String description, Date date_debut, Date date_fin, String lieu, String categorie, float budget, String image_event, Utilisateur organisateur_id, List<Ticket> tickets, List<Tache> taches, List<Fournisseur> fournisseurs, List<Feedback> feedbacks, List<Utilisateur> listMembres) {
+    public Evenement(int evenement_id, String nom, String description, Date date_debut, Date date_fin, String lieu, String categorie, float budget, String image_event, List<Ticket> tickets, List<Tache> taches, List<Fournisseur> fournisseurs, List<Feedback> feedbacks, List<Utilisateur> listMembres) {
         this.evenement_id = evenement_id;
         this.nom = nom;
         this.description = description;
@@ -56,7 +53,6 @@ public class Evenement {
         this.categorie = categorie;
         this.budget = budget;
         this.image_event = image_event;
-        this.organisateur_id = organisateur_id;
         this.tickets = tickets;
         this.taches = taches;
         this.fournisseurs = fournisseurs;
@@ -136,13 +132,6 @@ public class Evenement {
         this.image_event = image_event;
     }
 
-    public Utilisateur getOrganisateur_id() {
-        return organisateur_id;
-    }
-
-    public void setOrganisateur_id(Utilisateur organisateur_id) {
-        this.organisateur_id = organisateur_id;
-    }
 
     public List<Ticket> getTickets() {
         return tickets;
@@ -196,7 +185,6 @@ public class Evenement {
             ", categorie='" + categorie + '\'' +
             ", budget=" + budget +
             ", image_event='" + image_event + '\'' +
-            ", organisateur_id=" + organisateur_id +
             ", tickets=" + tickets +
             ", taches=" + taches +
             ", fournisseurs=" + fournisseurs +
