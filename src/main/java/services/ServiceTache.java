@@ -26,7 +26,7 @@ public class ServiceTache implements IService<Tache> {
         preparedStatement.setString(3, tache.getDescription());
         preparedStatement.setString(4, tache.getStatut());
         preparedStatement.setDate(5, new java.sql.Date(tache.getDateLimite().getTime()));
-        preparedStatement.setInt(6, tache.getEvenement().getEvenementId());
+        preparedStatement.setInt(6, tache.getEvenement().getEvenement_id());
         preparedStatement.setInt(7, tache.getFournisseur().getFournisseurId());
 
         preparedStatement.executeUpdate();
@@ -44,7 +44,7 @@ public class ServiceTache implements IService<Tache> {
         preparedStatement.setString(2, tache.getDescription());
         preparedStatement.setString(3, tache.getStatut());
         preparedStatement.setDate(4, new java.sql.Date(tache.getDateLimite().getTime()));
-        preparedStatement.setInt(5, tache.getEvenement().getEvenementId());
+        preparedStatement.setInt(5, tache.getEvenement().getEvenement_id());
         preparedStatement.setInt(6, tache.getFournisseur().getFournisseurId());
         preparedStatement.setInt(7, tache.getTacheId());
 
@@ -88,8 +88,8 @@ public class ServiceTache implements IService<Tache> {
                     resultSet.getString("description"),
                     resultSet.getString("statut"),
                     resultSet.getDate("date_limite"),
-                    null, // L'événement doit être chargé séparément
-                    null  // Le fournisseur doit être chargé séparément
+                    null,
+                    null
             );
 
             taches.add(tache);

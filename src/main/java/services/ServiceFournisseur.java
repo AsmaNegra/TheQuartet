@@ -25,7 +25,7 @@ public class ServiceFournisseur implements IService<Fournisseur> {
         preparedStatement.setString(2, fournisseur.getNom());
         preparedStatement.setString(3, fournisseur.getTypeService());
         preparedStatement.setString(4, fournisseur.getContrat());
-        preparedStatement.setInt(5, fournisseur.getEvenementId().getEvenementId());
+        preparedStatement.setInt(5, fournisseur.getEvenementId().getEvenement_id());
 
         preparedStatement.executeUpdate();
         System.out.println("✅ Fournisseur ajouté avec succès !");
@@ -41,7 +41,7 @@ public class ServiceFournisseur implements IService<Fournisseur> {
         preparedStatement.setString(1, fournisseur.getNom());
         preparedStatement.setString(2, fournisseur.getTypeService());
         preparedStatement.setString(3, fournisseur.getContrat());
-        preparedStatement.setInt(4, fournisseur.getEvenementId().getEvenementId());
+        preparedStatement.setInt(4, fournisseur.getEvenementId().getEvenement_id());
         preparedStatement.setInt(5, fournisseur.getFournisseurId());
 
         int rowsUpdated = preparedStatement.executeUpdate();
