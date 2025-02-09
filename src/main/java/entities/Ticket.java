@@ -1,4 +1,4 @@
-package Entities;
+package entities;
 public class Ticket {
     private int ticketId;
     private String typeTicket;

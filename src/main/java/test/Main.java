@@ -1,14 +1,10 @@
-package Test;
+package test;
 
-import Entities.Evenement;
-import Entities.Utilisateur;
-import Services.ServiceEvenement;
-import Entities.Feedback;
-import Services.ServiceFeedback;
+import entities.Evenement;
+import services.ServiceEvenement;
 
 
 import java.sql.SQLException;
-import java.sql.SQLOutput;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;

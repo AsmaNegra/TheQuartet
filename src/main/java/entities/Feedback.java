@@ -1,6 +1,5 @@
-package Entities;
+package entities;
 import java.util.Date;
-import java.util.List;
 
 public class Feedback {
     private int feedback_id;

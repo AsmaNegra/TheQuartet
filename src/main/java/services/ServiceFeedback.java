@@ -1,9 +1,9 @@
-package Services;
+package services;
 
-import Entities.Feedback;
-import Entities.Evenement;
-import Entities.Utilisateur;
-import Utils.MyDataBase;
+import entities.Feedback;
+import entities.Evenement;
+import entities.Utilisateur;
+import utils.MyDataBase;
 
 import java.sql.*;
 import java.util.ArrayList;
