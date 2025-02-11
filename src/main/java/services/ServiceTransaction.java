@@ -1,17 +1,17 @@
-package tn.esprit.services;
+package services;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import tn.esprit.entities.Ticket;
-import tn.esprit.entities.Transaction;
-import tn.esprit.utils.MyDataBase;
+import entities.Ticket;
+import entities.Transaction;
+import utils.MyDataBase;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-public class ServiceTransaction implements ISevrice<Transaction>{
+public class ServiceTransaction implements IService<Transaction>{
     private final Connection connection;
 
     public ServiceTransaction(Connection connection) {

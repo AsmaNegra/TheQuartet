@@ -1,12 +1,12 @@
-package tn.esprit.services;
+package services;
 
-import tn.esprit.entities.Ticket;
-import tn.esprit.utils.MyDataBase;
+import entities.Ticket;
+import utils.MyDataBase;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-public class ServiceTicket implements ISevrice<Ticket>{
+public class ServiceTicket implements IService<Ticket>{
     private final Connection connection;
 
     public ServiceTicket() {
