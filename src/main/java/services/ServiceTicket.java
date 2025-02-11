@@ -1,5 +1,6 @@
 package services;
 
+import entities.Evenement;
 import entities.Ticket;
 import utils.MyDataBase;
 
@@ -24,7 +25,7 @@ public class ServiceTicket implements IService<Ticket>{
     public void modifier(Ticket ticket) throws SQLException {
         String sql = "UPDATE `ticket` SET `evenement_id`=?, `id_transaction`=?, `type`=?, `statut`=?, `prix`=?, `date_validite`=? WHERE id_ticket = ?";
         PreparedStatement ps = connection.prepareStatement(sql);
-        ps.setInt(1, ticket.getEvenement_id());
+        ps.setInt(1, ticket.getEvenement_id().getEvenement_id());
         ps.setInt(2, ticket.getId_transaction());
         ps.setString(3, ticket.getType());
         ps.setString(4, ticket.getStatut());
@@ -41,7 +42,27 @@ public class ServiceTicket implements IService<Ticket>{
         ps.setInt(1,id);
         ps.executeUpdate();
     }
+    public Evenement recupererEvenementParId(int idEvenement) throws SQLException {
+        String sql = "SELECT * FROM evenement WHERE evenement_id = ?";
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setInt(1, idEvenement);
+        ResultSet rs = statement.executeQuery();
 
+        if (rs.next()) {
+            return new Evenement(
+                    rs.getInt("evenement_id"),
+                    rs.getString("nom"),
+                    rs.getString("description"),
+                    rs.getDate("date_debut"),
+                    rs.getDate("date_fin"),
+                    rs.getString("lieu"),
+                    rs.getString("categorie"),
+                    rs.getFloat("budget"),
+                    rs.getString("image_event")
+            );
+        }
+        return null; // Retourne null si aucun événement trouvé (à gérer selon tes besoins)
+    }
     @Override
     public List<Ticket> afficher() throws SQLException {
         List<Ticket> tickets =new ArrayList<>();
@@ -49,9 +70,10 @@ public class ServiceTicket implements IService<Ticket>{
         Statement statement = connection.createStatement();
         ResultSet rs = statement.executeQuery(sql );
         while (rs.next()) {
+            Evenement evenement = recupererEvenementParId(rs.getInt(2)); // Récupérer l'événement
             tickets.add(new Ticket(
                     rs.getInt(1), // id_ticket
-                    rs.getInt(2), // evenement_id
+                    evenement, // evenement
                     rs.getInt(3), // id_transaction
                     rs.getString(4), // type
                     rs.getString(5), // statut
