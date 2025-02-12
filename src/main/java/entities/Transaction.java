@@ -82,8 +82,12 @@ public class Transaction {
         this.type_paiement = type_paiement;
     }
 
-    public java.sql.Date getDate_paiement() {
-        return (java.sql.Date) date_paiement;
+//    public java.sql.Date getDate_paiement() {
+//        return (java.sql.Date) date_paiement;
+//    }
+
+    public Date getDate_paiement() {
+        return date_paiement;
     }
 
     public void setDate_paiement(Date date_paiement) {

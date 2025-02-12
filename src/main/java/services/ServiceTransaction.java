@@ -35,7 +35,7 @@ public class ServiceTransaction implements IService<Transaction>{
         ps.setDouble(3, transaction.getMontant_total());
         ps.setString(4, transaction.getMethode_paiement());
         ps.setString(5, transaction.getType_paiement());
-        ps.setDate(6, transaction.getDate_paiement());
+        ps.setDate(6, new java.sql.Date(transaction.getDate_paiement().getTime()));
 
         try {
             ps.executeUpdate();
@@ -61,7 +61,7 @@ public class ServiceTransaction implements IService<Transaction>{
         ps.setString(2, jsonTicketsAssocies);        ps.setDouble(3,transaction.getMontant_total());
         ps.setString(4,transaction.getMethode_paiement());
         ps.setString(5,transaction.getType_paiement());
-        ps.setDate(6,transaction.getDate_paiement());
+        ps.setDate(6,new java.sql.Date(transaction.getDate_paiement().getTime()));
         ps.setInt(7,transaction.getId_transaction());
         ps.executeUpdate(sql);
     }
@@ -89,7 +89,7 @@ public class ServiceTransaction implements IService<Transaction>{
             } catch (JsonProcessingException e) {
                 throw new SQLException("Erreur lors de la désérialisation des tickets associés", e);
             }
-            transactions.add(new Transaction(rs.getInt(1), rs.getInt(2),tickets_associes,rs.getDouble(4),rs.getString(5),rs.getString(6),rs.getDate(7)));
+            transactions.add(new Transaction(rs.getInt(1), rs.getInt(2),tickets_associes,rs.getDouble(4),rs.getString(5),rs.getString(6),new java.util.Date(rs.getDate(7).getTime())));
         }
         return transactions;
     }

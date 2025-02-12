@@ -17,7 +17,7 @@ public class ServiceEvenement implements IService<Evenement>{
 
     @Override
     public void ajouter(Evenement evenement) throws SQLException {
-        String sql = "INSERT INTO `evenement` (`nom`, `description`, `date_debut`, `date_fin`, `lieu`, `categorie`, `budget`, `image_event`) " +
+        String sql = "INSERT INTO `evenement` (`nom`, `description`, `date_debut`, `date_fin`, `lieu`, `categorie`, `budget`, `image_event`, `nb_places`) " +
             "VALUES ('" + evenement.getNom() + "', '" +
             evenement.getDescription() + "', '" +
             new java.sql.Timestamp(evenement.getDate_debut().getTime()) + "', '" +
@@ -25,14 +25,15 @@ public class ServiceEvenement implements IService<Evenement>{
             evenement.getLieu() + "', '" +
             evenement.getCategorie() + "', " +
             evenement.getBudget() + ", '" +
-            evenement.getImage_event() + "')";
+            evenement.getImage_event() + "', " +
+            evenement.getNb_places() + ")";
         Statement statement = connection.createStatement();
         statement.executeUpdate(sql);
     }
 
     @Override
     public void modifier(Evenement evenement) throws SQLException {
-        String sql = "UPDATE `evenement` SET `nom`=?, `description`=?, `date_debut`=?, `date_fin`=?, `lieu`=?, `categorie`=?, `budget`=?, `image_event`=? WHERE `evenement_id`=?";
+        String sql = "UPDATE `evenement` SET `nom`=?, `description`=?, `date_debut`=?, `date_fin`=?, `lieu`=?, `categorie`=?, `budget`=?, `image_event`=?, `nb_places`=? WHERE `evenement_id`=?";
         PreparedStatement ps = connection.prepareStatement(sql);
         ps.setString(1, evenement.getNom());
         ps.setString(2, evenement.getDescription());
@@ -42,7 +43,8 @@ public class ServiceEvenement implements IService<Evenement>{
         ps.setString(6, evenement.getCategorie());
         ps.setFloat(7, evenement.getBudget());
         ps.setString(8, evenement.getImage_event());
-        ps.setInt(9, evenement.getEvenement_id());
+        ps.setInt(9, evenement.getNb_places());
+        ps.setInt(10, evenement.getEvenement_id());
         ps.executeUpdate();
     }
 
@@ -72,7 +74,8 @@ public class ServiceEvenement implements IService<Evenement>{
                 rs.getString("lieu"),
                 rs.getString("categorie"),
                 rs.getFloat("budget"),
-                rs.getString("image_event")
+                rs.getString("image_event"),
+                rs.getInt("nb_places")
             );
             evenements.add(evenement);
         }

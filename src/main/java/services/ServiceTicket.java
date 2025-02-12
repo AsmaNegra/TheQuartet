@@ -15,7 +15,8 @@ public class ServiceTicket implements IService<Ticket>{
 
     @Override
     public void ajouter(Ticket ticket) throws SQLException {
-        String sql ="INSERT INTO `ticket`(`evenement_id`, `id_transaction`, `type`, `statut`,`prix`, `date_validite`) VALUES ("+ticket.getEvenement_id()+","+ticket.getId_transaction()+",'"+ticket.getType()+"','"+ticket.getStatut()+"',"+ticket.getPrix()+",'"+ticket.getDate_validite()+"')";
+        String sql ="INSERT INTO `ticket`(`evenement_id`, `id_transaction`, `type`, `statut`,`prix`, `date_validite`) VALUES " +
+            "("+ticket.getEvenement_id()+","+ticket.getId_transaction()+",'"+ticket.getType()+"','"+ticket.getStatut()+"',"+ticket.getPrix()+",'"+new java.sql.Date(ticket.getDate_validite().getTime())+"')";
         Statement statement= connection.createStatement();
         statement.executeUpdate(sql);
     }
@@ -29,7 +30,8 @@ public class ServiceTicket implements IService<Ticket>{
         ps.setString(3, ticket.getType());
         ps.setString(4, ticket.getStatut());
         ps.setDouble(5, ticket.getPrix());
-        ps.setDate(6, ticket.getDate_validite());
+//        ps.setDate(6, ticket.getDate_validite());
+        ps.setDate(6, new java.sql.Date(ticket.getDate_validite().getTime()));
         ps.setInt(7, ticket.getId_ticket());
         ps.executeUpdate(); // Corrigé ici
     }
@@ -56,7 +58,8 @@ public class ServiceTicket implements IService<Ticket>{
                     rs.getString(4), // type
                     rs.getString(5), // statut
                     rs.getDouble(6), // prix
-                    rs.getDate(7)  // date_validite
+//                    rs.getDate(7)  // date_validite
+                new java.util.Date(rs.getDate("date_validite").getTime())
             ));
         }
         return tickets;

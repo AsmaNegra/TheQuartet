@@ -14,7 +14,7 @@ public class ServiceUtilisateurEvenement {
     public ServiceUtilisateurEvenement() {
         connection = MyDataBase.getInstance().getConnection();
     }
-    
+
 
     // 🔹 Associer un utilisateur à un événement
     public void inscrireUtilisateurAEvenement(int utilisateurId, int evenementId) {
@@ -62,7 +62,7 @@ public class ServiceUtilisateurEvenement {
 
     public List<Evenement> getEvenementsByUtilisateurId(int utilisateurId) {
         List<Evenement> evenements = new ArrayList<>();
-        String sql = "SELECT e.id, e.nom, e.description, e.date_debut, e.date_fin, e.lieu, e.categorie, e.budget, e.image_event " +
+        String sql = "SELECT e.id, e.nom, e.description, e.date_debut, e.date_fin, e.lieu, e.categorie, e.budget, e.image_event, e.nb_places " +
                 "FROM evenement e JOIN utilisateur_evenement ue ON e.id = ue.evenement_id WHERE ue.utilisateur_id = ?";
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
@@ -79,8 +79,9 @@ public class ServiceUtilisateurEvenement {
                         rs.getString("lieu"),
                         rs.getString("categorie"),
                         rs.getFloat("budget"),
-                        rs.getString("image_event")
-                ));
+                        rs.getString("image_event"),
+                        rs.getInt("nb_places")
+                    ));
             }
         } catch (SQLException e) {
             e.printStackTrace();

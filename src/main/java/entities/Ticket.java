@@ -36,9 +36,12 @@ public class Ticket {
         return id_ticket;
     }
 
-    public java.sql.Date getDate_validite() {
-        return (java.sql.Date) date_validite;
-    }
+//    public java.sql.Date getDate_validite() {
+//        return (java.sql.Date) date_validite;
+//    }
+public Date getDate_validite() {
+        return date_validite;
+   }
 
     public String getStatut() {
         return statut;
