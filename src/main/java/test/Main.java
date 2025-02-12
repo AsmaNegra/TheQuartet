@@ -27,18 +27,18 @@ public class Main {
         ServiceFeedback serviceFeedback = new ServiceFeedback();
 
         // Gestion des tickets
-//        gererTickets(serviceTicket);
+     //  gererTickets(serviceTicket);
 
         // Gestion des transactions
-//        gererTransactions(serviceTransaction, serviceTicket);
+//       gererTransactions(serviceTransaction, serviceTicket);
 
         // Gestion des événements
 //        gererEvenements(serviceEvenement);
 
         // Gestion des feedbacks
-//        gererFeedbacks(serviceFeedback, serviceEvenement);
+//       gererFeedbacks(serviceFeedback, serviceEvenement);
 
-        gererFournisseurs(serviceFournisseur, serviceEvenement);
+     //   gererFournisseurs(serviceFournisseur, serviceEvenement);
 
         // Appel de la fonction pour gérer les tâches
         gererTaches(serviceTache);
@@ -308,7 +308,7 @@ public class Main {
             evenement.setEvenement_id(3);
 
             // Création d'un fournisseur
-            Fournisseur fournisseur = new Fournisseur(1, "Sonorisation Pro", "Matériel audio", "Contrat signé", evenement);
+            Fournisseur fournisseur = new Fournisseur( "Sonorisation Pro", "Matériel audio", "Contrat signé", evenement);
 
             // Ajout du fournisseur
             serviceFournisseur.ajouter(fournisseur);
@@ -339,7 +339,6 @@ public class Main {
             fournisseur.setFournisseurId(1);
 
             Tache tache = new Tache(
-                1,
                 "Préparation de la salle",
                 "Préparer la salle pour la conférence",
                 "To Do",

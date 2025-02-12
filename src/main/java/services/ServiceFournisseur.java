@@ -17,15 +17,14 @@ public class ServiceFournisseur implements IService<Fournisseur> {
     /** ✅ AJOUTER UN FOURNISSEUR */
     @Override
     public void ajouter(Fournisseur fournisseur) throws SQLException {
-        String sql = "INSERT INTO `fournisseur` (`fournisseur_id`, `nom`, `type_service`, `contrat`, `evenement_id`) " +
-                "VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO `fournisseur` ( `nom`, `type_service`, `contrat`, `evenement_id`) " +
+                "VALUES ( ?, ?, ?, ?)";
 
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        preparedStatement.setInt(1, fournisseur.getFournisseurId());
-        preparedStatement.setString(2, fournisseur.getNom());
-        preparedStatement.setString(3, fournisseur.getTypeService());
-        preparedStatement.setString(4, fournisseur.getContrat());
-        preparedStatement.setInt(5, fournisseur.getEvenementId().getEvenement_id());
+        preparedStatement.setString(1, fournisseur.getNom());
+        preparedStatement.setString(2, fournisseur.getTypeService());
+        preparedStatement.setString(3, fournisseur.getContrat());
+        preparedStatement.setInt(4, fournisseur.getEvenementId().getEvenement_id());
 
         preparedStatement.executeUpdate();
         System.out.println("✅ Fournisseur ajouté avec succès !");

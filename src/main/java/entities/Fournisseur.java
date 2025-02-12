@@ -18,6 +18,13 @@ public class Fournisseur {
         this.evenement = evenement;
     }
 
+    public Fournisseur(String nom, String typeService, String contrat, Evenement evenement) {
+        this.nom = nom;
+        this.typeService = typeService;
+        this.contrat = contrat;
+        this.evenement = evenement;
+    }
+
     // Getters et Setters
     public int getFournisseurId() { return fournisseurId; }
     public void setFournisseurId(int fournisseurId) { this.fournisseurId = fournisseurId; }
