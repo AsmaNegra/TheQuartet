@@ -3,7 +3,7 @@ import java.util.Date;
 
 public class Ticket {
     private int id_ticket;
-    private Evenement evenement;
+    private int evenement_id;
     private int id_transaction;
     private String type;
     private String statut;
@@ -13,9 +13,9 @@ public class Ticket {
     public Ticket() {
     }
 
-    public Ticket(int id_ticket, Evenement evenement, int id_transaction, String type, String statut,double prix, Date date_validite) {
+    public Ticket(int id_ticket, int evenement_id, int id_transaction, String type, String statut,double prix, Date date_validite) {
         this.id_ticket = id_ticket;
-        this.evenement = evenement ;
+        this.evenement_id = evenement_id ;
         this.id_transaction = id_transaction;
         this.type = type;
         this.statut = statut;
@@ -23,8 +23,8 @@ public class Ticket {
         this.date_validite = date_validite;
     }
 
-    public Ticket(Evenement evenement, int id_transaction, String type, String statut,double prix, Date date_validite) {
-        this.evenement = evenement;
+    public Ticket(int evenement_id, int id_transaction, String type, String statut,double prix, Date date_validite) {
+        this.evenement_id = evenement_id;
         this.id_transaction = id_transaction;
         this.type = type;
         this.statut = statut;
@@ -55,8 +55,8 @@ public Date getDate_validite() {
         return id_transaction;
     }
 
-    public Evenement getEvenement_id () {
-        return evenement ;
+    public int getEvenement_id () {
+        return evenement_id ;
     }
 
     public double getPrix() {
@@ -71,8 +71,8 @@ public Date getDate_validite() {
         this.id_ticket = id_ticket;
     }
 
-    public void setEvenement_id (Evenement evenement ) {
-        this.evenement  = evenement ;
+    public void setEvenement_id (int evenement_id ) {
+        this.evenement_id  = evenement_id ;
     }
 
     public void setId_transaction(int id_transaction) {
@@ -95,7 +95,7 @@ public Date getDate_validite() {
     public String toString() {
         return "Ticket{" +
                 "id_ticket=" + id_ticket +
-                ", evenement =" + evenement  +
+                ", evenement_id =" + evenement_id  +
                 ", id_transaction=" + id_transaction +
                 ", type='" + type + '\'' +
                 ", statut='" + statut + '\'' +
