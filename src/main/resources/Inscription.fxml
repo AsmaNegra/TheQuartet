@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
+<?import javafx.scene.shape.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
 <?import javafx.scene.*?>
@@ -8,10 +10,11 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.InscriptionController">
    <children>
-      <Label layoutX="126.0" layoutY="85.0" text="Nom" />
-      <Label layoutX="126.0" layoutY="129.0" text="Prenom" />
-      <TextField fx:id="lbNom" layoutX="246.0" layoutY="80.0" />
-      <TextField fx:id="lbPrenom" layoutX="246.0" layoutY="124.0" />
-      <Button fx:id="btnValider" defaultButton="true" layoutX="246.0" layoutY="185.0" mnemonicParsing="false" onAction="#savePerson" prefHeight="31.0" prefWidth="187.0" text="Valider" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#cbd3da" height="50.0" layoutY="-1.0" stroke="BLACK" strokeType="INSIDE" width="600.0" />
+      <Label layoutX="265.0" layoutY="14.0" text="- Tickets -">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
