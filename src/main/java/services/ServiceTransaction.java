@@ -30,7 +30,7 @@ public class ServiceTransaction implements IService<Transaction>{
         }
 
         PreparedStatement ps = connection.prepareStatement(sql);
-        ps.setInt(1, transaction.getUtilisateur_id());
+        ps.setInt(1, transaction.getUtilisateur_id().getUtilisateurId());
         ps.setString(2, jsonTicketsAssocies); // Insérer les tickets associés en JSON
         ps.setDouble(3, transaction.getMontant_total());
         ps.setString(4, transaction.getMethode_paiement());

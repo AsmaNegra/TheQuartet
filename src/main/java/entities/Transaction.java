@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Transaction {
     private int id_transaction;
-    private int utilisateur_id;
+    private Utilisateur utilisateur;
     List<Ticket> tickets_associes;
     private double montant_total;
     private String methode_paiement;
@@ -15,18 +15,18 @@ public class Transaction {
     public Transaction() {
     }
 
-    public Transaction(int id_transaction, int utilisateur_id, List<Ticket> tickets_associes, double montant_total, String methode_paiement, String type_paiement, Date date_paiement) {
+    public Transaction(int id_transaction, Utilisateur utilisateur, List<Ticket> tickets_associes, double montant_total, String methode_paiement, String type_paiement, Date date_paiement) {
         this.id_transaction = id_transaction;
+        this.utilisateur = utilisateur;
         this.date_paiement = date_paiement;
         this.type_paiement = type_paiement;
         this.methode_paiement = methode_paiement;
         this.montant_total = montant_total;
         this.tickets_associes = tickets_associes;
-        this.utilisateur_id = utilisateur_id;
     }
 
-    public Transaction(int utilisateur_id, List<Ticket> tickets_associes, double montant_total, String methode_paiement, String type_paiement, Date date_paiement) {
-        this.utilisateur_id = utilisateur_id;
+    public Transaction(Utilisateur utilisateur , List<Ticket> tickets_associes, double montant_total, String methode_paiement, String type_paiement, Date date_paiement) {
+        this.utilisateur = utilisateur;
         this.tickets_associes = tickets_associes;
         this.montant_total = montant_total;
         this.methode_paiement = methode_paiement;
@@ -38,16 +38,14 @@ public class Transaction {
         return id_transaction;
     }
 
-    public void setId_transaction(int id_transaction) {
-        this.id_transaction = id_transaction;
+    public void setId_transaction(int id_transaction) { this.id_transaction = id_transaction; }
+
+    public Utilisateur getUtilisateur_id() {
+        return utilisateur;
     }
 
-    public int getUtilisateur_id() {
-        return utilisateur_id;
-    }
-
-    public void setUtilisateur_id(int utilisateur_id) {
-        this.utilisateur_id = utilisateur_id;
+    public void setUtilisateur_id(Utilisateur utilisateur) {
+        this.utilisateur = utilisateur;
     }
 
     public List<Ticket> getTickets_associes() {
@@ -108,7 +106,7 @@ public class Transaction {
 
         return "Transaction{" +
                 "id_transaction=" + id_transaction +
-                ", utilisateur_id=" + utilisateur_id +
+                ", utilisateur=" + utilisateur +
                 ", tickets_associes=[" + ticketsString.toString() + "]" +
                 ", montant_total=" + montant_total +
                 ", methode_paiement='" + methode_paiement + '\'' +
