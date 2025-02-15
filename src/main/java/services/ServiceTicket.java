@@ -79,7 +79,8 @@ public class ServiceTicket implements IService<Ticket> {
                     rs.getString("lieu"),
                     rs.getString("categorie"),
                     rs.getFloat("budget"),
-                    rs.getString("image_event")
+                    rs.getString("image_event"),
+                    rs.getInt("nb_places")
             );
         } else {
             System.out.println("⚠️ Avertissement : Aucun événement trouvé pour l'ID " + evenement_id);

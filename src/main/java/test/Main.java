@@ -1,12 +1,12 @@
 package test;
 
-import controllers.DetailsEvenement;
+//import controllers.DetailsEvenement;
 import entities.*;
 import services.*;
 import utils.MyDataBase;
 
-//import java.sql.Date;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -19,8 +19,6 @@ public class Main {
         // Initialisation de la connexion à la base de données
         MyDataBase dbInstance = MyDataBase.getInstance();
 
-
-
         // Création des services
         ServiceTicket serviceTicket = new ServiceTicket();
         ServiceTransaction serviceTransaction = new ServiceTransaction(dbInstance.getConnection());
@@ -29,20 +27,22 @@ public class Main {
         ServiceEvenement serviceEvenement = new ServiceEvenement();
         ServiceFeedback serviceFeedback = new ServiceFeedback();
 
-        // Gestion des tickets
-        //  gererTickets(serviceTicket);
 
-        // Gestion des transactions
-//       gererTransactions(serviceTransaction, serviceTicket);
 
         // Tester l'ajout d'un événement
         testerAjouterEvenement(serviceEvenement);
 
         // Tester l'affichage des détails d'un événement
-        testerDetailsEvenement(serviceEvenement);
+        //testerDetailsEvenement(serviceEvenement);
 
         // Gestion des événements
-//        gererEvenements(serviceEvenement);
+        gererEvenements(serviceEvenement);
+
+        // Gestion des tickets
+        gererTickets(serviceTicket);
+
+        // Gestion des transactions
+        //gererTransactions(serviceTransaction, serviceTicket);
 
         // Gestion des feedbacks
 //       gererFeedbacks(serviceFeedback, serviceEvenement);
@@ -57,19 +57,21 @@ public class Main {
 
     private static void testerAjouterEvenement(ServiceEvenement serviceEvenement) {
         try {
-            // Format de date pour parser les chaînes de date
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 
-            // Dates de début et de fin pour l'événement
-            Date dateDebut = dateFormat.parse("12-05-2025 17:00:00");
-            Date dateFin = dateFormat.parse("15-05-2025 21:00:00");
+            // Format de date pour parser les chaînes de date
+            Date dateDebutUtil = dateFormat.parse("12-05-2025 17:00:00");
+            Date dateFinUtil = dateFormat.parse("15-05-2025 21:00:00");
 
+            // Conversion en Timestamp
+            Timestamp dateDebut = new Timestamp(dateDebutUtil.getTime());
+            Timestamp dateFin = new Timestamp(dateFinUtil.getTime());
             // Création d'un nouvel événement avec nb_places
             Evenement evenement = new Evenement(
                 "Conférence Art",                // Nom de l'événement
                 "Conférence sur l Art",          // Description
-                dateDebut,                      // Date de début
-                dateFin,                         // Date de fin
+                    (Timestamp) dateDebut,                      // Date de début
+                    (Timestamp) dateFin,                         // Date de fin
                 "Tunis",                         // Lieu
                 "Art",                           // Catégorie
                 10000.0f,                       // Budget
@@ -95,67 +97,69 @@ public class Main {
         }
     }
 
-    private static void testerDetailsEvenement(ServiceEvenement serviceEvenement) {
-        try {
-            // Récupérer un événement de la base de données (par exemple, le premier événement)
-            List<Evenement> evenements = serviceEvenement.afficher();
-            if (!evenements.isEmpty()) {
-                Evenement evenement = evenements.get(0); // Prendre le premier événement de la liste
-
-                // Simuler l'affichage des détails dans l'interface
-                DetailsEvenement detailsEvenement = new DetailsEvenement();
-                detailsEvenement.setResNom(evenement.getNom());
-                detailsEvenement.setResDescription(evenement.getDescription());
-                detailsEvenement.setResDateDebut(evenement.getDate_debut().toString());
-                detailsEvenement.setResDateFin(evenement.getDate_fin().toString());
-                detailsEvenement.setResLieu(evenement.getLieu());
-                detailsEvenement.setResCategorie(evenement.getCategorie());
-                detailsEvenement.setResBudget(String.valueOf(evenement.getBudget()));
-                detailsEvenement.setResImageEvent(evenement.getImage_event());
-                detailsEvenement.setResNbPlaces(String.valueOf(evenement.getNb_places()));
-
-                // Afficher les détails dans la console (simulation)
-                System.out.println("\n📋 Détails de l'événement :");
-                System.out.println("Nom : " + evenement.getNom());
-                System.out.println("Description : " + evenement.getDescription());
-                System.out.println("Date de début : " + evenement.getDate_debut());
-                System.out.println("Date de fin : " + evenement.getDate_fin());
-                System.out.println("Lieu : " + evenement.getLieu());
-                System.out.println("Catégorie : " + evenement.getCategorie());
-                System.out.println("Budget : " + evenement.getBudget());
-                System.out.println("Image : " + evenement.getImage_event());
-                System.out.println("Nombre de places : " + evenement.getNb_places());
-            } else {
-                System.out.println("❌ Aucun événement trouvé dans la base de données.");
-            }
-
-        } catch (SQLException e) {
-            System.out.println("❌ Erreur SQL : " + e.getMessage());
-        }
-    }
+//    private static void testerDetailsEvenement(ServiceEvenement serviceEvenement) {
+//        try {
+//            // Récupérer un événement de la base de données (par exemple, le premier événement)
+//            List<Evenement> evenements = serviceEvenement.afficher();
+//            if (!evenements.isEmpty()) {
+//                Evenement evenement = evenements.get(0); // Prendre le premier événement de la liste
+//
+//                // Simuler l'affichage des détails dans l'interface
+//                DetailsEvenement detailsEvenement = new DetailsEvenement();
+//                detailsEvenement.setResNom(evenement.getNom());
+//                detailsEvenement.setResDescription(evenement.getDescription());
+//                detailsEvenement.setResDateDebut(evenement.getDate_debut().toString());
+//                detailsEvenement.setResDateFin(evenement.getDate_fin().toString());
+//                detailsEvenement.setResLieu(evenement.getLieu());
+//                detailsEvenement.setResCategorie(evenement.getCategorie());
+//                detailsEvenement.setResBudget(String.valueOf(evenement.getBudget()));
+//                detailsEvenement.setResImageEvent(evenement.getImage_event());
+//                detailsEvenement.setResNbPlaces(String.valueOf(evenement.getNb_places()));
+//
+//                // Afficher les détails dans la console (simulation)
+//                System.out.println("\n📋 Détails de l'événement :");
+//                System.out.println("Nom : " + evenement.getNom());
+//                System.out.println("Description : " + evenement.getDescription());
+//                System.out.println("Date de début : " + evenement.getDate_debut());
+//                System.out.println("Date de fin : " + evenement.getDate_fin());
+//                System.out.println("Lieu : " + evenement.getLieu());
+//                System.out.println("Catégorie : " + evenement.getCategorie());
+//                System.out.println("Budget : " + evenement.getBudget());
+//                System.out.println("Image : " + evenement.getImage_event());
+//                System.out.println("Nombre de places : " + evenement.getNb_places());
+//            } else {
+//                System.out.println("❌ Aucun événement trouvé dans la base de données.");
+//            }
+//
+//        } catch (SQLException e) {
+//            System.out.println("❌ Erreur SQL : " + e.getMessage());
+//        }
+//    }
 
     private static void gererTickets(ServiceTicket serviceTicket) {
         try {
-            // Ajout de tickets
-//            Ticket ticket1 = new Ticket(1, 1, 1, "Standard", "En attente", 50.0, Date.valueOf("2025-02-10"));
-//            Ticket ticket2 = new Ticket(2, 2, 2, "VIP", "En attente", 100.0, Date.valueOf("2025-03-15"));
+            ServiceEvenement serviceEvenement=new ServiceEvenement();
+            Evenement evenement1 = serviceEvenement.getEvenementById(1); // Remplace 1 par un ID valide
+            Evenement evenement2 = serviceEvenement.getEvenementById(2); // Remplace 2 par un ID valide
 
-            // Définir le format de la date
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            if (evenement1 == null || evenement2 == null) {
+                System.out.println("❌ Impossible d'ajouter des tickets : les événements n'existent pas.");
+                return;
+            }
+            // Ajout des tickets
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+            Timestamp dateValidite1 = new Timestamp(dateFormat.parse("15-02-2025 18:41:54").getTime());
+            Timestamp dateValidite2 = new Timestamp(dateFormat.parse("15-02-2025 18:41:54").getTime());
 
-            // Conversion des chaînes en java.util.Date
-            Date date1 = dateFormat.parse("2025-02-10");
-            Date date2 = dateFormat.parse("2025-03-15");
-
-            // Création des tickets en utilisant java.util.Date
-            Ticket ticket1 = new Ticket(1, 1, 1, "Standard", "En attente", 50.0, date1);
-            Ticket ticket2 = new Ticket(2, 2, 2, "VIP", "En attente", 100.0, date2);
+            // Ajout des tickets
+            Ticket ticket1 = new Ticket(evenement1, "VIP", "En attente", 180.0, dateValidite1, 50);
+            Ticket ticket2 = new Ticket(evenement2, "Standard", "En attente", 150.0, dateValidite2, 80);
 
             serviceTicket.ajouter(ticket1);
             serviceTicket.ajouter(ticket2);
             System.out.println("✅ Tickets ajoutés avec succès.");
 
-            // Affichage des tickets
+            // Affichage des tickets après ajout
             afficherTickets(serviceTicket);
 
             // Modification d'un ticket
@@ -163,39 +167,15 @@ public class Main {
             serviceTicket.modifier(ticket1);
             System.out.println("✅ Ticket modifié avec succès.");
 
+            // Affichage après modification
+            afficherTickets(serviceTicket);
+
             // Suppression d'un ticket
             serviceTicket.supprimer(ticket2.getId_ticket());
             System.out.println("✅ Ticket supprimé avec succès.");
 
-        } catch (SQLException e) {
-            System.out.println("❌ Erreur SQL : " + e.getMessage());
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private static void gererTransactions(ServiceTransaction serviceTransaction, ServiceTicket serviceTicket) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        try {
-
-            Date transactionDate = dateFormat.parse("2025-02-07");
-
-            // Récupération des tickets pour la transaction
-            List<Ticket> tickets = serviceTicket.afficher();
-
-            // Ajout d'une transaction
-//            Transaction transaction1 = new Transaction(1, 1, tickets, 150.0, "en ligne", "Visa", Date.valueOf("2025-02-07"));
-            // Création de la transaction en utilisant java.util.Date
-            Transaction transaction1 = new Transaction(1, 1, tickets, 150.0, "en ligne", "Visa", transactionDate);
-            serviceTransaction.ajouter(transaction1);
-            System.out.println("✅ Transaction ajoutée avec succès.");
-
-            // Affichage des transactions
-            afficherTransactions(serviceTransaction);
-
-            // Suppression d'une transaction
-            serviceTransaction.supprimer(transaction1.getId_transaction());
-            System.out.println("✅ Transaction supprimée avec succès.");
+            // Affichage après suppression
+            afficherTickets(serviceTicket);
 
         } catch (SQLException e) {
             System.out.println("❌ Erreur SQL : " + e.getMessage());
@@ -203,6 +183,40 @@ public class Main {
             throw new RuntimeException(e);
         }
     }
+//    private static void gererTransactions(ServiceTransaction serviceTransaction, ServiceTicket serviceTicket) {
+//        try {
+//            // Récupération des tickets disponibles
+//            List<Ticket> tickets = serviceTicket.afficher();
+//
+//            if (tickets == null || tickets.isEmpty()) {
+//                System.out.println("❌ Aucun ticket disponible. Impossible d'ajouter une transaction.");
+//                return;
+//            }
+//
+//            // Création de la date actuelle au format Timestamp
+//            Timestamp dateActuelle = new Timestamp(System.currentTimeMillis());
+//
+//            // Création et ajout de la transaction
+//            Transaction transaction = new Transaction(1, 1, tickets, 150.0, "en ligne", "Visa", dateActuelle);
+//            serviceTransaction.ajouter(transaction);
+//            System.out.println("✅ Transaction ajoutée avec succès.");
+//
+//            // Affichage des transactions après ajout
+//            afficherTransactions(serviceTransaction);
+//
+//            // Suppression de la transaction ajoutée
+//            serviceTransaction.supprimer(transaction.getId_transaction());
+//            System.out.println("✅ Transaction supprimée avec succès.");
+//
+//            // Affichage des transactions après suppression
+//            afficherTransactions(serviceTransaction);
+//
+//        } catch (SQLException e) {
+//            System.out.println("❌ Erreur SQL : " + e.getMessage());
+//        }
+//    }
+
+
 
     private static void afficherTickets(ServiceTicket serviceTicket) throws SQLException {
         List<Ticket> tickets = serviceTicket.afficher();
@@ -242,8 +256,8 @@ public class Main {
             Evenement evenement = new Evenement(
                 "Conférence Art",                // Nom de l'événement
                 "Conférence sur l Art",          // Description
-                dateDebut,                      // Date de début
-                dateFin,                         // Date de fin
+                    (Timestamp) dateDebut,                      // Date de début
+                    (Timestamp) dateFin,                         // Date de fin
                 "Tunis",                         // Lieu
                 "Art",                           // Catégorie
                 10000.0f,                       // Budget

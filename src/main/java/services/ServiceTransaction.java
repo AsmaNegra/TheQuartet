@@ -12,8 +12,8 @@ import java.util.List;
 public class ServiceTransaction implements IService<Transaction> {
     private final Connection connection;
 
-    public ServiceTransaction() {
-        connection = MyDataBase.getInstance().getConnection();
+    public ServiceTransaction(Connection connection) {
+        this.connection = MyDataBase.getInstance().getConnection();
     }
 
     @Override
@@ -24,7 +24,7 @@ public class ServiceTransaction implements IService<Transaction> {
         // Insertion de la transaction
         String sql = "INSERT INTO transaction (utilisateur_id, montant_total, mode_paiement, date_paiement) VALUES (?, ?, ?, ?)";
         PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-        ps.setInt(1, transaction.getUtilisateur_id().getUtilisateur_id());
+        ps.setInt(1, transaction.getUtilisateur_id().getUtilisateurId());
         ps.setDouble(2, montantTotal);  // Montant total calculé
         ps.setString(3, transaction.getMode_paiement());
         ps.setTimestamp(4, new Timestamp(System.currentTimeMillis()));  // Date actuelle pour date_paiement
@@ -84,7 +84,7 @@ public class ServiceTransaction implements IService<Transaction> {
     public void modifier(Transaction transaction) throws SQLException {
         String sql = "UPDATE transaction SET utilisateur_id=?, montant_total=?, mode_paiement=?, date_paiement=? WHERE id_transaction=?";
         PreparedStatement ps = connection.prepareStatement(sql);
-        ps.setInt(1, transaction.getUtilisateur_id().getUtilisateur_id());
+        ps.setInt(1, transaction.getUtilisateur_id().getUtilisateurId());
         ps.setDouble(2, transaction.getMontant_total());
         ps.setString(3, transaction.getMode_paiement());
         ps.setTimestamp(4, transaction.getDate_paiement());

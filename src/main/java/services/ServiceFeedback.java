@@ -58,7 +58,6 @@ public class ServiceFeedback implements IService<Feedback>{
         while (rs.next()) {
             Evenement evenement = new Evenement();
             evenement.setEvenement_id(rs.getInt("evenement_id"));
-
             Utilisateur utilisateur = new Utilisateur();
             utilisateur.setUtilisateurId(rs.getInt("utilisateur_id"));
 

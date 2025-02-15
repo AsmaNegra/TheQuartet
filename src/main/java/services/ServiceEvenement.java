@@ -113,4 +113,59 @@ public class ServiceEvenement implements IService<Evenement>{
         }
         return evenements;
     }
+    public Evenement getEvenementById(int id) {
+        String query = "SELECT * FROM evenement WHERE evenement_id = ?";
+
+        try (PreparedStatement pst = connection.prepareStatement(query)) {
+            pst.setInt(1, id);
+            ResultSet rs = pst.executeQuery();
+
+            if (rs.next()) {
+                return new Evenement(
+                        rs.getInt("evenement_id"),
+                        rs.getString("nom"),
+                        rs.getString("description"),
+                        rs.getTimestamp("date_debut"),
+                        rs.getTimestamp("date_fin"),
+                        rs.getString("lieu"),
+                        rs.getString("categorie"),
+                        rs.getFloat("budget"),
+                        rs.getString("image_event"),
+                        rs.getInt("nb_places")
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public List<Evenement> getAllEvenements() {
+        List<Evenement> evenements = new ArrayList<>();
+        String sql = "SELECT * FROM evenement";
+
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(sql);
+
+            while (rs.next()) {
+                Evenement evenement = new Evenement(
+                        rs.getInt("evenement_id"),
+                        rs.getString("nom"),
+                        rs.getString("description"),
+                        rs.getTimestamp("date_debut"),
+                        rs.getTimestamp("date_fin"),
+                        rs.getString("lieu"),
+                        rs.getString("categorie"),
+                        rs.getFloat("budget"),
+                        rs.getString("image_event"),
+                        rs.getInt("nb_places")
+                );
+                evenements.add(evenement);
+            }
+        } catch (SQLException e) {
+            System.out.println("Erreur lors de la récupération des événements : " + e.getMessage());
+        }
+
+        return evenements;
+    }
 }
