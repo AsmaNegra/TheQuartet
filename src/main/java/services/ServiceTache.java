@@ -17,8 +17,8 @@ public class ServiceTache implements IService<Tache> {
     /** ✅ AJOUTER UNE TÂCHE */
     @Override
     public void ajouter(Tache tache) throws SQLException {
-        String sql = "INSERT INTO `tache` (`tache_id`, `nom`, `description`, `statut`, `date_limite`, `evenement_id`, `fournisseur_id`)" +
-                " VALUES (?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO `tache` (`tache_id`, `nom`, `description`, `statut`, `date_limite`, `evenement_id`, `fournisseur_id`, `priorite`)" +
+                " VALUES (?,?,?,?,?,?,?,?)";
 
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         preparedStatement.setInt(1, tache.getTacheId());
@@ -28,6 +28,7 @@ public class ServiceTache implements IService<Tache> {
         preparedStatement.setDate(5, new java.sql.Date(tache.getDateLimite().getTime()));
         preparedStatement.setInt(6, tache.getEvenement().getEvenement_id());
         preparedStatement.setInt(7, tache.getFournisseur().getFournisseurId());
+        preparedStatement.setString(8, tache.getPriorite());
 
         preparedStatement.executeUpdate();
         System.out.println("✅ Tâche ajoutée avec succès !");
@@ -36,7 +37,7 @@ public class ServiceTache implements IService<Tache> {
     /** ✅ MODIFIER UNE TÂCHE */
     @Override
     public void modifier(Tache tache) throws SQLException {
-        String sql = "UPDATE `tache` SET `nom` = ?, `description` = ?, `statut` = ?, `date_limite` = ?, `evenement_id` = ?, `fournisseur_id` = ? " +
+        String sql = "UPDATE `tache` SET `nom` = ?, `description` = ?, `statut` = ?, `date_limite` = ?, `evenement_id` = ?, `fournisseur_id` = ?, `priorite` = ? " +
                 "WHERE `tache_id` = ?";
 
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -46,7 +47,8 @@ public class ServiceTache implements IService<Tache> {
         preparedStatement.setDate(4, new java.sql.Date(tache.getDateLimite().getTime()));
         preparedStatement.setInt(5, tache.getEvenement().getEvenement_id());
         preparedStatement.setInt(6, tache.getFournisseur().getFournisseurId());
-        preparedStatement.setInt(7, tache.getTacheId());
+        preparedStatement.setString(7, tache.getPriorite());
+        preparedStatement.setInt(8, tache.getTacheId());
 
         int rowsUpdated = preparedStatement.executeUpdate();
         if (rowsUpdated > 0) {
@@ -89,7 +91,8 @@ public class ServiceTache implements IService<Tache> {
                     resultSet.getString("statut"),
                     resultSet.getDate("date_limite"),
                     null,
-                    null
+                    null,
+                    resultSet.getString("priorite")
             );
 
             taches.add(tache);
@@ -114,7 +117,8 @@ public class ServiceTache implements IService<Tache> {
                     resultSet.getString("statut"),
                     resultSet.getDate("date_limite"),
                     null, // Charger l'événement séparément si nécessaire
-                    null  // Charger le fournisseur séparément si nécessaire
+                    null,  // Charger le fournisseur séparément si nécessaire
+                    resultSet.getString("priorite")
             ));
         }
 
@@ -137,7 +141,8 @@ public class ServiceTache implements IService<Tache> {
                     resultSet.getString("statut"),
                     resultSet.getDate("date_limite"),
                     null,
-                    null
+                    null,
+                    resultSet.getString("priorite")
             ));
         }
 
@@ -160,7 +165,8 @@ public class ServiceTache implements IService<Tache> {
                     resultSet.getString("statut"),
                     resultSet.getDate("date_limite"),
                     null,
-                    null
+                    null,
+                    resultSet.getString("priorite")
             ));
         }
 
@@ -183,7 +189,8 @@ public class ServiceTache implements IService<Tache> {
                     resultSet.getString("statut"),
                     resultSet.getDate("date_limite"),
                     null,
-                    null
+                    null,
+                    resultSet.getString("priorite")
             ));
         }
 

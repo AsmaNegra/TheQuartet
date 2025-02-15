@@ -7,12 +7,14 @@ public class Evenement {
     private int evenement_id;
     private String nom;
     private String description;
-    private Timestamp date_debut;
-    private Timestamp date_fin;
+    private Timestamp  date_debut;
+    private Timestamp  date_fin;
     private String lieu;
     private String categorie;
     private float budget;
     private String image_event;
+    private int nb_places;
+
     private List<Ticket> tickets;
     private List<Tache> taches;
     private List<Fournisseur> fournisseurs;
@@ -21,19 +23,20 @@ public class Evenement {
 
     public Evenement() {}
 
-    public Evenement(int evenement_id, String nom, String description, Timestamp date_debut, Timestamp date_fin, String lieu, String categorie, float budget, String image_event) {
+    public Evenement(int evenement_id, String nom, String description, Timestamp date_debut, Timestamp date_fin, String lieu, String categorie, float budget, String image_event, int nb_places) {
         this.evenement_id = evenement_id;
         this.nom = nom;
         this.description = description;
         this.date_debut = date_debut;
-        this.date_fin = date_fin;
+        this.date_fin =  date_fin;
         this.lieu = lieu;
         this.categorie = categorie;
         this.budget = budget;
         this.image_event = image_event;
+        this.nb_places = nb_places;
     }
 
-    public Evenement(String nom, String description, Timestamp date_debut, Timestamp date_fin, String lieu, String categorie, float budget, String image_event) {
+    public Evenement(String nom, String description, Timestamp date_debut, Timestamp date_fin, String lieu, String categorie, float budget, String image_event, int nb_places) {
         this.nom = nom;
         this.description = description;
         this.date_debut = date_debut;
@@ -42,18 +45,20 @@ public class Evenement {
         this.categorie = categorie;
         this.budget = budget;
         this.image_event = image_event;
+        this.nb_places = nb_places;
     }
 
-    public Evenement(int evenement_id, String nom, String description, Timestamp date_debut, Timestamp date_fin, String lieu, String categorie, float budget, String image_event, List<Ticket> tickets, List<Tache> taches, List<Fournisseur> fournisseurs, List<Feedback> feedbacks, List<Utilisateur> listMembres) {
+    public Evenement(int evenement_id, String nom, String description, Timestamp date_debut, Timestamp date_fin, String lieu, String categorie, float budget, String image_event,int nb_places, List<Ticket> tickets, List<Tache> taches, List<Fournisseur> fournisseurs, List<Feedback> feedbacks, List<Utilisateur> listMembres) {
         this.evenement_id = evenement_id;
         this.nom = nom;
         this.description = description;
-        this.date_debut = date_debut;
-        this.date_fin = date_fin;
+        this.date_debut =date_debut;
+        this.date_fin =date_fin;
         this.lieu = lieu;
         this.categorie = categorie;
         this.budget = budget;
         this.image_event = image_event;
+        this.nb_places = nb_places;
         this.tickets = tickets;
         this.taches = taches;
         this.fournisseurs = fournisseurs;
@@ -90,7 +95,7 @@ public class Evenement {
     }
 
     public void setDate_debut(Timestamp date_debut) {
-        this.date_debut = date_debut;
+        this.date_debut = (Timestamp) date_debut;
     }
 
     public Timestamp getDate_fin() {
@@ -98,7 +103,7 @@ public class Evenement {
     }
 
     public void setDate_fin(Timestamp date_fin) {
-        this.date_fin = date_fin;
+        this.date_fin = (Timestamp) date_fin;
     }
 
     public String getLieu() {
@@ -133,6 +138,13 @@ public class Evenement {
         this.image_event = image_event;
     }
 
+    public int getNb_places() {
+        return nb_places;
+    }
+
+    public void setNb_places(int nb_places) {
+        this.nb_places = nb_places;
+    }
 
     public List<Ticket> getTickets() {
         return tickets;
@@ -186,6 +198,7 @@ public class Evenement {
             ", categorie='" + categorie + '\'' +
             ", budget=" + budget +
             ", image_event='" + image_event + '\'' +
+            ", nb_places=" + nb_places +
             ", tickets=" + tickets +
             ", taches=" + taches +
             ", fournisseurs=" + fournisseurs +

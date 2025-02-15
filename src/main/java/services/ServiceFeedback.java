@@ -23,7 +23,7 @@ public class ServiceFeedback implements IService<Feedback>{
             feedback.getCommentaire() + "', '" +
             new java.sql.Timestamp(feedback.getDate_feedback().getTime()) + "', " +
             feedback.getEvenement_id().getEvenement_id() + ", " +
-            feedback.getUtilisateur_id().getUtilisateur_id() + ")";
+            feedback.getUtilisateur_id().getUtilisateurId() + ")";
         Statement statement = connection.createStatement();
         statement.executeUpdate(sql);
     }
@@ -36,7 +36,7 @@ public class ServiceFeedback implements IService<Feedback>{
         ps.setString(2, feedback.getCommentaire());
         ps.setTimestamp(3, new java.sql.Timestamp(feedback.getDate_feedback().getTime()));
         ps.setInt(4, feedback.getEvenement_id().getEvenement_id());
-        ps.setInt(5, feedback.getUtilisateur_id().getUtilisateur_id());
+        ps.setInt(5, feedback.getUtilisateur_id().getUtilisateurId());
         ps.setInt(6, feedback.getFeedback_id());
         ps.executeUpdate();
     }
@@ -60,7 +60,7 @@ public class ServiceFeedback implements IService<Feedback>{
             evenement.setEvenement_id(rs.getInt("evenement_id"));
 
             Utilisateur utilisateur = new Utilisateur();
-            utilisateur.setUtilisateur_id(rs.getInt("utilisateur_id"));
+            utilisateur.setUtilisateurId(rs.getInt("utilisateur_id"));
 
             Feedback feedback = new Feedback(
                 rs.getInt("feedback_id"),

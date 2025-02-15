@@ -14,39 +14,17 @@ public class ServiceUtilisateurEvenement {
     public ServiceUtilisateurEvenement() {
         connection = MyDataBase.getInstance().getConnection();
     }
-    public Utilisateur getUtilisateurById(int id) throws SQLException {
-        String query = "SELECT * FROM utilisateur WHERE utilisateur_id = ?";
 
-        try (PreparedStatement pst = connection.prepareStatement(query)) {
-            pst.setInt(1, id);
-
-            try (ResultSet rs = pst.executeQuery()) {
-                if (rs.next()) {
-                    return new Utilisateur(
-                            rs.getInt("utilisateur_id"),
-                            rs.getString("nom"),
-                            rs.getString("email"),
-                            rs.getString("mot_de_passe"),
-                            rs.getString("role"),
-                            rs.getString("etat"),
-                            rs.getFloat("note_organisateur"),
-                            rs.getString("entreprise")
-                    );
-                }
-            }
-        }
-        return null;
-    }
 
     // 🔹 Associer un utilisateur à un événement
-    public void inscrireUtilisateurAEvenement(int utilisateur_id, int evenement_id) {
+    public void inscrireUtilisateurAEvenement(int utilisateurId, int evenementId) {
         String sql = "INSERT INTO utilisateur_evenement (utilisateur_id, evenement_id) VALUES (?, ?)";
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setInt(1, utilisateur_id);
-            stmt.setInt(2, evenement_id);
+            stmt.setInt(1, utilisateurId);
+            stmt.setInt(2, evenementId);
             stmt.executeUpdate();
-            System.out.println("Utilisateur " + utilisateur_id + " inscrit à l'événement " + evenement_id);
+            System.out.println("Utilisateur " + utilisateurId + " inscrit à l'événement " + evenementId);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -55,40 +33,40 @@ public class ServiceUtilisateurEvenement {
 
 
     // 🔹 Supprimer un utilisateur de tous ses événements
-    public void supprimer(int utilisateur_id) {
+    public void supprimer(int utilisateurId) {
         String sql = "DELETE FROM utilisateur_evenement WHERE utilisateur_id = ?";
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setInt(1, utilisateur_id);
+            stmt.setInt(1, utilisateurId);
             stmt.executeUpdate();
-            System.out.println("Utilisateur " + utilisateur_id + " supprimé de tous ses événements.");
+            System.out.println("Utilisateur " + utilisateurId + " supprimé de tous ses événements.");
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     // 🔹 Désinscrire un utilisateur d'un événement spécifique
-    public void desinscrireUtilisateurDeEvenement(int utilisateur_id, int evenement_id) {
+    public void desinscrireUtilisateurDeEvenement(int utilisateurId, int evenementId) {
         String sql = "DELETE FROM utilisateur_evenement WHERE utilisateur_id = ? AND evenement_id = ?";
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setInt(1, utilisateur_id);
-            stmt.setInt(2, evenement_id);
+            stmt.setInt(1, utilisateurId);
+            stmt.setInt(2, evenementId);
             stmt.executeUpdate();
-            System.out.println("Utilisateur " + utilisateur_id + " désinscrit de l'événement " + evenement_id);
+            System.out.println("Utilisateur " + utilisateurId + " désinscrit de l'événement " + evenementId);
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
 
-    public List<Evenement> getEvenementsByUtilisateurId(int utilisateur_id) {
+    public List<Evenement> getEvenementsByUtilisateurId(int utilisateurId) {
         List<Evenement> evenements = new ArrayList<>();
-        String sql = "SELECT e.id, e.nom, e.description, e.date_debut, e.date_fin, e.lieu, e.categorie, e.budget, e.image_event " +
+        String sql = "SELECT e.id, e.nom, e.description, e.date_debut, e.date_fin, e.lieu, e.categorie, e.budget, e.image_event, e.nb_places " +
                 "FROM evenement e JOIN utilisateur_evenement ue ON e.id = ue.evenement_id WHERE ue.utilisateur_id = ?";
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setInt(1, utilisateur_id);
+            stmt.setInt(1, utilisateurId);
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
@@ -96,13 +74,14 @@ public class ServiceUtilisateurEvenement {
                         rs.getInt("id"),
                         rs.getString("nom"),
                         rs.getString("description"),
-                        rs.getTimestamp("date_debut"),
-                        rs.getTimestamp("date_fin"),
+                        rs.getDate("date_debut"),
+                        rs.getDate("date_fin"),
                         rs.getString("lieu"),
                         rs.getString("categorie"),
                         rs.getFloat("budget"),
-                        rs.getString("image_event")
-                ));
+                        rs.getString("image_event"),
+                        rs.getInt("nb_places")
+                    ));
             }
         } catch (SQLException e) {
             e.printStackTrace();

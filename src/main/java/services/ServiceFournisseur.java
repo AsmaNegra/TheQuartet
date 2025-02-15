@@ -17,15 +17,14 @@ public class ServiceFournisseur implements IService<Fournisseur> {
     /** ✅ AJOUTER UN FOURNISSEUR */
     @Override
     public void ajouter(Fournisseur fournisseur) throws SQLException {
-        String sql = "INSERT INTO `fournisseur` (`fournisseur_id`, `nom`, `type_service`, `contrat`, `evenement_id`) " +
-                "VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO `fournisseur` ( `nom`, `type_service`, `contrat`, `evenement_id`) " +
+                "VALUES ( ?, ?, ?, ?)";
 
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        preparedStatement.setInt(1, fournisseur.getFournisseurId());
-        preparedStatement.setString(2, fournisseur.getNom());
-        preparedStatement.setString(3, fournisseur.getTypeService());
-        preparedStatement.setString(4, fournisseur.getContrat());
-        preparedStatement.setInt(5, fournisseur.getEvenementId().getEvenement_id());
+        preparedStatement.setString(1, fournisseur.getNom());
+        preparedStatement.setString(2, fournisseur.getTypeService());
+        preparedStatement.setString(3, fournisseur.getContrat());
+        preparedStatement.setInt(4, fournisseur.getEvenementId().getEvenement_id());
 
         preparedStatement.executeUpdate();
         System.out.println("✅ Fournisseur ajouté avec succès !");
@@ -56,6 +55,7 @@ public class ServiceFournisseur implements IService<Fournisseur> {
     @Override
     public void supprimer(int id) throws SQLException {
         String sql = "DELETE FROM `fournisseur` WHERE `fournisseur_id` = ?";
+
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         preparedStatement.setInt(1, id);
 
@@ -72,8 +72,10 @@ public class ServiceFournisseur implements IService<Fournisseur> {
     public List<Fournisseur> afficher() throws SQLException {
         List<Fournisseur> fournisseurs = new ArrayList<>();
         String sql = "SELECT * FROM `fournisseur`";
+
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery(sql);
+
         while (resultSet.next()) {
             Fournisseur fournisseur = new Fournisseur(
                     resultSet.getInt("fournisseur_id"),
@@ -82,8 +84,10 @@ public class ServiceFournisseur implements IService<Fournisseur> {
                     resultSet.getString("contrat"),
                     null
             );
+
             fournisseurs.add(fournisseur);
         }
+
         return fournisseurs;
     }
 }
