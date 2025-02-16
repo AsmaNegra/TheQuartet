@@ -1,147 +1,129 @@
 package services;
 
-import entities.Evenement;
 import entities.Ticket;
+import entities.Evenement;
+import services.ServiceEvenement;
 import utils.MyDataBase;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+
 public class ServiceTicket implements IService<Ticket> {
-    private final Connection connection;
+
+    private Connection connection;
 
     public ServiceTicket() {
         connection = MyDataBase.getInstance().getConnection();
     }
 
-    @Override
-    public void ajouter(Ticket ticket) throws SQLException {
-        String req = "INSERT INTO ticket (evenement_id, type, statut, prix, date_validite, nb_tickets) VALUES (?, ?, ?, ?, ?, ?)";
-        PreparedStatement ps = connection.prepareStatement(req, Statement.RETURN_GENERATED_KEYS);
-        ps.setInt(1, ticket.getEvenement().getEvenement_id());
-        ps.setString(2, ticket.getType());
-        ps.setString(3, ticket.getStatut());
-        ps.setDouble(4, ticket.getPrix());
-        ps.setTimestamp(5, ticket.getDate_validite());
-        ps.setInt(6, ticket.getNb_tickets());
-        ps.executeUpdate();
+    private boolean evenementExiste(int evenement_id) throws SQLException {
+        String query = "SELECT COUNT(*) FROM evenement WHERE evenement_id = ?";
+        try (PreparedStatement pst = connection.prepareStatement(query)) {
+            pst.setInt(1, evenement_id);
+            try (ResultSet rs = pst.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+            }
+        }
+        return false;
+    }
 
-        // Récupération de l'ID généré
-        ResultSet rs = ps.getGeneratedKeys();
-        if (rs.next()) {
-            ticket.setId_ticket(rs.getInt(1)); // Assurez-vous que votre classe Ticket a un setter pour l'ID
+    @Override
+    public void ajouter(Ticket t) throws SQLException {
+        if (!evenementExiste(t.getEvenement().getEvenement_id())) {
+            throw new SQLException("Événement non existant, impossible de créer des tickets");
+        }
+        String query = "INSERT INTO ticket (evenement_id, type, statut, prix, date_validite, nb_tickets) VALUES (?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement pst = connection.prepareStatement(query)) {
+            pst.setInt(1, t.getEvenement().getEvenement_id());
+            pst.setString(2, t.getType());
+            pst.setString(3, t.getStatut());
+            pst.setDouble(4, t.getPrix());
+            pst.setTimestamp(5, t.getDate_validite());
+            pst.setInt(6, t.getNb_tickets());
+            pst.executeUpdate();
         }
     }
 
     @Override
-    public void modifier(Ticket ticket) throws SQLException {
-        Evenement evenement = ticket.getEvenement();
-        if (evenement != null) {
-            Timestamp dateValidite = (Timestamp) evenement.getDate_fin();
-
-            String sql = "UPDATE `ticket` SET `evenement_id`=?,`type`=?, `statut`=?, `prix`=?, `date_validite`=? ,`nb_tickets`=? WHERE id_ticket = ?";
-            PreparedStatement ps = connection.prepareStatement(sql);
-            ps.setInt(1, ticket.getEvenement().getEvenement_id());
-            ps.setString(2, ticket.getType());
-            ps.setString(3, ticket.getStatut());
-            ps.setDouble(4, ticket.getPrix());
-            ps.setTimestamp(5, dateValidite);
-            ps.setInt(6, ticket.getNb_tickets());
-            ps.setInt(7, ticket.getId_ticket());
-
-            ps.executeUpdate();
-        } else {
-            System.out.println("Erreur : L'événement avec ID " + ticket.getEvenement().getEvenement_id() + " n'existe pas.");
+    public void modifier(Ticket t) throws SQLException {
+        if (!evenementExiste(t.getEvenement().getEvenement_id())) {
+            throw new SQLException("Événement non existant, impossible de modifier le ticket");
+        }
+        String query = "UPDATE ticket SET evenement_id=?, type=?, statut=?, prix=?, date_validite=?, nb_tickets=? WHERE id_ticket=?";
+        try (PreparedStatement pst = connection.prepareStatement(query)) {
+            pst.setInt(1, t.getEvenement().getEvenement_id());
+            pst.setString(2, t.getType());
+            pst.setString(3, t.getStatut());
+            pst.setDouble(4, t.getPrix());
+            pst.setTimestamp(5, t.getDate_validite());
+            pst.setInt(6, t.getNb_tickets());
+            pst.setInt(7, t.getId_ticket());
+            pst.executeUpdate();
         }
     }
 
     @Override
     public void supprimer(int id) throws SQLException {
-        String sql = "DELETE FROM `ticket` WHERE id_ticket = ?";
-        PreparedStatement ps = connection.prepareStatement(sql);
-        ps.setInt(1, id);
-        ps.executeUpdate();
-    }
-
-    public Evenement recupererEvenementParId(int evenement_id) throws SQLException {
-        String sql = "SELECT * FROM evenement WHERE evenement_id = ?";
-        PreparedStatement statement = connection.prepareStatement(sql);
-        statement.setInt(1, evenement_id);
-        ResultSet rs = statement.executeQuery();
-
-        if (rs.next()) {
-            return new Evenement(
-                    rs.getInt("evenement_id"),
-                    rs.getString("nom"),
-                    rs.getString("description"),
-                    rs.getTimestamp("date_debut"),
-                    rs.getTimestamp("date_fin"),
-                    rs.getString("lieu"),
-                    rs.getString("categorie"),
-                    rs.getFloat("budget"),
-                    rs.getString("image_event"),
-                    rs.getInt("nb_places")
-            );
-        } else {
-            System.out.println("⚠️ Avertissement : Aucun événement trouvé pour l'ID " + evenement_id);
-            return null;
+        String query = "DELETE FROM ticket WHERE id_ticket=?";
+        try (PreparedStatement pst = connection.prepareStatement(query)) {
+            pst.setInt(1, id);
+            pst.executeUpdate();
         }
     }
 
     @Override
     public List<Ticket> afficher() throws SQLException {
         List<Ticket> tickets = new ArrayList<>();
-        String req = "SELECT * FROM ticket";
-        Statement st = connection.createStatement();
-        ResultSet rs = st.executeQuery(req);
-
-        while (rs.next()) {
-            int evenementId = rs.getInt("evenement_id");
-            ServiceEvenement serviceEvenement = new ServiceEvenement();
-            Evenement evenement = serviceEvenement.getEvenementById(evenementId);
-
-            if (evenement == null) {
-                System.out.println("⚠️ Avertissement : Aucun événement trouvé pour l'ID " + evenementId);
+        String query = "SELECT * FROM ticket";
+        try (Statement st = connection.createStatement(); ResultSet rs = st.executeQuery(query)) {
+            while (rs.next()) {
+                ServiceEvenement serviceEvenement= new ServiceEvenement();
+                int evenementId = rs.getInt("evenement_id");
+                Evenement evenement = serviceEvenement.getEvenementById(evenementId); // Charger l’événement
+                Ticket t = new Ticket(
+                        rs.getInt("id_ticket"),
+                        evenement,
+                        rs.getString("type"),
+                        rs.getString("statut"),
+                        rs.getDouble("prix"),
+                        rs.getTimestamp("date_validite"),
+                        rs.getInt("nb_tickets")
+                );
+                tickets.add(t);
             }
-
-            Ticket ticket = new Ticket(
-                    rs.getInt("id_ticket"),
-                    evenement,
-                    rs.getString("type"),
-                    rs.getString("statut"),
-                    rs.getDouble("prix"),
-                    rs.getTimestamp("date_validite"),
-                    rs.getInt("nb_tickets")
-            );
-            tickets.add(ticket);
         }
         return tickets;
     }
 
+    public Ticket getTicketById(int id) throws SQLException {
+        Ticket ticket = null;
+        String query = "SELECT * FROM ticket WHERE id_ticket = ?"; // Requête SQL pour récupérer un ticket par ID
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {  // Utilisation de PreparedStatement
+            stmt.setInt(1, id);  // On définit le paramètre (id_ticket)
 
-    public Ticket recupererTicketParId(int ticketId) throws SQLException {
-        // SQL pour récupérer les détails du ticket par ID
-        String sql = "SELECT * FROM `ticket` WHERE id_ticket = ?";
-        PreparedStatement statement = connection.prepareStatement(sql);
-        statement.setInt(1, ticketId);
-        ResultSet rs = statement.executeQuery();
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    ServiceEvenement serviceEvenement= new ServiceEvenement();
+                    int evenementId = rs.getInt("evenement_id");
+                    Evenement evenement = serviceEvenement.getEvenementById(evenementId); // Charger l’événement
+                    // Si le ticket existe, on le crée à partir des données récupérées
+                    int idTicket = rs.getInt("id_ticket");
+                    String type = rs.getString("type");
+                    String statut = rs.getString("statut");
+                    double prix = rs.getDouble("prix");
+                    Timestamp dateLimite = rs.getTimestamp("date_validite");
+                    int quantite = rs.getInt("nb_tickets");
 
-        if (rs.next()) {
-            int evenementId = rs.getInt("evenement_id");
-            Evenement evenement = recupererEvenementParId(evenementId);
-
-            return new Ticket(
-                    rs.getInt("id_ticket"),
-                    evenement, // Peut être null si l'événement n'est pas trouvé
-                    rs.getString("type"),
-                    rs.getString("statut"),
-                    rs.getDouble("prix"),
-                    rs.getTimestamp("date_validite"),
-                    rs.getInt("nb_tickets")
-            );
-        } else {
-            System.out.println("⚠️ Aucun ticket trouvé pour l'ID " + ticketId);
-            return null;
+                    // Créer l'objet Ticket en utilisant les données récupérées
+                    ticket = new Ticket(idTicket, evenement, type, statut, prix, dateLimite, quantite);
+                }
+            }
         }
+        return ticket; // Retourne le ticket trouvé ou null si pas trouvé
     }
+
+
 }

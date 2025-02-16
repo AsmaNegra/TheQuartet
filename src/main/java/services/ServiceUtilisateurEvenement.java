@@ -30,8 +30,6 @@ public class ServiceUtilisateurEvenement {
         }
     }
 
-
-
     // 🔹 Supprimer un utilisateur de tous ses événements
     public void supprimer(int utilisateurId) {
         String sql = "DELETE FROM utilisateur_evenement WHERE utilisateur_id = ?";
@@ -58,7 +56,6 @@ public class ServiceUtilisateurEvenement {
             e.printStackTrace();
         }
     }
-
 
     public List<Evenement> getEvenementsByUtilisateurId(int utilisateurId) {
         List<Evenement> evenements = new ArrayList<>();
@@ -111,5 +108,31 @@ public class ServiceUtilisateurEvenement {
             e.printStackTrace();
         }
         return utilisateurs;
+    }
+
+    public Utilisateur getUtilisateurById(int id) {
+        String query = "SELECT * FROM utilisateur WHERE utilisateur_id = ?";
+
+        try (PreparedStatement pst = connection.prepareStatement(query)) {
+            pst.setInt(1, id);
+            ResultSet rs = pst.executeQuery();
+
+            if (rs.next()) {
+                return new Utilisateur(
+                        rs.getInt("utilisateur_id"),          // Correspond à 'utilisateurId'
+                        rs.getString("nom"),                  // Correspond à 'nom'
+                        rs.getString("email"),                // Correspond à 'email'
+                        rs.getString("mot_de_passe"),         // Correspond à 'motDePasse'
+                        rs.getString("role"),                 // Correspond à 'role'
+                        rs.getString("etat"),                 // Correspond à 'etat'
+                        rs.getFloat("note_organisateur"),     // Correspond à 'noteOrganisateur'
+                        rs.getString("entreprise"),           // Correspond à 'entreprise'
+                        new ArrayList<>()                     // La liste des événements peut être initialisée ici si nécessaire
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

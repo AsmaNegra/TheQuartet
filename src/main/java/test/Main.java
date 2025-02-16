@@ -21,37 +21,48 @@ public class Main {
 
         // Création des services
         ServiceTicket serviceTicket = new ServiceTicket();
-        ServiceTransaction serviceTransaction = new ServiceTransaction(dbInstance.getConnection());
         ServiceTache serviceTache = new ServiceTache();
         ServiceFournisseur serviceFournisseur = new ServiceFournisseur();
         ServiceEvenement serviceEvenement = new ServiceEvenement();
         ServiceFeedback serviceFeedback = new ServiceFeedback();
+        ServiceTransaction serviceTransaction =new ServiceTransaction();
+        ServiceUtilisateurEvenement serviceUtilisateurEvenement=new ServiceUtilisateurEvenement();
 
 
 
-        // Tester l'ajout d'un événement
-        testerAjouterEvenement(serviceEvenement);
-
-        // Tester l'affichage des détails d'un événement
-        //testerDetailsEvenement(serviceEvenement);
 
         // Gestion des événements
-        gererEvenements(serviceEvenement);
+        //gererEvenements(serviceEvenement);
 
+        //ajouter des Tickets
+        ajouterTickets(serviceTicket,serviceEvenement);
         // Gestion des tickets
-        gererTickets(serviceTicket);
+        afficherTickets(serviceTicket);
+        // Modifier tickets
+        //modifierTicket(serviceTicket);
+        //Supprimer des tickets
+        //supprimerTicket(serviceTicket);
 
-        // Gestion des transactions
-        //gererTransactions(serviceTransaction, serviceTicket);
+        //Gestion des transaction
+        ajouterTransaction(serviceTransaction, serviceUtilisateurEvenement, serviceTicket);
 
-        // Gestion des feedbacks
-//       gererFeedbacks(serviceFeedback, serviceEvenement);
-
-     //   gererFournisseurs(serviceFournisseur, serviceEvenement);
-
-        // Appel de la fonction pour gérer les tâches
+//        Gestion des transactions
+//        gererTransactions(serviceTransaction, serviceTicket);
+//
+//        Gestion des feedbacks
+//        gererFeedbacks(serviceFeedback, serviceEvenement);
+//
+//        Gestion des fournisseurs
+//        gererFournisseurs(serviceFournisseur, serviceEvenement);
+//
+//        Appel de la fonction pour gérer les tâches
 //        gererTaches(serviceTache);
 
+//        Tester l'ajout d'un événement
+//        testerAjouterEvenement(serviceEvenement);
+//
+//        Tester l'affichage des détails d'un événement
+//        testerDetailsEvenement(serviceEvenement);
 
     }
 
@@ -62,7 +73,6 @@ public class Main {
             // Format de date pour parser les chaînes de date
             Date dateDebutUtil = dateFormat.parse("12-05-2025 17:00:00");
             Date dateFinUtil = dateFormat.parse("15-05-2025 21:00:00");
-
             // Conversion en Timestamp
             Timestamp dateDebut = new Timestamp(dateDebutUtil.getTime());
             Timestamp dateFin = new Timestamp(dateFinUtil.getTime());
@@ -73,7 +83,7 @@ public class Main {
                     (Timestamp) dateDebut,                      // Date de début
                     (Timestamp) dateFin,                         // Date de fin
                 "Tunis",                         // Lieu
-                "Art",                           // Catégorie
+                "Concert",                           // Catégorie
                 10000.0f,                       // Budget
                 "conference.jpg",               // Image de l'événement
                 100                             // Nombre de places
@@ -136,53 +146,90 @@ public class Main {
 //        }
 //    }
 
-    private static void gererTickets(ServiceTicket serviceTicket) {
+    private static void ajouterTickets(ServiceTicket serviceTicket,ServiceEvenement serviceEvenement) throws SQLException {
         try {
-            ServiceEvenement serviceEvenement=new ServiceEvenement();
-            Evenement evenement1 = serviceEvenement.getEvenementById(1); // Remplace 1 par un ID valide
-            Evenement evenement2 = serviceEvenement.getEvenementById(2); // Remplace 2 par un ID valide
-
-            if (evenement1 == null || evenement2 == null) {
-                System.out.println("❌ Impossible d'ajouter des tickets : les événements n'existent pas.");
+            // Récupérer un événement existant
+            Evenement event = serviceEvenement.getEvenementById(3);
+            if (event == null) {
+                System.out.println("Aucun événement trouvé, création annulée.");
                 return;
             }
-            // Ajout des tickets
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-            Timestamp dateValidite1 = new Timestamp(dateFormat.parse("15-02-2025 18:41:54").getTime());
-            Timestamp dateValidite2 = new Timestamp(dateFormat.parse("15-02-2025 18:41:54").getTime());
 
-            // Ajout des tickets
-            Ticket ticket1 = new Ticket(evenement1, "VIP", "En attente", 180.0, dateValidite1, 50);
-            Ticket ticket2 = new Ticket(evenement2, "Standard", "En attente", 150.0, dateValidite2, 80);
+            Ticket ticket = new Ticket(event, "VIP", "Disponible", 100.0, Timestamp.valueOf("2025-05-10 18:00:00"), 50);
+            serviceTicket.ajouter(ticket);
+            System.out.println("✅ Tickets ajouté avec succès.");
+        } catch (SQLException e) {
+            System.out.println("❌ Erreur SQL : " + e.getMessage());
+        }
+    }
+    private static void modifierTicket(ServiceTicket serviceTicket) throws SQLException {
+        try {
+        // Récupérer un ticket existant (par exemple, avec l'ID 1)
+        Ticket ticket = serviceTicket.getTicketById(5); // Supposons que l'ID du ticket est 1
+        if (ticket == null) {
+            System.out.println("Aucun ticket trouvé pour cet ID.");
+            return;
+        }
+        // Modifier certains attributs (ex. : type, statut, prix,nb_tickets)
+        ticket.setType("Standard");
+        ticket.setStatut("Indisponible");
+        ticket.setPrix(80.0);
+        ticket.setNb_tickets(30);
 
-            serviceTicket.ajouter(ticket1);
-            serviceTicket.ajouter(ticket2);
-            System.out.println("✅ Tickets ajoutés avec succès.");
+        // Appliquer la modification
+        serviceTicket.modifier(ticket);
+        System.out.println("✅ Ticket modifié avec succès.");
+        System.out.println("Ticket modifié : " + ticket);
+        } catch (SQLException e) {
+            System.out.println("❌ Erreur SQL : " + e.getMessage());
+        }
+    }
+    private static void supprimerTicket(ServiceTicket serviceTicket) throws SQLException {
+        try {
+            Ticket ticket = serviceTicket.getTicketById(5); // Supposons que l'ID du ticket est 5
+            if (ticket == null) {
+                System.out.println("Aucun ticket trouvé pour cet ID.");
+                return;
+            }
 
-            // Affichage des tickets après ajout
-            afficherTickets(serviceTicket);
-
-            // Modification d'un ticket
-            ticket1.setStatut("Complété");
-            serviceTicket.modifier(ticket1);
-            System.out.println("✅ Ticket modifié avec succès.");
-
-            // Affichage après modification
-            afficherTickets(serviceTicket);
-
-            // Suppression d'un ticket
-            serviceTicket.supprimer(ticket2.getId_ticket());
+            // Appliquer la suppression
+            serviceTicket.supprimer(5);
             System.out.println("✅ Ticket supprimé avec succès.");
+        } catch (SQLException e) {
+            System.out.println("❌ Erreur SQL : " + e.getMessage());
+        }
+    }
+    private static void ajouterTransaction(ServiceTransaction serviceTransaction, ServiceUtilisateurEvenement serviceUtilisateur, ServiceTicket serviceTicket) throws SQLException {
+        try {
+            // Récupérer un utilisateur existant
+            Utilisateur utilisateur = serviceUtilisateur.getUtilisateurById(1); // Exemple: ID 1
+            if (utilisateur == null) {
+                System.out.println("❌ Aucun utilisateur trouvé, création annulée.");
+                return;
+            }
 
-            // Affichage après suppression
-            afficherTickets(serviceTicket);
+            // Récupérer des tickets existants
+            Ticket ticket1 = serviceTicket.getTicketById(10);
+            Ticket ticket2 = serviceTicket.getTicketById(11);
+            if (ticket1 == null || ticket2 == null) {
+                System.out.println("❌ Un ou plusieurs tickets non trouvés.");
+                return;
+            }
+
+            // Créer une liste de tickets associés
+            List<Ticket> ticketsAssocies = List.of(ticket1, ticket2);
+
+            // Créer une transaction
+            Transaction transaction = new Transaction(utilisateur, ticketsAssocies, 0.0, "Carte bancaire", Timestamp.valueOf("2025-05-10 18:00:00"));
+
+            // Ajouter la transaction
+            serviceTransaction.ajouter(transaction);
 
         } catch (SQLException e) {
             System.out.println("❌ Erreur SQL : " + e.getMessage());
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
         }
     }
+
 //    private static void gererTransactions(ServiceTransaction serviceTransaction, ServiceTicket serviceTicket) {
 //        try {
 //            // Récupération des tickets disponibles
@@ -253,17 +300,9 @@ public class Main {
             Date dateFin = dateFormat.parse("15-05-2025 21:00:00");
 
             // Création d'un nouvel événement avec nb_places
-            Evenement evenement = new Evenement(
-                "Conférence Art",                // Nom de l'événement
-                "Conférence sur l Art",          // Description
-                    (Timestamp) dateDebut,                      // Date de début
-                    (Timestamp) dateFin,                         // Date de fin
-                "Tunis",                         // Lieu
-                "Art",                           // Catégorie
-                10000.0f,                       // Budget
-                "conference.jpg",               // Image de l'événement
-                100                             // Nombre de places
-            );
+            Evenement evenement = new Evenement("Conférence AI", "Événement sur l'intelligence artificielle",
+                    Timestamp.valueOf("2025-05-10 10:00:00"), Timestamp.valueOf("2025-05-10 18:00:00"),
+                    "Paris", "Concert", 5000.0f, "ai_event.jpg",300);
 
             // Ajout de l'événement
             serviceEvenement.ajouter(evenement);
@@ -418,10 +457,6 @@ public class Main {
             System.out.println("❌ Erreur SQL : " + e.getMessage());
         }
     }
-
-
-
-
 }
 
 

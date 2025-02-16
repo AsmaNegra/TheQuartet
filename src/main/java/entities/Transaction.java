@@ -78,27 +78,16 @@ public class Transaction {
     public void setDate_paiement(Timestamp date_paiement) {
         this.date_paiement = date_paiement;
     }
+
     @Override
     public String toString() {
-        StringBuilder ticketsString = new StringBuilder();
-        if (tickets_associes != null && !tickets_associes.isEmpty()) {
-            for (Ticket ticket : tickets_associes) {
-                ticketsString.append(ticket.toString()).append(", ");
-            }
-            // Supprimer la dernière virgule et l'espace
-            if (ticketsString.length() > 2) {
-                ticketsString.setLength(ticketsString.length() - 2);
-            }
-        }
-
         return "Transaction{" +
                 "id_transaction=" + id_transaction +
                 ", utilisateur=" + utilisateur +
-                ", tickets_associes=[" + ticketsString.toString() + "]" +
+                ", tickets_associes=" + tickets_associes +
                 ", montant_total=" + montant_total +
                 ", mode_paiement='" + mode_paiement + '\'' +
                 ", date_paiement=" + date_paiement +
                 '}';
     }
-
 }
