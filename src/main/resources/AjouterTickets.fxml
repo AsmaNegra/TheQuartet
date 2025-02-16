@@ -1,42 +1,76 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<?import javafx.collections.FXCollections?>
-<?import java.lang.String?>
-<GridPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AjouterTicketsController"
-          alignment="center" hgap="10" vgap="10">
+<GridPane alignment="center" hgap="10" prefHeight="450.0" prefWidth="650.0" vgap="10" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AjouterTicketsController">
 
     <padding>
-        <Insets top="20" right="20" bottom="20" left="20"/>
+        <Insets bottom="15" left="15" right="15" top="15" />
     </padding>
 
-    <Label text="Sélectionner un événement:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
-    <ComboBox fx:id="eventComboBox" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+    <children>
 
-    <Label text="Type de ticket:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
-    <TextField fx:id="typeField" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+        <!-- Titre -->
+        <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Ajouter un Ticket" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
-    <Label text="Prix:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
-    <TextField fx:id="prixField" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+        <!-- Sélection de l'événement -->
+        <Label minWidth="120" text="Événement:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+        <ComboBox fx:id="evenementComboBox" prefHeight="30.0" prefWidth="220.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
-    <Label text="Date de validité:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
-    <DatePicker fx:id="dateValiditePicker" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+        <!-- Détails de l'événement -->
+        <Label minWidth="120" text="Nom de l'événement:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+        <Label fx:id="nomEvenementLabel" minWidth="200" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
-    <Label text="Nombre de tickets:" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
-    <TextField fx:id="nbTicketsField" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+        <Label minWidth="120" text="Lieu:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+        <Label fx:id="lieuEvenementLabel" minWidth="200" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 
-    <Label text="Statut:" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
-    <ComboBox fx:id="statutComboBox" GridPane.rowIndex="5" GridPane.columnIndex="1">
-        <items>
-            <FXCollections fx:factory="observableArrayList">
-                <String fx:value="En attente"/>
-                <String fx:value="Confirmé"/>
-                <String fx:value="Annulé"/>
-            </FXCollections>
-        </items>
-    </ComboBox>
+        <Label minWidth="120" text="Date Début:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+        <Label fx:id="dateDebutEvenementLabel" minWidth="200" GridPane.columnIndex="1" GridPane.rowIndex="4" />
 
-    <Button text="Ajouter Ticket" fx:id="ajouterButton" GridPane.rowIndex="6" GridPane.columnIndex="1"/>
+        <Label minWidth="120" text="Date Fin:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+        <Label fx:id="dateFinEvenementLabel" minWidth="200" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+
+        <!-- Champs pour ajouter un ticket -->
+        <Label minWidth="120" text="Type de ticket:" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+        <TextField fx:id="typeTextField" prefWidth="220.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+
+        <Label minWidth="120" text="Prix (TND):" GridPane.columnIndex="0" GridPane.rowIndex="7" />
+        <TextField fx:id="prixTextField" prefWidth="220.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+
+        <Label minWidth="120" text="Date de validité:" GridPane.columnIndex="0" GridPane.rowIndex="8" />
+        <DatePicker fx:id="dateValiditePicker" prefHeight="31.0" prefWidth="252.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+
+        <Label minWidth="120" text="Nombre de tickets:" GridPane.columnIndex="0" GridPane.rowIndex="9" />
+        <TextField fx:id="nbTicketsTextField" prefWidth="220.0" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+
+        <!-- Bouton Ajouter -->
+        <Button fx:id="ajouterButton" onAction="#ajouterTicket" prefHeight="36.0" prefWidth="248.0" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 8px;" text="Ajouter Tickets" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+
+        <Label fx:id="messageLabel" minWidth="200" GridPane.columnIndex="1" GridPane.rowIndex="11" style="-fx-text-fill: red;"/>
+
+    </children>
+
+    <columnConstraints>
+        <ColumnConstraints minWidth="150" />
+        <ColumnConstraints minWidth="250" />
+    </columnConstraints>
+
+    <rowConstraints>
+        <RowConstraints />
+        <RowConstraints />
+        <RowConstraints />
+        <RowConstraints />
+        <RowConstraints />
+        <RowConstraints />
+        <RowConstraints />
+        <RowConstraints />
+        <RowConstraints />
+        <RowConstraints />
+        <RowConstraints />
+    </rowConstraints>
+
 </GridPane>

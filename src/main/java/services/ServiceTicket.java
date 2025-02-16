@@ -25,6 +25,8 @@ public class ServiceTicket implements IService<Ticket> {
                 if (rs.next()) {
                     return rs.getInt(1) > 0;
                 }
+            }catch (SQLException e) {
+                e.printStackTrace();
             }
         }
         return false;
@@ -43,7 +45,15 @@ public class ServiceTicket implements IService<Ticket> {
             pst.setDouble(4, t.getPrix());
             pst.setTimestamp(5, t.getDate_validite());
             pst.setInt(6, t.getNb_tickets());
-            pst.executeUpdate();
+            int rowsAffected = pst.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Ticket ajouté avec succès !");
+            } else {
+                System.out.println("L'ajout du ticket a échoué, aucune ligne affectée.");
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+            throw new SQLException("Erreur lors de l'ajout du ticket", e);
         }
     }
 

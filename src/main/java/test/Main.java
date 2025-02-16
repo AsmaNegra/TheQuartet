@@ -32,10 +32,10 @@ public class Main {
 
 
         // Gestion des événements
-        gererEvenements(serviceEvenement);
+       // gererEvenements(serviceEvenement);
 
         //ajouter des Tickets
-        ajouterTickets(serviceTicket,serviceEvenement);
+        //ajouterTickets(serviceTicket,serviceEvenement);
         // Gestion des tickets
         afficherTickets(serviceTicket);
         // Modifier tickets
@@ -44,13 +44,13 @@ public class Main {
         //supprimerTicket(serviceTicket);
 
         //Gestion des transaction
-        ajouterTransaction(serviceTransaction, serviceUtilisateurEvenement, serviceTicket);
+       // ajouterTransaction(serviceTransaction, serviceUtilisateurEvenement, serviceTicket);
 
         //Modifier des transactions
-        modifierTransaction(serviceTransaction, serviceUtilisateurEvenement,serviceTicket);
+        //modifierTransaction(serviceTransaction, serviceUtilisateurEvenement,serviceTicket);
 
         //supprimer une transaction
-        supprimerTransaction(serviceTransaction);
+        //supprimerTransaction(serviceTransaction);
 
 
     }

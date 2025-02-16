@@ -45,7 +45,6 @@
                 <version>0.0.8</version>
                 <configuration>
                     <mainClass>controllers.HomePage</mainClass>
-                    <mainClass>controllers.ReserverTicket</mainClass>
                 </configuration>
             </plugin>
         </plugins>

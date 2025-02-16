@@ -9,11 +9,9 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.List;
 
 public class AjouterTicketsController {
@@ -22,22 +20,36 @@ public class AjouterTicketsController {
     private ComboBox<Evenement> evenementComboBox;
 
     @FXML
-    private TextField typeField;
+    private TextField typeTextField;
 
     @FXML
-    private TextField prixField;
+    private TextField prixTextField;
 
     @FXML
     private DatePicker dateValiditePicker;
 
     @FXML
-    private TextField nbTicketsField;
+    private TextField nbTicketsTextField;
 
     @FXML
     private Button ajouterButton;
 
     @FXML
     private Label messageLabel;
+    @FXML
+    private Label nomEvenementLabel;
+    @FXML
+    private Label lieuEvenementLabel;
+    @FXML
+    private Label dateDebutEvenementLabel;
+    @FXML
+    private Label dateFinEvenementLabel;
+
+    @FXML
+    public void initialize() {
+        chargerEvenements();
+        evenementComboBox.setOnAction(event -> afficherDetailsEvenement());
+    }
 
     private ServiceTicket serviceTicket;
     private ServiceEvenement serviceEvenement;
@@ -46,10 +58,14 @@ public class AjouterTicketsController {
         serviceTicket = new ServiceTicket();
         serviceEvenement = new ServiceEvenement();
     }
-
-    @FXML
-    public void initialize() {
-        chargerEvenements();
+    private void afficherDetailsEvenement() {
+        Evenement evenement = evenementComboBox.getValue();
+        if (evenement != null) {
+            nomEvenementLabel.setText(evenement.getNom());
+            lieuEvenementLabel.setText(evenement.getLieu());
+            dateDebutEvenementLabel.setText(evenement.getDate_debut().toString());
+            dateFinEvenementLabel.setText(evenement.getDate_fin().toString());
+        }
     }
 
     private void chargerEvenements() {
@@ -61,16 +77,17 @@ public class AjouterTicketsController {
     @FXML
     private void ajouterTicket(ActionEvent event) {
         Evenement evenement = evenementComboBox.getValue();
-        String type = typeField.getText();
-        String prixText = prixField.getText();
-        String nbTicketsText = nbTicketsField.getText();
+        String typeText = typeTextField.getText();
+        String prixText = prixTextField.getText();
+        String nbTicketsText = nbTicketsTextField.getText();
 
-        if (evenement == null || type.isEmpty() || prixText.isEmpty() || nbTicketsText.isEmpty() || dateValiditePicker.getValue() == null) {
+        if (evenement == null || typeText.isEmpty() || prixText.isEmpty() || nbTicketsText.isEmpty() || dateValiditePicker.getValue() == null) {
             messageLabel.setText("Veuillez remplir tous les champs.");
             return;
         }
 
         try {
+            String type = typeText;
             double prix = Double.parseDouble(prixText);
             int nbTickets = Integer.parseInt(nbTicketsText);
             Timestamp dateValidite = Timestamp.valueOf(dateValiditePicker.getValue().atStartOfDay());

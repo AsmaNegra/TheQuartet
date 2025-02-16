@@ -16,14 +16,23 @@ public class HomePage extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+//        try {
+//            Parent root = FXMLLoader.load(getClass().getResource("/AjouterEvenement.fxml"));
+//            Scene scene = new Scene(root);
+//            primaryStage.setScene(scene);
+//            primaryStage.show();
+//
+//        } catch (IOException e) {
+//            System.out.println(e.getMessage());
+//        }
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/AjouterEvenement.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("/AjouterTickets.fxml"));
             Scene scene = new Scene(root);
+            primaryStage.setTitle("Ajout de Tickets");
             primaryStage.setScene(scene);
             primaryStage.show();
-
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
     }
 }
