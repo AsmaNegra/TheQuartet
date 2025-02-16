@@ -205,39 +205,39 @@ public class ServiceTransaction implements IService<Transaction> {
         return transactions;
     }
 
-    private boolean utilisateurExiste(int utilisateurId) throws SQLException {
-        String query = "SELECT COUNT(*) FROM utilisateur WHERE utilisateur_id = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setInt(1, utilisateurId);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                return rs.getInt(1) > 0;
-            }
-        }
-        return false;
-    }
+//    private boolean utilisateurExiste(int utilisateurId) throws SQLException {
+//        String query = "SELECT COUNT(*) FROM utilisateur WHERE utilisateur_id = ?";
+//        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+//            stmt.setInt(1, utilisateurId);
+//            ResultSet rs = stmt.executeQuery();
+//            if (rs.next()) {
+//                return rs.getInt(1) > 0;
+//            }
+//        }
+//        return false;
+//    }
 
-    private boolean ticketsExistants(List<Ticket> tickets) throws SQLException {
-        String query = "SELECT COUNT(*) FROM ticket WHERE id_ticket = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            for (Ticket ticket : tickets) {
-                stmt.setInt(1, ticket.getId_ticket());
-                ResultSet rs = stmt.executeQuery();
-                if (rs.next() && rs.getInt(1) == 0) {
-                    return false; // Ticket doesn't exist
-                }
-            }
-        }
-        return true;
-    }
+//    private boolean ticketsExistants(List<Ticket> tickets) throws SQLException {
+//        String query = "SELECT COUNT(*) FROM ticket WHERE id_ticket = ?";
+//        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+//            for (Ticket ticket : tickets) {
+//                stmt.setInt(1, ticket.getId_ticket());
+//                ResultSet rs = stmt.executeQuery();
+//                if (rs.next() && rs.getInt(1) == 0) {
+//                    return false; // Ticket doesn't exist
+//                }
+//            }
+//        }
+//        return true;
+//    }
 
-    private double calculerMontantTotal(List<Ticket> tickets) {
-        double total = 0;
-        for (Ticket ticket : tickets) {
-            total += ticket.getPrix();
-        }
-        return total;
-    }
+//    private double calculerMontantTotal(List<Ticket> tickets) {
+//        double total = 0;
+//        for (Ticket ticket : tickets) {
+//            total += ticket.getPrix();
+//        }
+//        return total;
+//    }
 
     public Transaction getTransactionById(int id) throws SQLException {
         // Requête pour récupérer la transaction par ID

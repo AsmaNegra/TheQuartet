@@ -113,31 +113,26 @@ public class ServiceEvenement implements IService<Evenement>{
         }
         return evenements;
     }
-    public Evenement getEvenementById(int id) {
+    public Evenement getEvenementById(int evenementId) throws SQLException {
+        Evenement evenement = null;
         String query = "SELECT * FROM evenement WHERE evenement_id = ?";
-
         try (PreparedStatement pst = connection.prepareStatement(query)) {
-            pst.setInt(1, id);
+            pst.setInt(1, evenementId);
             ResultSet rs = pst.executeQuery();
-
             if (rs.next()) {
-                return new Evenement(
-                        rs.getInt("evenement_id"),
-                        rs.getString("nom"),
-                        rs.getString("description"),
-                        rs.getTimestamp("date_debut"),
-                        rs.getTimestamp("date_fin"),
-                        rs.getString("lieu"),
-                        rs.getString("categorie"),
-                        rs.getFloat("budget"),
-                        rs.getString("image_event"),
-                        rs.getInt("nb_places")
-                );
+                evenement = new Evenement();
+                evenement.setEvenement_id(rs.getInt("evenement_id"));
+                evenement.setNom(rs.getString("nom"));
+                evenement.setDescription(rs.getString("description"));
+                evenement.setDate_debut(rs.getTimestamp("date_debut"));
+                evenement.setDate_fin(rs.getTimestamp("date_fin"));
+                evenement.setLieu(rs.getString("lieu"));
+                evenement.setCategorie(rs.getString("categorie"));
+                evenement.setBudget(rs.getFloat("budget"));
+                evenement.setImage_event(rs.getString("image_event"));
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-        return null;
+        return evenement;
     }
     public List<Evenement> getAllEvenements() {
         List<Evenement> evenements = new ArrayList<>();

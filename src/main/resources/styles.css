@@ -1,0 +1,73 @@
+.parent{
+    -fx-background-color: transparent;
+    -fx-background-radius: 30px;
+}
+.sidebar{
+    -fx-background-color: rgba(255, 255, 255, 0.69);
+    -fx-background-radius: 30px 30px 0px 0px;
+
+}
+.sidebar_opt{
+    -fx-fill: #c1C1C1;
+    -fx-background-color: transparent;
+}
+.pane {
+    -fx-background-color: rgba(255, 255, 255, 0.89);
+    -fx-border-color: #ede6de;
+    -fx-background-radius: 30px;
+    -fx-border-radius: 30px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0.5, 2, 2);
+}
+.background_color
+{
+    -fx-background-color: radial-gradient(focus-angle 78.69deg, focus-distance 40.367% , center 44.6903% 100.0%, radius 86.6972%, #f49617 0.0%, #ffffff 100.0%);
+}
+.plus_btn{
+    -fx-background-color:transparent ;
+    -fx-border-radius:20px ;
+    -fx-background-radius:20px;
+    -fx-border-color: #ddc8b0;
+    -fx-border-style:dashed ;
+}
+.colored_card{
+    -fx-background-color: radial-gradient(focus-angle 78.69deg, focus-distance 40.367% , center 44.6903% 100.0%, radius 86.6972%, rgba(244, 150, 23, 0.93) 0.0%, rgba(255, 255, 255, 0.69) 100.0%);
+    -fx-border-radius:20px ;
+    -fx-background-radius:20px;
+    -fx-border-color: #ede6de;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0.5, 2, 2);
+}
+
+/* ScrollPane core */
+.scroll-pane {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+}
+
+/* Critical viewport fix */
+.scroll-pane .viewport {
+    -fx-background-color: transparent !important;
+}
+
+/* Scrollbar styling */
+.scroll-pane .scroll-bar {
+    -fx-background-color: transparent;
+    -fx-pref-width: 10px; /* Vertical scrollbar width */
+    -fx-pref-height: 10px; /* Horizontal scrollbar height */
+}
+
+/* Thumb styling */
+.scroll-pane .scroll-bar .thumb {
+    -fx-background-color: rgba(255, 255, 255, 0.65);
+    -fx-background-radius: 10px;
+}
+
+/* Hide buttons */
+.scroll-pane .scroll-bar .increment-button,
+.scroll-pane .scroll-bar .decrement-button {
+    -fx-padding: 0;
+    -fx-shape: "";
+}
+.transparent_bg{
+    -fx-background-color: transparent;
+}

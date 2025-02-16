@@ -136,4 +136,35 @@ public class ServiceTicket implements IService<Ticket> {
     }
 
 
+    public List<Ticket> getTicketsByEvenementId(int evenementId) throws SQLException {
+        List<Ticket> tickets = new ArrayList<>();
+
+        String query = "SELECT * FROM ticket WHERE evenement_id = ?";
+
+        try (PreparedStatement pst = connection.prepareStatement(query)) {
+            pst.setInt(1, evenementId); // Définir l'ID de l'événement dans la requête
+            ResultSet rs = pst.executeQuery();
+
+            // Parcourir les résultats et créer des objets Ticket
+            while (rs.next()) {
+                Ticket ticket = new Ticket();
+                ticket.setId_ticket(rs.getInt("id_ticket"));
+
+                // Récupérer l'événement associé
+                Evenement evenement = new Evenement();
+                evenement.setEvenement_id(rs.getInt("evenement_id"));
+                ticket.setEvenement(evenement);
+
+                ticket.setType(rs.getString("type"));
+                ticket.setStatut(rs.getString("statut"));
+                ticket.setPrix(rs.getDouble("prix"));
+                ticket.setDate_validite(rs.getTimestamp("date_validite"));
+                ticket.setNb_tickets(rs.getInt("nb_tickets"));
+
+                tickets.add(ticket);
+            }
+        }
+
+        return tickets; // Retourner la liste des tickets
+    }
 }
