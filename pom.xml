@@ -45,7 +45,10 @@
                 <version>0.0.8</version>
                 <configuration>
                     <mainClass>controllers.HomePage</mainClass>
-                    <mainClass>controllers.ReserverTicket</mainClass>
+                    <options>
+                        <option>--add-opens</option>
+                        <option>javafx.graphics/javafx.application=ALL-UNNAMED</option>
+                    </options>
                 </configuration>
             </plugin>
         </plugins>
