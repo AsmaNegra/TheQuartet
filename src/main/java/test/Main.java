@@ -30,19 +30,19 @@ public class Main {
 
 
         // Tester l'ajout d'un événement
-        testerAjouterEvenement(serviceEvenement);
+       // testerAjouterEvenement(serviceEvenement);
 
         // Tester l'affichage des détails d'un événement
         //testerDetailsEvenement(serviceEvenement);
 
         // Gestion des événements
-        gererEvenements(serviceEvenement);
+   //    gererEvenements(serviceEvenement);
 
         // Gestion des tickets
-        gererTickets(serviceTicket);
+      //  gererTickets(serviceTicket);
 
         // Gestion des transactions
-        //gererTransactions(serviceTransaction, serviceTicket);
+        gererTransactions(serviceTransaction, serviceTicket);
 
         // Gestion des feedbacks
 //       gererFeedbacks(serviceFeedback, serviceEvenement);
@@ -63,21 +63,22 @@ public class Main {
             Date dateDebutUtil = dateFormat.parse("12-05-2025 17:00:00");
             Date dateFinUtil = dateFormat.parse("15-05-2025 21:00:00");
 
-            // Conversion en Timestamp
             Timestamp dateDebut = new Timestamp(dateDebutUtil.getTime());
             Timestamp dateFin = new Timestamp(dateFinUtil.getTime());
-            // Création d'un nouvel événement avec nb_places
+
+// Création d'un nouvel événement avec nb_places
             Evenement evenement = new Evenement(
-                "Conférence Art",                // Nom de l'événement
-                "Conférence sur l Art",          // Description
-                    (Timestamp) dateDebut,                      // Date de début
-                    (Timestamp) dateFin,                         // Date de fin
-                "Tunis",                         // Lieu
-                "Art",                           // Catégorie
-                10000.0f,                       // Budget
-                "conference.jpg",               // Image de l'événement
-                100                             // Nombre de places
+                    "Conférence Art",                // Nom de l'événement
+                    "Conférence sur l'Art",           // Description
+                    dateDebut,                        // Date de début
+                    dateFin,                          // Date de fin
+                    "Tunis",                          // Lieu
+                    "Cirque",                         // Catégorie
+                    10000.0f,                         // Budget
+                    "conference.jpg",                 // Image de l'événement
+                    100                                // Nombre de places
             );
+
 
             // Ajout de l'événement
             serviceEvenement.ajouter(evenement);
@@ -139,8 +140,8 @@ public class Main {
     private static void gererTickets(ServiceTicket serviceTicket) {
         try {
             ServiceEvenement serviceEvenement=new ServiceEvenement();
-            Evenement evenement1 = serviceEvenement.getEvenementById(1); // Remplace 1 par un ID valide
-            Evenement evenement2 = serviceEvenement.getEvenementById(2); // Remplace 2 par un ID valide
+            Evenement evenement1 = serviceEvenement.getEvenementById(3); // Remplace 1 par un ID valide
+            Evenement evenement2 = serviceEvenement.getEvenementById(4); // Remplace 2 par un ID valide
 
             if (evenement1 == null || evenement2 == null) {
                 System.out.println("❌ Impossible d'ajouter des tickets : les événements n'existent pas.");
@@ -183,38 +184,38 @@ public class Main {
             throw new RuntimeException(e);
         }
     }
-//    private static void gererTransactions(ServiceTransaction serviceTransaction, ServiceTicket serviceTicket) {
-//        try {
-//            // Récupération des tickets disponibles
-//            List<Ticket> tickets = serviceTicket.afficher();
-//
-//            if (tickets == null || tickets.isEmpty()) {
-//                System.out.println("❌ Aucun ticket disponible. Impossible d'ajouter une transaction.");
-//                return;
-//            }
-//
-//            // Création de la date actuelle au format Timestamp
-//            Timestamp dateActuelle = new Timestamp(System.currentTimeMillis());
-//
-//            // Création et ajout de la transaction
-//            Transaction transaction = new Transaction(1, 1, tickets, 150.0, "en ligne", "Visa", dateActuelle);
-//            serviceTransaction.ajouter(transaction);
-//            System.out.println("✅ Transaction ajoutée avec succès.");
-//
-//            // Affichage des transactions après ajout
-//            afficherTransactions(serviceTransaction);
-//
-//            // Suppression de la transaction ajoutée
-//            serviceTransaction.supprimer(transaction.getId_transaction());
-//            System.out.println("✅ Transaction supprimée avec succès.");
-//
-//            // Affichage des transactions après suppression
-//            afficherTransactions(serviceTransaction);
-//
-//        } catch (SQLException e) {
-//            System.out.println("❌ Erreur SQL : " + e.getMessage());
-//        }
-//    }
+    private static void gererTransactions(ServiceTransaction serviceTransaction, ServiceTicket serviceTicket) {
+        try {
+            // Récupération des tickets disponibles
+            List<Ticket> tickets = serviceTicket.afficher();
+
+            if (tickets == null || tickets.isEmpty()) {
+                System.out.println("❌ Aucun ticket disponible. Impossible d'ajouter une transaction.");
+                return;
+            }
+
+            // Création de la date actuelle au format Timestamp
+            Timestamp dateActuelle = new Timestamp(System.currentTimeMillis());
+
+            // Création et ajout de la transaction
+           // Transaction transaction = new Transaction(1,1, tickets, 150.0, "en ligne", "Visa", dateActuelle);
+        //    serviceTransaction.ajouter(transaction);
+            System.out.println("✅ Transaction ajoutée avec succès.");
+
+            // Affichage des transactions après ajout
+            afficherTransactions(serviceTransaction);
+
+            // Suppression de la transaction ajoutée
+         //   serviceTransaction.supprimer(transaction.getId_transaction());
+            System.out.println("✅ Transaction supprimée avec succès.");
+
+            // Affichage des transactions après suppression
+            afficherTransactions(serviceTransaction);
+
+        } catch (SQLException e) {
+            System.out.println("❌ Erreur SQL : " + e.getMessage());
+        }
+    }
 
 
 
@@ -249,49 +250,29 @@ public class Main {
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 
             // Dates de début et de fin pour l'événement
-            Date dateDebut = dateFormat.parse("12-05-2025 17:00:00");
-            Date dateFin = dateFormat.parse("15-05-2025 21:00:00");
+            Date dateDebutUtil = dateFormat.parse("12-05-2025 17:00:00");
+            Date dateFinUtil = dateFormat.parse("15-05-2025 21:00:00");
+
+            // Conversion des Date en Timestamp
+            Timestamp dateDebut = new Timestamp(dateDebutUtil.getTime());
+            Timestamp dateFin = new Timestamp(dateFinUtil.getTime());
 
             // Création d'un nouvel événement avec nb_places
             Evenement evenement = new Evenement(
-                "Conférence Art",                // Nom de l'événement
-                "Conférence sur l Art",          // Description
-                    (Timestamp) dateDebut,                      // Date de début
-                    (Timestamp) dateFin,                         // Date de fin
-                "Tunis",                         // Lieu
-                "Art",                           // Catégorie
-                10000.0f,                       // Budget
-                "conference.jpg",               // Image de l'événement
-                100                             // Nombre de places
+                    "Conférence Art",                // Nom de l'événement
+                    "Conférence sur l'Art",          // Description
+                    dateDebut,                       // Date de début
+                    dateFin,                         // Date de fin
+                    "Tunis",                         // Lieu
+                    "Cirque",                           // Catégorie
+                    10000.0f,                        // Budget
+                    "conference.jpg",                // Image de l'événement
+                    100                              // Nombre de places
             );
 
             // Ajout de l'événement
             serviceEvenement.ajouter(evenement);
             System.out.println("✅ Événement ajouté avec succès.");
-
-            // Modification d'un événement existant (exemple commenté)
-
-//        Evenement evenementModifie = new Evenement(
-//            1,                              // ID de l'événement à modifier
-//            "Concert",                      // Nouveau nom
-//            "Événement musical",            // Nouvelle description
-//            dateDebut,                      // Nouvelle date de début
-//            dateFin,                        // Nouvelle date de fin
-//            "Tunis",                        // Nouveau lieu
-//            "Fun",                          // Nouvelle catégorie
-//            5000.0f,                        // Nouveau budget
-//            "concert.jpg",                  // Nouvelle image
-//            200                             // Nouveau nombre de places
-//        );
-//        serviceEvenement.modifier(evenementModifie);
-//        System.out.println("✅ Événement modifié avec succès.");
-
-
-            // Suppression d'un événement (exemple commenté)
-
-//        serviceEvenement.supprimer(2);      // Supprimer l'événement avec l'ID 1
-//        System.out.println("✅ Événement supprimé avec succès.");
-
 
             // Affichage de tous les événements
             List<Evenement> evenements = serviceEvenement.afficher();
@@ -400,7 +381,8 @@ public class Main {
                 new Date(System.currentTimeMillis()),
                 evenement,
                 fournisseur,
-                "Haute"  // Priorité
+                "Haute" , // Priorité
+                    "A"
             );
 
             // Ajout de la tâche

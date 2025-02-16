@@ -1,4 +1,5 @@
 package entities;
+
 import java.util.Date;
 
 public class Tache {
@@ -10,10 +11,12 @@ public class Tache {
     private String priorite;
     private Evenement evenement;
     private Fournisseur fournisseur;
+    private String userAssocie; // Nouvel attribut
 
     public Tache() {}
 
-    public Tache(int tacheId, String nom, String description, String statut, Date dateLimite, Evenement evenement, Fournisseur fournisseur, String priorite) {
+    public Tache(int tacheId, String nom, String description, String statut, Date dateLimite,
+                 Evenement evenement, Fournisseur fournisseur, String priorite, String userAssocie) {
         this.tacheId = tacheId;
         this.nom = nom;
         this.description = description;
@@ -22,8 +25,11 @@ public class Tache {
         this.evenement = evenement;
         this.fournisseur = fournisseur;
         this.priorite = priorite;
+        this.userAssocie = userAssocie;
     }
-    public Tache( String nom, String description, String statut, Date dateLimite, Evenement evenement, Fournisseur fournisseur,String priorite) {
+
+    public Tache(String nom, String description, String statut, Date dateLimite,
+                 Evenement evenement, Fournisseur fournisseur, String priorite, String userAssocie) {
         this.nom = nom;
         this.description = description;
         this.statut = statut;
@@ -31,66 +37,93 @@ public class Tache {
         this.evenement = evenement;
         this.fournisseur = fournisseur;
         this.priorite = priorite;
+        this.userAssocie = userAssocie;
     }
 
     public int getTacheId() {
         return tacheId;
     }
+
     public void setTacheId(int tacheId) {
         this.tacheId = tacheId;
     }
+
     public String getNom() {
         return nom;
     }
+
     public void setNom(String nom) {
         this.nom = nom;
     }
+
     public String getDescription() {
         return description;
     }
+
     public void setDescription(String description) {
         this.description = description;
     }
+
     public String getStatut() {
         return statut;
     }
+
     public void setStatut(String statut) {
         this.statut = statut;
     }
+
     public Date getDateLimite() {
         return dateLimite;
     }
+
     public void setDateLimite(Date dateLimite) {
         this.dateLimite = dateLimite;
     }
+
     public String getPriorite() {
-        return priorite;}
+        return priorite;
+    }
+
     public void setPriorite(String priorite) {
-        this.priorite = priorite;}
+        this.priorite = priorite;
+    }
+
     public Evenement getEvenement() {
         return evenement;
     }
+
     public void setEvenement(Evenement evenement) {
         this.evenement = evenement;
     }
+
     public Fournisseur getFournisseur() {
         return fournisseur;
     }
+
     public void setFournisseur(Fournisseur fournisseur) {
         this.fournisseur = fournisseur;
+    }
+
+    public String getUserAssocie() {
+        return userAssocie;
+    }
+
+    public void setUserAssocie(String userAssocie) {
+        this.userAssocie = userAssocie;
     }
 
     @Override
     public String toString() {
         return "Tache{" +
-            "tacheId=" + tacheId +
-            ", nom='" + nom + '\'' +
-            ", description='" + description + '\'' +
-            ", statut='" + statut + '\'' +
-            ", dateLimite=" + dateLimite +
-            ", priorite='" + priorite + '\'' +
-            ", evenement=" + evenement +
-            ", fournisseur=" + fournisseur +
-            '}';
+                "tacheId=" + tacheId +
+                ", nom='" + nom + '\'' +
+                ", description='" + description + '\'' +
+                ", statut='" + statut + '\'' +
+                ", dateLimite=" + dateLimite +
+                ", priorite='" + priorite + '\'' +
+                ", evenement=" + evenement +
+                ", fournisseur=" + fournisseur +
+                ", userAssocie='" + userAssocie + '\'' +
+                '}';
     }
 }

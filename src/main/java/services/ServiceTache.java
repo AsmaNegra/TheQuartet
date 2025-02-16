@@ -14,21 +14,21 @@ public class ServiceTache implements IService<Tache> {
         connection = MyDataBase.getInstance().getConnection();
     }
 
-    /** ✅ AJOUTER UNE TÂCHE */
+    /** ✅ AJOUTER UNE TÂCHE (sans tacheId) */
     @Override
     public void ajouter(Tache tache) throws SQLException {
-        String sql = "INSERT INTO `tache` (`tache_id`, `nom`, `description`, `statut`, `date_limite`, `evenement_id`, `fournisseur_id`, `priorite`)" +
+        String sql = "INSERT INTO `tache` (`nom`, `description`, `statut`, `date_limite`, `evenement_id`, `fournisseur_id`, `priorite`, `user_associe`)" +
                 " VALUES (?,?,?,?,?,?,?,?)";
 
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        preparedStatement.setInt(1, tache.getTacheId());
-        preparedStatement.setString(2, tache.getNom());
-        preparedStatement.setString(3, tache.getDescription());
-        preparedStatement.setString(4, tache.getStatut());
-        preparedStatement.setDate(5, new java.sql.Date(tache.getDateLimite().getTime()));
-        preparedStatement.setInt(6, tache.getEvenement().getEvenement_id());
-        preparedStatement.setInt(7, tache.getFournisseur().getFournisseurId());
-        preparedStatement.setString(8, tache.getPriorite());
+        preparedStatement.setString(1, tache.getNom());
+        preparedStatement.setString(2, tache.getDescription());
+        preparedStatement.setString(3, tache.getStatut());
+        preparedStatement.setDate(4, new java.sql.Date(tache.getDateLimite().getTime()));
+        preparedStatement.setInt(5, tache.getEvenement().getEvenement_id());
+        preparedStatement.setInt(6, tache.getFournisseur().getFournisseurId());
+        preparedStatement.setString(7, tache.getPriorite());
+        preparedStatement.setString(8, tache.getUserAssocie());
 
         preparedStatement.executeUpdate();
         System.out.println("✅ Tâche ajoutée avec succès !");
@@ -37,7 +37,7 @@ public class ServiceTache implements IService<Tache> {
     /** ✅ MODIFIER UNE TÂCHE */
     @Override
     public void modifier(Tache tache) throws SQLException {
-        String sql = "UPDATE `tache` SET `nom` = ?, `description` = ?, `statut` = ?, `date_limite` = ?, `evenement_id` = ?, `fournisseur_id` = ?, `priorite` = ? " +
+        String sql = "UPDATE `tache` SET `nom` = ?, `description` = ?, `statut` = ?, `date_limite` = ?, `evenement_id` = ?, `fournisseur_id` = ?, `priorite` = ?, `user_associe` = ? " +
                 "WHERE `tache_id` = ?";
 
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -48,7 +48,8 @@ public class ServiceTache implements IService<Tache> {
         preparedStatement.setInt(5, tache.getEvenement().getEvenement_id());
         preparedStatement.setInt(6, tache.getFournisseur().getFournisseurId());
         preparedStatement.setString(7, tache.getPriorite());
-        preparedStatement.setInt(8, tache.getTacheId());
+        preparedStatement.setString(8, tache.getUserAssocie());
+        preparedStatement.setInt(9, tache.getTacheId());
 
         int rowsUpdated = preparedStatement.executeUpdate();
         if (rowsUpdated > 0) {
@@ -85,14 +86,14 @@ public class ServiceTache implements IService<Tache> {
 
         while (resultSet.next()) {
             Tache tache = new Tache(
-                    resultSet.getInt("tache_id"),
                     resultSet.getString("nom"),
                     resultSet.getString("description"),
                     resultSet.getString("statut"),
                     resultSet.getDate("date_limite"),
                     null,
                     null,
-                    resultSet.getString("priorite")
+                    resultSet.getString("priorite"),
+                    resultSet.getString("user_associe")
             );
 
             taches.add(tache);
@@ -100,6 +101,7 @@ public class ServiceTache implements IService<Tache> {
 
         return taches;
     }
+
     /** ✅ AFFICHER LES TÂCHES PAR ÉVÉNEMENT */
     public List<Tache> afficherParEvenement(int evenementId) throws SQLException {
         String sql = "SELECT * FROM `tache` WHERE `evenement_id` = ?";
@@ -111,14 +113,14 @@ public class ServiceTache implements IService<Tache> {
 
         while (resultSet.next()) {
             taches.add(new Tache(
-                    resultSet.getInt("tache_id"),
                     resultSet.getString("nom"),
                     resultSet.getString("description"),
                     resultSet.getString("statut"),
                     resultSet.getDate("date_limite"),
-                    null, // Charger l'événement séparément si nécessaire
-                    null,  // Charger le fournisseur séparément si nécessaire
-                    resultSet.getString("priorite")
+                    null,
+                    null,
+                    resultSet.getString("priorite"),
+                    resultSet.getString("user_associe")
             ));
         }
 
@@ -135,14 +137,14 @@ public class ServiceTache implements IService<Tache> {
 
         while (resultSet.next()) {
             taches.add(new Tache(
-                    resultSet.getInt("tache_id"),
                     resultSet.getString("nom"),
                     resultSet.getString("description"),
                     resultSet.getString("statut"),
                     resultSet.getDate("date_limite"),
                     null,
                     null,
-                    resultSet.getString("priorite")
+                    resultSet.getString("priorite"),
+                    resultSet.getString("user_associe")
             ));
         }
 
@@ -159,14 +161,14 @@ public class ServiceTache implements IService<Tache> {
 
         while (resultSet.next()) {
             taches.add(new Tache(
-                    resultSet.getInt("tache_id"),
                     resultSet.getString("nom"),
                     resultSet.getString("description"),
                     resultSet.getString("statut"),
                     resultSet.getDate("date_limite"),
                     null,
                     null,
-                    resultSet.getString("priorite")
+                    resultSet.getString("priorite"),
+                    resultSet.getString("user_associe")
             ));
         }
 
@@ -183,19 +185,17 @@ public class ServiceTache implements IService<Tache> {
 
         while (resultSet.next()) {
             taches.add(new Tache(
-                    resultSet.getInt("tache_id"),
                     resultSet.getString("nom"),
                     resultSet.getString("description"),
                     resultSet.getString("statut"),
                     resultSet.getDate("date_limite"),
                     null,
                     null,
-                    resultSet.getString("priorite")
+                    resultSet.getString("priorite"),
+                    resultSet.getString("user_associe")
             ));
         }
 
         return taches;
     }
-
-
 }
