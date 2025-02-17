@@ -6,6 +6,7 @@ import entities.Fournisseur;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -119,6 +120,8 @@ public class AjoutTache {
             e.setEvenement_id(evenementId);
             Fournisseur f = new Fournisseur();
             f.setNom(fournisseurComboBox.getValue());
+            ServiceFournisseur service = new ServiceFournisseur();
+            f.setFournisseurId(service.rechercherIdParNom(fournisseurComboBox.getValue()));
 
             // Attribution des valeurs des champs
             t.setNom(nomField.getText());
@@ -163,7 +166,7 @@ public class AjoutTache {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/EventTache.fxml"));
             Parent root = loader.load();
-            Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.show();
         } catch (IOException e) {

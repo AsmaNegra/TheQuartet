@@ -142,3 +142,11 @@
 .task-form Button:pressed {
     -fx-background-color: #c36e0b;
 }
+.pane_event {
+    -fx-background-image: url('/images/events/4_download.jpg');
+    -fx-background-size: cover;  /* Scale to cover the pane */
+    -fx-background-repeat: no-repeat; /* Prevent tiling */
+    -fx-background-position: bottom; /* Center the image */
+    -fx-background-radius: 30px;
+    -fx-border-radius: 30px;
+}

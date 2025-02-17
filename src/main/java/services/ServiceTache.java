@@ -113,6 +113,7 @@ public class ServiceTache implements IService<Tache> {
 
         while (resultSet.next()) {
             taches.add(new Tache(
+                    resultSet.getInt("tache_id"),
                     resultSet.getString("nom"),
                     resultSet.getString("description"),
                     resultSet.getString("statut"),
@@ -129,7 +130,7 @@ public class ServiceTache implements IService<Tache> {
 
     /** ✅ AFFICHER LES TÂCHES "EN COURS" */
     public List<Tache> afficherTachesEnCours() throws SQLException {
-        String sql = "SELECT * FROM `tache` WHERE `statut` = 'En cours'";
+        String sql = "SELECT * FROM `tache` WHERE `statut` = 'En Cours'";
         List<Tache> taches = new ArrayList<>();
 
         Statement statement = connection.createStatement();
@@ -137,6 +138,7 @@ public class ServiceTache implements IService<Tache> {
 
         while (resultSet.next()) {
             taches.add(new Tache(
+                    resultSet.getInt("tache_id"),
                     resultSet.getString("nom"),
                     resultSet.getString("description"),
                     resultSet.getString("statut"),
@@ -153,7 +155,7 @@ public class ServiceTache implements IService<Tache> {
 
     /** ✅ AFFICHER LES TÂCHES "DONE" */
     public List<Tache> afficherTachesDone() throws SQLException {
-        String sql = "SELECT * FROM `tache` WHERE `statut` = 'Done'";
+        String sql = "SELECT * FROM `tache` WHERE `statut` = 'Terminée'";
         List<Tache> taches = new ArrayList<>();
 
         Statement statement = connection.createStatement();
@@ -161,6 +163,7 @@ public class ServiceTache implements IService<Tache> {
 
         while (resultSet.next()) {
             taches.add(new Tache(
+                    resultSet.getInt("tache_id"),
                     resultSet.getString("nom"),
                     resultSet.getString("description"),
                     resultSet.getString("statut"),
@@ -177,7 +180,7 @@ public class ServiceTache implements IService<Tache> {
 
     /** ✅ AFFICHER LES TÂCHES "TO DO" */
     public List<Tache> afficherTachesToDo() throws SQLException {
-        String sql = "SELECT * FROM `tache` WHERE `statut` = 'To Do'";
+        String sql = "SELECT * FROM `tache` WHERE `statut` = 'A faire'";
         List<Tache> taches = new ArrayList<>();
 
         Statement statement = connection.createStatement();
@@ -185,6 +188,7 @@ public class ServiceTache implements IService<Tache> {
 
         while (resultSet.next()) {
             taches.add(new Tache(
+                    resultSet.getInt("tache_id"),
                     resultSet.getString("nom"),
                     resultSet.getString("description"),
                     resultSet.getString("statut"),

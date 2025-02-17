@@ -24,7 +24,7 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="632.0" prefWidth="917.0" styleClass="background_color" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AjoutTache">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="632.0" prefWidth="917.0" styleClass="background_color" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ModifierTache">
 
     <left>
         <AnchorPane prefHeight="200.0" prefWidth="45.0" styleClass="sidebar" stylesheets="@styles.css" BorderPane.alignment="CENTER">
@@ -108,7 +108,7 @@
                           <ComboBox fx:id="statutComboBox" prefHeight="26.0" prefWidth="480.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
                               <items>
                                   <FXCollections fx:factory="observableArrayList">
-                                      <String fx:value="A faire" />
+                                      <String fx:value="En attente" />
                                       <String fx:value="En cours" />
                                       <String fx:value="Terminée" />
                                   </FXCollections>
@@ -140,12 +140,12 @@
                           <ComboBox fx:id="userAssocieComboBox" prefHeight="26.0" prefWidth="481.0" GridPane.columnIndex="1" GridPane.rowIndex="9" />
       
                                 <!-- Submit Button -->
-                          <Button fx:id="submitButton" onAction="#handleSubmit" prefHeight="26.0" prefWidth="85.0" styleClass="pane" text="Enregistrer" GridPane.columnIndex="1" GridPane.rowIndex="10">
+                          <Button fx:id="submitButton"  prefHeight="26.0" prefWidth="85.0" styleClass="pane" text="Enregistrer" GridPane.columnIndex="1" GridPane.rowIndex="10">
                         <GridPane.margin>
                            <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                         </GridPane.margin>
                      </Button>
-                     <Label text="Ajouter un ticket!" GridPane.columnIndex="1">
+                     <Label text="Modifier un ticket!" GridPane.columnIndex="1">
                         <font>
                            <Font name="Montserrat-Regular" size="24.0" />
                         </font>

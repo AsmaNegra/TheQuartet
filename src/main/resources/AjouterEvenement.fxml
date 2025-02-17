@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 
-<AnchorPane prefHeight="505.0" prefWidth="828.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AjouterEvenementController">
+<AnchorPane prefHeight="505.0" prefWidth="828.0" xmlns="http://javafx.com/javafx/20.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AjouterEvenementController">
    <children>
       <Label fx:id="nomEvent" layoutX="46.0" layoutY="56.0" text="Nom de l'événement" />
       <Label fx:id="descriptionEvent" layoutX="46.0" layoutY="88.0" text="Description de l'événement" />

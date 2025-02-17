@@ -90,4 +90,20 @@ public class ServiceFournisseur implements IService<Fournisseur> {
 
         return fournisseurs;
     }
+    public int rechercherIdParNom(String nom) throws SQLException {
+        String sql = "SELECT `fournisseur_id` FROM `fournisseur` WHERE `nom` = ?";
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        preparedStatement.setString(1, nom);
+
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        if (resultSet.next()) {
+            return resultSet.getInt("fournisseur_id"); // Return the fournisseur ID
+        } else {
+            System.out.println("⚠ Aucun fournisseur trouvé avec le nom : " + nom);
+            return -1; // Return -1 if not found
+        }
+    }
+
+
 }
