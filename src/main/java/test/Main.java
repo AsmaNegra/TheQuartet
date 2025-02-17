@@ -342,7 +342,7 @@ public class Main {
             evenement.setEvenement_id(3);
 
             // Création d'un fournisseur
-            Fournisseur fournisseur = new Fournisseur( "Sonorisation Pro", "Matériel audio", "Contrat signé", evenement);
+            Fournisseur fournisseur = new Fournisseur( "Sonorisation Pro", "Matériel audio", "Contrat signé", evenement,1);
 
             // Ajout du fournisseur
             serviceFournisseur.ajouter(fournisseur);

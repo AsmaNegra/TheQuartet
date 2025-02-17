@@ -180,6 +180,8 @@ public class ServiceTache implements IService<Tache> {
 
     /** ✅ AFFICHER LES TÂCHES "TO DO" */
     public List<Tache> afficherTachesToDo() throws SQLException {
+        ServiceFournisseur serviceFournisseur = new ServiceFournisseur();
+        ServiceEvenement serviceEvenement = new ServiceEvenement();
         String sql = "SELECT * FROM `tache` WHERE `statut` = 'A faire'";
         List<Tache> taches = new ArrayList<>();
 
@@ -193,8 +195,8 @@ public class ServiceTache implements IService<Tache> {
                     resultSet.getString("description"),
                     resultSet.getString("statut"),
                     resultSet.getDate("date_limite"),
-                    null,
-                    null,
+                    serviceEvenement.getEvenementById(resultSet.getInt("evenement_id")),
+                    serviceFournisseur.rechercherParId(resultSet.getInt("fournisseur_id")),
                     resultSet.getString("priorite"),
                     resultSet.getString("user_associe")
             ));

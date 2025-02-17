@@ -24,7 +24,7 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="632.0" prefWidth="917.0" styleClass="background_color" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AjoutTache">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" styleClass="background_color" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AjoutTache">
 
     <left>
         <AnchorPane prefHeight="200.0" prefWidth="45.0" styleClass="sidebar" stylesheets="@styles.css" BorderPane.alignment="CENTER">
@@ -89,7 +89,7 @@
     <center>
         <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="590.0" prefWidth="861.0">
             <children>
-            <ScrollPane layoutY="29.0" prefHeight="603.0" prefWidth="861.0" styleClass="transparent_bg" AnchorPane.bottomAnchor="0.6000000000000227" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="29.0">
+            <ScrollPane fitToHeight="true" fitToWidth="true" layoutY="29.0" prefHeight="603.0" prefWidth="861.0" styleClass="transparent_bg" AnchorPane.bottomAnchor="0.6000000000000227" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="29.0">
                <content>
       
                             <!-- Task Form -->

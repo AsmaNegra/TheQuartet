@@ -17,14 +17,15 @@ public class ServiceFournisseur implements IService<Fournisseur> {
     /** ✅ AJOUTER UN FOURNISSEUR */
     @Override
     public void ajouter(Fournisseur fournisseur) throws SQLException {
-        String sql = "INSERT INTO `fournisseur` ( `nom`, `type_service`, `contrat`, `evenement_id`) " +
-                "VALUES ( ?, ?, ?, ?)";
+        String sql = "INSERT INTO `fournisseur` (`nom`, `type_service`, `contrat`, `evenement_id`, `num_tel`) " +
+                "VALUES (?, ?, ?, ?, ?)";
 
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         preparedStatement.setString(1, fournisseur.getNom());
         preparedStatement.setString(2, fournisseur.getTypeService());
         preparedStatement.setString(3, fournisseur.getContrat());
         preparedStatement.setInt(4, fournisseur.getEvenementId().getEvenement_id());
+        preparedStatement.setInt(5, fournisseur.getNum_tel()); // Added num_tel
 
         preparedStatement.executeUpdate();
         System.out.println("✅ Fournisseur ajouté avec succès !");
@@ -33,7 +34,7 @@ public class ServiceFournisseur implements IService<Fournisseur> {
     /** ✅ MODIFIER UN FOURNISSEUR */
     @Override
     public void modifier(Fournisseur fournisseur) throws SQLException {
-        String sql = "UPDATE `fournisseur` SET `nom` = ?, `type_service` = ?, `contrat` = ?, `evenement_id` = ? " +
+        String sql = "UPDATE `fournisseur` SET `nom` = ?, `type_service` = ?, `contrat` = ?, `evenement_id` = ?, `num_tel` = ? " +
                 "WHERE `fournisseur_id` = ?";
 
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -41,7 +42,8 @@ public class ServiceFournisseur implements IService<Fournisseur> {
         preparedStatement.setString(2, fournisseur.getTypeService());
         preparedStatement.setString(3, fournisseur.getContrat());
         preparedStatement.setInt(4, fournisseur.getEvenementId().getEvenement_id());
-        preparedStatement.setInt(5, fournisseur.getFournisseurId());
+        preparedStatement.setInt(5, fournisseur.getNum_tel()); // Added num_tel
+        preparedStatement.setInt(6, fournisseur.getFournisseurId());
 
         int rowsUpdated = preparedStatement.executeUpdate();
         if (rowsUpdated > 0) {
@@ -82,7 +84,8 @@ public class ServiceFournisseur implements IService<Fournisseur> {
                     resultSet.getString("nom"),
                     resultSet.getString("type_service"),
                     resultSet.getString("contrat"),
-                    null
+                    null,
+                    resultSet.getInt("num_tel") // Added num_tel
             );
 
             fournisseurs.add(fournisseur);
@@ -90,6 +93,8 @@ public class ServiceFournisseur implements IService<Fournisseur> {
 
         return fournisseurs;
     }
+
+    /** ✅ RECHERCHER UN FOURNISSEUR PAR NOM */
     public int rechercherIdParNom(String nom) throws SQLException {
         String sql = "SELECT `fournisseur_id` FROM `fournisseur` WHERE `nom` = ?";
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -105,5 +110,26 @@ public class ServiceFournisseur implements IService<Fournisseur> {
         }
     }
 
+    /** ✅ RECHERCHER UN FOURNISSEUR PAR ID */
+    public Fournisseur rechercherParId(int id) throws SQLException {
+        String sql = "SELECT * FROM `fournisseur` WHERE `fournisseur_id` = ?";
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        preparedStatement.setInt(1, id);
 
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        if (resultSet.next()) {
+            return new Fournisseur(
+                    resultSet.getInt("fournisseur_id"),
+                    resultSet.getString("nom"),
+                    resultSet.getString("type_service"),
+                    resultSet.getString("contrat"),
+                    null,
+                    resultSet.getInt("num_tel") // Added num_tel
+            );
+        } else {
+            System.out.println("⚠ Aucun fournisseur trouvé avec l'ID : " + id);
+            return null;
+        }
+    }
 }

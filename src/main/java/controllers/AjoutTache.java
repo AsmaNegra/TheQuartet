@@ -122,7 +122,6 @@ public class AjoutTache {
             f.setNom(fournisseurComboBox.getValue());
             ServiceFournisseur service = new ServiceFournisseur();
             f.setFournisseurId(service.rechercherIdParNom(fournisseurComboBox.getValue()));
-
             // Attribution des valeurs des champs
             t.setNom(nomField.getText());
             t.setDescription(descriptionField.getText().isEmpty() ? null : descriptionField.getText());

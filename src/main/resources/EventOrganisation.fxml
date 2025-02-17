@@ -19,7 +19,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="515.0" prefWidth="917.0" styleClass="background_color" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.EventOrganisation">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" styleClass="background_color" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.EventOrganisation">
    <left>
       <AnchorPane prefHeight="200.0" prefWidth="45.0" styleClass="sidebar" stylesheets="@styles.css" BorderPane.alignment="CENTER">
          <children>
@@ -81,11 +81,11 @@
    <center>
       <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="549.0" prefWidth="843.0" styleClass="background_color">
          <children>
-            <ScrollPane hbarPolicy="NEVER" layoutX="6.0" prefHeight="500.0" prefWidth="843.2" styleClass="transparent_bg" stylesheets="@styles.css" vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+            <ScrollPane fitToWidth="true" hbarPolicy="NEVER" layoutX="6.0" prefHeight="500.0" prefWidth="843.2" styleClass="transparent_bg" stylesheets="@styles.css" vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="0.0">
                <content>
                   <VBox styleClass="transparent_bg">
                      <children>
-                        <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="800.0" styleClass="pane">
+                        <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="800.0" style="-fx-background-radius: 0px 0px 30px 30px; -fx-border-radius: 0px 0px 30px 30px;" styleClass="pane">
                            <children>
                               <HBox prefHeight="42.0" prefWidth="762.0">
                                  <children>
@@ -173,7 +173,7 @@
                               </HBox>
                            </children>
                            <VBox.margin>
-                              <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                              <Insets bottom="15.0" left="15.0" right="15.0" />
                            </VBox.margin>
                         </VBox>
                         <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="800.0" styleClass="transparent_bg">
@@ -262,7 +262,7 @@
                                           <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                                        </HBox.margin>
                                     </AnchorPane>
-                                    <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="150.0" prefHeight="300.0" prefWidth="450.0" styleClass="pane">
+                                    <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="150.0" prefHeight="300.0" prefWidth="638.0" styleClass="pane">
                                        <HBox.margin>
                                           <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                                        </HBox.margin>
