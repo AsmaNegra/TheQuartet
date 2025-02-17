@@ -11,7 +11,7 @@ public class Tache {
     private String priorite;
     private Evenement evenement;
     private Fournisseur fournisseur;
-    private String userAssocie; // Nouvel attribut
+    private String userAssocie;
 
     public Tache() {}
 
