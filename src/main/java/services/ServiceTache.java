@@ -204,4 +204,20 @@ public class ServiceTache implements IService<Tache> {
 
         return taches;
     }
+
+    /** ✅ MODIFIER L'ÉTAT D'UNE TÂCHE */
+    public void modifierEtatTache(int tacheId, String nouvelEtat) throws SQLException {
+        String sql = "UPDATE `tache` SET `statut` = ? WHERE `tache_id` = ?";
+
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        preparedStatement.setString(1, nouvelEtat);
+        preparedStatement.setInt(2, tacheId);
+
+        int rowsUpdated = preparedStatement.executeUpdate();
+        if (rowsUpdated > 0) {
+            System.out.println("✅ État de la tâche modifié avec succès !");
+        } else {
+            System.out.println("⚠ Aucune tâche trouvée avec cet ID !");
+        }
+    }
 }

@@ -83,34 +83,38 @@
                <content>
                   <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="1067.0" prefWidth="1042.0">
                      <children>
-                        <VBox prefHeight="266.0" prefWidth="1011.0" style="-fx-background-radius: 0px 0px 30px 30px; -fx-border-radius: 0px 0px 30px 30px;" styleClass="pane">
+                        <HBox maxWidth="1.7976931348623157E308">
                            <VBox.margin>
                               <Insets bottom="15.0" left="15.0" right="15.0" />
                            </VBox.margin>
                            <children>
-                              <Pane prefHeight="179.0" prefWidth="799.0" style="-fx-background-radius: 30px 30px 0px 0px;" styleClass="pane_event" VBox.vgrow="ALWAYS" />
-                              <Separator prefHeight="22.0" prefWidth="999.0" />
-                              <Label text="Event_Name" textFill="#404040">
-                                 <font>
-                                    <Font name="Montserrat-Bold" size="18.0" />
-                                 </font>
-                                 <VBox.margin>
-                                    <Insets bottom="5.0" left="15.0" right="5.0" top="5.0" />
-                                 </VBox.margin>
-                              </Label>
-                              <Label prefHeight="99.0" prefWidth="970.0" text="EventDescriptionEventDescriptionEventDescriptionEventDescriptionEventDescription&#10;EventDescriptionEventDescriptionEventDescription&#10;EventDescriptionEventDescription" textFill="#898989">
-                                 <font>
-                                    <Font name="Montserrat-Regular" size="12.0" />
-                                 </font>
-                                 <VBox.margin>
-                                    <Insets bottom="15.0" left="15.0" />
-                                 </VBox.margin>
-                              </Label>
+                              <VBox prefHeight="266.0" prefWidth="1011.0" style="-fx-background-radius: 0px 0px 30px 30px; -fx-border-radius: 0px 0px 30px 30px;" styleClass="pane">
+                                 <children>
+                                    <Pane prefHeight="179.0" prefWidth="799.0" style="-fx-background-radius: 30px 30px 0px 0px;" styleClass="pane_event" VBox.vgrow="ALWAYS" />
+                                    <Separator prefHeight="22.0" prefWidth="999.0" />
+                                    <Label text="Event_Name" textFill="#404040">
+                                       <font>
+                                          <Font name="Montserrat-Bold" size="18.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets bottom="5.0" left="15.0" right="5.0" top="5.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                    <Label prefHeight="99.0" prefWidth="970.0" text="EventDescriptionEventDescriptionEventDescriptionEventDescriptionEventDescription&#10;EventDescriptionEventDescriptionEventDescription&#10;EventDescriptionEventDescription" textFill="#898989">
+                                       <font>
+                                          <Font name="Montserrat-Regular" size="12.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets bottom="15.0" left="15.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                 </children>
+                              </VBox>
                            </children>
-                        </VBox>
-                        <HBox prefHeight="518.0" prefWidth="1042.0">
+                        </HBox>
+                        <HBox maxHeight="1.7976931348623157E308" prefHeight="518.0" prefWidth="1042.0">
                            <children>
-                               <AnchorPane maxHeight="1.7976931348623157E308" prefHeight="466.0" prefWidth="790.0" styleClass="pane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/javafx/8">
+                               <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="466.0" prefWidth="790.0" styleClass="pane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/javafx/8">
                                  <VBox layoutX="12.0" layoutY="12.0" prefHeight="362.0" prefWidth="568.0" AnchorPane.bottomAnchor="11.0" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="10.0">
                                     <children>
                                        <HBox>
@@ -186,7 +190,7 @@
                                  </HBox.margin>
 
                                </AnchorPane>
-                              <VBox prefHeight="485.0" prefWidth="216.0">
+                              <VBox maxHeight="1.7976931348623157E308" prefHeight="485.0" prefWidth="216.0">
                                  <HBox.margin>
                                     <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                                  </HBox.margin>

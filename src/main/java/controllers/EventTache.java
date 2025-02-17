@@ -12,6 +12,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -40,7 +43,9 @@ public class EventTache implements Initializable {
     @FXML
     private VBox todoTasks;
 
-    private  ServiceTache serviceTache = new ServiceTache();
+
+    private final ServiceTache serviceTache = new ServiceTache();
+    private Tache draggedTask;
     private  ServiceFournisseur serviceFournisseur = new ServiceFournisseur();
 
     @Override
@@ -48,6 +53,7 @@ public class EventTache implements Initializable {
         try {
             loadTasks();
             loadFournisseurs();
+            setupDragAndDrop();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -91,7 +97,7 @@ public class EventTache implements Initializable {
             statusContainer.getChildren().addAll(relativeTime, priorityLabel);
 
             // Buttons Container
-            HBox buttonContainer = new HBox(10);
+            VBox buttonContainer = new VBox(10);
 
             // Create Edit Button with Image
             Button editButton = new Button();
@@ -120,7 +126,44 @@ public class EventTache implements Initializable {
 
             // Add task container to column
             column.getChildren().add(taskContainer);
+            // 🎯 Ajout du Drag & Drop
+            taskContainer.setOnDragDetected(event -> {
+                draggedTask = task;
+                Dragboard db = taskContainer.startDragAndDrop(TransferMode.MOVE);
+                ClipboardContent content = new ClipboardContent();
+                content.putString(task.getNom());
+                db.setContent(content);
+                event.consume();
+            });
         }
+    }
+    private void setupDragAndDrop() {
+        // 🚀 Ajouter la gestion du drag and drop pour chaque colonne
+        setupDropTarget(todoTasks,"A Faire");
+        setupDropTarget(inProgressTasks,"En Cours");
+        setupDropTarget(doneTasks,"Terminée");
+    }
+
+    private void setupDropTarget(VBox targetColumn, String newStatus) {
+        targetColumn.setOnDragOver(event -> {
+            if (event.getGestureSource() != targetColumn && event.getDragboard().hasString()) {
+                event.acceptTransferModes(TransferMode.MOVE);
+            }
+            event.consume();
+        });
+
+        targetColumn.setOnDragDropped(event -> {
+            if (draggedTask != null) {
+                try {
+                    serviceTache.modifierEtatTache(draggedTask.getTacheId(), newStatus); // Met à jour la BDD
+                    loadTasks(); // 🔥 Rafraîchir les tâches après déplacement
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            event.setDropCompleted(true);
+            event.consume();
+        });
     }
 
     private void modifyTask(Tache task, ActionEvent event) {
