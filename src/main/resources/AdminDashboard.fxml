@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<AnchorPane prefHeight="600.0" prefWidth="800.0" styleClass="background_color" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.contollers.AdminDashboardController">
+    <children>
+        <VBox spacing="10" styleClass="pane" AnchorPane.leftAnchor="20" AnchorPane.rightAnchor="20" AnchorPane.topAnchor="20" AnchorPane.bottomAnchor="20">
+            <!-- StackPane pour centrer le titre -->
+            <StackPane>
+                <Label styleClass="title" text="Gestion des Utilisateurs" />
+            </StackPane>
+
+            <TableView fx:id="userTable" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="idColumn" text="ID" prefWidth="50" />
+                    <TableColumn fx:id="nomColumn" text="Nom" prefWidth="120" />
+                    <TableColumn fx:id="emailColumn" text="Email" prefWidth="150" />
+                    <TableColumn fx:id="roleColumn" text="Rôle" prefWidth="100" />
+                    <TableColumn fx:id="etatColumn" text="État" prefWidth="100" />
+                    <TableColumn fx:id="entrepriseColumn" text="Entreprise" prefWidth="120" />
+                    <TableColumn fx:id="actionColumn" text="Actions" prefWidth="120" />
+                </columns>
+            </TableView>
+
+            <!-- Bouton retour en bas -->
+            <HBox alignment="CENTER">
+                <Button fx:id="btnRetour" text="Retour" onAction="#retour" styleClass="button-return" />
+            </HBox>
+        </VBox>
+    </children>
+</AnchorPane>

@@ -9,11 +9,19 @@ public class Utilisateur {
     private String etat;
     private int note_organisateur;
     private String entreprise;
-   // private List<Evenement> evenements;
+    // private List<Evenement> evenements;
 
 
 
+    public Utilisateur(int utilisateurId, String nom,String email,String motDePasse,Role role) {
+        this.utilisateurId = utilisateurId;
+        this.nom = nom;
+        this.email = email;
+        this.motDePasse = motDePasse;
+        this.role = role;
 
+
+    }
     public Utilisateur(int utilisateurId, String nom,String email,String motDePasse,Role role,String etat, int note_organisateur, String entreprise) {
         this.utilisateurId = utilisateurId;
         this.nom = nom;
@@ -91,11 +99,11 @@ public class Utilisateur {
     }
 
     //public List<Evenement> getEvenements() {
-     //   return evenements;
-   // }
+    //   return evenements;
+    // }
 
-   // public void setEvenements(List<Evenement> evenements) {
-   //     this.evenements = evenements;
-  //  }
+    // public void setEvenements(List<Evenement> evenements) {
+    //     this.evenements = evenements;
+    //  }
 
 }

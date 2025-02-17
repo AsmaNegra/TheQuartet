@@ -39,16 +39,13 @@ public class ServiceUtilisateur implements IService<Utilisateur> {
 
     @Override
     public void modifier_Utili(Utilisateur utilisateur) throws SQLException {
-        String sql = "UPDATE `utilisateur` SET `nom`=?, `email`=?, `mot_de_passe`=?, `role`=?, `etat`=?, `note_organisateur`=?, `entreprise`=? WHERE `utilisateur_id`=?";
+        String sql = "UPDATE `utilisateur` SET `nom`=?, `email`=?, `mot_de_passe`=?, `role`=? WHERE `utilisateur_id`=?";
         PreparedStatement ps = connection.prepareStatement(sql);
         ps.setString(1, utilisateur.getNom());
         ps.setString(2, utilisateur.getEmail());
         ps.setString(3, utilisateur.getMotDePasse());
         ps.setString(4, utilisateur.getRole().name());
-        ps.setString(5, utilisateur.getEtat());
-        ps.setInt(6, utilisateur.getNote_organisateur());
-        ps.setString(7, utilisateur.getEntreprise());
-        ps.setInt(8, utilisateur.getUtilisateurId());
+        ps.setInt(5, utilisateur.getUtilisateurId());
         ps.executeUpdate();
     }
 
@@ -82,6 +79,47 @@ public class ServiceUtilisateur implements IService<Utilisateur> {
             ));
         }
         return utilisateurs;
+    }
+
+    public boolean emailExists(String email) throws SQLException {
+        String query = "SELECT COUNT(*) FROM utilisateur WHERE email = ?";
+        try (PreparedStatement pst = connection.prepareStatement(query)) {
+            pst.setString(1, email);
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        }
+        return false;
+    }
+
+    public boolean updatePassword(String email, String newPassword) throws SQLException {
+        String query = "UPDATE utilisateur SET mot_de_passe = ? WHERE email = ?";
+        try (PreparedStatement pst = connection.prepareStatement(query)) {
+            pst.setString(1, newPassword);
+            pst.setString(2, email);
+            int rowsAffected = pst.executeUpdate();
+            return rowsAffected > 0;
+        }
+    }
+
+    public Utilisateur verifierIdentifiants(String email, String motDePasse) throws SQLException {
+        String sql = "SELECT * FROM utilisateur WHERE email = ? AND mot_de_passe = ?";
+        PreparedStatement ps = connection.prepareStatement(sql);
+        ps.setString(1, email);
+        ps.setString(2, motDePasse);
+
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            return new Utilisateur(
+                    rs.getInt("utilisateur_id"),
+                    rs.getString("nom"),
+                    rs.getString("email"),
+                    rs.getString("mot_de_passe"),
+                    Role.valueOf(rs.getString("role"))
+            );
+        }
+        return null;
     }
 
 

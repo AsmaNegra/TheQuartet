@@ -44,15 +44,9 @@ public class Main {
                     System.out.print("Role (ADMIN, PARTICIPANT, ORGANISATEUR) : ");
                     String roleInput = scanner.nextLine();
                     Role role = Role.valueOf(roleInput.toUpperCase());
-                    System.out.print("Etat : ");
-                    String etat = scanner.nextLine();
-                    System.out.print("Note organisateur : ");
-                    int noteOrganisateur = scanner.nextInt();
-                    scanner.nextLine(); // Consommer le retour à la ligne
-                    System.out.print("Entreprise : ");
-                    String entreprise = scanner.nextLine();
 
-                    Utilisateur utilisateur = new Utilisateur(0, nom, email, motDePasse, role, etat, noteOrganisateur, entreprise);
+
+                    Utilisateur utilisateur = new Utilisateur(0, nom, email, motDePasse, role);
                     try {
                         serviceUtilisateur.ajouter_Utili(utilisateur);
                         System.out.println("Utilisateur ajouté avec succès.");
@@ -96,18 +90,7 @@ public class Main {
                             String nouveauRole = scanner.nextLine();
                             utilisateurAModifier.setRole(Role.valueOf(nouveauRole.toUpperCase()));
 
-                            System.out.print("Nouvel état : ");
-                            String nouvelEtat = scanner.nextLine();
-                            utilisateurAModifier.setEtat(nouvelEtat);
 
-                            System.out.print("Nouvelle note organisateur : ");
-                            int nouvelleNoteOrganisateur = scanner.nextInt();
-                            utilisateurAModifier.setNote_organisateur(nouvelleNoteOrganisateur);
-
-                            scanner.nextLine(); // Consommer le retour à la ligne
-                            System.out.print("Nouvelle entreprise : ");
-                            String nouvelleEntreprise = scanner.nextLine();
-                            utilisateurAModifier.setEntreprise(nouvelleEntreprise);
 
                             // Appel à la méthode de modification
                             serviceUtilisateur.modifier_Utili(utilisateurAModifier);
