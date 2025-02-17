@@ -17,7 +17,7 @@ public class HomePage extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/AjouterEvenement.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("/EvenementAll.fxml"));
             Scene scene = new Scene(root);
             primaryStage.setScene(scene);
             primaryStage.show();
@@ -25,5 +25,6 @@ public class HomePage extends Application {
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
+
     }
 }

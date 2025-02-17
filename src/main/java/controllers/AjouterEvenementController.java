@@ -3,6 +3,7 @@ package controllers;
 import entities.Evenement;
 import java.sql.Timestamp;
 
+import javafx.scene.Scene;
 import javafx.stage.FileChooser;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -11,6 +12,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+
+import javafx.stage.Stage;
 import services.ServiceCategorie;
 import services.ServiceEvenement;
 import javafx.event.ActionEvent;
@@ -52,13 +55,13 @@ public class AjouterEvenementController {
     private DatePicker evenementDateDebutPicker;
 
     @FXML
-    private Spinner<Integer> evenementHeureDebutField;
+    private Spinner<String> evenementHeureDebutField;
 
     @FXML
     private DatePicker evenementDateFinPicker;
 
     @FXML
-    private Spinner<Integer> evenementHeureFinField;
+    private Spinner<String> evenementHeureFinField;
 
     @FXML
     private TextField evenementLieuField;
@@ -139,13 +142,96 @@ public class AjouterEvenementController {
 
     @FXML
     public void initialize() {
-        // Configuration existante des Spinners
-        evenementHeureDebutField.setValueFactory(
-            new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 23, 12)
-        );
-        evenementHeureFinField.setValueFactory(
-            new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 23, 18)
-        );
+
+        // Configuration pour le champ budget
+        evenementBudgetField.setTextFormatter(new TextFormatter<>(change -> {
+            if (change.getControlNewText().matches("\\d*")) {
+                return change;
+            }
+            return null;
+        }));
+
+        // Configuration pour le champ nombre de places
+        evenementNbPlacesField.setTextFormatter(new TextFormatter<>(change -> {
+            if (change.getControlNewText().matches("\\d*")) {
+                return change;
+            }
+            return null;
+        }));
+
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+
+        // Configuration du Spinner pour l'heure de début
+        SpinnerValueFactory<String> heureDebutFactory = new SpinnerValueFactory<String>() {
+            {
+                setValue("12:00");
+            }
+
+            @Override
+            public void decrement(int steps) {
+                try {
+                    LocalTime time = LocalTime.parse(getValue(), timeFormatter);
+                    setValue(time.minusMinutes(1).format(timeFormatter));
+                } catch (Exception e) {
+                    setValue("12:00");
+                }
+            }
+
+            @Override
+            public void increment(int steps) {
+                try {
+                    LocalTime time = LocalTime.parse(getValue(), timeFormatter);
+                    setValue(time.plusMinutes(1).format(timeFormatter));
+                } catch (Exception e) {
+                    setValue("12:00");
+                }
+            }
+        };
+
+        // Configuration du Spinner pour l'heure de fin
+        SpinnerValueFactory<String> heureFinFactory = new SpinnerValueFactory<String>() {
+            {
+                setValue("00:00");
+            }
+
+            @Override
+            public void decrement(int steps) {
+                try {
+                    LocalTime time = LocalTime.parse(getValue(), timeFormatter);
+                    setValue(time.minusMinutes(1).format(timeFormatter));
+                } catch (Exception e) {
+                    setValue("00:00");
+                }
+            }
+
+            @Override
+            public void increment(int steps) {
+                try {
+                    LocalTime time = LocalTime.parse(getValue(), timeFormatter);
+                    setValue(time.plusMinutes(1).format(timeFormatter));
+                } catch (Exception e) {
+                    setValue("00:00");
+                }
+            }
+        };
+
+        evenementHeureDebutField.setValueFactory(heureDebutFactory);
+        evenementHeureFinField.setValueFactory(heureFinFactory);
+
+        // Ajout des TextFormatters pour valider la saisie manuelle
+        evenementHeureDebutField.getEditor().setTextFormatter(new TextFormatter<>(change -> {
+            if (change.getControlNewText().matches("([01]?[0-9]|2[0-3]):[0-5][0-9]")) {
+                return change;
+            }
+            return null;
+        }));
+
+        evenementHeureFinField.getEditor().setTextFormatter(new TextFormatter<>(change -> {
+            if (change.getControlNewText().matches("([01]?[0-9]|2[0-3]):[0-5][0-9]")) {
+                return change;
+            }
+            return null;
+        }));
 
         // Chargement des catégories dans le ComboBox
         try {
@@ -168,19 +254,39 @@ public class AjouterEvenementController {
     }
 
 
-    // Dans AjouterEvenementController.java
     @FXML
     void ajouterEvenement(ActionEvent event) {
         try {
+            // Vérification que tous les champs sont remplis
+            if (evenementNomField.getText().isEmpty() ||
+                evenementDescriptionArea.getText().isEmpty() ||
+                evenementDateDebutPicker.getValue() == null ||
+                evenementDateFinPicker.getValue() == null ||
+                evenementLieuField.getText().isEmpty() ||
+                evenementCategorieComboBox.getValue() == null ||
+                evenementBudgetField.getText().isEmpty() ||
+                evenementImageField.getText().isEmpty() ||
+                evenementNbPlacesField.getText().isEmpty()) {
+
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Erreur");
+                alert.setHeaderText(null);
+                alert.setContentText("Veuillez remplir tous les champs et sélectionner une image.");
+                alert.showAndWait();
+                return;
+            }
+
             // Récupération des valeurs
             LocalDate dateDebut = evenementDateDebutPicker.getValue();
-            int heureDebut = evenementHeureDebutField.getValue();
             LocalDate dateFin = evenementDateFinPicker.getValue();
-            int heureFin = evenementHeureFinField.getValue();
+
+            // Parsing des heures et minutes
+            LocalTime heureDebut = LocalTime.parse(evenementHeureDebutField.getValue());
+            LocalTime heureFin = LocalTime.parse(evenementHeureFinField.getValue());
 
             // Création des LocalDateTime
-            LocalDateTime dateTimeDebut = dateDebut.atTime(heureDebut, 0);
-            LocalDateTime dateTimeFin = dateFin.atTime(heureFin, 0);
+            LocalDateTime dateTimeDebut = dateDebut.atTime(heureDebut);
+            LocalDateTime dateTimeFin = dateFin.atTime(heureFin);
 
             // Conversion en Timestamp
             Timestamp timestampDebut = Timestamp.valueOf(dateTimeDebut);
@@ -205,12 +311,19 @@ public class AjouterEvenementController {
             ServiceEvenement serviceEvenement = new ServiceEvenement();
             serviceEvenement.ajouter(evenement);
 
-            // Affichage dans DetailsEvenement
+            // Afficher un message de succès
+            Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+            successAlert.setTitle("Succès");
+            successAlert.setHeaderText(null);
+            successAlert.setContentText("Événement ajouté avec succès !");
+            successAlert.showAndWait();
+
+            // Charger l'interface DetailsEvenement.fxml
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/DetailsEvenement.fxml"));
-            Parent root = loader.load();
+            Parent root = loader.load(); // Crée une nouvelle instance de Parent
             DetailsEvenement dec = loader.getController();
 
-            // Format d'affichage des timestamps
+            // Passer les données de l'événement à l'interface DetailsEvenement
             dec.setResNom(evenement.getNom());
             dec.setResDescription(evenement.getDescription());
             dec.setResDateDebut(evenement.getDate_debut().toString());
@@ -220,11 +333,11 @@ public class AjouterEvenementController {
             dec.setResBudget(String.valueOf(evenement.getBudget()));
             dec.setResImageEvent(evenement.getImage_event());
             dec.setResNbPlaces(String.valueOf(evenement.getNb_places()));
+            dec.setEvenementId(evenement.getEvenement_id());
 
-
-            evenementAjouterButton.getScene().setRoot(root);
-
-
+            // Remplacer la scène actuelle par DetailsEvenement
+            Stage currentStage = (Stage) evenementAjouterButton.getScene().getWindow();
+            currentStage.setScene(new Scene(root));
 
         } catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -234,6 +347,14 @@ public class AjouterEvenementController {
             alert.showAndWait();
             e.printStackTrace();
         }
+    }
+
+    @FXML
+    private void handleFermerButton(ActionEvent event) {
+        // Get the stage
+        Stage stage = (Stage) evenementFermerButton.getScene().getWindow();
+        // Close the stage
+        stage.close();
     }
 
 
