@@ -27,8 +27,6 @@ public class Main {
         ServiceEvenement serviceEvenement = new ServiceEvenement();
         ServiceFeedback serviceFeedback = new ServiceFeedback();
 
-
-
         // Tester l'ajout d'un événement
        // testerAjouterEvenement(serviceEvenement);
 
@@ -42,7 +40,7 @@ public class Main {
       //  gererTickets(serviceTicket);
 
         // Gestion des transactions
-        gererTransactions(serviceTransaction, serviceTicket);
+      //  gererTransactions(serviceTransaction, serviceTicket);
 
         // Gestion des feedbacks
 //       gererFeedbacks(serviceFeedback, serviceEvenement);

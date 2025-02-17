@@ -100,7 +100,7 @@ public class ServiceUtilisateurEvenement {
 
             while (rs.next()) {
                 utilisateurs.add(new Utilisateur(
-                        rs.getInt("id"),
+                        rs.getInt("utilisateur_id"),
                         rs.getString("nom"),
                         rs.getString("email"),
                         null, null, null, 0, null

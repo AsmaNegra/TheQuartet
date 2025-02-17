@@ -2,20 +2,23 @@ package controllers;
 
 import entities.Tache;
 import entities.Utilisateur;
+import entities.Fournisseur;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import services.ServiceTache;
 import services.ServiceUtilisateurEvenement;
+import services.ServiceFournisseur;
 import entities.Evenement;
-import entities.Fournisseur;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -46,37 +49,34 @@ public class AjoutTache {
     @FXML
     private ComboBox<String> userAssocieComboBox;
 
-    private int evenementId = -1; // Default value to ensure it's properly set
+    @FXML
+    private ComboBox<String> fournisseurComboBox;
+
+    private int evenementId = 3; // Default event ID for testing
 
     @FXML
-    public void initialize() {
-        // Populate ComboBox when the UI loads (if evenementId is valid)
-        if (evenementId > 0) {
-            populateUserAssocieComboBox();
-        }
-    }
-
-    public void setEvenementId(int evenementId) {
-        this.evenementId = evenementId;
-        System.out.println("Evenement ID set to: " + evenementId); // Debugging statement
+    public void initialize() throws SQLException {
         populateUserAssocieComboBox();
+        populateFournisseurComboBox();
     }
 
     private void populateUserAssocieComboBox() {
-        if (evenementId <= 0) {
-            System.out.println("Evenement ID is not valid, skipping user retrieval."); // Debugging statement
-            return;
-        }
-
         ServiceUtilisateurEvenement service = new ServiceUtilisateurEvenement();
-        List<Utilisateur> utilisateurs = service.getUtilisateursByEvenementId(evenementId);
-
-        System.out.println("Users retrieved: " + utilisateurs.size()); // Debugging statement
+        List<Utilisateur> utilisateurs = service.getUtilisateursByEvenementId(3);
 
         userAssocieComboBox.getItems().clear();
         for (Utilisateur user : utilisateurs) {
-            System.out.println("Adding user: " + user.getNom()); // Debugging statement
             userAssocieComboBox.getItems().add(user.getNom());
+        }
+    }
+
+    private void populateFournisseurComboBox() throws SQLException {
+        ServiceFournisseur service = new ServiceFournisseur();
+        List<Fournisseur> fournisseurs = service.afficher();
+
+        fournisseurComboBox.getItems().clear();
+        for (Fournisseur fournisseur : fournisseurs) {
+            fournisseurComboBox.getItems().add(fournisseur.getNom());
         }
     }
 
@@ -108,13 +108,17 @@ public class AjoutTache {
                 showAlert("Erreur de validation", "Veuillez sélectionner un utilisateur associé.");
                 return;
             }
+            if (fournisseurComboBox.getValue() == null) {
+                showAlert("Erreur de validation", "Veuillez sélectionner un fournisseur.");
+                return;
+            }
 
             // Création d'un nouvel objet Tache
             Tache t = new Tache();
             Evenement e = new Evenement();
             e.setEvenement_id(evenementId);
             Fournisseur f = new Fournisseur();
-            f.setFournisseurId(1);
+            f.setNom(fournisseurComboBox.getValue());
 
             // Attribution des valeurs des champs
             t.setNom(nomField.getText());
@@ -152,5 +156,18 @@ public class AjoutTache {
         alert.setHeaderText(null);
         alert.setContentText(content);
         alert.showAndWait();
+    }
+
+    @FXML
+    void RedirectBack(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/EventTache.fxml"));
+            Parent root = loader.load();
+            Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -93,7 +93,7 @@
                <content>
       
                             <!-- Task Form -->
-                      <GridPane alignment="CENTER" hgap="10" style="-fx-background-color: transparent; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 2, 2);" vgap="10">
+                      <GridPane alignment="CENTER" hgap="10" style="-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 2, 2); -fx-background-color: transparent;" vgap="10">
       
                                 <!-- Task Name -->
                           <Label text="Nom de la Tâche:" GridPane.rowIndex="2" />
@@ -131,10 +131,6 @@
                               </items>
                           </ComboBox>
       
-                                <!-- Event Dropdown -->
-                          <Label text="Événement Associé:" GridPane.rowIndex="7" />
-                          <ComboBox fx:id="evenementComboBox" prefHeight="26.0" prefWidth="482.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-      
                                 <!-- Supplier Dropdown -->
                           <Label text="Fournisseur:" GridPane.rowIndex="8" />
                           <ComboBox fx:id="fournisseurComboBox" prefHeight="26.0" prefWidth="482.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
@@ -157,7 +153,7 @@
                            <Insets bottom="15.0" left="15.0" right="15.0" top="30.0" />
                         </padding>
                      </Label>
-                     <Button alignment="CENTER" mnemonicParsing="false" styleClass="transparent_bg" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                     <Button alignment="CENTER" mnemonicParsing="false" onAction="#RedirectBack" styleClass="transparent_bg" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                         <graphic>
                            <FontAwesomeIconView glyphName="ARROW_LEFT" size="30" wrappingWidth="32.00000286102295" />
                         </graphic>
