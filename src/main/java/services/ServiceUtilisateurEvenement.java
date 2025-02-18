@@ -85,6 +85,29 @@ public class ServiceUtilisateurEvenement {
         }
         return evenements;
     }
+    public List<Utilisateur> afficher() throws SQLException {
+        List<Utilisateur> utilisateurs = new ArrayList<>();
+        String query = "SELECT * FROM utilisateur"; // Assurez-vous que le nom de la table est correct
+
+        try (Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+
+            while (rs.next()) {
+                Utilisateur utilisateur = new Utilisateur(
+                        rs.getInt("utilisateur_id"),
+                        rs.getString("nom"),
+                        rs.getString("email"),
+                        rs.getString("mot_de_passe"),
+                        rs.getString("role"),
+                        rs.getString("etat"),
+                        rs.getFloat("note_organisateur"),
+                        rs.getString("entreprise")
+                );
+                utilisateurs.add(utilisateur);
+            }
+        }
+        return utilisateurs;
+    }
 
     // 🔹 Récupérer tous les utilisateurs inscrits à un événement
     public List<Utilisateur> getUtilisateursByEvenementId(int evenementId) {

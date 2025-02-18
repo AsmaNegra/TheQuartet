@@ -10,6 +10,7 @@ public class Ticket {
     private double prix;
     private Timestamp date_validite;
     private int nb_tickets;
+    private int quantiteAcheter =0;
 
     public Ticket() {
     }
@@ -32,7 +33,14 @@ public class Ticket {
         this.date_validite = date_validite;
         this.nb_tickets=nb_tickets;
     }
-
+    public Ticket(Ticket ticket) {
+        this.id_ticket = ticket.id_ticket;
+        this.type = ticket.type;
+        this.prix = ticket.prix;
+        this.statut = ticket.statut;
+        this.date_validite = ticket.date_validite;
+        this.quantiteAcheter = ticket.quantiteAcheter;
+    }
     public int getNb_tickets() {
         return nb_tickets;
     }
@@ -89,6 +97,13 @@ public class Ticket {
         this.date_validite = date_validite;
     }
 
+    public int getQuantiteAcheter() {
+        return quantiteAcheter;
+    }
+
+    public void setQuantiteAcheter(int quantiteAcheter) {
+        this.quantiteAcheter = quantiteAcheter;
+    }
     @Override
     public String toString() {
         return "Ticket{" +

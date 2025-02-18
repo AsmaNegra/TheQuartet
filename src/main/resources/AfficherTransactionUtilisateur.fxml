@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<GridPane alignment="center" hgap="10" prefHeight="600.0" prefWidth="750.0" stylesheets="@styles.css" vgap="10" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AfficherTransactionUtilisateurController">
+    <padding>
+        <Insets bottom="15" left="15" right="15" top="15" />
+    </padding>
+
+    <!-- Titre -->
+    <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Afficher les Transactions d'un Utilisateur" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="0" />
+
+    <!-- Sélection de l'utilisateur -->
+    <Label text="Utilisateur:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+    <ComboBox fx:id="utilisateurComboBox" prefWidth="220.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+    <!-- Tableau des transactions -->
+    <Label style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Transactions de l'utilisateur" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="2" />
+    <TableView fx:id="transactionsTable" prefHeight="200.0" prefWidth="700.0" GridPane.columnIndex="0" GridPane.columnSpan="5" GridPane.rowIndex="3">
+        <columns>
+            <TableColumn fx:id="idColumn" minWidth="100" text="ID Transaction">
+                <cellValueFactory>
+                    <PropertyValueFactory property="id_transaction" />
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn fx:id="montantColumn" minWidth="150" text="Montant Total (TND)">
+                <cellValueFactory>
+                    <PropertyValueFactory property="montant_total" />
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn fx:id="modePaiementColumn" minWidth="150" text="Mode de Paiement">
+                <cellValueFactory>
+                    <PropertyValueFactory property="mode_paiement" />
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn fx:id="datePaiementColumn" minWidth="180" text="Date de Paiement">
+                <cellValueFactory>
+                    <PropertyValueFactory property="date_paiement" />
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn fx:id="actionsColumn" maxWidth="180" minWidth="120" prefWidth="140" text="Actions" />
+        </columns>
+    </TableView>
+
+    <!-- Tableau des tickets associés -->
+    <Label style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Tickets associés à la transaction sélectionnée" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="4" />
+    <TableView fx:id="ticketsTable" prefHeight="200.0" prefWidth="700.0" GridPane.columnIndex="0" GridPane.columnSpan="5" GridPane.rowIndex="5">
+        <columns>
+            <TableColumn fx:id="ticketIdColumn" minWidth="100" text="ID Ticket">
+                <cellValueFactory>
+                    <PropertyValueFactory property="id_ticket" />
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn fx:id="typeColumn" minWidth="120" text="Type">
+                <cellValueFactory>
+                    <PropertyValueFactory property="type" />
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn fx:id="prixColumn" minWidth="100" text="Prix (TND)">
+                <cellValueFactory>
+                    <PropertyValueFactory property="prix" />
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn fx:id="statutColumn" minWidth="120" text="Statut">
+                <cellValueFactory>
+                    <PropertyValueFactory property="statut" />
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn fx:id="dateValiditeColumn" minWidth="160" text="Date de validité">
+                <cellValueFactory>
+                    <PropertyValueFactory property="date_validite" />
+                </cellValueFactory>
+            </TableColumn>
+        </columns>
+    </TableView>
+
+    <!-- Message d'erreur ou de succès -->
+    <Label fx:id="messageLabel" style="-fx-text-fill: red;" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="6" />
+
+    <!-- Contraintes des colonnes -->
+    <columnConstraints>
+        <ColumnConstraints minWidth="150.0" />
+        <ColumnConstraints minWidth="250.0" />
+      <ColumnConstraints />
+      <ColumnConstraints />
+      <ColumnConstraints />
+    </columnConstraints>
+
+    <!-- Contraintes des lignes -->
+    <rowConstraints>
+        <RowConstraints />
+        <RowConstraints />
+        <RowConstraints />
+        <RowConstraints />
+        <RowConstraints />
+        <RowConstraints />
+        <RowConstraints />
+    </rowConstraints>
+   <styleClass>
+      <String fx:value="background_color" />
+      <String fx:value="colored_card" />
+   </styleClass>
+</GridPane>

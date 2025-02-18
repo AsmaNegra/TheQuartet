@@ -142,10 +142,8 @@ public class ServiceTicket implements IService<Ticket> {
         String query = "SELECT * FROM ticket WHERE evenement_id = ?";
 
         try (PreparedStatement pst = connection.prepareStatement(query)) {
-            pst.setInt(1, evenementId); // Définir l'ID de l'événement dans la requête
+            pst.setInt(1, evenementId);
             ResultSet rs = pst.executeQuery();
-
-            // Parcourir les résultats et créer des objets Ticket
             while (rs.next()) {
                 Ticket ticket = new Ticket();
                 ticket.setId_ticket(rs.getInt("id_ticket"));

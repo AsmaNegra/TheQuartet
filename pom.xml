@@ -35,6 +35,12 @@
             <artifactId>javafx-fxml</artifactId>
             <version>20.0.2</version>
         </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-base</artifactId>
+            <version>20.0.2</version>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -45,6 +51,10 @@
                 <version>0.0.8</version>
                 <configuration>
                     <mainClass>controllers.HomePage</mainClass>
+                    <options>
+                        <option>--add-opens</option>
+                        <option>javafx.graphics/javafx.application=ALL-UNNAMED</option>
+                    </options>
                 </configuration>
             </plugin>
         </plugins>

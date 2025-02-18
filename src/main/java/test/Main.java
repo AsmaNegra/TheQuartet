@@ -44,7 +44,7 @@ public class Main {
         //supprimerTicket(serviceTicket);
 
         //Gestion des transaction
-       // ajouterTransaction(serviceTransaction, serviceUtilisateurEvenement, serviceTicket);
+        ajouterTransaction(serviceTransaction, serviceUtilisateurEvenement, serviceTicket);
 
         //Modifier des transactions
         //modifierTransaction(serviceTransaction, serviceUtilisateurEvenement,serviceTicket);
@@ -132,15 +132,15 @@ public class Main {
             }
 
             // Récupérer des tickets existants
-            Ticket ticket1 = serviceTicket.getTicketById(10);
-            Ticket ticket2 = serviceTicket.getTicketById(11);
+            Ticket ticket1 = serviceTicket.getTicketById(67);
+            Ticket ticket2 = serviceTicket.getTicketById(65);
             if (ticket1 == null || ticket2 == null) {
                 System.out.println("❌ Un ou plusieurs tickets non trouvés.");
                 return;
             }
 
             // Créer une liste de tickets associés
-            List<Ticket> ticketsAssocies = List.of(ticket1, ticket2);
+            List<Ticket> ticketsAssocies = List.of(ticket1);
 
             // Créer une transaction
             Transaction transaction = new Transaction(utilisateur, ticketsAssocies, 0.0, "Carte bancaire", Timestamp.valueOf("2025-05-10 18:00:00"));

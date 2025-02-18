@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="386.0" prefWidth="350.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ModifierTicketsController">
+
+    <children>
+        <VBox alignment="CENTER" prefHeight="402.0" prefWidth="386.0" spacing="10" stylesheets="@styles.css">
+            <padding>
+                <Insets bottom="20" left="20" right="20" top="20" />
+            </padding>
+
+            <!-- Titre -->
+            <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Modifier le Ticket" />
+
+            <!-- Formulaire -->
+            <GridPane hgap="10" prefHeight="189.0" prefWidth="417.0" vgap="10">
+                <Label text="Type:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                <TextField fx:id="typeField" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+                <Label text="Statut:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                <ComboBox fx:id="statutComboBox" prefHeight="26.0" prefWidth="175.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                <Label text="Prix (TND):" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                <TextField fx:id="prixField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+                <Label text="Date Validité:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                <DatePicker fx:id="dateValiditePicker" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+
+                <Label text="Nombre de Tickets:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                <TextField fx:id="nbTicketsField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <columnConstraints>
+               <ColumnConstraints />
+               <ColumnConstraints />
+            </columnConstraints>
+            <rowConstraints>
+               <RowConstraints />
+               <RowConstraints />
+               <RowConstraints />
+               <RowConstraints />
+               <RowConstraints />
+            </rowConstraints>
+            </GridPane>
+
+            <!-- Bouton -->
+            <Button onAction="#enregistrerModifications" text="Enregistrer les modifications" />
+
+            <!-- Message de confirmation ou d'erreur -->
+            <Label fx:id="messageLabel" style="-fx-text-fill: red;" />
+         <styleClass>
+            <String fx:value="background_color" />
+            <String fx:value="colored_card" />
+            <String fx:value="pane" />
+            <String fx:value="parent" />
+            <String fx:value="plus_btn" />
+         </styleClass>
+        </VBox>
+    </children>
+</AnchorPane>

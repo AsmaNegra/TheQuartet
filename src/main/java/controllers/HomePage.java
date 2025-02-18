@@ -17,28 +17,16 @@ public class HomePage extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-//        try {
-//            Parent root = FXMLLoader.load(getClass().getResource("/AjouterEvenement.fxml"));
-//            Scene scene = new Scene(root);
-//            primaryStage.setScene(scene);
-//            primaryStage.show();
-//
-//        } catch (IOException e) {
-//            System.out.println(e.getMessage());
-//        }
-//        try {
-//            Parent root = FXMLLoader.load(getClass().getResource("/AjouterTickets.fxml"));
-//            Scene scene = new Scene(root);
-//            primaryStage.setTitle("Ajout de Tickets");
-//            primaryStage.setScene(scene);
-//            primaryStage.show();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+
         try {
-            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/AjouterTransaction.fxml")));
+            Parent root = FXMLLoader.load(getClass().getResource("/AfficherTicketsEvenement.fxml"));
+            //Parent root = FXMLLoader.load(getClass().getResource("/AfficherTousTickets.fxml"));
+            //Parent root = FXMLLoader.load(getClass().getResource("/AfficherTransactionUtilisateur.fxml"));
+            //Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/AjouterTransaction.fxml")));
+            // Parent root = FXMLLoader.load(getClass().getResource("/AjouterTickets.fxml"));
+
             Scene scene = new Scene(root);
-            primaryStage.setTitle("Ajout de Tickets");
+            primaryStage.setTitle("affichage");
             primaryStage.setScene(scene);
             primaryStage.show();
         } catch (IOException e) {

@@ -1,118 +1,141 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import java.lang.*?>
+<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import controllers.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.cell.PropertyValueFactory?>
-<?import controllers.ButtonTableCellFactory?>
-<ScrollPane prefWidth="650" prefHeight="450" fitToWidth="true" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AjouterTransactionController">
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<ScrollPane fitToWidth="true" prefHeight="450" prefWidth="650" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AjouterTransactionController">
     <content>
-        <VBox spacing="10" alignment="CENTER">
+        <VBox alignment="CENTER" spacing="10" stylesheets="@styles.css">
             <padding>
-                <Insets top="20" right="20" bottom="20" left="20"/>
+                <Insets bottom="20" left="20" right="20" top="20" />
             </padding>
 
             <!-- Titre de l'interface -->
-            <Label text="Ajouter une Transaction" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
+            <Label style="-fx-font-size: 20px; -fx-font-weight: bold;" text="Remplir mon panier" />
 
-            <!-- Section des détails de l'événement -->
+            <!-- Section de sélection et détails de l'événement -->
+            <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Afficher les Tickets d'un Événement" />
+
             <GridPane hgap="10" vgap="10">
+                <!-- Sélection de l'événement -->
                 <Label text="Événement:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                <Label fx:id="nomEvenementLabel" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                <ComboBox fx:id="evenementComboBox" prefWidth="220.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
-                <Label text="Lieu:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                <Label fx:id="lieuEvenementLabel" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                <!-- Détails de l'événement -->
+                <Label text="Nom de l'événement:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                <Label fx:id="nomEvenementLabel" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
-                <Label text="Date Début:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                <Label fx:id="dateDebutLabel" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                <Label text="Lieu:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                <Label fx:id="lieuEvenementLabel" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
-                <Label text="Date Fin:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-                <Label fx:id="dateFinLabel" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                <Label text="Date Début:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                <Label fx:id="dateDebutEvenementLabel" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+
+                <Label text="Date Fin:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                <Label fx:id="dateFinEvenementLabel" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <columnConstraints>
+               <ColumnConstraints />
+               <ColumnConstraints />
+            </columnConstraints>
+            <rowConstraints>
+               <RowConstraints />
+               <RowConstraints />
+               <RowConstraints />
+               <RowConstraints />
+               <RowConstraints />
+            </rowConstraints>
             </GridPane>
 
             <!-- Section des tickets disponibles -->
-            <Label text="Tickets Disponibles" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
+            <Label style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Tickets Disponibles" />
 
             <TableView fx:id="ticketsTable" prefHeight="200">
                 <columns>
-                    <!-- Colonnes existantes -->
-                    <TableColumn text="Type" fx:id="typeColumn">
+                    <TableColumn fx:id="typeColumn" text="Type">
                         <cellValueFactory>
                             <PropertyValueFactory property="type" />
                         </cellValueFactory>
                     </TableColumn>
-                    <TableColumn text="Prix (TND)" fx:id="prixColumn">
+                    <TableColumn fx:id="prixColumn" text="Prix (TND)">
                         <cellValueFactory>
                             <PropertyValueFactory property="prix" />
                         </cellValueFactory>
                     </TableColumn>
-                    <TableColumn text="Statut" fx:id="statutColumn">
+                    <TableColumn fx:id="statutColumn" text="Statut">
                         <cellValueFactory>
                             <PropertyValueFactory property="statut" />
                         </cellValueFactory>
                     </TableColumn>
-                    <TableColumn text="Date Validité" fx:id="dateValiditeColumn">
+                    <TableColumn fx:id="dateValiditeColumn" text="Date Validité">
                         <cellValueFactory>
                             <PropertyValueFactory property="date_validite" />
                         </cellValueFactory>
                     </TableColumn>
-                    <TableColumn text="Quantité Disponible" fx:id="quantiteColumn">
+                    <TableColumn fx:id="quantiteColumn" text="Quantité Disponible">
                         <cellValueFactory>
                             <PropertyValueFactory property="nb_tickets" />
                         </cellValueFactory>
                     </TableColumn>
-
-                    <!-- Nouvelle colonne avec un bouton "Ajouter au panier" -->
-                    <TableColumn fx:id="actionColumn">
-                        <cellFactory>
-                            <ButtonTableCellFactory />
-                        </cellFactory>
-                    </TableColumn>
+                    <TableColumn fx:id="panierColumn" text="Ajouter à mon panier" />
                 </columns>
             </TableView>
 
             <!-- Section du panier -->
-            <Label text="Panier" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
+            <Label style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Panier" />
 
             <TableView fx:id="panierTable" prefHeight="150">
                 <columns>
-                    <TableColumn text="Type" fx:id="panierTypeColumn">
+                    <TableColumn fx:id="panierTypeColumn" text="Type">
                         <cellValueFactory>
                             <PropertyValueFactory property="type" />
                         </cellValueFactory>
                     </TableColumn>
-                    <TableColumn text="Prix (TND)" fx:id="panierPrixColumn">
+                    <TableColumn fx:id="panierPrixColumn" text="Prix (TND)">
                         <cellValueFactory>
                             <PropertyValueFactory property="prix" />
                         </cellValueFactory>
                     </TableColumn>
-                    <TableColumn text="Quantité" fx:id="panierQuantiteColumn">
+                    <TableColumn fx:id="panierQuantiteColumn" text="Quantité">
                         <cellValueFactory>
-                            <PropertyValueFactory property="nb_tickets" />
+                            <PropertyValueFactory property="quantiteAcheter" />
                         </cellValueFactory>
                     </TableColumn>
-                    <TableColumn text="Total (TND)" fx:id="panierTotalColumn">
+                    <TableColumn fx:id="panierTotalColumn" text="Total (TND)">
                         <cellValueFactory>
-                            <PropertyValueFactory property="prix" />
+                            <PropertyValueFactory property="prixTotal" />
                         </cellValueFactory>
                     </TableColumn>
+                    <TableColumn fx:id="supprimerColumn" text="Supprimer" />
                 </columns>
             </TableView>
 
             <!-- Montant total du panier -->
-            <HBox spacing="10" alignment="CENTER_RIGHT">
-                <Label text="Montant Total:" style="-fx-font-size: 14px; -fx-font-weight: bold;" />
+            <HBox alignment="CENTER_RIGHT" spacing="10">
+                <Label style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Montant Total:" />
                 <Label fx:id="montantTotalLabel" style="-fx-font-size: 14px; -fx-font-weight: bold;" />
             </HBox>
 
             <!-- Bouton pour ajouter la transaction -->
-            <Button text="Passer à la caisse" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 14px;" onAction="#passerALaCaisse" />
+            <Button onAction="#passerALaCaisse" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 14px;" text="Passer à la caisse" />
 
             <!-- Message d'erreur ou de succès -->
             <Label fx:id="messageLabel" style="-fx-text-fill: red;" />
+         <styleClass>
+            <String fx:value="background_color" />
+            <String fx:value="colored_card" />
+         </styleClass>
         </VBox>
     </content>
 </ScrollPane>

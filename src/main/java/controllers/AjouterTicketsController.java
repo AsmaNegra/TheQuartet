@@ -1,23 +1,40 @@
 package controllers;
 
-import entities.Evenement;
-import entities.Ticket;
+import javafx.fxml.FXML;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
+import javafx.util.converter.DoubleStringConverter;
+import javafx.util.converter.IntegerStringConverter;
 import services.ServiceEvenement;
 import services.ServiceTicket;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import entities.Ticket;
+import entities.Evenement;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 
 import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.List;
+import java.time.LocalDate;
+import java.util.function.UnaryOperator;
 
 public class AjouterTicketsController {
 
     @FXML
     private ComboBox<Evenement> evenementComboBox;
+
+    @FXML
+    private Label nomEvenementLabel;
+
+    @FXML
+    private Label lieuEvenementLabel;
+
+    @FXML
+    private Label dateDebutEvenementLabel;
+
+    @FXML
+    private Label dateFinEvenementLabel;
 
     @FXML
     private TextField typeTextField;
@@ -32,74 +49,100 @@ public class AjouterTicketsController {
     private TextField nbTicketsTextField;
 
     @FXML
-    private Button ajouterButton;
-
-    @FXML
     private Label messageLabel;
-    @FXML
-    private Label nomEvenementLabel;
-    @FXML
-    private Label lieuEvenementLabel;
-    @FXML
-    private Label dateDebutEvenementLabel;
-    @FXML
-    private Label dateFinEvenementLabel;
+
+    private ServiceEvenement serviceEvenement = new ServiceEvenement();
+    private ServiceTicket serviceTicket = new ServiceTicket();
 
     @FXML
     public void initialize() {
-        chargerEvenements();
-        evenementComboBox.setOnAction(event -> afficherDetailsEvenement());
-    }
-
-    private ServiceTicket serviceTicket;
-    private ServiceEvenement serviceEvenement;
-
-    public AjouterTicketsController() {
-        serviceTicket = new ServiceTicket();
-        serviceEvenement = new ServiceEvenement();
-    }
-    private void afficherDetailsEvenement() {
-        Evenement evenement = evenementComboBox.getValue();
-        if (evenement != null) {
-            nomEvenementLabel.setText(evenement.getNom());
-            lieuEvenementLabel.setText(evenement.getLieu());
-            dateDebutEvenementLabel.setText(evenement.getDate_debut().toString());
-            dateFinEvenementLabel.setText(evenement.getDate_fin().toString());
+        // Charger les événements dans la ComboBox
+        try {
+            evenementComboBox.getItems().addAll(serviceEvenement.afficher());
+        } catch (SQLException e) {
+            messageLabel.setText("Erreur lors du chargement des événements.");
+            e.printStackTrace();
         }
-    }
 
-    private void chargerEvenements() {
-        List<Evenement> evenements = serviceEvenement.getAllEvenements();
-        ObservableList<Evenement> evenementList = FXCollections.observableArrayList(evenements);
-        evenementComboBox.setItems(evenementList);
+        // Ajouter un écouteur pour mettre à jour les détails de l'événement sélectionné
+        evenementComboBox.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal != null) {
+                nomEvenementLabel.setText(newVal.getNom());
+                lieuEvenementLabel.setText(newVal.getLieu());
+                dateDebutEvenementLabel.setText(newVal.getDate_debut().toString());
+                dateFinEvenementLabel.setText(newVal.getDate_fin().toString());
+            }
+        });
+
+        // Contrôle de saisie pour le prix (Double)
+        TextFormatter<Double> prixFormatter = new TextFormatter<>(new DoubleStringConverter(), 0.0, createDoubleFilter());
+        prixTextField.setTextFormatter(prixFormatter);
+
+        // Contrôle de saisie pour le nombre de tickets (int)
+        TextFormatter<Integer> nbTicketsFormatter = new TextFormatter<>(new IntegerStringConverter(), 0, createIntegerFilter());
+        nbTicketsTextField.setTextFormatter(nbTicketsFormatter);
     }
 
     @FXML
-    private void ajouterTicket(ActionEvent event) {
-        Evenement evenement = evenementComboBox.getValue();
-        String typeText = typeTextField.getText();
-        String prixText = prixTextField.getText();
-        String nbTicketsText = nbTicketsTextField.getText();
+    private void ajouterTicket() {
+        // Récupérer les valeurs des champs
+        Evenement evenement = evenementComboBox.getSelectionModel().getSelectedItem();
+        String type = typeTextField.getText();
+        double prix = Double.parseDouble(prixTextField.getText());
+        LocalDate dateValidite = dateValiditePicker.getValue();
+        int nbTickets = Integer.parseInt(nbTicketsTextField.getText());
 
-        if (evenement == null || typeText.isEmpty() || prixText.isEmpty() || nbTicketsText.isEmpty() || dateValiditePicker.getValue() == null) {
-            messageLabel.setText("Veuillez remplir tous les champs.");
+        // Validation des champs
+        if (evenement == null || type.isEmpty() || prix <= 0 || dateValidite == null || nbTickets <= 0) {
+            messageLabel.setText("Veuillez remplir tous les champs correctement.");
             return;
         }
 
-        try {
-            String type = typeText;
-            double prix = Double.parseDouble(prixText);
-            int nbTickets = Integer.parseInt(nbTicketsText);
-            Timestamp dateValidite = Timestamp.valueOf(dateValiditePicker.getValue().atStartOfDay());
+        // Créer un nouveau ticket
+        Ticket ticket = new Ticket();
+        ticket.setEvenement(evenement);
+        ticket.setType(type);
+        ticket.setPrix(prix);
+        ticket.setDate_validite(java.sql.Timestamp.valueOf(dateValidite.atStartOfDay()));
+        ticket.setNb_tickets(nbTickets);
 
-            Ticket ticket = new Ticket(evenement, type, "En attente", prix, dateValidite, nbTickets);
+        // Ajouter le ticket à la base de données
+        try {
             serviceTicket.ajouter(ticket);
-            messageLabel.setText("Ticket ajouté avec succès !");
-        } catch (NumberFormatException e) {
-            messageLabel.setText("Prix et nombre de tickets doivent être des valeurs numériques.");
+            messageLabel.setText("Ticket ajouté avec succès.");
+            clearFields();
         } catch (SQLException e) {
-            e.printStackTrace();
             messageLabel.setText("Erreur lors de l'ajout du ticket.");
+            e.printStackTrace();
         }
+    }
+
+    private void clearFields() {
+        typeTextField.clear();
+        prixTextField.clear();
+        dateValiditePicker.setValue(null);
+        nbTicketsTextField.clear();
+    }
+
+    // Créer un filtre pour les entrées de type double
+    private UnaryOperator<TextFormatter.Change> createDoubleFilter() {
+        return change -> {
+            String newText = change.getControlNewText();
+            if (newText.matches("\\d*(\\.\\d*)?")) {
+                return change;
+            }
+            return null;
+        };
+    }
+
+    // Créer un filtre pour les entrées de type int
+    private UnaryOperator<TextFormatter.Change> createIntegerFilter() {
+        return change -> {
+            String newText = change.getControlNewText();
+            if (newText.matches("\\d*")) {
+                return change;
+            }
+            return null;
+        };
     }
 }
