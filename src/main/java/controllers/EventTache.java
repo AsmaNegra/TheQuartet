@@ -61,7 +61,7 @@ public class EventTache implements Initializable {
 
     private void loadFournisseurs() throws SQLException {
         List<Fournisseur> fournisseurs = serviceFournisseur.afficher();
-        populateFournisseurList(fournisseurs); // Display in a VBox
+        populateFournisseurList(fournisseurs);
     }
 
     private void loadTasks() throws SQLException {
@@ -117,11 +117,9 @@ public class EventTache implements Initializable {
             deleteButton.setStyle("-fx-background-color: transparent;");
             deleteButton.setOnAction(event -> deleteTask(task));
 
-            // Add buttons to button container
             buttonContainer.getChildren().addAll(editButton, deleteButton);
 
-            // Add elements to task container
-            textContainer.getChildren().addAll(nameLabel, descriptionLabel, assignedLabel, statusContainer);
+             textContainer.getChildren().addAll(nameLabel, descriptionLabel, assignedLabel, statusContainer);
             taskContainer.getChildren().addAll(textContainer, buttonContainer);
 
             // Add task container to column
@@ -171,13 +169,11 @@ public class EventTache implements Initializable {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/ModifierTache.fxml"));
             Parent root = loader.load();
 
-            // Get the controller and set the task data
-            ModifierTache controller = loader.getController();
+             ModifierTache controller = loader.getController();
             controller.setTaskData(task);
 
 
-            // Load the new scene
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.show();
         } catch (IOException e) {
