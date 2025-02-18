@@ -58,6 +58,8 @@ public class DetailsEvenement {
 
     private int evenementId;
 
+    private String imagePathStored;
+
     @FXML
     private Button evenementModifierButton;
 
@@ -118,6 +120,7 @@ public class DetailsEvenement {
     }
 
     public void setResImageEvent(String imagePath) {
+        this.imagePathStored = imagePath; // Stocker le chemin
         try {
             if (imagePath != null && !imagePath.isEmpty()) {
                 // Construire le chemin absolu vers l'image
@@ -174,13 +177,13 @@ public class DetailsEvenement {
         try {
             // Récupérer les données de l'événement actuel
             Evenement evenementActuel = new Evenement();
-            evenementActuel.setEvenement_id(this.evenementId); // Important pour la modification
+            evenementActuel.setEvenement_id(this.evenementId);
             evenementActuel.setNom(resNom.getText());
             evenementActuel.setDescription(resDescription.getText());
 
             // Convertir les strings de date en Timestamp
-            String dateDebutText = resDateDebut.getText().replace(".0", ""); // Enlever le .0 si présent
-            String dateFinText = resDateFin.getText().replace(".0", ""); // Enlever le .0 si présent
+            String dateDebutText = resDateDebut.getText().replace(".0", "");
+            String dateFinText = resDateFin.getText().replace(".0", "");
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             LocalDateTime dateDebut = LocalDateTime.parse(dateDebutText, formatter);
@@ -190,12 +193,15 @@ public class DetailsEvenement {
             evenementActuel.setDate_fin(Timestamp.valueOf(dateFin));
             evenementActuel.setLieu(resLieu.getText());
             evenementActuel.setCategorie(resCategorie.getText());
-            evenementActuel.setBudget(Float.parseFloat(resBudget.getText()));
-            String imagePath = resImageEvent.getImage() != null ?
-                resImageEvent.getImage().getUrl()
-                    .replace("file:/" + System.getProperty("user.dir") + "/src/main/resources/", "")
-                : null;
-            evenementActuel.setImage_event(imagePath);
+
+            // Correction pour le budget
+            String budgetText = resBudget.getText().trim();
+            evenementActuel.setBudget(Float.parseFloat(budgetText));
+
+            // Correction pour l'image
+            // Utiliser directement le chemin relatif stocké
+            evenementActuel.setImage_event(imagePathStored); // Vous devez ajouter cette variable de classe
+
             evenementActuel.setNb_places(Integer.parseInt(resNbPlaces.getText()));
 
             // Charger la vue de modification
@@ -219,6 +225,8 @@ public class DetailsEvenement {
             e.printStackTrace();
         }
     }
+
+
 
     @FXML
     private void handleFermerButton(ActionEvent event) {
