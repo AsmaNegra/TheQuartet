@@ -68,15 +68,21 @@ public class ModifierTache {
 
         userAssocieComboBox.getItems().add(task.getUserAssocie()); // You might need to load actual user names
         userAssocieComboBox.setValue(task.getUserAssocie());
-        fournisseurComboBox.getItems().add(task.getFournisseur().getNom()); // You might need to load actual user names
-        fournisseurComboBox.setValue(task.getFournisseur().getNom());
-
+            fournisseurComboBox.getItems().add(task.getFournisseur().getNom());
+            fournisseurComboBox.setValue(task.getFournisseur().getNom());
+        System.out.println(task.getFournisseur().getNom());
     }
 
     @FXML
     public void updateTask(ActionEvent event) {
         try {
             ServiceFournisseur serviceFournisseur = new ServiceFournisseur();
+            Evenement e = new Evenement();
+            e.setEvenement_id(3);
+            Fournisseur f = new Fournisseur();
+            f.setFournisseurId(7);
+           int idF = serviceFournisseur.rechercherIdParNom(fournisseurComboBox.getValue());
+
             LocalDate localDate = dateLimitePicker.getValue();
             selectedTask.setNom(nomField.getText());
             selectedTask.setDescription(descriptionField.getText());
@@ -84,6 +90,8 @@ public class ModifierTache {
             selectedTask.setPriorite(prioriteComboBox.getValue());
             selectedTask.setStatut(statutComboBox.getValue());
             selectedTask.setUserAssocie(userAssocieComboBox.getValue());
+            selectedTask.setEvenement(e);
+            selectedTask.setFournisseur(serviceFournisseur.rechercherParId(idF));
             // Call service to update the task
             serviceTache.modifier(selectedTask);
             System.out.println("✅ Tâche mise à jour avec succès !");

@@ -16,8 +16,6 @@ import java.sql.SQLException;
 
 public class AjoutFournisseur {
 
-
-
     @FXML
     private TextField nomField;
 
@@ -25,37 +23,60 @@ public class AjoutFournisseur {
     private ComboBox<String> typeServiceComboBox;
 
     @FXML
-    private ComboBox<String> contratComboBox; // New ComboBox for contract state
+    private ComboBox<String> contratComboBox;
+
+    @FXML
+    private TextField numTelField;
 
     private final ServiceFournisseur serviceFournisseur = new ServiceFournisseur();
-    @FXML
-    private TextField numTelField; // New field for phone number
 
     @FXML
     private void handleSubmit() {
         try {
+            if (!validateInput()) {
+                return;
+            }
+
             Fournisseur fournisseur = new Fournisseur();
             Evenement evenement = new Evenement();
             evenement.setEvenement_id(4);
+
             fournisseur.setNom(nomField.getText());
             fournisseur.setTypeService(typeServiceComboBox.getValue());
-            fournisseur.setContrat(contratComboBox.getValue()); // Get selected value from dropdown
+            fournisseur.setContrat(contratComboBox.getValue());
             fournisseur.setEvenement(evenement);
-            fournisseur.setNum_tel(Integer.parseInt(numTelField.getText())); // Get phone number
+            fournisseur.setNum_tel(Integer.parseInt(numTelField.getText()));
+
             serviceFournisseur.ajouter(fournisseur);
             System.out.println("✅ Fournisseur ajouté avec succès !");
-            // Chargement de la vue des détails
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/EventTache.fxml"));
             Parent root = loader.load();
-
-            // Changement de scène
             nomField.getScene().setRoot(root);
         } catch (IOException | SQLException e) {
-            throw new RuntimeException(e);
+            showAlert("Erreur", "Une erreur est survenue lors de l'ajout du fournisseur.");
         }
     }
 
-
+    private boolean validateInput() {
+        if (nomField.getText().isEmpty()) {
+            showAlert("Champ vide", "Le champ Nom ne peut pas être vide.");
+            return false;
+        }
+        if (typeServiceComboBox.getValue() == null) {
+            showAlert("Sélection requise", "Veuillez sélectionner un type de service.");
+            return false;
+        }
+        if (contratComboBox.getValue() == null) {
+            showAlert("Sélection requise", "Veuillez sélectionner un état de contrat.");
+            return false;
+        }
+        if (!numTelField.getText().matches("\\d{8,15}")) {
+            showAlert("Numéro invalide", "Le numéro de téléphone doit contenir uniquement des chiffres et avoir une longueur valide (8-15 caractères).");
+            return false;
+        }
+        return true;
+    }
 
     private void showAlert(String title, String content) {
         Alert alert = new Alert(Alert.AlertType.ERROR);

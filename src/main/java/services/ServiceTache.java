@@ -104,6 +104,8 @@ public class ServiceTache implements IService<Tache> {
 
     /** ✅ AFFICHER LES TÂCHES PAR ÉVÉNEMENT */
     public List<Tache> afficherParEvenement(int evenementId) throws SQLException {
+        ServiceFournisseur serviceFournisseur = new ServiceFournisseur();
+        ServiceEvenement serviceEvenement = new ServiceEvenement();
         String sql = "SELECT * FROM `tache` WHERE `evenement_id` = ?";
         List<Tache> taches = new ArrayList<>();
 
@@ -118,8 +120,8 @@ public class ServiceTache implements IService<Tache> {
                     resultSet.getString("description"),
                     resultSet.getString("statut"),
                     resultSet.getDate("date_limite"),
-                    null,
-                    null,
+                    serviceEvenement.getEvenementById(resultSet.getInt("evenement_id")),
+                    serviceFournisseur.rechercherParId(resultSet.getInt("fournisseur_id")),
                     resultSet.getString("priorite"),
                     resultSet.getString("user_associe")
             ));
@@ -130,6 +132,8 @@ public class ServiceTache implements IService<Tache> {
 
     /** ✅ AFFICHER LES TÂCHES "EN COURS" */
     public List<Tache> afficherTachesEnCours() throws SQLException {
+        ServiceFournisseur serviceFournisseur = new ServiceFournisseur();
+        ServiceEvenement serviceEvenement = new ServiceEvenement();
         String sql = "SELECT * FROM `tache` WHERE `statut` = 'En Cours'";
         List<Tache> taches = new ArrayList<>();
 
@@ -143,8 +147,8 @@ public class ServiceTache implements IService<Tache> {
                     resultSet.getString("description"),
                     resultSet.getString("statut"),
                     resultSet.getDate("date_limite"),
-                    null,
-                    null,
+                    serviceEvenement.getEvenementById(resultSet.getInt("evenement_id")),
+                    serviceFournisseur.rechercherParId(resultSet.getInt("fournisseur_id")),
                     resultSet.getString("priorite"),
                     resultSet.getString("user_associe")
             ));
@@ -155,6 +159,8 @@ public class ServiceTache implements IService<Tache> {
 
     /** ✅ AFFICHER LES TÂCHES "DONE" */
     public List<Tache> afficherTachesDone() throws SQLException {
+        ServiceFournisseur serviceFournisseur = new ServiceFournisseur();
+        ServiceEvenement serviceEvenement = new ServiceEvenement();
         String sql = "SELECT * FROM `tache` WHERE `statut` = 'Terminée'";
         List<Tache> taches = new ArrayList<>();
 
@@ -168,8 +174,8 @@ public class ServiceTache implements IService<Tache> {
                     resultSet.getString("description"),
                     resultSet.getString("statut"),
                     resultSet.getDate("date_limite"),
-                    null,
-                    null,
+                    serviceEvenement.getEvenementById(resultSet.getInt("evenement_id")),
+                    serviceFournisseur.rechercherParId(resultSet.getInt("fournisseur_id")),
                     resultSet.getString("priorite"),
                     resultSet.getString("user_associe")
             ));
