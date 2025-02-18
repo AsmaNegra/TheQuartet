@@ -16,124 +16,122 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="rootPane" prefHeight="652.0" prefWidth="1282.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.EvenementAllController">
-   <children>
-      <TableView fx:id="evenementTable" layoutX="401.0" layoutY="100.0" prefHeight="475.0" prefWidth="868.0">
-        <columns>
-          <TableColumn fx:id="nomColumn" prefWidth="75.0" text="Nom" />
-          <TableColumn fx:id="descriptionColumn" prefWidth="75.0" text="Description" />
-            <TableColumn fx:id="dateDebutColumn" prefWidth="144.0" text="Date de début" />
-            <TableColumn fx:id="dateFinColumn" prefWidth="128.800048828125" text="Date de fin" />
-            <TableColumn fx:id="lieuColumn" minWidth="0.0" prefWidth="54.39996337890625" text="Lieu" />
-            <TableColumn fx:id="categorieColumn" minWidth="6.39996337890625" prefWidth="75.199951171875" text="Catégorie" />
-            <TableColumn fx:id="budgetColumn" prefWidth="75.99993896484375" text="Budget" />
-            <TableColumn fx:id="nbPlacesColumn" prefWidth="140.800048828125" text="Nombre de places" />
-            <TableColumn fx:id="actionsColumn" prefWidth="96.7999267578125" text="Action" />
-        </columns>
-      </TableView>
-      <Label layoutX="778.0" layoutY="26.0" text="Liste des événements" />
-       <Button fx:id="refreshButton" layoutX="1070.0" layoutY="62.0" mnemonicParsing="false" onAction="#loadEvenements" text="Rafraîchir" />
-       <Button fx:id="ajouterButton" layoutX="1150.0" layoutY="62.0" mnemonicParsing="false" onAction="#handleAjouterButton" text="Ajouter événement" />
-       <VBox layoutX="14.0" layoutY="35.0" prefHeight="591.0" prefWidth="362.0" scaleShape="false">
-         <opaqueInsets>
-            <Insets />
-         </opaqueInsets>
-         <children>
-            <Label fx:id="AjouterEvent" alignment="CENTER" prefHeight="18.0" prefWidth="367.0" text="Modifier ou supprimer événement" />
-            <TextField fx:id="evenementNomField" onAction="#verifierNomEvenement" prefHeight="26.0" prefWidth="308.0" promptText="Taper le nom de l'événement">
-               <VBox.margin>
-                  <Insets bottom="5.0" left="20.0" right="20.0" top="10.0" />
-               </VBox.margin>
-            </TextField>
-            <TextArea fx:id="evenementDescriptionArea" prefHeight="64.0" prefWidth="266.0" promptText="Taper la description de l'événement">
-               <VBox.margin>
-                  <Insets bottom="5.0" left="20.0" right="20.0" top="10.0" />
-               </VBox.margin>
-            </TextArea>
-            <HBox prefHeight="42.0" prefWidth="277.0" spacing="15.0">
-               <VBox.margin>
-                  <Insets bottom="10.0" left="20.0" right="20.0" />
-               </VBox.margin>
-               <children>
-                  <DatePicker fx:id="evenementDateDebutPicker" prefHeight="26.0" prefWidth="136.0" promptText="Date de début" />
-                  <Spinner fx:id="evenementHeureDebutField" editable="true" prefHeight="26.0" prefWidth="118.0" />
-               </children>
-            </HBox>
-            <HBox spacing="15.0">
-               <children>
-                  <DatePicker fx:id="evenementDateFinPicker" prefHeight="26.0" prefWidth="136.0" promptText="Date de fin" />
-                  <Spinner fx:id="evenementHeureFinField" editable="true" prefHeight="26.0" prefWidth="118.0">
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
-                  </Spinner>
-               </children>
-               <VBox.margin>
-                  <Insets bottom="10.0" left="20.0" right="20.0" />
-               </VBox.margin>
-            </HBox>
-            <TextField fx:id="evenementLieuField" prefHeight="26.0" prefWidth="266.0" promptText="Taper le lieu de l'événement">
-               <VBox.margin>
-                  <Insets bottom="5.0" left="20.0" right="20.0" top="5.0" />
-               </VBox.margin>
-            </TextField>
-            <ComboBox fx:id="evenementCategorieComboBox" editable="true" prefHeight="26.0" prefWidth="324.0" promptText="Choisir la catégorie de l'événement">
-               <VBox.margin>
-                  <Insets bottom="5.0" left="20.0" right="20.0" top="10.0" />
-               </VBox.margin>
-            </ComboBox>
-            <HBox>
-               <children>
-                  <TextField fx:id="evenementBudgetField" prefHeight="26.0" prefWidth="297.0" promptText="Taper le budget de l'événement" />
-                  <Label text="TND" />
-               </children>
-               <VBox.margin>
-                  <Insets bottom="5.0" left="20.0" right="20.0" top="10.0" />
-               </VBox.margin>
-            </HBox>
-            <TextField fx:id="evenementNbPlacesField" prefHeight="26.0" prefWidth="303.0" promptText="Taper le nombre de places de l'événement">
-               <VBox.margin>
-                  <Insets bottom="5.0" left="20.0" right="10.0" top="10.0" />
-               </VBox.margin>
-            </TextField>
-            <VBox fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="51.0" prefWidth="150.0">
-               <children>
-                  <Button fx:id="choisirImageButton" onAction="#choisirImage" prefHeight="26.0" prefWidth="136.0" text="Choisir une image" />
-                  <TextField fx:id="evenementImageField" editable="false" prefHeight="26.0" prefWidth="136.0" visible="false" />
-               </children>
-               <VBox.margin>
-                  <Insets bottom="5.0" left="20.0" right="20.0" top="5.0" />
-               </VBox.margin>
-            </VBox>
-            <ImageView fx:id="imagePreview" fitHeight="113.0" fitWidth="133.0" preserveRatio="true">
-               <VBox.margin>
-                  <Insets left="180.0" />
-               </VBox.margin>
-            </ImageView>
-            <Button fx:id="evenementModifierButton" mnemonicParsing="false" onAction="#modifierEvenement" prefHeight="26.0" prefWidth="353.0" text="Modifier">
-               <VBox.margin>
-                  <Insets bottom="5.0" left="20.0" right="20.0" top="10.0" />
-               </VBox.margin>
-            </Button>
-            <Button fx:id="evenementSupprimerButton" mnemonicParsing="false" onAction="#supprimerEvenement" prefHeight="26.0" prefWidth="353.0" text="Supprimer">
-               <VBox.margin>
-                  <Insets bottom="5.0" left="20.0" right="20.0" top="5.0" />
-               </VBox.margin>
-            </Button>
-         </children>
-      </VBox>
-      <Button fx:id="evenementFermerButton" layoutX="1215.0" layoutY="600.0" mnemonicParsing="false" onAction="#handleFermerButton" text="Fermer" />
-       <HBox alignment="CENTER_LEFT" layoutX="401.0" layoutY="62.0" spacing="10">
-           <Label text="Rechercher :" />
-           <TextField fx:id="rechercheField" prefWidth="200" promptText="Rechercher..." />
-           <Button fx:id="effacerRechercheButton" onAction="#effacerRecherche" text="×" />
-       </HBox>
+<AnchorPane fx:id="rootPane" prefHeight="781.0" prefWidth="1365.0" styleClass="background_color" stylesheets="@style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.EvenementAllController">
+    <children>
+        <VBox layoutX="14.0" layoutY="35.0" prefHeight="591.0" prefWidth="362.0" spacing="10" styleClass="colored_card,task-form">
+            <padding>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+            </padding>
+            <children>
+                <Label fx:id="AjouterEvent" alignment="CENTER" style="-fx-font-size: 16; -fx-font-weight: bold;" styleClass="task-form" text="Modifier ou supprimer événement" />
 
-       <HBox alignment="CENTER_LEFT" layoutX="730.0" layoutY="62.0" spacing="10">
-           <Label text="Trier par :" />
-           <ComboBox fx:id="colonneTriComboBox" prefWidth="150" />
-           <CheckBox fx:id="triDescendantCheckBox" text="Tri descendant" />
-       </HBox>
+                <TextField fx:id="evenementNomField" onAction="#verifierNomEvenement" promptText="Taper le nom de l'événement" styleClass="task-form" />
 
-   </children>
+                <TextArea fx:id="evenementDescriptionArea" promptText="Taper la description de l'événement" styleClass="task-form" />
+
+                <HBox spacing="15" styleClass="transparent_bg">
+                    <children>
+                        <DatePicker fx:id="evenementDateDebutPicker" promptText="Date de début" styleClass="task-form" HBox.hgrow="ALWAYS" />
+                        <Spinner fx:id="evenementHeureDebutField" editable="true" styleClass="task-form" HBox.hgrow="ALWAYS" />
+                    </children>
+                </HBox>
+
+                <HBox spacing="15" styleClass="transparent_bg">
+                    <children>
+                        <DatePicker fx:id="evenementDateFinPicker" promptText="Date de fin" styleClass="task-form" HBox.hgrow="ALWAYS" />
+                        <Spinner fx:id="evenementHeureFinField" editable="true" styleClass="task-form" HBox.hgrow="ALWAYS" />
+                    </children>
+                </HBox>
+
+                <TextField fx:id="evenementLieuField" promptText="Taper le lieu de l'événement" styleClass="task-form" />
+
+                <ComboBox fx:id="evenementCategorieComboBox" editable="true" promptText="Choisir la catégorie de l'événement" styleClass="task-form" />
+
+                <HBox spacing="10" styleClass="transparent_bg">
+                    <children>
+                        <TextField fx:id="evenementBudgetField" promptText="Taper le budget de l'événement" styleClass="task-form" HBox.hgrow="ALWAYS" />
+                        <Label styleClass="task-form" text="TND" />
+                    </children>
+                </HBox>
+
+                <TextField fx:id="evenementNbPlacesField" promptText="Taper le nombre de places de l'événement" styleClass="task-form" />
+
+                <VBox spacing="10" styleClass="transparent_bg">
+                    <children>
+                        <Button fx:id="choisirImageButton" onAction="#choisirImage" styleClass="colored_card" text="Choisir une image" />
+                        <TextField fx:id="evenementImageField" editable="false" visible="false" />
+                    </children>
+                </VBox>
+
+                <ImageView fx:id="imagePreview" fitHeight="113.0" fitWidth="133.0" preserveRatio="true" />
+
+                <HBox spacing="10" styleClass="transparent_bg">
+                    <children>
+                        <Button fx:id="evenementModifierButton" onAction="#modifierEvenement" styleClass="colored_card" text="Modifier" HBox.hgrow="ALWAYS" />
+                        <Button fx:id="evenementSupprimerButton" onAction="#supprimerEvenement" styleClass="colored_card" text="Supprimer" HBox.hgrow="ALWAYS" />
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+
+        <VBox layoutX="401.0" layoutY="59.0" prefHeight="662.0" prefWidth="950.0" spacing="10" styleClass="transparent_bg">
+            <HBox alignment="CENTER_LEFT" spacing="20" styleClass="transparent_bg" AnchorPane.topAnchor="62.0">
+                <!-- Premier HBox : Recherche -->
+                <HBox alignment="CENTER_LEFT" spacing="10" styleClass="transparent_bg">
+                    <Label styleClass="colored_card" text="Rechercher :" />
+                    <TextField fx:id="rechercheField" prefWidth="200" promptText="Rechercher..." styleClass="colored_card" />
+                    <Button fx:id="effacerRechercheButton" onAction="#effacerRecherche" styleClass="colored_card" text="×" />
+                </HBox>
+
+                <!-- Deuxième HBox : Tri -->
+                <HBox alignment="CENTER_LEFT" spacing="10" styleClass="transparent_bg">
+                    <Label styleClass="colored_card" text="Trier par :">
+                        <padding>
+                            <Insets bottom="2.0" left="5.0" right="2.0" top="1.0" />
+                        </padding>
+                    </Label>
+                    <ComboBox fx:id="colonneTriComboBox" prefHeight="17.0" prefWidth="150" styleClass="colored_card" />
+                    <CheckBox fx:id="triDescendantCheckBox" prefHeight="19.0" prefWidth="126.0" styleClass="colored_card" text="Tri descendant">
+                        <padding>
+                            <Insets bottom="2.0" left="5.0" right="2.0" top="1.0" />
+                        </padding>
+                    </CheckBox>
+                </HBox>
+
+                <!-- Troisième HBox : Boutons d'actions -->
+                <HBox alignment="CENTER_LEFT" spacing="10" styleClass="transparent_bg">
+                    <Button fx:id="refreshButton" onAction="#loadEvenements" styleClass="colored_card" text="Rafraîchir">
+                        <HBox.margin>
+                            <Insets />
+                        </HBox.margin>
+                    </Button>
+                    <Button fx:id="ajouterButton" onAction="#handleAjouterButton" styleClass="colored_card" text="Ajouter événement" />
+                </HBox>
+            </HBox>
+
+
+
+            <TableView fx:id="evenementTable" prefHeight="622.0" prefWidth="910.0" styleClass="pane">
+                <columns>
+                    <TableColumn fx:id="nomColumn" prefWidth="75.0" text="Nom" />
+                    <TableColumn fx:id="descriptionColumn" prefWidth="75.0" text="Description" />
+                    <TableColumn fx:id="dateDebutColumn" prefWidth="144.0" text="Date de début" />
+                    <TableColumn fx:id="dateFinColumn" prefWidth="128.800048828125" text="Date de fin" />
+                    <TableColumn fx:id="lieuColumn" minWidth="0.0" prefWidth="54.39996337890625" text="Lieu" />
+                    <TableColumn fx:id="categorieColumn" minWidth="6.39996337890625" prefWidth="75.199951171875" text="Catégorie" />
+                    <TableColumn fx:id="budgetColumn" prefWidth="75.99993896484375" text="Budget" />
+                    <TableColumn fx:id="nbPlacesColumn" prefWidth="140.800048828125" text="Nombre de places" />
+                    <TableColumn fx:id="actionsColumn" prefWidth="136.80002441406248" text="Action" />
+                </columns>
+            </TableView>
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </padding>
+        </VBox>
+
+
+
+        <Button fx:id="evenementFermerButton" layoutX="1193.0" layoutY="726.0" onAction="#handleFermerButton" prefHeight="38.0" prefWidth="75.0" styleClass="colored_card" text="Fermer" />
+      <Label layoutX="726.0" layoutY="14.0" style="-fx-font-size: 30; -fx-font-weight: bold;" text="Liste des événements" />
+    </children>
 </AnchorPane>
