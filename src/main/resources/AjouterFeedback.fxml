@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AjouterFeedbackController">
+    <children>
+        <VBox spacing="15" layoutX="50" layoutY="30" prefWidth="500">
+            <children>
+                <Label text="Ajouter un feedback pour l'événement :" style="-fx-font-size: 16;"/>
+                <Label fx:id="nomEvenementLabel" style="-fx-font-weight: bold; -fx-font-size: 14;"/>
+
+                <Label text="Note (1-5) :"/>
+                <Spinner fx:id="noteSpinner" min="1" max="5" initialValue="5" editable="true" prefWidth="100"/>
+
+                <Label text="Commentaire :"/>
+                <TextArea fx:id="commentaireArea" prefHeight="150" prefWidth="500" wrapText="true"/>
+
+                <HBox spacing="10" alignment="CENTER_RIGHT">
+                    <Button fx:id="ajouterButton" text="Ajouter" onAction="#ajouterFeedback"/>
+                    <Button fx:id="annulerButton" text="Annuler" onAction="#annuler"/>
+                </HBox>
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>

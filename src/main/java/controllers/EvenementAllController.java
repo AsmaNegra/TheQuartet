@@ -2,6 +2,8 @@ package controllers;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+
+import java.util.Comparator;
 import java.util.Optional;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -47,6 +49,7 @@ import java.io.IOException;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class EvenementAllController {
 
@@ -130,6 +133,18 @@ public class EvenementAllController {
 
     @FXML
     private Button evenementSupprimerButton;
+
+    @FXML
+    private Button effacerRechercheButton;
+
+    @FXML
+    private TableColumn<Evenement, Void> actionsColumn;
+
+    @FXML
+    private ComboBox<String> colonneTriComboBox;
+
+    @FXML
+    private CheckBox triDescendantCheckBox;
 
     @FXML
     private TextField rechercheField;
@@ -231,6 +246,35 @@ public class EvenementAllController {
         budgetColumn.setCellValueFactory(new PropertyValueFactory<>("budget"));
         nbPlacesColumn.setCellValueFactory(new PropertyValueFactory<>("nb_places"));
 
+        LocalDate aujourdhui = LocalDate.now();
+
+        evenementDateDebutPicker.setDayCellFactory(picker -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                setDisable(empty || date.isBefore(aujourdhui));
+            }
+        });
+
+        evenementDateFinPicker.setDayCellFactory(picker -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                LocalDate dateDebut = evenementDateDebutPicker.getValue();
+                setDisable(empty || date.isBefore(aujourdhui) ||
+                    (dateDebut != null && date.isBefore(dateDebut)));
+            }
+        });
+
+        evenementDateDebutPicker.valueProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal != null) {
+                LocalDate dateFin = evenementDateFinPicker.getValue();
+                if (dateFin != null && dateFin.isBefore(newVal)) {
+                    evenementDateFinPicker.setValue(newVal);
+                }
+            }
+        });
+
         // Initialize time spinners
         initializeTimeSpinners();
 
@@ -257,6 +301,94 @@ public class EvenementAllController {
         rechercheField.textProperty().addListener((observable, oldValue, newValue) -> {
             filtrerEvenements(newValue);
         });
+
+        initializeActionsColumn();
+
+        // Configurer le bouton d'effacement
+        effacerRechercheButton.setVisible(false);
+        effacerRechercheButton.setStyle(
+            "-fx-background-radius: 15;" +
+                "-fx-min-width: 30;" +
+                "-fx-min-height: 30;" +
+                "-fx-font-size: 14;"
+        );
+
+        // Ajouter le listener pour la visibilité du bouton
+        rechercheField.textProperty().addListener((observable, oldValue, newValue) -> {
+            effacerRechercheButton.setVisible(!newValue.isEmpty());
+        });
+
+        colonneTriComboBox.getItems().addAll(
+            "Aucun tri",
+            "Nom",
+            "Description",
+            "Date de début",
+            "Date de fin",
+            "Lieu",
+            "Catégorie",
+            "Budget",
+            "Nombre de places"
+        );
+        colonneTriComboBox.setValue("Aucun tri");
+
+        // Ajouter les listeners pour le tri
+        colonneTriComboBox.valueProperty().addListener((obs, oldVal, newVal) -> appliquerTri());
+        triDescendantCheckBox.selectedProperty().addListener((obs, oldVal, newVal) -> appliquerTri());
+
+        // Listener pour la recherche
+        rechercheField.textProperty().addListener((observable, oldValue, newValue) -> {
+            filtrerEvenements(newValue);
+        });
+
+        // Listeners pour le tri
+        colonneTriComboBox.valueProperty().addListener((obs, oldVal, newVal) -> {
+            appliquerTri();
+            // Réappliquer le filtre de recherche après le tri
+            filtrerEvenements(rechercheField.getText());
+        });
+
+        triDescendantCheckBox.selectedProperty().addListener((obs, oldVal, newVal) -> {
+            appliquerTri();
+            // Réappliquer le filtre de recherche après le tri
+            filtrerEvenements(rechercheField.getText());
+        });
+    }
+
+    private boolean validerDates() {
+        LocalDate aujourdhui = LocalDate.now();
+        LocalDate dateDebut = evenementDateDebutPicker.getValue();
+        LocalDate dateFin = evenementDateFinPicker.getValue();
+
+        if (dateDebut == null || dateFin == null) {
+            afficherAlerte("Erreur", "Dates manquantes",
+                "Veuillez sélectionner les dates de début et de fin.");
+            return false;
+        }
+
+        if (dateDebut.isBefore(aujourdhui)) {
+            afficherAlerte("Erreur", "Date invalide",
+                "La date de début doit être à partir d'aujourd'hui.");
+            return false;
+        }
+
+        if (dateFin.isBefore(dateDebut)) {
+            afficherAlerte("Erreur", "Date invalide",
+                "La date de fin doit être après la date de début.");
+            return false;
+        }
+
+        if (dateDebut.equals(dateFin)) {
+            LocalTime heureDebut = LocalTime.parse(evenementHeureDebutField.getValue());
+            LocalTime heureFin = LocalTime.parse(evenementHeureFinField.getValue());
+
+            if (heureFin.isBefore(heureDebut) || heureFin.equals(heureDebut)) {
+                afficherAlerte("Erreur", "Heure invalide",
+                    "Pour une même date, l'heure de fin doit être après l'heure de début.");
+                return false;
+            }
+        }
+
+        return true;
     }
 
     @FXML
@@ -264,11 +396,18 @@ public class EvenementAllController {
         try {
             evenementListComplete.clear();
             evenementListComplete.addAll(serviceEvenement.afficher());
-            evenementTable.setItems(evenementListComplete);
 
-            // Réappliquer le filtre de recherche si nécessaire
+            // D'abord appliquer le tri si nécessaire
+            String triActuel = colonneTriComboBox.getValue();
+            if (triActuel != null && !triActuel.equals("Aucun tri")) {
+                appliquerTri();
+            }
+
+            // Ensuite appliquer le filtre de recherche si nécessaire
             if (rechercheField.getText() != null && !rechercheField.getText().isEmpty()) {
                 filtrerEvenements(rechercheField.getText());
+            } else {
+                evenementTable.setItems(evenementListComplete);
             }
         } catch (SQLException e) {
             afficherAlerte("Erreur", "Chargement des données", e.getMessage());
@@ -304,6 +443,10 @@ public class EvenementAllController {
         if (evenementSelectionne == null) {
             afficherAlerte("Erreur", "Aucun événement sélectionné",
                 "Veuillez sélectionner un événement dans le tableau.");
+            return;
+        }
+
+        if (!validerDates()) {
             return;
         }
 
@@ -522,23 +665,34 @@ public class EvenementAllController {
         imagePreview.setImage(null);
     }
 
+
     private void filtrerEvenements(String recherche) {
         if (recherche == null || recherche.isEmpty()) {
             evenementTable.setItems(evenementListComplete);
             return;
         }
 
-        ObservableList<Evenement> evenementsFiltres = FXCollections.observableArrayList();
-        String rechercheLower = recherche.toLowerCase();
-
-        for (Evenement evenement : evenementListComplete) {
-            if (contientRecherche(evenement, rechercheLower)) {
-                evenementsFiltres.add(evenement);
-            }
-        }
+        ObservableList<Evenement> evenementsFiltres = evenementListComplete.stream()
+            .filter(evenement -> correspondARecherche(evenement, recherche.toLowerCase()))
+            .collect(Collectors.toCollection(FXCollections::observableArrayList));
 
         evenementTable.setItems(evenementsFiltres);
     }
+
+
+    private boolean correspondARecherche(Evenement evenement, String recherche) {
+        return (evenement.getNom() != null &&
+            evenement.getNom().toLowerCase().contains(recherche)) ||
+            (evenement.getDescription() != null &&
+                evenement.getDescription().toLowerCase().contains(recherche)) ||
+            (evenement.getLieu() != null &&
+                evenement.getLieu().toLowerCase().contains(recherche)) ||
+            (evenement.getCategorie() != null &&
+                evenement.getCategorie().toLowerCase().contains(recherche)) ||
+            String.valueOf(evenement.getBudget()).contains(recherche) ||
+            String.valueOf(evenement.getNb_places()).contains(recherche);
+    }
+
 
     private boolean contientRecherche(Evenement evenement, String recherche) {
         return evenement.getNom().toLowerCase().contains(recherche) ||
@@ -547,6 +701,103 @@ public class EvenementAllController {
             evenement.getCategorie().toLowerCase().contains(recherche) ||
             String.valueOf(evenement.getBudget()).contains(recherche) ||
             String.valueOf(evenement.getNb_places()).contains(recherche);
+    }
+
+    private void initializeActionsColumn() {
+        actionsColumn.setCellFactory(param -> new TableCell<>() {
+            private final Button feedbackButton = new Button("Feedback");
+
+            {
+                feedbackButton.setOnAction(event -> {
+                    Evenement evenement = getTableView().getItems().get(getIndex());
+                    ouvrirListeFeedbacks(evenement);
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(feedbackButton);
+                }
+            }
+        });
+    }
+
+    private void ouvrirListeFeedbacks(Evenement evenement) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ListeFeedbacks.fxml"));
+            Parent root = loader.load();
+
+            ListeFeedbacksController controller = loader.getController();
+            controller.initData(evenement);
+
+            Stage stage = new Stage();
+            stage.setTitle("Feedbacks - " + evenement.getNom());
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            afficherAlerte("Erreur", "Erreur d'ouverture",
+                "Impossible d'ouvrir la fenêtre des feedbacks: " + e.getMessage());
+        }
+    }
+
+    @FXML
+    private void effacerRecherche() {
+        rechercheField.clear();
+        loadEvenements(); // Recharger tous les événements
+        effacerRechercheButton.setVisible(false);
+    }
+
+    private void appliquerTri() {
+        String colonneTri = colonneTriComboBox.getValue();
+        boolean descendant = triDescendantCheckBox.isSelected();
+
+        if (colonneTri == null || colonneTri.equals("Aucun tri")) {
+            evenementTable.setItems(evenementListComplete);
+            return;
+        }
+
+        Comparator<Evenement> comparator = creerComparateur(colonneTri);
+        if (descendant) {
+            comparator = comparator.reversed();
+        }
+
+        // Trier la liste complète
+        evenementListComplete.sort(comparator);
+
+        // Réappliquer le filtre de recherche après le tri si nécessaire
+        String recherche = rechercheField.getText();
+        if (recherche != null && !recherche.isEmpty()) {
+            filtrerEvenements(recherche);
+        } else {
+            evenementTable.setItems(evenementListComplete);
+        }
+    }
+
+    private Comparator<Evenement> creerComparateur(String colonne) {
+        switch (colonne) {
+            case "Nom":
+                return Comparator.comparing(Evenement::getNom, Comparator.nullsLast(String::compareTo));
+            case "Description":
+                return Comparator.comparing(Evenement::getDescription, Comparator.nullsLast(String::compareTo));
+            case "Date de début":
+                return Comparator.comparing(Evenement::getDate_debut, Comparator.nullsLast(Timestamp::compareTo));
+            case "Date de fin":
+                return Comparator.comparing(Evenement::getDate_fin, Comparator.nullsLast(Timestamp::compareTo));
+            case "Lieu":
+                return Comparator.comparing(Evenement::getLieu, Comparator.nullsLast(String::compareTo));
+            case "Catégorie":
+                return Comparator.comparing(Evenement::getCategorie, Comparator.nullsLast(String::compareTo));
+            case "Budget":
+                return Comparator.comparing(Evenement::getBudget);
+            case "Nombre de places":
+                return Comparator.comparing(Evenement::getNb_places);
+            default:
+                return (e1, e2) -> 0;
+        }
     }
 
 }

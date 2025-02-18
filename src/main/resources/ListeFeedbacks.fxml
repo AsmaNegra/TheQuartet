@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<AnchorPane prefHeight="593.0" prefWidth="1160.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ListeFeedbacksController">
+    <children>
+        <VBox spacing="10" AnchorPane.leftAnchor="20" AnchorPane.rightAnchor="20" AnchorPane.topAnchor="20">
+            <children>
+                <HBox alignment="CENTER_LEFT" spacing="10" />
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <Label text="Rechercher :" />
+                    <TextField fx:id="rechercheField" prefWidth="200" promptText="Rechercher un feedback..." />
+                    <Button fx:id="effacerRechercheButton" onAction="#effacerRecherche" text="×" />
+
+                    <Label text="Note :"/>
+                    <ComboBox fx:id="noteFilterComboBox" prefWidth="100"/>
+
+                    <Label text="Date :"/>
+                    <DatePicker fx:id="dateFilterPicker"/>
+
+                    <Button fx:id="resetFilterButton" text="Réinitialiser les filtres"/>
+                </HBox>
+
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <Label style="-fx-font-size: 16;" text="Feedbacks pour l'événement : " />
+                    <Label fx:id="nomEvenementLabel" style="-fx-font-weight: bold; -fx-font-size: 16;" />
+                </HBox>
+
+                <TableView fx:id="feedbackTable" prefHeight="400.0" prefWidth="966.0" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="noteColumn" prefWidth="100" text="Note" />
+                        <TableColumn fx:id="commentaireColumn" prefWidth="300" text="Commentaire" />
+                        <TableColumn fx:id="dateColumn" prefWidth="150" text="Date" />
+                        <TableColumn fx:id="utilisateurColumn" prefWidth="150" text="Utilisateur" />
+                        <TableColumn fx:id="actionsColumn" prefWidth="212.79998779296875" text="Actions" />
+                    </columns>
+                </TableView>
+
+                <HBox alignment="CENTER_RIGHT" spacing="10">
+                    <Button fx:id="ajouterButton" onAction="#ajouterFeedback" text="Ajouter un feedback" />
+                    <Button fx:id="fermerButton" onAction="#fermer" text="Fermer" />
+                </HBox>
+            </children>
+            <padding>
+                <Insets bottom="10" left="10" right="10" top="10" />
+            </padding>
+        </VBox>
+    </children>
+</AnchorPane>

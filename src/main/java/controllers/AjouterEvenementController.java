@@ -139,6 +139,13 @@ public class AjouterEvenementController {
             }
         }
     }
+    private void afficherAlerte(String titre, String header, String contenu) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(titre);
+        alert.setHeaderText(header);
+        alert.setContentText(contenu);
+        alert.showAndWait();
+    }
 
     @FXML
     public void initialize() {
@@ -233,6 +240,35 @@ public class AjouterEvenementController {
             return null;
         }));
 
+        LocalDate aujourdhui = LocalDate.now();
+
+        evenementDateDebutPicker.setDayCellFactory(picker -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                setDisable(empty || date.isBefore(aujourdhui));
+            }
+        });
+
+        evenementDateFinPicker.setDayCellFactory(picker -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                LocalDate dateDebut = evenementDateDebutPicker.getValue();
+                setDisable(empty || date.isBefore(aujourdhui) ||
+                    (dateDebut != null && date.isBefore(dateDebut)));
+            }
+        });
+
+        evenementDateDebutPicker.valueProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal != null) {
+                LocalDate dateFin = evenementDateFinPicker.getValue();
+                if (dateFin != null && dateFin.isBefore(newVal)) {
+                    evenementDateFinPicker.setValue(newVal);
+                }
+            }
+        });
+
         // Chargement des catégories dans le ComboBox
         try {
             ServiceCategorie serviceCategorie = new ServiceCategorie();
@@ -256,6 +292,9 @@ public class AjouterEvenementController {
 
     @FXML
     void ajouterEvenement(ActionEvent event) {
+        if (!validerDates()) {
+            return;
+        }
         try {
             // Vérification que tous les champs sont remplis
             if (evenementNomField.getText().isEmpty() ||
@@ -355,6 +394,43 @@ public class AjouterEvenementController {
         Stage stage = (Stage) evenementFermerButton.getScene().getWindow();
         // Close the stage
         stage.close();
+    }
+
+    private boolean validerDates() {
+        LocalDate aujourdhui = LocalDate.now();
+        LocalDate dateDebut = evenementDateDebutPicker.getValue();
+        LocalDate dateFin = evenementDateFinPicker.getValue();
+
+        if (dateDebut == null || dateFin == null) {
+            afficherAlerte("Erreur", "Dates manquantes",
+                "Veuillez sélectionner les dates de début et de fin.");
+            return false;
+        }
+
+        if (dateDebut.isBefore(aujourdhui)) {
+            afficherAlerte("Erreur", "Date invalide",
+                "La date de début doit être à partir d'aujourd'hui.");
+            return false;
+        }
+
+        if (dateFin.isBefore(dateDebut)) {
+            afficherAlerte("Erreur", "Date invalide",
+                "La date de fin doit être après la date de début.");
+            return false;
+        }
+
+        if (dateDebut.equals(dateFin)) {
+            LocalTime heureDebut = LocalTime.parse(evenementHeureDebutField.getValue());
+            LocalTime heureFin = LocalTime.parse(evenementHeureFinField.getValue());
+
+            if (heureFin.isBefore(heureDebut) || heureFin.equals(heureDebut)) {
+                afficherAlerte("Erreur", "Heure invalide",
+                    "Pour une même date, l'heure de fin doit être après l'heure de début.");
+                return false;
+            }
+        }
+
+        return true;
     }
 
 
