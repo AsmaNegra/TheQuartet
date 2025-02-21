@@ -81,19 +81,16 @@ public class DetailsEvenement {
     public void setResImageEvent(String imagePath) {
         try {
             if (imagePath != null && !imagePath.isEmpty()) {
-                // Essayer de charger l'image depuis les ressources
                 String resourcePath = "/" + imagePath;
                 Image image = new Image(getClass().getResource(resourcePath).toExternalForm());
                 imageViewEvent.setImage(image);
 
-                // Ajuster l'image dans son conteneur
                 imageViewEvent.setFitWidth(200);
                 imageViewEvent.setFitHeight(150);
                 imageViewEvent.setPreserveRatio(true);
             }
         } catch (Exception e) {
             System.err.println("Erreur lors du chargement de l'image : " + e.getMessage());
-            // Optionnel : charger une image par défaut
             try {
                 Image defaultImage = new Image(getClass().getResource("/images/default-event.png").toExternalForm());
                 imageViewEvent.setImage(defaultImage);

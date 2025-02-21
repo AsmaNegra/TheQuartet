@@ -136,7 +136,7 @@
                                                    </Label>
                                                 </children>
                                              </VBox>
-                                             <Button alignment="CENTER_RIGHT" contentDisplay="TOP" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#RedirectBack" prefHeight="50.0" prefWidth="175.0" style="-fx-background-color: #ffbb62;" styleClass="pane" text="Ajouter une tache" textFill="WHITE">
+                                             <Button alignment="CENTER_RIGHT" contentDisplay="TOP" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#RedirectBack" prefHeight="50.0" prefWidth="160.0" styleClass="button_crud" text="Ajouter une tache" textFill="WHITE">
                                                 <HBox.margin>
                                                    <Insets left="150.0" />
                                                 </HBox.margin>

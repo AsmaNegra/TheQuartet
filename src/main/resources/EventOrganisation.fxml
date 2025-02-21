@@ -79,11 +79,11 @@
       </AnchorPane>
    </left>
    <center>
-      <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="549.0" prefWidth="843.0" styleClass="background_color">
+      <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="549.0" prefWidth="843.0">
          <children>
-            <ScrollPane fitToWidth="true" hbarPolicy="NEVER" layoutX="6.0" prefHeight="500.0" prefWidth="843.2" styleClass="transparent_bg" stylesheets="@styles.css" vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="0.0">
+            <ScrollPane fitToWidth="true" hbarPolicy="NEVER" layoutX="6.0" prefHeight="500.0" prefWidth="843.2" style="-fx-background-color: linear-gradient(to right, #d9e4ec, #e6f0f7);;" stylesheets="@styles.css" vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="0.0">
                <content>
-                  <VBox styleClass="transparent_bg">
+                  <VBox styleClass="background_color">
                      <children>
                         <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="800.0" style="-fx-background-radius: 0px 0px 30px 30px; -fx-border-radius: 0px 0px 30px 30px;" styleClass="pane">
                            <children>
