@@ -2,7 +2,6 @@ package services;
 
 import entities.Ticket;
 import entities.Evenement;
-import services.ServiceEvenement;
 import utils.MyDataBase;
 
 import java.sql.*;

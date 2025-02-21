@@ -8,7 +8,7 @@ public class MyDataBase {
     private final String USER ="root";
     private final String PSW="";
     private Connection connection ;
-    private static MyDataBase instance;  //attribut de classe
+    private static MyDataBase instance;
 
     public static MyDataBase getInstance() {
         if (instance==null)

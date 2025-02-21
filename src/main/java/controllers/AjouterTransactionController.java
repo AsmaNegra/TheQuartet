@@ -144,6 +144,7 @@ public class AjouterTransactionController {
     private ServiceTransaction serviceTransaction = new ServiceTransaction();
     private ServiceTransactionTicket serviceTransactionTicket = new ServiceTransactionTicket();
 
+
     private ObservableList<Ticket> ticketsDisponibles = FXCollections.observableArrayList();
     private ObservableList<Ticket> panier = FXCollections.observableArrayList();
 
@@ -270,6 +271,8 @@ public class AjouterTransactionController {
             e.printStackTrace();
         }
     }
+
+
 
 
     private void setupPanierColumn() {

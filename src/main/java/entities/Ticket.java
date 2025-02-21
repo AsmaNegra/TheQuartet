@@ -6,7 +6,7 @@ public class Ticket {
     private int id_ticket;
     private Evenement evenement;
     private String type;
-    private String statut="En attente";
+    private String statut="Disponible";
     private double prix;
     private Timestamp date_validite;
     private int nb_tickets;

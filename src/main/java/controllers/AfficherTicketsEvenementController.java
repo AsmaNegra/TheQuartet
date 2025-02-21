@@ -73,8 +73,6 @@ public class AfficherTicketsEvenementController {
         dateValiditeColumn.setCellValueFactory(new PropertyValueFactory<>("date_validite"));
         quantiteColumn.setCellValueFactory(new PropertyValueFactory<>("nb_tickets"));
         setupActionsColumn();
-
-        // Charger les événements dans la ComboBox
         try {
             List<Evenement> evenements = serviceEvenement.afficher();
             evenementComboBox.getItems().addAll(evenements);
@@ -86,7 +84,6 @@ public class AfficherTicketsEvenementController {
         // Ajouter un écouteur pour mettre à jour les détails de l'événement sélectionné
         evenementComboBox.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal != null) {
-                // Afficher les détails de l'événement
                 nomEvenementLabel.setText(newVal.getNom());
                 lieuEvenementLabel.setText(newVal.getLieu());
                 dateDebutEvenementLabel.setText(newVal.getDate_debut().toString());

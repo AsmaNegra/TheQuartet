@@ -19,11 +19,11 @@ public class HomePage extends Application {
     public void start(Stage primaryStage) {
 
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/AfficherTicketsEvenement.fxml"));
+            //Parent root = FXMLLoader.load(getClass().getResource("/AfficherTicketsEvenement.fxml"));
             //Parent root = FXMLLoader.load(getClass().getResource("/AfficherTousTickets.fxml"));
-            //Parent root = FXMLLoader.load(getClass().getResource("/AfficherTransactionUtilisateur.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("/AfficherTransactionUtilisateur.fxml"));
             //Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/AjouterTransaction.fxml")));
-            // Parent root = FXMLLoader.load(getClass().getResource("/AjouterTickets.fxml"));
+            //Parent root = FXMLLoader.load(getClass().getResource("/AjouterTickets.fxml"));
 
             Scene scene = new Scene(root);
             primaryStage.setTitle("affichage");
