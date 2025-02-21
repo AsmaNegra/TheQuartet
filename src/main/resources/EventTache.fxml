@@ -17,7 +17,7 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" styleClass="background_color" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.EventTache">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="2000.0" prefWidth="1100.0" styleClass="background_color" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.EventTache">
     <left>
         <AnchorPane prefHeight="200.0" prefWidth="45.0" style="-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0.5, 2, 2);" styleClass="sidebar" stylesheets="@styles.css" BorderPane.alignment="CENTER">
             <children>
@@ -74,6 +74,9 @@
                     </fill>
                 </Circle>
             </children>
+         <BorderPane.margin>
+            <Insets top="5.0" />
+         </BorderPane.margin>
         </AnchorPane>
     </left>
     <center>
@@ -81,7 +84,7 @@
             <children>
             <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefWidth="1043.0" styleClass="transparent_bg" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <content>
-                  <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="1067.0" prefWidth="1042.0">
+                  <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="1787.0" prefWidth="1031.0">
                      <children>
                         <HBox maxWidth="1.7976931348623157E308">
                            <VBox.margin>
@@ -149,6 +152,29 @@
                                              <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                                           </padding>
                                        </HBox>
+                                       <HBox minHeight="55.0" prefHeight="55.0" prefWidth="731.0" spacing="15.0" styleClass="pane">
+                                          <children>
+                                             <Label maxWidth="1.7976931348623157E308" style="-fx-background-color: transparent;" styleClass="pane" text="Search Engine" HBox.hgrow="ALWAYS">
+                                                <font>
+                                                   <Font size="14.0" />
+                                                </font>
+                                                <padding>
+                                                   <Insets bottom="5.0" left="10.0" right="5.0" top="5.0" />
+                                                </padding>
+                                             </Label>
+                                             <FontAwesomeIconView glyphName="SEARCH" size="15">
+                                                <HBox.margin>
+                                                   <Insets top="10.0" />
+                                                </HBox.margin>
+                                             </FontAwesomeIconView>
+                                          </children>
+                                          <padding>
+                                             <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                                          </padding>
+                                          <VBox.margin>
+                                             <Insets bottom="10.0" left="5.0" right="5.0" top="5.0" />
+                                          </VBox.margin>
+                                       </HBox>
       
                                          <!-- Kanban Board Container -->
                                          <HBox spacing="10">
@@ -195,7 +221,7 @@
                                     <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                                  </HBox.margin>
                                  <children>
-                                    <HBox prefHeight="58.0" prefWidth="210.0" styleClass="pane">
+                                    <HBox maxHeight="-Infinity" prefHeight="75.0" prefWidth="200.0" styleClass="pane">
                                        <children>
                                           <Label alignment="CENTER" contentDisplay="TOP" prefHeight="47.0" prefWidth="187.0" text="Liste des &#10;Collaborateurs" textAlignment="CENTER" textFill="#484848">
                                              <font>
@@ -216,7 +242,7 @@
                               </VBox>
                            </children>
                         </HBox>
-                        <VBox maxHeight="1.7976931348623157E308" prefHeight="314.0" prefWidth="1011.0" styleClass="pane">
+                        <VBox maxHeight="1.7976931348623157E308" prefHeight="400.0" prefWidth="1011.0" styleClass="pane">
                            <VBox.margin>
                               <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                            </VBox.margin>
@@ -230,14 +256,14 @@
                                                 <Font name="Montserrat-Bold" size="24.0" />
                                              </font>
                                           </Label>
-                                          <Label prefHeight="15.0" prefWidth="747.0" text="EventDescriptionEventDescriptionEventDescriptionEventDescriptionEventDescription&#10;EventDescriptionEventDescriptionEventDescription&#10;EventDescriptionEventDescription" textFill="#898989">
+                                          <Label prefHeight="46.0" prefWidth="747.0" text="EventDescriptionEventDescriptionEventDescriptionEventDescriptionEventDescription&#10;EventDescriptionEventDescriptionEventDescription&#10;EventDescriptionEventDescription" textFill="#898989">
                                              <font>
                                                 <Font name="Montserrat-Regular" size="12.0" />
                                              </font>
                                           </Label>
                                        </children>
                                     </VBox>
-                                    <Button alignment="CENTER_RIGHT" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#RedirectBackF" prefHeight="34.0" prefWidth="208.0" style="-fx-background-color: #ffbb62;" styleClass="pane" text="Ajouter un fournisseur" textFill="WHITE">
+                                    <Button alignment="CENTER_RIGHT" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#RedirectBackF" prefHeight="34.0" prefWidth="208.0" styleClass="button_crud" text="Ajouter un fournisseur" textFill="WHITE">
                                        <font>
                                           <Font name="Montserrat-Bold" size="16.0" />
                                        </font>
@@ -247,14 +273,37 @@
                                     </Button>
                                  </children>
                               </HBox>
+                              <HBox minHeight="55.0" prefHeight="55.0" prefWidth="731.0" spacing="15.0" styleClass="pane">
+                                 <VBox.margin>
+                                    <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                                 </VBox.margin>
+                                 <children>
+                                    <Label maxWidth="1.7976931348623157E308" style="-fx-background-color: transparent;" styleClass="pane" text="Label" HBox.hgrow="ALWAYS">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                       <padding>
+                                          <Insets bottom="5.0" left="10.0" right="5.0" top="5.0" />
+                                       </padding>
+                                    </Label>
+                                    <FontAwesomeIconView glyphName="SEARCH" size="15">
+                                       <HBox.margin>
+                                          <Insets top="10.0" />
+                                       </HBox.margin>
+                                    </FontAwesomeIconView>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                                 </padding>
+                              </HBox>
                               <HBox prefHeight="243.0" prefWidth="979.0">
                                  <children>
-                                     <VBox maxHeight="1.7976931348623157E308" prefHeight="183.0" prefWidth="647.0" styleClass="pane">
+                                     <VBox maxHeight="1.7976931348623157E308" prefHeight="245.0" prefWidth="730.0" styleClass="pane">
                                          <HBox.margin>
                                              <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                                          </HBox.margin>
                                        <children>
-                                          <ScrollPane fx:id="fournisseurList" fitToHeight="true" fitToWidth="true" prefHeight="182.0" prefWidth="678.0" style="-fx-background-radius: 20px; -fx-border-radius: 20px;" styleClass="background_color">
+                                          <ScrollPane fx:id="fournisseurList" fitToHeight="true" fitToWidth="true" minHeight="300.0" prefHeight="229.0" prefWidth="728.0" style="-fx-background-radius: 20px; -fx-border-radius: 20px;" styleClass="background_color">
                                              <padding>
                                                 <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                                              </padding>
@@ -267,6 +316,11 @@
                                           </ScrollPane>
                                        </children>
                                      </VBox>
+                                    <VBox maxHeight="1.7976931348623157E308" prefHeight="144.0" prefWidth="190.0" styleClass="pane">
+                                       <HBox.margin>
+                                          <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                                       </HBox.margin>
+                                    </VBox>
 
                                  </children>
                               </HBox>
@@ -274,6 +328,69 @@
                            <padding>
                               <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                            </padding>
+                        </VBox>
+                        <VBox maxHeight="1.7976931348623157E308" prefHeight="399.0" prefWidth="1011.0" styleClass="pane">
+                           <children>
+                              <HBox>
+                                 <children>
+                                    <VBox prefHeight="40.0" prefWidth="783.0">
+                                       <children>
+                                          <Label maxWidth="1.7976931348623157E308" prefHeight="18.0" prefWidth="370.0" text="Les Types de tickets" textFill="#434343">
+                                             <font>
+                                                <Font name="Montserrat-Bold" size="24.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                       <HBox.margin>
+                                          <Insets top="15.0" />
+                                       </HBox.margin>
+                                    </VBox>
+                                    <Button contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#RedirectBackF" prefHeight="34.0" prefWidth="183.0" styleClass="button_crud" text="Ajouter un ticket" textFill="WHITE">
+                                       <font>
+                                          <Font name="Montserrat-Bold" size="16.0" />
+                                       </font>
+                                       <HBox.margin>
+                                          <Insets bottom="10.0" right="10.0" top="10.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                 </children>
+                              </HBox>
+                              <VBox />
+                              <HBox minHeight="55.0" prefHeight="55.0" prefWidth="731.0" spacing="15.0" styleClass="pane">
+                                 <children>
+                                    <Label maxWidth="1.7976931348623157E308" style="-fx-background-color: transparent;" styleClass="pane" text="Label" HBox.hgrow="ALWAYS">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                       <padding>
+                                          <Insets bottom="5.0" left="10.0" right="5.0" top="5.0" />
+                                       </padding>
+                                    </Label>
+                                    <FontAwesomeIconView glyphName="SEARCH" size="15">
+                                       <HBox.margin>
+                                          <Insets top="10.0" />
+                                       </HBox.margin>
+                                    </FontAwesomeIconView>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                                 </padding>
+                              </HBox>
+                              <VBox maxHeight="1.7976931348623157E308" minHeight="300.0" prefHeight="181.0" prefWidth="949.0" styleClass="pane">
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                                 <VBox.margin>
+                                    <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                                 </VBox.margin>
+                              </VBox>
+                           </children>
+                           <padding>
+                              <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                           </padding>
+                           <VBox.margin>
+                              <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                           </VBox.margin>
                         </VBox>
                      </children>
                   </VBox>
