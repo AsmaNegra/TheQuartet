@@ -9,9 +9,9 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="background_color" stylesheets="@style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AjouterFeedbackController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="background_color" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AjouterFeedbackController">
     <children>
-        <VBox layoutX="50" layoutY="30" prefWidth="500" spacing="15" styleClass="colored_card,task-form" stylesheets="@style.css">
+        <VBox layoutX="50" layoutY="30" prefWidth="500" spacing="15" styleClass="colored_card,task-form" stylesheets="@styles.css">
             <children>
                 <Label style="-fx-font-size: 16;" styleClass="task-form" text="Ajouter un feedback pour l'événement :" />
                 <Label fx:id="nomEvenementLabel" style="-fx-font-weight: bold; -fx-font-size: 14;" styleClass="task-form" />

@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="852.0" prefWidth="741.0" styleClass="background_color" stylesheets="@style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AjouterEvenementController">
+<AnchorPane prefHeight="852.0" prefWidth="741.0" styleClass="background_color" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AjouterEvenementController">
     <children>
         <VBox layoutX="40.0" layoutY="20.0" prefWidth="660.0" spacing="15" styleClass="colored_card,task-form">
             <children>
