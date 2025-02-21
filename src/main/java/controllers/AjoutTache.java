@@ -63,7 +63,7 @@ public class AjoutTache {
 
     private void populateUserAssocieComboBox() {
         ServiceUtilisateurEvenement service = new ServiceUtilisateurEvenement();
-        List<Utilisateur> utilisateurs = service.getUtilisateursByEvenementId(3);
+        List<Utilisateur> utilisateurs = service.getUtilisateursByEvenementIdNour(3);
 
         userAssocieComboBox.getItems().clear();
         for (Utilisateur user : utilisateurs) {
