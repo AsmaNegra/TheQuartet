@@ -2,6 +2,8 @@ package controllers;
 
 import entities.Transaction;
 import entities.Utilisateur;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -15,8 +17,10 @@ import services.ServiceUtilisateurEvenement;
 
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.Comparator;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class AfficherTransactionUtilisateurController implements Initializable {
 
@@ -35,15 +39,22 @@ public class AfficherTransactionUtilisateurController implements Initializable {
     @FXML
     private TableColumn<Transaction, Void> actionsColumn;
     @FXML
+    private TextField searchField;
+    @FXML
+    private ComboBox<String> sortComboBox;
+    @FXML
     private Label messageLabel;
 
     private final ServiceTransaction serviceTransaction = new ServiceTransaction();
     private final ServiceUtilisateurEvenement serviceUtilisateur = new ServiceUtilisateurEvenement();
-
+    private ObservableList<Transaction> transactionsList = FXCollections.observableArrayList();
+    private ObservableList<Transaction> filteredTransactionsList = FXCollections.observableArrayList();
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         configurerColonnes();
         chargerUtilisateurs();
+        configurerRechercheEtTri();
+
     }
 
     private void configurerColonnes() {
@@ -131,6 +142,8 @@ public class AfficherTransactionUtilisateurController implements Initializable {
 
     private void afficherTransactionsUtilisateur(Utilisateur utilisateur) {
         if (utilisateur == null) {
+            transactionsList.clear();
+            filteredTransactionsList.clear();
             transactionsTable.getItems().clear();
             afficherMessageAvertissement("Aucun utilisateur sélectionné.");
             return;
@@ -138,7 +151,10 @@ public class AfficherTransactionUtilisateurController implements Initializable {
 
         try {
             List<Transaction> transactions = serviceTransaction.getTransactionsByUtilisateurId(utilisateur.getUtilisateurId());
-            transactionsTable.getItems().setAll(transactions);
+            transactionsList.setAll(transactions);
+            filteredTransactionsList.setAll(transactions);
+
+            transactionsTable.setItems(filteredTransactionsList);
 
             if (transactions.isEmpty()) {
                 afficherMessageAvertissement("Aucune transaction trouvée pour cet utilisateur.");
@@ -151,6 +167,60 @@ public class AfficherTransactionUtilisateurController implements Initializable {
         }
     }
 
+    private void configurerRechercheEtTri() {
+        searchField.textProperty().addListener((observable, oldValue, newValue) -> filtrerTransactions());
+
+        sortComboBox.getItems().addAll(
+                "Montant - Croissant", "Montant - Décroissant",
+                "Date - Croissant", "Date - Décroissant"
+        );
+
+        sortComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> trierTransactions());
+    }
+
+    private void filtrerTransactions() {
+        String searchText = searchField.getText().toLowerCase().trim();
+
+        if (searchText.isEmpty()) {
+            // Si la barre de recherche est vide, rétablir toutes les transactions de l'utilisateur sélectionné
+            filteredTransactionsList.setAll(transactionsList);
+        } else {
+            List<Transaction> filteredList = transactionsList.stream()
+                    .filter(t -> String.valueOf(t.getId_transaction()).contains(searchText) ||
+                            String.valueOf(t.getMontant_total()).contains(searchText) ||
+                            t.getMode_paiement().toLowerCase().contains(searchText))
+                    .collect(Collectors.toList());
+
+            filteredTransactionsList.setAll(filteredList);
+        }
+
+        transactionsTable.setItems(filteredTransactionsList);
+    }
+    private void trierTransactions() {
+        Comparator<Transaction> comparator = null;
+        String selectedSort = sortComboBox.getValue();
+
+        if (selectedSort != null) {
+            switch (selectedSort) {
+                case "Montant - Croissant":
+                    comparator = Comparator.comparing(Transaction::getMontant_total);
+                    break;
+                case "Montant - Décroissant":
+                    comparator = Comparator.comparing(Transaction::getMontant_total).reversed();
+                    break;
+                case "Date - Croissant":
+                    comparator = Comparator.comparing(Transaction::getDate_paiement);
+                    break;
+                case "Date - Décroissant":
+                    comparator = Comparator.comparing(Transaction::getDate_paiement).reversed();
+                    break;
+            }
+        }
+
+        if (comparator != null) {
+            FXCollections.sort(transactionsTable.getItems(), comparator);
+        }
+    }
     private void afficherMessageSucces(String message) {
         messageLabel.setText("✅ " + message);
     }

@@ -8,6 +8,7 @@
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -76,11 +77,16 @@
                             <padding>
                                 <Insets bottom="15" left="15" right="15" top="15" />
                             </padding>
+                            <TextField fx:id="searchField" prefHeight="35.0" prefWidth="150.0" promptText="Rechercher..." GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+                            <Label text="Trier par : " GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                            <ComboBox fx:id="sortComboBox" prefHeight="35.0" prefWidth="122.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+
                             <Label prefHeight="49.0" prefWidth="454.0" style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Afficher les Transactions d'un Utilisateur" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="0" />
-                            <Label prefHeight="33.0" prefWidth="150.0" styleClass="colored_card" stylesheets="@styles.css" text="   Utilisateur:" textAlignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                            <ComboBox fx:id="utilisateurComboBox" prefHeight="32.0" prefWidth="220.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                            <Label prefHeight="46.0" prefWidth="208.0" style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Transactions de l'utilisateur" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="2" />
-                            <TableView fx:id="transactionsTable" prefHeight="200.0" prefWidth="700.0" GridPane.columnIndex="0" GridPane.columnSpan="5" GridPane.rowIndex="3">
+                            <Label prefHeight="33.0" prefWidth="150.0" styleClass="colored_card" stylesheets="@styles.css" text="   Utilisateur:" textAlignment="CENTER" GridPane.rowIndex="1" />
+                            <ComboBox fx:id="utilisateurComboBox" prefHeight="32.0" prefWidth="294.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                            <Label prefHeight="46.0" prefWidth="208.0" style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Transactions de l'utilisateur" GridPane.columnSpan="2" GridPane.rowIndex="3" />
+                            <TableView fx:id="transactionsTable" prefHeight="200.0" prefWidth="700.0" GridPane.columnSpan="5" GridPane.rowIndex="4">
                                 <columns>
                                     <TableColumn fx:id="idColumn" minWidth="100" text="ID Transaction" />
                                     <TableColumn fx:id="montantColumn" minWidth="150" text="Montant Total (TND)" />
@@ -89,7 +95,7 @@
                                     <TableColumn fx:id="actionsColumn" maxWidth="180" minWidth="120" prefWidth="140" text="Actions" />
                                 </columns>
                             </TableView>
-                            <Label fx:id="messageLabel" style="-fx-text-fill: red;" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="6" />
+                            <Label fx:id="messageLabel" style="-fx-text-fill: red;" GridPane.columnSpan="2" GridPane.rowIndex="7" />
                      <columnConstraints>
                         <ColumnConstraints />
                         <ColumnConstraints />
@@ -98,6 +104,7 @@
                         <ColumnConstraints />
                      </columnConstraints>
                      <rowConstraints>
+                        <RowConstraints />
                         <RowConstraints />
                         <RowConstraints />
                         <RowConstraints />
