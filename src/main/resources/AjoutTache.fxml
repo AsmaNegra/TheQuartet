@@ -145,7 +145,7 @@
                            <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                         </GridPane.margin>
                      </Button>
-                     <Label text="Ajouter un ticket!" GridPane.columnIndex="1">
+                     <Label text="Ajouter une tache !" GridPane.columnIndex="1">
                         <font>
                            <Font name="Montserrat-Regular" size="24.0" />
                         </font>
