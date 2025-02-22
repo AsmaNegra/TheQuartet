@@ -1,16 +1,19 @@
-.parent{
+.parent {
     -fx-background-color: transparent;
     -fx-background-radius: 30px;
 }
-.sidebar{
+
+.sidebar {
     -fx-background-color: rgba(255, 255, 255, 0.69);
     -fx-background-radius: 30px 30px 0px 0px;
 
 }
-.sidebar_opt{
+
+.sidebar_opt {
     -fx-fill: #c1C1C1;
     -fx-background-color: transparent;
 }
+
 .pane {
     -fx-background-color: rgba(255, 255, 255, 0.69);
     -fx-border-color: #ede6de;
@@ -18,29 +21,42 @@
     -fx-border-radius: 30px;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0.5, 2, 2);
 }
-.background_color
-{
+
+.background_color {
     -fx-background-color: linear-gradient(to right, #efcc92, #f7eee6);;
 }
-.plus_btn{
-    -fx-background-color:transparent ;
-    -fx-border-radius:20px ;
-    -fx-background-radius:20px;
+
+.plus_btn {
+    -fx-background-color: transparent;
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
     -fx-border-color: #ddc8b0;
-    -fx-border-style:dashed ;
+    -fx-border-style: dashed;
+    -fx-cursor: hand;
+    -fx-transition: all 0.3s ease;
 }
-.colored_card{
-    -fx-background-color: radial-gradient(focus-angle 78.69deg, focus-distance 40.367% , center 44.6903% 100.0%, radius 86.6972%, rgba(244, 150, 23, 0.93) 0.0%, rgba(255, 255, 255, 0.69) 100.0%);
-    -fx-border-radius:20px ;
-    -fx-background-radius:20px;
+
+.plus_btn:hover {
+    -fx-background-color: rgba(244, 150, 23, 0.1);
+    -fx-border-color: #f49617;
+    -fx-effect: dropshadow(gaussian, rgba(244, 150, 23, 0.3), 10, 0, 0, 0);
+}
+
+.plus_btn:hover .ikonli-font-icon {
+    -fx-fill: #f49617;
+}
+
+.colored_card {
+    -fx-background-color: radial-gradient(focus-angle 78.69deg, focus-distance 40.367%, center 44.6903% 100.0%, radius 86.6972%, rgba(244, 150, 23, 0.93) 0.0%, rgba(255, 255, 255, 0.69) 100.0%);
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
     -fx-border-color: #ede6de;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0.5, 2, 2);
 }
 
 
-
 .scroll-pane .viewport {
-    -fx-background-color: transparent ;
+    -fx-background-color: transparent;
 }
 
 /* Scrollbar styling */
@@ -62,7 +78,8 @@
     -fx-padding: 0;
     -fx-shape: "";
 }
-.transparent_bg{
+
+.transparent_bg {
     -fx-background-color: transparent;
 }
 
@@ -142,14 +159,16 @@
 .task-form Button:pressed {
     -fx-background-color: #c36e0b;
 }
+
 .pane_event {
     -fx-background-image: url('/images/events/4_download.jpg');
-    -fx-background-size: cover;  /* Scale to cover the pane */
+    -fx-background-size: cover; /* Scale to cover the pane */
     -fx-background-repeat: no-repeat; /* Prevent tiling */
     -fx-background-position: bottom; /* Center the image */
     -fx-background-radius: 30px;
     -fx-border-radius: 30px;
 }
+
 .button_crud {
     -fx-background-color: linear-gradient(to right, #ff992d, rgba(255, 166, 75, 0.79));
     -fx-text-fill: white;
@@ -168,6 +187,7 @@
     -fx-background-color: linear-gradient(to right, #df8626, rgba(225, 134, 42, 0.79));
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0, 0, 5);
 }
+
 /* TableView Styling */
 .table-view {
     -fx-background-color: transparent;
@@ -197,9 +217,82 @@
     -fx-cursor: hand;
     -fx-font-size: 14px;
 }
+
 .icon {
     -fx-font-family: "FontAwesome";
     -fx-font-size: 18px;
     -fx-fill: #17a2b8;
     -fx-cursor: hand;
+}
+
+.event-container {
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+}
+
+.event-container:hover .colored_card {
+    -fx-effect: dropshadow(gaussian, rgba(244, 150, 23, 0.3), 10, 0.5, 0, 0);
+}
+
+.event-title {
+    -fx-font-family: "Montserrat Bold";
+    -fx-font-size: 16px;
+    -fx-text-fill: #333333;
+}
+
+.event-details {
+    -fx-font-family: "Montserrat";
+    -fx-font-size: 12px;
+    -fx-text-fill: #666666;
+}
+
+.event-category {
+    -fx-font-family: "Montserrat SemiBold";
+    -fx-font-size: 14px;
+    -fx-text-fill: #f49617;
+    -fx-padding: 5px 10px;
+    -fx-background-color: rgba(244, 150, 23, 0.1);
+    -fx-background-radius: 15px;
+}
+
+.scroll-pane {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+/* Style de la barre de défilement horizontale */
+.scroll-pane .scroll-bar:horizontal {
+    -fx-background-color: transparent;
+    -fx-pref-height: 10px;
+}
+
+.scroll-pane .scroll-bar:horizontal .thumb {
+    -fx-background-color: #f49617;
+    -fx-background-radius: 5px;
+}
+
+/* Cacher les boutons de la barre de défilement */
+.scroll-pane .scroll-bar:horizontal .increment-button,
+.scroll-pane .scroll-bar:horizontal .decrement-button {
+    -fx-background-color: transparent;
+    -fx-background-radius: 0em;
+    -fx-padding: 0 0 10 0;
+}
+
+.scroll-pane .scroll-bar .increment-arrow,
+.scroll-pane .scroll-bar .decrement-arrow {
+    -fx-padding: 0;
+}
+
+.button_retour {
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+}
+
+.button_retour:hover {
+    -fx-opacity: 0.8;
 }

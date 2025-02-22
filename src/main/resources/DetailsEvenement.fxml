@@ -10,8 +10,11 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="688.0" prefWidth="741.0" styleClass="background_color" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.DetailsEvenement">
+<?import javafx.scene.control.ScrollPane?>
+<AnchorPane prefHeight="600.0" prefWidth="741.0" styleClass="background_color" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.DetailsEvenement">
     <children>
+        <ScrollPane fitToWidth="true" styleClass="transparent_bg" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+        <content>
         <VBox layoutX="50" layoutY="30" prefWidth="641" spacing="15" styleClass="colored_card,task-form" stylesheets="@styles.css">
             <padding>
                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -91,5 +94,7 @@
                 </HBox>
             </children>
         </VBox>
+        </content>
+        </ScrollPane>
     </children>
 </AnchorPane>

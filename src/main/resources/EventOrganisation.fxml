@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
-<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -21,261 +20,256 @@
 <?import javafx.scene.text.Text?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" styleClass="background_color" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.EventOrganisation">
-   <left>
-      <AnchorPane prefHeight="200.0" prefWidth="45.0" styleClass="sidebar" stylesheets="@styles.css" BorderPane.alignment="CENTER">
-         <children>
-            <FontAwesomeIconView fill="#797878" glyphName="BARS" layoutX="20.2" layoutY="30.628571701049804" selectionFill="#bc802d" size="1.5em" text="" wrappingWidth="23.199981689453125" AnchorPane.leftAnchor="20.2" AnchorPane.rightAnchor="13.40001831054687" AnchorPane.topAnchor="15.2" />
-            <VBox layoutX="20.0" layoutY="119.0">
-               <children>
-                  <FontAwesomeIconView fill="#f49617" glyphName="SITEMAP" size="1.5em" />
-                  <FontAwesomeIconView glyphName="GIFT" size="1.5em" styleClass="sidebar_opt">
-                     <VBox.margin>
-                        <Insets top="15.0" />
-                     </VBox.margin>
-                  </FontAwesomeIconView>
-                  <FontAwesomeIconView glyphName="USER" size="1.5em" styleClass="sidebar_opt" textAlignment="CENTER" wrappingWidth="16.857142448425293">
-                     <VBox.margin>
-                        <Insets top="15.0" />
-                     </VBox.margin>
-                  </FontAwesomeIconView>
-                  <FontAwesomeIconView glyphName="HOME" size="1.5em" styleClass="sidebar_opt" wrappingWidth="16.857142448425293">
-                     <VBox.margin>
-                        <Insets top="15.0" />
-                     </VBox.margin>
-                  </FontAwesomeIconView>
-                  <Separator>
-                     <VBox.margin>
-                        <Insets bottom="15.0" top="15.0" />
-                     </VBox.margin>
-                  </Separator>
-                  <FontAwesomeIconView fill="#797878" glyphName="PLUS" size="1.5em">
-                     <VBox.margin>
+    <left>
+        <AnchorPane prefHeight="200.0" prefWidth="45.0" styleClass="sidebar" stylesheets="@styles.css" BorderPane.alignment="CENTER">
+            <children>
+                <FontAwesomeIconView fill="#797878" glyphName="BARS" layoutX="20.2" layoutY="30.628571701049804" selectionFill="#bc802d" size="1.5em" text="" wrappingWidth="23.199981689453125" AnchorPane.leftAnchor="20.2" AnchorPane.rightAnchor="13.40001831054687" AnchorPane.topAnchor="15.2" />
+                <VBox layoutX="20.0" layoutY="119.0">
+                    <children>
+                        <FontAwesomeIconView fill="#f49617" glyphName="SITEMAP" size="1.5em" />
+                        <FontAwesomeIconView glyphName="GIFT" size="1.5em" styleClass="sidebar_opt">
+                            <VBox.margin>
+                                <Insets top="15.0" />
+                            </VBox.margin>
+                        </FontAwesomeIconView>
+                        <FontAwesomeIconView glyphName="USER" size="1.5em" styleClass="sidebar_opt" textAlignment="CENTER" wrappingWidth="16.857142448425293">
+                            <VBox.margin>
+                                <Insets top="15.0" />
+                            </VBox.margin>
+                        </FontAwesomeIconView>
+                        <FontAwesomeIconView glyphName="HOME" size="1.5em" styleClass="sidebar_opt" wrappingWidth="16.857142448425293">
+                            <VBox.margin>
+                                <Insets top="15.0" />
+                            </VBox.margin>
+                        </FontAwesomeIconView>
+                        <Separator>
+                            <VBox.margin>
+                                <Insets bottom="15.0" top="15.0" />
+                            </VBox.margin>
+                        </Separator>
+                        <FontAwesomeIconView fill="#797878" glyphName="PLUS" size="1.5em">
+                            <VBox.margin>
+                                <Insets />
+                            </VBox.margin>
+                        </FontAwesomeIconView>
+                    </children>
+                    <opaqueInsets>
                         <Insets />
-                     </VBox.margin>
-                  </FontAwesomeIconView>
-               </children>
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
-            </VBox>
-            <Circle layoutX="26.0" layoutY="472.0" radius="14.0" stroke="WHITE" strokeType="INSIDE" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0">
-               <fill>
-                  <RadialGradient centerX="0.44690266330685235" centerY="1.0" focusAngle="78.69" focusDistance="0.4036697772664759" radius="0.8669724770642202">
-                     <stops>
-                        <Stop>
-                           <color>
-                              <Color red="0.95686274766922" green="0.5882353186607361" blue="0.09019608050584793" />
-                           </color>
-                        </Stop>
-                        <Stop offset="1.0">
-                           <color>
-                              <Color red="1.0" green="1.0" blue="1.0" />
-                           </color>
-                        </Stop>
-                     </stops>
-                  </RadialGradient>
-               </fill>
-            </Circle>
-         </children>
-      </AnchorPane>
-   </left>
-   <center>
-      <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="549.0" prefWidth="843.0" styleClass="transparent_bg">
-         <children>
-            <ScrollPane fitToWidth="true" hbarPolicy="NEVER" layoutX="6.0" prefHeight="500.0" prefWidth="843.2" styleClass="transparent_bg" stylesheets="@styles.css" vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="0.0">
-               <content>
-                  <VBox styleClass="viewport">
-                     <children>
-                        <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="800.0" style="-fx-background-radius: 0px 0px 30px 30px; -fx-border-radius: 0px 0px 30px 30px;" styleClass="pane">
-                           <children>
-                              <HBox prefHeight="42.0" prefWidth="762.0">
-                                 <children>
-                                    <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
-                                       <HBox.margin>
-                                          <Insets bottom="5.0" left="15.0" right="5.0" top="15.0" />
-                                       </HBox.margin>
-                                       <image>
-                                          <Image url="@images/Orchestra/1.png" />
-                                       </image>
-                                    </ImageView>
-                                    <Separator orientation="VERTICAL" prefHeight="200.0" />
-                                    <Label alignment="CENTER" layoutX="10.0" layoutY="10.0" maxHeight="1.7976931348623157E308" text="Ravi de vous revoir !" HBox.hgrow="ALWAYS">
-                                       <padding>
-                                          <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
-                                       </padding>
-                                       <font>
-                                          <Font name="Montserrat-Regular" size="18.0" />
-                                       </font>
-                                       <HBox.margin>
-                                          <Insets top="10.0" />
-                                       </HBox.margin>
-                                    </Label>
-                                    <Label alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text=" 16:49 16/02/2025" textFill="#818181" HBox.hgrow="ALWAYS">
-                                       <padding>
-                                          <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
-                                       </padding>
-                                       <font>
-                                          <Font name="Montserrat-Regular" size="14.0" />
-                                       </font>
-                                       <HBox.margin>
-                                          <Insets top="10.0" />
-                                       </HBox.margin>
-                                    </Label>
-                                 </children>
-                              </HBox>
-                              <HBox maxWidth="1.7976931348623157E308" prefHeight="140.0" prefWidth="200.0">
-                                 <children>
-                                    <VBox prefHeight="150.0" prefWidth="798.0" HBox.hgrow="ALWAYS">
-                                       <children>
-                                          <Text fill="#616161" strokeType="OUTSIDE" strokeWidth="0.0" text="Prêt à organiser votre prochain événement ?">
-                                             <VBox.margin>
+                    </opaqueInsets>
+                </VBox>
+                <Circle layoutX="26.0" layoutY="472.0" radius="14.0" stroke="WHITE" strokeType="INSIDE" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0">
+                    <fill>
+                        <RadialGradient centerX="0.44690266330685235" centerY="1.0" focusAngle="78.69" focusDistance="0.4036697772664759" radius="0.8669724770642202">
+                            <stops>
+                                <Stop>
+                                    <color>
+                                        <Color red="0.95686274766922" green="0.5882353186607361" blue="0.09019608050584793" />
+                                    </color>
+                                </Stop>
+                                <Stop offset="1.0">
+                                    <color>
+                                        <Color red="1.0" green="1.0" blue="1.0" />
+                                    </color>
+                                </Stop>
+                            </stops>
+                        </RadialGradient>
+                    </fill>
+                </Circle>
+            </children>
+        </AnchorPane>
+    </left>
+    <center>
+        <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="549.0" prefWidth="843.0" styleClass="transparent_bg">
+            <children>
+                <ScrollPane fitToWidth="true" hbarPolicy="NEVER" layoutX="6.0" prefHeight="500.0" prefWidth="843.2" styleClass="transparent_bg" stylesheets="@styles.css" vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="0.0">
+                    <content>
+                        <VBox styleClass="viewport">
+                            <children>
+                                <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="800.0" style="-fx-background-radius: 0px 0px 30px 30px; -fx-border-radius: 0px 0px 30px 30px;" styleClass="pane">
+                                    <children>
+                                        <HBox prefHeight="42.0" prefWidth="762.0">
+                                            <children>
+                                                <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+                                                    <HBox.margin>
+                                                        <Insets bottom="5.0" left="15.0" right="5.0" top="15.0" />
+                                                    </HBox.margin>
+                                                    <image>
+                                                        <Image url="@images/Orchestra/1.png" />
+                                                    </image>
+                                                </ImageView>
+                                                <Separator orientation="VERTICAL" prefHeight="200.0" />
+                                                <Label alignment="CENTER" layoutX="10.0" layoutY="10.0" maxHeight="1.7976931348623157E308" text="Ravi de vous revoir !" HBox.hgrow="ALWAYS">
+                                                    <padding>
+                                                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                                                    </padding>
+                                                    <font>
+                                                        <Font name="Montserrat-Regular" size="18.0" />
+                                                    </font>
+                                                    <HBox.margin>
+                                                        <Insets top="10.0" />
+                                                    </HBox.margin>
+                                                </Label>
+                                                <Label alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text=" 16:49 16/02/2025" textFill="#818181" HBox.hgrow="ALWAYS">
+                                                    <padding>
+                                                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                                                    </padding>
+                                                    <font>
+                                                        <Font name="Montserrat-Regular" size="14.0" />
+                                                    </font>
+                                                    <HBox.margin>
+                                                        <Insets top="10.0" />
+                                                    </HBox.margin>
+                                                </Label>
+                                            </children>
+                                        </HBox>
+                                        <HBox maxWidth="1.7976931348623157E308" prefHeight="164.0" prefWidth="975.0">
+                                            <children>
+                                                <VBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="798.0" HBox.hgrow="ALWAYS">
+                                                    <children>
+                                                        <Text fill="#616161" strokeType="OUTSIDE" strokeWidth="0.0" text="Prêt à organiser votre prochain événement ?">
+                                                            <VBox.margin>
+                                                                <Insets left="15.0" right="15.0" top="15.0" />
+                                                            </VBox.margin>
+                                                            <font>
+                                                                <Font size="14.0" />
+                                                            </font>
+                                                        </Text>
+                                                        <Label prefHeight="58.0" prefWidth="228.0" text="Mes Evenements">
+                                                            <padding>
+                                                                <Insets bottom="15.0" left="15.0" right="15.0" />
+                                                            </padding>
+                                                            <font>
+                                                                <Font name="FontAwesome" size="25.0" />
+                                                            </font>
+                                                        </Label>
+                                                        <ScrollPane fx:id="contenaireEvenements" fitToHeight="true" hbarPolicy="ALWAYS" prefHeight="400.0" styleClass="transparent_bg" vbarPolicy="NEVER">
+                                                            <content>
+                                                                <HBox fx:id="listEvents" alignment="CENTER_LEFT" spacing="15">
+                                                                    <VBox.margin>
+                                                                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                                                    </VBox.margin>
+                                                                    <children>
+                                                                        <Button mnemonicParsing="false" prefHeight="300.0" prefWidth="200.0" styleClass="plus_btn" onAction="#ajouterEvenement" HBox.hgrow="NEVER">
+                                                                            <graphic>
+                                                                                <FontAwesomeIconView fill="#878787" glyphName="PLUS" size="30" />
+                                                                            </graphic>
+                                                                            <HBox.margin>
+                                                                                <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                                                                            </HBox.margin>
+                                                                        </Button>
+                                                                    </children>
+                                                                </HBox>
+                                                            </content>
+                                                        </ScrollPane>
+                                                    </children>
+                                                </VBox>
+                                            </children>
+                                        </HBox>
+                                    </children>
+                                    <VBox.margin>
+                                        <Insets bottom="15.0" left="15.0" right="15.0" />
+                                    </VBox.margin>
+                                </VBox>
+                                <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="800.0" styleClass="transparent_bg">
+                                    <children>
+                                        <HBox maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" styleClass="transparent_bg">
+                                            <children>
+                                                <VBox prefHeight="200.0" prefWidth="800.0" styleClass="transparent_bg" HBox.hgrow="ALWAYS">
+                                                    <children>
+                                                        <Label prefHeight="58.0" prefWidth="396.0" text="Suivi des Progrès en Temps Réel">
+                                                            <padding>
+                                                                <Insets left="15.0" right="15.0" top="15.0" />
+                                                            </padding>
+                                                            <font>
+                                                                <Font name="FontAwesome" size="25.0" />
+                                                            </font>
+                                                            <VBox.margin>
+                                                                <Insets />
+                                                            </VBox.margin>
+                                                        </Label>
+                                                        <Text fill="#616161" strokeType="OUTSIDE" strokeWidth="0.0" text="Gardez un œil sur l'état d'avancement de vos evenements avec un aperçu clair &#10;et rapide de leur progression.">
+                                                            <font>
+                                                                <Font size="14.0" />
+                                                            </font>
+                                                            <VBox.margin>
+                                                                <Insets left="20.0" />
+                                                            </VBox.margin>
+                                                        </Text>
+                                                        <HBox prefHeight="130.0" prefWidth="691.0">
+                                                            <children>
+                                                                <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="150.0" prefHeight="100.0" prefWidth="200.0" styleClass="pane">
+                                                                    <HBox.margin>
+                                                                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                                                                    </HBox.margin>
+                                                                </AnchorPane>
+                                                                <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="150.0" prefHeight="100.0" prefWidth="200.0" styleClass="pane">
+                                                                    <HBox.margin>
+                                                                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                                                                    </HBox.margin>
+                                                                </AnchorPane>
+                                                                <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="150.0" prefHeight="100.0" prefWidth="200.0" styleClass="pane">
+                                                                    <HBox.margin>
+                                                                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                                                                    </HBox.margin>
+                                                                </AnchorPane>
+                                                                <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="150.0" prefHeight="100.0" prefWidth="200.0" styleClass="pane">
+                                                                    <HBox.margin>
+                                                                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                                                                    </HBox.margin>
+                                                                </AnchorPane>
+                                                            </children>
+                                                        </HBox>
+                                                    </children>
+                                                </VBox>
+                                            </children>
+                                        </HBox>
+                                    </children>
+                                    <VBox.margin>
+                                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                                    </VBox.margin>
+                                </VBox>
+                                <VBox prefHeight="200.0" prefWidth="800.0" styleClass="transparent_bg">
+                                    <children>
+                                        <Label prefHeight="44.0" prefWidth="597.0" text="Analyse Intelligente des Tâches et des evenements">
+                                            <padding>
                                                 <Insets left="15.0" right="15.0" top="15.0" />
-                                             </VBox.margin>
-                                             <font>
-                                                <Font size="14.0" />
-                                             </font>
-                                          </Text>
-                                          <Label prefHeight="58.0" prefWidth="228.0" text="Mes Evenements">
-                                             <padding>
-                                                <Insets bottom="15.0" left="15.0" right="15.0" />
-                                             </padding>
-                                             <font>
+                                            </padding>
+                                            <font>
                                                 <Font name="FontAwesome" size="25.0" />
-                                             </font>
-                                          </Label>
-                                          <HBox fx:id="listEvents">
-                                             <VBox.margin>
-                                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                             </VBox.margin>
-                                             <children>
-                                                <Button mnemonicParsing="false" prefHeight="100.0" prefWidth="154.0" styleClass="plus_btn" HBox.hgrow="ALWAYS">
-                                                   <graphic>
-                                                      <FontAwesomeIconView fill="#878787" glyphName="PLUS" selectionFill="#ffffff13" size="30" />
-                                                   </graphic>
-                                                   <HBox.margin>
-                                                      <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
-                                                   </HBox.margin>
-                                                </Button>
-                                                <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" onMouseClicked="#redirectEvent" prefHeight="100.0" prefWidth="200.0">
-                                                   <HBox.margin>
-                                                      <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
-                                                   </HBox.margin>
-                                                   <styleClass>
-                                                      <String fx:value="pane" />
-                                                      <String fx:value="background_color" />
-                                                   </styleClass>
-                                                </AnchorPane>
-                                             </children>
-                                          </HBox>
-                                       </children>
-                                    </VBox>
-                                 </children>
-                              </HBox>
-                           </children>
-                           <VBox.margin>
-                              <Insets bottom="15.0" left="15.0" right="15.0" />
-                           </VBox.margin>
-                        </VBox>
-                        <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="800.0" styleClass="transparent_bg">
-                           <children>
-                              <HBox maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" styleClass="transparent_bg">
-                                 <children>
-                                    <VBox prefHeight="200.0" prefWidth="800.0" styleClass="transparent_bg" HBox.hgrow="ALWAYS">
-                                       <children>
-                                          <Label prefHeight="58.0" prefWidth="396.0" text="Suivi des Progrès en Temps Réel">
-                                             <padding>
-                                                <Insets left="15.0" right="15.0" top="15.0" />
-                                             </padding>
-                                             <font>
-                                                <Font name="FontAwesome" size="25.0" />
-                                             </font>
-                                             <VBox.margin>
+                                            </font>
+                                            <VBox.margin>
                                                 <Insets />
-                                             </VBox.margin>
-                                          </Label>
-                                          <Text fill="#616161" strokeType="OUTSIDE" strokeWidth="0.0" text="Gardez un œil sur l'état d'avancement de vos evenements avec un aperçu clair &#10;et rapide de leur progression.">
-                                             <font>
+                                            </VBox.margin>
+                                        </Label>
+                                        <Text fill="#616161" strokeType="OUTSIDE" strokeWidth="0.0" text="Visualisez en un coup d'œil l’évolution de vos événements grâce à des &#10;statistiques interactives et précises.">
+                                            <font>
                                                 <Font size="14.0" />
-                                             </font>
-                                             <VBox.margin>
+                                            </font>
+                                            <VBox.margin>
                                                 <Insets left="20.0" />
-                                             </VBox.margin>
-                                          </Text>
-                                          <HBox prefHeight="130.0" prefWidth="691.0">
-                                             <children>
-                                                <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="150.0" prefHeight="100.0" prefWidth="200.0" styleClass="pane">
-                                                   <HBox.margin>
-                                                      <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
-                                                   </HBox.margin>
+                                            </VBox.margin>
+                                        </Text>
+                                        <HBox prefHeight="130.0" prefWidth="691.0">
+                                            <children>
+                                                <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="150.0" prefHeight="300.0" prefWidth="300.0" styleClass="pane">
+                                                    <HBox.margin>
+                                                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                                                    </HBox.margin>
                                                 </AnchorPane>
-                                                <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="150.0" prefHeight="100.0" prefWidth="200.0" styleClass="pane">
-                                                   <HBox.margin>
-                                                      <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
-                                                   </HBox.margin>
+                                                <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="150.0" prefHeight="300.0" prefWidth="638.0" styleClass="pane">
+                                                    <HBox.margin>
+                                                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                                                    </HBox.margin>
                                                 </AnchorPane>
-                                                <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="150.0" prefHeight="100.0" prefWidth="200.0" styleClass="pane">
-                                                   <HBox.margin>
-                                                      <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
-                                                   </HBox.margin>
-                                                </AnchorPane>
-                                                <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="150.0" prefHeight="100.0" prefWidth="200.0" styleClass="pane">
-                                                   <HBox.margin>
-                                                      <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
-                                                   </HBox.margin>
-                                                </AnchorPane>
-                                             </children>
-                                          </HBox>
-                                       </children>
-                                    </VBox>
-                                 </children>
-                              </HBox>
-                           </children>
-                           <VBox.margin>
-                              <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
-                           </VBox.margin>
+                                            </children>
+                                        </HBox>
+                                    </children>
+                                </VBox>
+                            </children>
                         </VBox>
-                        <VBox prefHeight="200.0" prefWidth="800.0" styleClass="transparent_bg">
-                           <children>
-                              <Label prefHeight="44.0" prefWidth="597.0" text="Analyse Intelligente des Tâches et des evenements">
-                                 <padding>
-                                    <Insets left="15.0" right="15.0" top="15.0" />
-                                 </padding>
-                                 <font>
-                                    <Font name="FontAwesome" size="25.0" />
-                                 </font>
-                                 <VBox.margin>
-                                    <Insets />
-                                 </VBox.margin>
-                              </Label>
-                              <Text fill="#616161" strokeType="OUTSIDE" strokeWidth="0.0" text="Visualisez en un coup d'œil l’évolution de vos événements grâce à des &#10;statistiques interactives et précises.">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                                 <VBox.margin>
-                                    <Insets left="20.0" />
-                                 </VBox.margin>
-                              </Text>
-                              <HBox prefHeight="130.0" prefWidth="691.0">
-                                 <children>
-                                    <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="150.0" prefHeight="300.0" prefWidth="300.0" styleClass="pane">
-                                       <HBox.margin>
-                                          <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
-                                       </HBox.margin>
-                                    </AnchorPane>
-                                    <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="150.0" prefHeight="300.0" prefWidth="638.0" styleClass="pane">
-                                       <HBox.margin>
-                                          <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
-                                       </HBox.margin>
-                                    </AnchorPane>
-                                 </children>
-                              </HBox>
-                           </children>
-                        </VBox>
-                     </children>
-                  </VBox>
-               </content>
-            </ScrollPane>
-         </children>
-      </AnchorPane>
-   </center>
+                    </content>
+                </ScrollPane>
+            </children>
+        </AnchorPane>
+    </center>
 </BorderPane>

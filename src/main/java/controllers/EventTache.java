@@ -1,5 +1,6 @@
 package controllers;
 
+import entities.Evenement;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,6 +19,7 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import services.ServiceEvenement;
 import services.ServiceFournisseur;
 import services.ServiceTache;
 import entities.Tache;
@@ -42,6 +44,14 @@ public class EventTache implements Initializable {
 
     @FXML
     private VBox todoTasks;
+
+    @FXML
+    private Label eventNameLabel;
+    @FXML
+    private Label eventDescriptionLabel;
+
+    private ServiceEvenement serviceEvenement = new ServiceEvenement();
+    private int currentEventId;
 
 
     private final ServiceTache serviceTache = new ServiceTache();
@@ -317,5 +327,32 @@ public class EventTache implements Initializable {
         }
     }
 
+
+    public void initEventData(int eventId) {
+        this.currentEventId = eventId;
+        try {
+            // Charger les détails de l'événement
+            Evenement event = serviceEvenement.getEvenementById(eventId);
+            if (event != null) {
+                eventNameLabel.setText(event.getNom());
+                eventDescriptionLabel.setText(event.getDescription());
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void retourPage(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/EventOrganisation.fxml"));
+            Parent root = loader.load();
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 }
