@@ -132,4 +132,35 @@ public class ServiceFournisseur implements IService<Fournisseur> {
             return null;
         }
     }
+    //////////////////////////////RECHERCHE/////////////////////////////////////////
+    /**
+     * Recherche des fournisseurs dont le nom, le type de service ou le contrat contient le mot-clé.
+     */
+    public List<Fournisseur> rechercherFournisseurs(String keyword) throws SQLException {
+        List<Fournisseur> fournisseurs = new ArrayList<>();
+        String sql = "SELECT * FROM `fournisseur` WHERE `nom` LIKE ? OR `type_service` LIKE ? OR `contrat` LIKE ?";
+
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        String searchKeyword = "%" + keyword + "%";
+        preparedStatement.setString(1, searchKeyword);
+        preparedStatement.setString(2, searchKeyword);
+        preparedStatement.setString(3, searchKeyword);
+
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        while (resultSet.next()) {
+            Fournisseur fournisseur = new Fournisseur(
+                    resultSet.getInt("fournisseur_id"),
+                    resultSet.getString("nom"),
+                    resultSet.getString("type_service"),
+                    resultSet.getString("contrat"),
+                    null, // L'objet Evenement associé n'est pas chargé ici
+                    resultSet.getInt("num_tel")
+            );
+            fournisseurs.add(fournisseur);
+        }
+        return fournisseurs;
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////
 }

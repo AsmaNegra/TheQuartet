@@ -226,4 +226,98 @@ public class ServiceTache implements IService<Tache> {
             System.out.println("⚠ Aucune tâche trouvée avec cet ID !");
         }
     }
+    ////////////////////////////////////////RECHERCHE//////////////////////////////////
+
+    /**
+     * Recherche des tâches "A faire" dont le nom ou la description contient le mot-clé.
+     */
+    public List<Tache> rechercherTachesToDo(String keyword) throws SQLException {
+        ServiceEvenement serviceEvenement = new ServiceEvenement();
+        ServiceFournisseur serviceFournisseur = new ServiceFournisseur();
+        List<Tache> taches = new ArrayList<>();
+        String sql = "SELECT * FROM `tache` WHERE `statut` = 'A faire' AND ( `nom` LIKE ? OR `description` LIKE ? )";
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        preparedStatement.setString(1, "%" + keyword + "%");
+        preparedStatement.setString(2, "%" + keyword + "%");
+
+        ResultSet resultSet = preparedStatement.executeQuery();
+        while (resultSet.next()) {
+            Tache tache = new Tache(
+                    resultSet.getInt("tache_id"),
+                    resultSet.getString("nom"),
+                    resultSet.getString("description"),
+                    resultSet.getString("statut"),
+                    resultSet.getDate("date_limite"),
+                    serviceEvenement.getEvenementById(resultSet.getInt("evenement_id")),
+                    serviceFournisseur.rechercherParId(resultSet.getInt("fournisseur_id")),
+                    resultSet.getString("priorite"),
+                    resultSet.getString("user_associe")
+            );
+            taches.add(tache);
+        }
+        return taches;
+    }
+
+    /**
+     * Recherche des tâches "En Cours" dont le nom ou la description contient le mot-clé.
+     */
+    public List<Tache> rechercherTachesEnCours(String keyword) throws SQLException {
+        ServiceEvenement serviceEvenement = new ServiceEvenement();
+        ServiceFournisseur serviceFournisseur = new ServiceFournisseur();
+        List<Tache> taches = new ArrayList<>();
+        String sql = "SELECT * FROM `tache` WHERE `statut` = 'En Cours' AND ( `nom` LIKE ? OR `description` LIKE ? )";
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        preparedStatement.setString(1, "%" + keyword + "%");
+        preparedStatement.setString(2, "%" + keyword + "%");
+
+        ResultSet resultSet = preparedStatement.executeQuery();
+        while (resultSet.next()) {
+            Tache tache = new Tache(
+                    resultSet.getInt("tache_id"),
+                    resultSet.getString("nom"),
+                    resultSet.getString("description"),
+                    resultSet.getString("statut"),
+                    resultSet.getDate("date_limite"),
+                    serviceEvenement.getEvenementById(resultSet.getInt("evenement_id")),
+                    serviceFournisseur.rechercherParId(resultSet.getInt("fournisseur_id")),
+                    resultSet.getString("priorite"),
+                    resultSet.getString("user_associe")
+            );
+            taches.add(tache);
+        }
+        return taches;
+    }
+
+    /**
+     * Recherche des tâches "Terminée" dont le nom ou la description contient le mot-clé.
+     */
+    public List<Tache> rechercherTachesDone(String keyword) throws SQLException {
+        ServiceEvenement serviceEvenement = new ServiceEvenement();
+        ServiceFournisseur serviceFournisseur = new ServiceFournisseur();
+        List<Tache> taches = new ArrayList<>();
+        String sql = "SELECT * FROM `tache` WHERE `statut` = 'Terminée' AND ( `nom` LIKE ? OR `description` LIKE ? )";
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        preparedStatement.setString(1, "%" + keyword + "%");
+        preparedStatement.setString(2, "%" + keyword + "%");
+
+        ResultSet resultSet = preparedStatement.executeQuery();
+        while (resultSet.next()) {
+            Tache tache = new Tache(
+                    resultSet.getInt("tache_id"),
+                    resultSet.getString("nom"),
+                    resultSet.getString("description"),
+                    resultSet.getString("statut"),
+                    resultSet.getDate("date_limite"),
+                    serviceEvenement.getEvenementById(resultSet.getInt("evenement_id")),
+                    serviceFournisseur.rechercherParId(resultSet.getInt("fournisseur_id")),
+                    resultSet.getString("priorite"),
+                    resultSet.getString("user_associe")
+            );
+            taches.add(tache);
+        }
+        return taches;
+    }
+
+
+    /////////////////////////////////////////////////////////////////////////////////////
 }
