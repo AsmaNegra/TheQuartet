@@ -8,6 +8,7 @@ import utils.MyDataBase;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class ServiceEvenement implements IService<Evenement>{
     private Connection connection;
@@ -48,7 +49,7 @@ public class ServiceEvenement implements IService<Evenement>{
 
         // Si la catégorie existe, procéder à l'insertion
         String sql = "INSERT INTO `evenement` (`nom`, `description`, `date_debut`, `date_fin`, `lieu`, `categorie`, `budget`, `image_event`, `nb_places`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        try (PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, evenement.getNom());
             ps.setString(2, evenement.getDescription());
             ps.setTimestamp(3, new Timestamp(evenement.getDate_debut().getTime()));
@@ -60,24 +61,38 @@ public class ServiceEvenement implements IService<Evenement>{
             ps.setInt(9, evenement.getNb_places());
 
             ps.executeUpdate();
+//            connection.commit();
+
+            // Récupérer l'ID généré
+            try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    evenement.setEvenement_id(generatedKeys.getInt(1)); // Affectez l'ID à l'objet
+                }
+            }
+        }catch (SQLException e) {
+//            connection.rollback(); // Annuler en cas d'erreur
+            System.err.println("Erreur SQL lors de l'ajout : " + e.getMessage());
+            e.printStackTrace();
+            throw e;
         }
     }
 
     @Override
     public void modifier(Evenement evenement) throws SQLException {
-        String sql = "UPDATE `evenement` SET `nom`=?, `description`=?, `date_debut`=?, `date_fin`=?, `lieu`=?, `categorie`=?, `budget`=?, `image_event`=?, `nb_places`=? WHERE `evenement_id`=?";
-        PreparedStatement ps = connection.prepareStatement(sql);
-        ps.setString(1, evenement.getNom());
-        ps.setString(2, evenement.getDescription());
-        ps.setTimestamp(3, new java.sql.Timestamp(evenement.getDate_debut().getTime()));
-        ps.setTimestamp(4, new java.sql.Timestamp(evenement.getDate_fin().getTime()));
-        ps.setString(5, evenement.getLieu());
-        ps.setString(6, evenement.getCategorie());
-        ps.setFloat(7, evenement.getBudget());
-        ps.setString(8, evenement.getImage_event());
-        ps.setInt(9, evenement.getNb_places());
-        ps.setInt(10, evenement.getEvenement_id());
-        ps.executeUpdate();
+        String sql = "UPDATE evenement SET nom=?, description=?, date_debut=?, date_fin=?, lieu=?, categorie=?, budget=?, image_event=?, nb_places=? WHERE evenement_id=?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, evenement.getNom());
+            ps.setString(2, evenement.getDescription());
+            ps.setTimestamp(3, evenement.getDate_debut());
+            ps.setTimestamp(4, evenement.getDate_fin());
+            ps.setString(5, evenement.getLieu());
+            ps.setString(6, evenement.getCategorie());
+            ps.setFloat(7, evenement.getBudget());
+            ps.setString(8, evenement.getImage_event());
+            ps.setInt(9, evenement.getNb_places());
+            ps.setInt(10, evenement.getEvenement_id());
+            ps.executeUpdate();
+        }
     }
 
     @Override
@@ -137,6 +152,29 @@ public class ServiceEvenement implements IService<Evenement>{
         }
         return evenement;
     }
+    public Optional<Evenement> getEvenementParNom(String nom) throws SQLException {
+        String sql = "SELECT * FROM evenement WHERE nom = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, nom);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                Evenement evenement = new Evenement(
+                        rs.getString("nom"),
+                        rs.getString("description"),
+                        rs.getTimestamp("date_debut"),
+                        rs.getTimestamp("date_fin"),
+                        rs.getString("lieu"),
+                        rs.getString("categorie"),
+                        rs.getFloat("budget"),
+                        rs.getString("image_event"),
+                        rs.getInt("nb_places")
+                );
+                evenement.setEvenement_id(rs.getInt("evenement_id"));
+                return Optional.of(evenement);
+            }
+            return Optional.empty();
+        }
+    }
     public List<Evenement> getAllEvenements() {
         List<Evenement> evenements = new ArrayList<>();
         String sql = "SELECT * FROM evenement";
@@ -166,4 +204,16 @@ public class ServiceEvenement implements IService<Evenement>{
 
         return evenements;
     }
+    public List<String> getCategories() throws SQLException {
+        List<String> categories = new ArrayList<>();
+        String sql = "SELECT categorie FROM listecategorieevent";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                categories.add(rs.getString("categorie"));
+            }
+        }
+        return categories;
+    }
+
 }

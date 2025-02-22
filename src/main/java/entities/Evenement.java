@@ -95,7 +95,7 @@ public class Evenement {
     }
 
     public void setDate_debut(Timestamp date_debut) {
-        this.date_debut = (Timestamp) date_debut;
+        this.date_debut = date_debut;
     }
 
     public Timestamp getDate_fin() {
@@ -103,7 +103,7 @@ public class Evenement {
     }
 
     public void setDate_fin(Timestamp date_fin) {
-        this.date_fin = (Timestamp) date_fin;
+        this.date_fin = date_fin;
     }
 
     public String getLieu() {

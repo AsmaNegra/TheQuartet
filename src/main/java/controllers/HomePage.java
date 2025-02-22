@@ -17,19 +17,14 @@ public class HomePage extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-
         try {
-            //Parent root = FXMLLoader.load(getClass().getResource("/AfficherTicketsEvenement.fxml"));
-            //Parent root = FXMLLoader.load(getClass().getResource("/AfficherTousTickets.fxml"));
-            //Parent root = FXMLLoader.load(getClass().getResource("/AfficherTransactionUtilisateur.fxml"));
-            Parent root = FXMLLoader.load(getClass().getResource("/AjouterTransaction.fxml"));
-
+            Parent root = FXMLLoader.load(getClass().getResource("/EvenementAll.fxml"));
             Scene scene = new Scene(root);
-            primaryStage.setTitle("affichage");
             primaryStage.setScene(scene);
             primaryStage.show();
+
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 }

@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.RadialGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" styleClass="background_color" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ModifierTache">
+
+    <left>
+        <AnchorPane prefHeight="200.0" prefWidth="45.0" styleClass="sidebar" stylesheets="@styles.css" BorderPane.alignment="CENTER">
+            <children>
+                <FontAwesomeIconView fill="#797878" glyphName="BARS" layoutX="20.2" layoutY="30.628571701049804" selectionFill="#bc802d" size="1.5em" text="" wrappingWidth="23.199981689453125" AnchorPane.leftAnchor="20.2" AnchorPane.rightAnchor="13.40001831054687" AnchorPane.topAnchor="15.2" />
+                <VBox layoutX="20.0" layoutY="119.0">
+                    <children>
+                        <FontAwesomeIconView fill="#f49617" glyphName="SITEMAP" size="1.5em" />
+                        <FontAwesomeIconView glyphName="GIFT" size="1.5em" styleClass="sidebar_opt">
+                            <VBox.margin>
+                                <Insets top="15.0" />
+                            </VBox.margin>
+                        </FontAwesomeIconView>
+                        <FontAwesomeIconView glyphName="USER" size="1.5em" styleClass="sidebar_opt" textAlignment="CENTER" wrappingWidth="16.857142448425293">
+                            <VBox.margin>
+                                <Insets top="15.0" />
+                            </VBox.margin>
+                        </FontAwesomeIconView>
+                        <FontAwesomeIconView glyphName="HOME" size="1.5em" styleClass="sidebar_opt" wrappingWidth="16.857142448425293">
+                            <VBox.margin>
+                                <Insets top="15.0" />
+                            </VBox.margin>
+                        </FontAwesomeIconView>
+                        <Separator>
+                            <VBox.margin>
+                                <Insets bottom="15.0" top="15.0" />
+                            </VBox.margin>
+                        </Separator>
+                        <FontAwesomeIconView fill="#797878" glyphName="PLUS" size="1.5em">
+                            <VBox.margin>
+                                <Insets />
+                            </VBox.margin>
+                        </FontAwesomeIconView>
+                    </children>
+                    <opaqueInsets>
+                        <Insets />
+                    </opaqueInsets>
+                </VBox>
+                <Circle layoutX="26.0" layoutY="472.0" radius="14.0" stroke="WHITE" strokeType="INSIDE" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0">
+                    <fill>
+                        <RadialGradient centerX="0.44690266330685235" centerY="1.0" focusAngle="78.69" focusDistance="0.4036697772664759" radius="0.8669724770642202">
+                            <stops>
+                                <Stop>
+                                    <color>
+                                        <Color red="0.95686274766922" green="0.5882353186607361" blue="0.09019608050584793" />
+                                    </color>
+                                </Stop>
+                                <Stop offset="1.0">
+                                    <color>
+                                        <Color red="1.0" green="1.0" blue="1.0" />
+                                    </color>
+                                </Stop>
+                            </stops>
+                        </RadialGradient>
+                    </fill>
+                </Circle>
+            </children>
+        </AnchorPane>
+    </left>
+
+    <!-- Integrating Task Form inside the center section -->
+    <center>
+        <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="590.0" prefWidth="861.0">
+            <children>
+            <ScrollPane fitToHeight="true" fitToWidth="true" layoutY="29.0" prefHeight="603.0" prefWidth="861.0" styleClass="transparent_bg" AnchorPane.bottomAnchor="0.6000000000000227" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="29.0">
+               <content>
+      
+                            <!-- Task Form -->
+                      <GridPane alignment="CENTER" hgap="10" style="-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 2, 2); -fx-background-color: transparent;" vgap="10">
+      
+                                <!-- Task Name -->
+                          <Label text="Nom de la Tâche:" GridPane.rowIndex="2" />
+                          <TextField fx:id="nomField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      
+                                <!-- Description -->
+                          <Label text="Description:" GridPane.rowIndex="3" />
+                          <TextArea fx:id="descriptionField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+      
+                                <!-- Status -->
+                          <Label text="Statut:" GridPane.rowIndex="4" />
+                          <ComboBox fx:id="statutComboBox" prefHeight="26.0" prefWidth="480.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                              <items>
+                                  <FXCollections fx:factory="observableArrayList">
+                                      <String fx:value="En attente" />
+                                      <String fx:value="En cours" />
+                                      <String fx:value="Terminée" />
+                                  </FXCollections>
+                              </items>
+                          </ComboBox>
+      
+                                <!-- Due Date -->
+                          <Label text="Date Limite:" GridPane.rowIndex="5" />
+                          <DatePicker fx:id="dateLimitePicker" prefHeight="26.0" prefWidth="478.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+      
+                                <!-- Priority -->
+                          <Label text="Priorité:" GridPane.rowIndex="6" />
+                          <ComboBox fx:id="prioriteComboBox" prefHeight="26.0" prefWidth="481.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                              <items>
+                                  <FXCollections fx:factory="observableArrayList">
+                                      <String fx:value="Haute" />
+                                      <String fx:value="Moyenne" />
+                                      <String fx:value="Basse" />
+                                  </FXCollections>
+                              </items>
+                          </ComboBox>
+      
+                                <!-- Supplier Dropdown -->
+                          <Label text="Fournisseur:" GridPane.rowIndex="8" />
+                          <ComboBox fx:id="fournisseurComboBox" prefHeight="26.0" prefWidth="482.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+      
+                                <!-- User Associated Dropdown -->
+                          <Label text="Utilisateur Associé:" GridPane.rowIndex="9" />
+                          <ComboBox fx:id="userAssocieComboBox" prefHeight="26.0" prefWidth="481.0" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+      
+                                <!-- Submit Button -->
+                          <Button fx:id="submitButton" onAction="#updateTask" prefHeight="26.0" prefWidth="85.0" styleClass="pane" text="Enregistrer" GridPane.columnIndex="1" GridPane.rowIndex="10">
+                        <GridPane.margin>
+                           <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                        </GridPane.margin>
+                     </Button>
+                     <Label text="Modifier un ticket!" GridPane.columnIndex="1">
+                        <font>
+                           <Font name="Montserrat-Regular" size="24.0" />
+                        </font>
+                        <padding>
+                           <Insets bottom="15.0" left="15.0" right="15.0" top="30.0" />
+                        </padding>
+                     </Label>
+                     <Button alignment="CENTER" mnemonicParsing="false" onAction="#RedirectBack" styleClass="transparent_bg" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                        <graphic>
+                           <FontAwesomeIconView glyphName="ARROW_LEFT" size="30" wrappingWidth="32.00000286102295" />
+                        </graphic>
+                     </Button>
+                     <columnConstraints>
+                        <ColumnConstraints />
+                        <ColumnConstraints />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                     </rowConstraints>
+                     <padding>
+                        <Insets left="30.0" />
+                     </padding>
+      
+                            </GridPane>
+               </content>
+            </ScrollPane>
+
+            </children>
+        </AnchorPane>
+    </center>
+
+
+</BorderPane>

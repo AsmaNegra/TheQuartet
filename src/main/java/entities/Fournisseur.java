@@ -6,26 +6,29 @@ public class Fournisseur {
     private String typeService;
     private String contrat;
     private Evenement evenement;
+    private int num_tel; // Added field
 
-    // Constructeurs
+    // Constructors
     public Fournisseur() {}
 
-    public Fournisseur(int fournisseurId, String nom, String typeService, String contrat, Evenement evenement) {
+    public Fournisseur(int fournisseurId, String nom, String typeService, String contrat, Evenement evenement, int num_tel) {
         this.fournisseurId = fournisseurId;
         this.nom = nom;
         this.typeService = typeService;
         this.contrat = contrat;
         this.evenement = evenement;
+        this.num_tel = num_tel; // Added initialization
     }
 
-    public Fournisseur(String nom, String typeService, String contrat, Evenement evenement) {
+    public Fournisseur(String nom, String typeService, String contrat, Evenement evenement, int num_tel) {
         this.nom = nom;
         this.typeService = typeService;
         this.contrat = contrat;
         this.evenement = evenement;
+        this.num_tel = num_tel; // Added initialization
     }
 
-    // Getters et Setters
+    // Getters and Setters
     public int getFournisseurId() { return fournisseurId; }
     public void setFournisseurId(int fournisseurId) { this.fournisseurId = fournisseurId; }
 
@@ -41,6 +44,10 @@ public class Fournisseur {
     public Evenement getEvenementId() { return evenement; }
     public void setEvenement(Evenement evenement) { this.evenement = evenement; }
 
+    // Added getter and setter for num_tel
+    public int getNum_tel() { return num_tel; }
+    public void setNum_tel(int num_tel) { this.num_tel = num_tel; }
+
     @Override
     public String toString() {
         return "Fournisseur{" +
@@ -48,7 +55,8 @@ public class Fournisseur {
                 ", nom='" + nom + '\'' +
                 ", typeService='" + typeService + '\'' +
                 ", contrat='" + contrat + '\'' +
-                ", evenementId=" + evenement +
+                ", evenement=" + evenement +
+                ", num_tel=" + num_tel + // Added to toString()
                 '}';
     }
 }
