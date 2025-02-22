@@ -113,6 +113,9 @@ public class ServiceEvenement implements IService<Evenement>{
         }
         return evenements;
     }
+
+
+
     public Evenement getEvenementById(int evenementId) throws SQLException {
         Evenement evenement = null;
         String query = "SELECT * FROM evenement WHERE evenement_id = ?";

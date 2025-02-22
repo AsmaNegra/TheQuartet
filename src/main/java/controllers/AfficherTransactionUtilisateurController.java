@@ -2,11 +2,14 @@ package controllers;
 
 import entities.Transaction;
 import entities.Utilisateur;
-import entities.Ticket;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.util.StringConverter;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import javafx.scene.control.cell.*;
+import javafx.util.Callback;
 import services.ServiceTransaction;
 import services.ServiceUtilisateurEvenement;
 
@@ -30,17 +33,7 @@ public class AfficherTransactionUtilisateurController implements Initializable {
     @FXML
     private TableColumn<Transaction, String> datePaiementColumn;
     @FXML
-    private TableView<Ticket> ticketsTable;
-    @FXML
-    private TableColumn<Ticket, Integer> ticketIdColumn;
-    @FXML
-    private TableColumn<Ticket, String> typeColumn;
-    @FXML
-    private TableColumn<Ticket, Double> prixColumn;
-    @FXML
-    private TableColumn<Ticket, String> statutColumn;
-    @FXML
-    private TableColumn<Ticket, String> dateValiditeColumn;
+    private TableColumn<Transaction, Void> actionsColumn;
     @FXML
     private Label messageLabel;
 
@@ -51,108 +44,122 @@ public class AfficherTransactionUtilisateurController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         configurerColonnes();
         chargerUtilisateurs();
-        ajouterListenerSelectionTransaction();
     }
 
-    /**
-     * Configure les colonnes des tableaux.
-     */
     private void configurerColonnes() {
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id_transaction"));
         montantColumn.setCellValueFactory(new PropertyValueFactory<>("montant_total"));
         modePaiementColumn.setCellValueFactory(new PropertyValueFactory<>("mode_paiement"));
         datePaiementColumn.setCellValueFactory(new PropertyValueFactory<>("date_paiement"));
 
-        ticketIdColumn.setCellValueFactory(new PropertyValueFactory<>("id_ticket"));
-        typeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
-        prixColumn.setCellValueFactory(new PropertyValueFactory<>("prix"));
-        statutColumn.setCellValueFactory(new PropertyValueFactory<>("statut"));
-        dateValiditeColumn.setCellValueFactory(new PropertyValueFactory<>("date_validite"));
+        actionsColumn.setCellFactory(getActionCellFactory());
     }
 
-    /**
-     * Charge la liste des utilisateurs dans le ComboBox.
-     */
+    private Callback<TableColumn<Transaction, Void>, TableCell<Transaction, Void>> getActionCellFactory() {
+        return param -> new TableCell<>() {
+            private final FontAwesomeIconView deleteIcon = new FontAwesomeIconView();
+
+            {
+                deleteIcon.setGlyphName("TRASH");
+                deleteIcon.setStyle("-fx-fill: red; -fx-cursor: hand;");
+                deleteIcon.setOnMouseClicked(event -> {
+                    Transaction transaction = getTableView().getItems().get(getIndex());
+                    confirmerSuppression(transaction);
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                setGraphic(empty ? null : deleteIcon);
+            }
+        };
+    }
+
+    private void confirmerSuppression(Transaction transaction) {
+        Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmationAlert.setTitle("Confirmation de suppression");
+        confirmationAlert.setHeaderText("Voulez-vous vraiment supprimer cette transaction ?");
+        confirmationAlert.setContentText("Cette action est irréversible.");
+
+        confirmationAlert.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
+                supprimerTransaction(transaction);
+            }
+        });
+    }
+
+    private void supprimerTransaction(Transaction transaction) {
+        try {
+            serviceTransaction.supprimer(transaction.getId_transaction());
+            transactionsTable.getItems().remove(transaction);
+            afficherMessageSucces("Transaction supprimée avec succès.");
+        } catch (SQLException e) {
+            afficherMessageErreur("Erreur lors de la suppression de la transaction.");
+            e.printStackTrace();
+        }
+    }
+
     private void chargerUtilisateurs() {
         try {
             List<Utilisateur> utilisateurs = serviceUtilisateur.afficher();
-            utilisateurComboBox.getItems().addAll(utilisateurs);
+            utilisateurComboBox.getItems().setAll(utilisateurs);
 
-            // Ajoute un écouteur pour charger les transactions dès qu'un utilisateur est sélectionné
+            utilisateurComboBox.setConverter(new StringConverter<>() {
+                @Override
+                public String toString(Utilisateur utilisateur) {
+                    return utilisateur == null ? "" : utilisateur.getUtilisateurId() + " - " + utilisateur.getNom();
+                }
+
+                @Override
+                public Utilisateur fromString(String string) {
+                    return null;
+                }
+            });
+
+            // Écouteur pour charger les transactions dès qu'un utilisateur est sélectionné
             utilisateurComboBox.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
                 if (newVal != null) {
                     afficherTransactionsUtilisateur(newVal);
                 }
             });
-
         } catch (SQLException e) {
-            messageLabel.setText("❌ Erreur lors du chargement des utilisateurs.");
+            afficherMessageErreur("Erreur lors du chargement des utilisateurs.");
             e.printStackTrace();
         }
     }
 
-    /**
-     * Affiche les transactions d'un utilisateur sélectionné.
-     */
     private void afficherTransactionsUtilisateur(Utilisateur utilisateur) {
         if (utilisateur == null) {
             transactionsTable.getItems().clear();
-            ticketsTable.getItems().clear();
-            messageLabel.setText("⚠️ Aucun utilisateur sélectionné.");
+            afficherMessageAvertissement("Aucun utilisateur sélectionné.");
             return;
         }
 
         try {
             List<Transaction> transactions = serviceTransaction.getTransactionsByUtilisateurId(utilisateur.getUtilisateurId());
             transactionsTable.getItems().setAll(transactions);
-            ticketsTable.getItems().clear(); // Effacer les tickets lorsqu'on change d'utilisateur
 
             if (transactions.isEmpty()) {
-                messageLabel.setText("⚠️ Aucune transaction trouvée pour cet utilisateur.");
+                afficherMessageAvertissement("Aucune transaction trouvée pour cet utilisateur.");
             } else {
-                messageLabel.setText("✅ Transactions chargées : " + transactions.size());
+                afficherMessageSucces("Transactions chargées : " + transactions.size());
             }
-
         } catch (SQLException e) {
-            messageLabel.setText("❌ Erreur lors du chargement des transactions.");
+            afficherMessageErreur("Erreur lors du chargement des transactions.");
             e.printStackTrace();
         }
     }
 
-    /**
-     * Ajoute un écouteur pour afficher les tickets d'une transaction sélectionnée.
-     */
-    private void ajouterListenerSelectionTransaction() {
-        transactionsTable.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
-            afficherTicketsTransaction(newVal);
-        });
+    private void afficherMessageSucces(String message) {
+        messageLabel.setText("✅ " + message);
     }
 
-    /**
-     * Affiche les tickets associés à une transaction.
-     */
-    private void afficherTicketsTransaction(Transaction transaction) {
-        if (transaction == null) {
-            ticketsTable.getItems().clear();
-            messageLabel.setText("⚠️ Aucune transaction sélectionnée.");
-            return;
-        }
+    private void afficherMessageAvertissement(String message) {
+        messageLabel.setText("⚠️ " + message);
+    }
 
-        try {
-            List<Ticket> ticketsAssocies = serviceTransaction.getTicketsByTransactionId(transaction.getId_transaction());
-
-            if (ticketsAssocies.isEmpty()) {
-                messageLabel.setText("⚠️ Aucun ticket associé à cette transaction.");
-            } else {
-                messageLabel.setText("✅ Tickets trouvés : " + ticketsAssocies.size());
-            }
-
-            ticketsTable.getItems().clear();
-            ticketsTable.getItems().setAll(ticketsAssocies);
-
-        } catch (SQLException e) {
-            messageLabel.setText("❌ Erreur lors du chargement des tickets.");
-            e.printStackTrace();
-        }
+    private void afficherMessageErreur(String message) {
+        messageLabel.setText("❌ " + message);
     }
 }

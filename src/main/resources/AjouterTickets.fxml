@@ -1,90 +1,126 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.String?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.RadialGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.shape.Circle?>
 
-<GridPane alignment="center" hgap="10" prefHeight="450.0" prefWidth="650.0" stylesheets="@styles.css" vgap="10" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AjouterTicketsController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="515.0" prefWidth="917.0" styleClass="background_color" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AjouterTicketsController">
 
-    <padding>
-        <Insets bottom="15" left="15" right="15" top="15" />
-    </padding>
+    <!-- Sidebar (Left) -->
+    <left>
+        <AnchorPane prefHeight="200.0" prefWidth="45.0" styleClass="sidebar" stylesheets="@styles.css" BorderPane.alignment="CENTER">
 
-    <children>
+            <children>
+                <FontAwesomeIconView fill="#797878" glyphName="BARS" layoutX="20.2" layoutY="30.6" selectionFill="#bc802d" size="1.5em" />
 
-        <!-- Titre -->
-        <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Ajouter un Ticket" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                <VBox layoutX="20.0" layoutY="119.0">
+                    <children>
+                        <FontAwesomeIconView fill="#f49617" glyphName="SITEMAP" size="1.5em" />
+                        <FontAwesomeIconView glyphName="GIFT" size="1.5em" styleClass="sidebar_opt">
+                            <VBox.margin><Insets top="15.0" /></VBox.margin>
+                        </FontAwesomeIconView>
+                        <FontAwesomeIconView glyphName="USER" size="1.5em" styleClass="sidebar_opt">
+                            <VBox.margin><Insets top="15.0" /></VBox.margin>
+                        </FontAwesomeIconView>
+                        <FontAwesomeIconView glyphName="HOME" size="1.5em" styleClass="sidebar_opt">
+                            <VBox.margin><Insets top="15.0" /></VBox.margin>
+                        </FontAwesomeIconView>
+                        <Separator>
+                            <VBox.margin><Insets bottom="15.0" top="15.0" /></VBox.margin>
+                        </Separator>
+                        <FontAwesomeIconView fill="#797878" glyphName="PLUS" size="1.5em" />
+                    </children>
+                </VBox>
 
-        <!-- Sélection de l'événement -->
-        <Label minWidth="120" text="Événement:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-        <ComboBox fx:id="evenementComboBox" prefHeight="30.0" prefWidth="220.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                <Circle layoutX="26.0" layoutY="472.0" radius="14.0" stroke="WHITE">
+                    <fill>
+                        <RadialGradient centerX="0.45" centerY="1.0" radius="0.86">
+                            <stops>
+                                <Stop><color><Color red="0.96" green="0.58" blue="0.09" /></color></Stop>
+                                <Stop offset="1.0"><color><Color red="1.0" green="1.0" blue="1.0" /></color></Stop>
+                            </stops>
+                        </RadialGradient>
+                    </fill>
+                </Circle>
+            </children>
+        </AnchorPane>
+    </left>
 
-        <!-- Détails de l'événement -->
-        <Label minWidth="120" text="Nom de l'événement:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-        <Label fx:id="nomEvenementLabel" minWidth="200" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+    <!-- Center (Main Content) -->
+    <center>
+        <AnchorPane prefHeight="549.0" prefWidth="843.0" styleClass="background_color" stylesheets="@styles.css">
+            <children>
+                <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" prefHeight="515.2" prefWidth="872.0" styleClass="transparent_bg" stylesheets="@styles.css" vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 
-        <Label minWidth="120" text="Lieu:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-        <Label fx:id="lieuEvenementLabel" minWidth="200" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                    <content>
+                        <GridPane alignment="center" hgap="10" vgap="10">
+                            <padding><Insets bottom="15" left="15" right="15" top="15" /></padding>
+                            <children>
+                                <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Ajouter un Ticket" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
-        <Label minWidth="120" text="Date Début:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-        <Label fx:id="dateDebutEvenementLabel" minWidth="200" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                <Label text="Événement:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                                <ComboBox fx:id="evenementComboBox" prefHeight="26.0" prefWidth="201.0" stylesheets="@styles.css" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
-        <Label minWidth="120" text="Date Fin:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
-        <Label fx:id="dateFinEvenementLabel" minWidth="200" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                <Label text="Nom de l'événement:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                                <Label fx:id="nomEvenementLabel" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
-        <!-- Champs pour ajouter un ticket -->
-        <Label minWidth="120" text="Type de ticket:" GridPane.columnIndex="0" GridPane.rowIndex="6" />
-        <TextField fx:id="typeTextField" prefWidth="220.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                                <Label text="Lieu:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                                <Label fx:id="lieuEvenementLabel" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 
-        <Label minWidth="120" text="Prix (TND):" GridPane.columnIndex="0" GridPane.rowIndex="7" />
-        <TextField fx:id="prixTextField" prefWidth="220.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                                <Label text="Date Début:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                                <Label fx:id="dateDebutEvenementLabel" GridPane.columnIndex="1" GridPane.rowIndex="4" />
 
-        <Label minWidth="120" text="Date de validité:" GridPane.columnIndex="0" GridPane.rowIndex="8" />
-        <DatePicker fx:id="dateValiditePicker" prefHeight="31.0" prefWidth="252.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                                <Label text="Date Fin:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                                <Label fx:id="dateFinEvenementLabel" GridPane.columnIndex="1" GridPane.rowIndex="5" />
 
-        <Label minWidth="120" text="Nombre de tickets:" GridPane.columnIndex="0" GridPane.rowIndex="9" />
-        <TextField fx:id="nbTicketsTextField" prefWidth="220.0" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+                                <Label text="Type de ticket:" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+                                <TextField fx:id="typeTextField" GridPane.columnIndex="1" GridPane.rowIndex="6" />
 
-        <!-- Bouton Ajouter -->
-        <Button fx:id="ajouterButton" onAction="#ajouterTicket" prefHeight="36.0" prefWidth="248.0" text="Ajouter Tickets" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+                                <Label text="Prix (TND):" GridPane.columnIndex="0" GridPane.rowIndex="7" />
+                                <TextField fx:id="prixTextField" stylesheets="@styles.css" GridPane.columnIndex="1" GridPane.rowIndex="7" />
 
-        <Label fx:id="messageLabel" minWidth="200" style="-fx-text-fill: red;" GridPane.columnIndex="1" GridPane.rowIndex="11" />
-      <AnchorPane prefHeight="200.0" prefWidth="200.0" />
+                                <Label text="Date de validité:" GridPane.columnIndex="0" GridPane.rowIndex="8" />
+                                <DatePicker fx:id="dateValiditePicker" prefHeight="26.0" prefWidth="202.0" styleClass="viewport" stylesheets="@styles.css" GridPane.columnIndex="1" GridPane.rowIndex="8" />
 
-    </children>
+                                <Label text="Nombre de tickets:" GridPane.columnIndex="0" GridPane.rowIndex="9" />
+                                <TextField fx:id="nbTicketsTextField" GridPane.columnIndex="1" GridPane.rowIndex="9" />
 
-    <columnConstraints>
-        <ColumnConstraints minWidth="150" />
-        <ColumnConstraints minWidth="250" />
-    </columnConstraints>
+                                <Button fx:id="ajouterButton" onAction="#ajouterTicket" prefHeight="26.0" prefWidth="200.0" styleClass="button_crud" stylesheets="@styles.css" text="Ajouter Tickets" GridPane.rowIndex="11" />
 
-    <rowConstraints>
-        <RowConstraints />
-        <RowConstraints />
-        <RowConstraints />
-        <RowConstraints />
-        <RowConstraints />
-        <RowConstraints />
-        <RowConstraints />
-        <RowConstraints />
-        <RowConstraints />
-        <RowConstraints />
-        <RowConstraints />
-      <RowConstraints />
-    </rowConstraints>
-   <styleClass>
-      <String fx:value="background_color" />
-      <String fx:value="colored_card" />
-      <String fx:value="decrement-button" />
-      <String fx:value="viewport" />
-   </styleClass>
+                                <Label fx:id="messageLabel" style="-fx-text-fill: red;" GridPane.columnIndex="1" GridPane.rowIndex="11" />
+                            </children>
+                     <columnConstraints>
+                        <ColumnConstraints prefWidth="200.0" />
+                        <ColumnConstraints prefWidth="200.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
 
-</GridPane>
+                     </rowConstraints>
+                        </GridPane>
+                    </content>
+                </ScrollPane>
+            </children>
+        </AnchorPane>
+    </center>
+</BorderPane>

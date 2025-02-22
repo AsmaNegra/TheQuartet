@@ -55,7 +55,18 @@ public class ServiceTicket implements IService<Ticket> {
             throw new SQLException("Erreur lors de l'ajout du ticket", e);
         }
     }
-
+    public boolean ticketExiste(int evenementId, String type) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM ticket WHERE evenement_id = ? AND type = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, evenementId);
+            statement.setString(2, type);
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;  // Si COUNT(*) > 0, alors un ticket existe déjà
+            }
+        }
+        return false;
+    }
     @Override
     public void modifier(Ticket t) throws SQLException {
         if (!evenementExiste(t.getEvenement().getEvenement_id())) {
