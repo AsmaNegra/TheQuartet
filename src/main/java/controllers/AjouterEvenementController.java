@@ -43,6 +43,7 @@ import java.util.Date;
 import java.util.List;
 
 import javafx.fxml.FXML;
+import services.ServiceUtilisateurEvenement;
 
 public class AjouterEvenementController {
     @FXML
@@ -349,6 +350,12 @@ public class AjouterEvenementController {
             // Sauvegarde dans la base de données
             ServiceEvenement serviceEvenement = new ServiceEvenement();
             serviceEvenement.ajouter(evenement);
+
+            // Ajout dans la table d'association avec l'utilisateur connecté
+            // Pour cet exemple, j'utilise l'ID 1 comme utilisateur connecté
+            // Vous devrez adapter ceci pour utiliser l'ID de l'utilisateur réellement connecté
+            ServiceUtilisateurEvenement serviceUtilisateurEvenement = new ServiceUtilisateurEvenement();
+            serviceUtilisateurEvenement.inscrireUtilisateurAEvenement(1, evenement.getEvenement_id());
 
             // Afficher un message de succès
             Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
