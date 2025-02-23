@@ -6,15 +6,11 @@ import entities.Fournisseur;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import services.ServiceTache;
 import services.ServiceUtilisateurEvenement;
@@ -22,12 +18,14 @@ import services.ServiceFournisseur;
 import entities.Evenement;
 
 import java.io.IOException;
+import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.sql.Date;
 import java.util.List;
+import java.util.ResourceBundle;
 
-public class AjoutTache {
+public class AjoutTache implements Initializable {
 
     @FXML
     private DatePicker dateLimitePicker;
@@ -84,7 +82,7 @@ public class AjoutTache {
     @FXML
     void handleSubmit(ActionEvent event) {
         try {
-            // Validation des champs
+            // Validation des champs obligatoires
             if (nomField.getText().isEmpty()) {
                 showAlert("Erreur de validation", "Le nom de la tâche est obligatoire.");
                 return;
@@ -114,6 +112,21 @@ public class AjoutTache {
                 return;
             }
 
+            // Vérification que la date limite n'est pas antérieure à aujourd'hui
+            LocalDate selectedDate = dateLimitePicker.getValue();
+            if (selectedDate.isBefore(LocalDate.now())) {
+                showAlert("Erreur de validation", "La date limite ne peut pas être antérieure à aujourd'hui.");
+                return;
+            }
+
+            // Vérification de l'unicité de la tâche par nom
+            ServiceTache st = new ServiceTache();
+            Tache existingTask = st.chercherTacheParNom(nomField.getText());
+            if (existingTask != null) {
+                showAlert("Erreur de validation", "Une tâche avec ce nom existe déjà.");
+                return;
+            }
+
             // Création d'un nouvel objet Tache
             Tache t = new Tache();
             Evenement e = new Evenement();
@@ -122,6 +135,7 @@ public class AjoutTache {
             f.setNom(fournisseurComboBox.getValue());
             ServiceFournisseur service = new ServiceFournisseur();
             f.setFournisseurId(service.rechercherIdParNom(fournisseurComboBox.getValue()));
+
             // Attribution des valeurs des champs
             t.setNom(nomField.getText());
             t.setDescription(descriptionField.getText().isEmpty() ? null : descriptionField.getText());
@@ -132,20 +146,14 @@ public class AjoutTache {
             t.setUserAssocie(userAssocieComboBox.getValue());
 
             // Conversion de la date
-            LocalDate localDate = dateLimitePicker.getValue();
-            if (localDate != null) {
-                t.setDateLimite(Date.valueOf(localDate));
-            }
+            t.setDateLimite(Date.valueOf(selectedDate));
 
             // Sauvegarde de la tâche
-            ServiceTache st = new ServiceTache();
             st.ajouter(t);
 
             // Chargement de la vue des détails
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/EventTache.fxml"));
             Parent root = loader.load();
-
-            // Changement de scène
             nomField.getScene().setRoot(root);
         } catch (IOException | SQLException e) {
             throw new RuntimeException(e);
@@ -171,5 +179,20 @@ public class AjoutTache {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        dateLimitePicker.setDayCellFactory(picker -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                if (date.isBefore(LocalDate.now())) {
+                    setDisable(true);
+                    setStyle("-fx-background-color: #EEEEEE;");
+                }
+            }
+        });
+
     }
 }

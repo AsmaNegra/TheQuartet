@@ -318,6 +318,33 @@ public class ServiceTache implements IService<Tache> {
         return taches;
     }
 
+    /**
+     * Recherche une tâche par son nom.
+     *
+     * @param nom Le nom de la tâche à rechercher.
+     * @return La tâche correspondante si elle existe, sinon null.
+     * @throws SQLException en cas d'erreur d'accès à la base de données.
+     */
+    public Tache chercherTacheParNom(String nom) throws SQLException {
+        String sql = "SELECT * FROM tache WHERE nom = ?";
+        PreparedStatement ps = connection.prepareStatement(sql);
+        ps.setString(1, nom);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            // Vous pouvez adapter la création de l'objet Tache selon vos besoins.
+            Tache tache = new Tache();
+            tache.setTacheId(rs.getInt("tache_id"));
+            tache.setNom(rs.getString("nom"));
+            tache.setDescription(rs.getString("description"));
+            tache.setStatut(rs.getString("statut"));
+            tache.setDateLimite(rs.getDate("date_limite"));
+            tache.setPriorite(rs.getString("priorite"));
+            tache.setUserAssocie(rs.getString("user_associe"));
+            // Note : L'événement et le fournisseur ne sont pas initialisés ici.
+            return tache;
+        }
+        return null;
+    }
 
     /////////////////////////////////////////////////////////////////////////////////////
 
