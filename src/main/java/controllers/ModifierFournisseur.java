@@ -83,7 +83,7 @@ public class ModifierFournisseur {
     @FXML
     public void redirectBack(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/EventTache.fxml")); // Change to your actual FXML file
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AdminFournisseur.fxml")); // Change to your actual FXML file
             Parent root = loader.load();
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));

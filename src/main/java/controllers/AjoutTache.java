@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -14,6 +15,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import services.ServiceEvenement;
 import services.ServiceTache;
@@ -185,22 +187,42 @@ public class AjoutTache implements Initializable {
         }
     }
 
-    private void showAlert(String title, String content) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(content);
-        alert.showAndWait();
+    private void showAlert(String title, String message) {
+        Dialog<ButtonType> errorDialog = new Dialog<>();
+        errorDialog.setTitle(title);
+        errorDialog.setHeaderText(null); // Remove default header for a clean look
+        errorDialog.getDialogPane().getStylesheets().add(getClass().getResource("/styles.css").toExternalForm());
+        errorDialog.getDialogPane().getStyleClass().add("modern-error-dialog");
+
+        Label messageLabel = new Label(message);
+        messageLabel.getStyleClass().add("dialog-text");
+
+        VBox content = new VBox(10);
+        content.setAlignment(Pos.CENTER);
+        content.getChildren().add(messageLabel);
+        errorDialog.getDialogPane().setContent(content);
+
+        ButtonType okButton = new ButtonType("✔ OK", ButtonBar.ButtonData.OK_DONE);
+        errorDialog.getDialogPane().getButtonTypes().setAll(okButton);
+
+        // Apply error-button style
+        errorDialog.getDialogPane().lookupButton(okButton).getStyleClass().add("error-button");
+
+        errorDialog.showAndWait();
     }
+
 
     @FXML
     void RedirectBack(ActionEvent event) {
         try {
+            Node source = (Node) event.getSource();
+            Integer eventId = this.currentEventId;
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/EventTache.fxml"));
             Parent root = loader.load();
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.show();
+          EventTache ajoutTacheController = loader.getController();
+            ajoutTacheController.initEventData(eventId);
+            Scene scene = source.getScene();
+            scene.setRoot(root);
         } catch (IOException e) {
             e.printStackTrace();
         }

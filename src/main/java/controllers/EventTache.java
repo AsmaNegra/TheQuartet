@@ -21,6 +21,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import services.ServiceEvenement;
 import services.ServiceFournisseur;
+import services.ServiceFournisseurEvenement;
 import services.ServiceTache;
 import entities.Tache;
 import entities.Fournisseur;
@@ -64,96 +65,94 @@ public class EventTache implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        try {
-            // Ne pas appeler loadTasks() ici car currentEventId n'est pas encore défini
-            loadFournisseurs();
-            setupDragAndDrop();
+        // Ne pas appeler loadTasks() ici car currentEventId n'est pas encore défini
 
-            // Listener sur le ChoiceBox pour appliquer le tri
-            filterT.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
-                try {
-                    if ("Aucun tri".equals(newVal)) {
-                        loadTasks();
-                    } else if ("Par Priorité".equals(newVal)) {
-                        // Appel de la méthode avec currentEventId
-                        List<Tache> tasksSorted = serviceTache.trierTachesParPriorite(currentEventId);
-                        List<Tache> todo = new ArrayList<>();
-                        List<Tache> inProgress = new ArrayList<>();
-                        List<Tache> done = new ArrayList<>();
-                        for (Tache t : tasksSorted) {
-                            if ("A faire".equalsIgnoreCase(t.getStatut())) {
-                                todo.add(t);
-                            } else if ("En Cours".equalsIgnoreCase(t.getStatut())) {
-                                inProgress.add(t);
-                            } else if ("Terminée".equalsIgnoreCase(t.getStatut())) {
-                                done.add(t);
-                            }
+        setupDragAndDrop();
+
+        // Listener sur le ChoiceBox pour appliquer le tri
+        filterT.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+            try {
+                if ("Aucun tri".equals(newVal)) {
+                    loadTasks();
+                } else if ("Par Priorité".equals(newVal)) {
+                    // Appel de la méthode avec currentEventId
+                    List<Tache> tasksSorted = serviceTache.trierTachesParPriorite(currentEventId);
+                    List<Tache> todo = new ArrayList<>();
+                    List<Tache> inProgress = new ArrayList<>();
+                    List<Tache> done = new ArrayList<>();
+                    for (Tache t : tasksSorted) {
+                        if ("A faire".equalsIgnoreCase(t.getStatut())) {
+                            todo.add(t);
+                        } else if ("En Cours".equalsIgnoreCase(t.getStatut())) {
+                            inProgress.add(t);
+                        } else if ("Terminée".equalsIgnoreCase(t.getStatut())) {
+                            done.add(t);
                         }
-                        populateColumn(todoTasks, todo);
-                        populateColumn(inProgressTasks, inProgress);
-                        populateColumn(doneTasks, done);
-                    } else if ("Par Date".equals(newVal)) {
-                        // Appel de la méthode avec currentEventId
-                        List<Tache> tasksSorted = serviceTache.trierTachesParDate(currentEventId);
-                        List<Tache> todo = new ArrayList<>();
-                        List<Tache> inProgress = new ArrayList<>();
-                        List<Tache> done = new ArrayList<>();
-                        for (Tache t : tasksSorted) {
-                            if ("A faire".equalsIgnoreCase(t.getStatut())) {
-                                todo.add(t);
-                            } else if ("En Cours".equalsIgnoreCase(t.getStatut())) {
-                                inProgress.add(t);
-                            } else if ("Terminée".equalsIgnoreCase(t.getStatut())) {
-                                done.add(t);
-                            }
+                    }
+                    populateColumn(todoTasks, todo);
+                    populateColumn(inProgressTasks, inProgress);
+                    populateColumn(doneTasks, done);
+                } else if ("Par Date".equals(newVal)) {
+                    // Appel de la méthode avec currentEventId
+                    List<Tache> tasksSorted = serviceTache.trierTachesParDate(currentEventId);
+                    List<Tache> todo = new ArrayList<>();
+                    List<Tache> inProgress = new ArrayList<>();
+                    List<Tache> done = new ArrayList<>();
+                    for (Tache t : tasksSorted) {
+                        if ("A faire".equalsIgnoreCase(t.getStatut())) {
+                            todo.add(t);
+                        } else if ("En Cours".equalsIgnoreCase(t.getStatut())) {
+                            inProgress.add(t);
+                        } else if ("Terminée".equalsIgnoreCase(t.getStatut())) {
+                            done.add(t);
                         }
-                        populateColumn(todoTasks, todo);
-                        populateColumn(inProgressTasks, inProgress);
-                        populateColumn(doneTasks, done);
                     }
-                } catch (SQLException ex) {
-                    ex.printStackTrace();
+                    populateColumn(todoTasks, todo);
+                    populateColumn(inProgressTasks, inProgress);
+                    populateColumn(doneTasks, done);
                 }
-            });
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        });
 
-            // Listener pour la recherche de tâches
-            rechercheT.textProperty().addListener((observable, oldValue, newValue) -> {
-                try {
-                    if (newValue.trim().isEmpty()) {
-                        loadTasks();
-                    } else {
-                        List<Tache> enAttente = serviceTache.rechercherTachesToDo(newValue, currentEventId);
-                        List<Tache> enCours = serviceTache.rechercherTachesEnCours(newValue, currentEventId);
-                        List<Tache> terminees = serviceTache.rechercherTachesDone(newValue, currentEventId);
-                        populateColumn(todoTasks, enAttente);
-                        populateColumn(inProgressTasks, enCours);
-                        populateColumn(doneTasks, terminees);
-                    }
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            });
+        // Listener pour la recherche de tâches
+        rechercheT.textProperty().addListener((observable, oldValue, newValue) -> {
+            try {
+                if (newValue.trim().isEmpty()) {
 
-            // Listener pour la recherche de fournisseurs
-            rechercheF.textProperty().addListener((observable, oldValue, newValue) -> {
-                try {
-                    if (newValue.trim().isEmpty()) {
-                        loadFournisseurs();
-                    } else {
-                        List<Fournisseur> filteredFournisseurs = serviceFournisseur.rechercherFournisseurs(newValue);
-                        populateFournisseurList(filteredFournisseurs);
-                    }
-                } catch (SQLException e) {
-                    e.printStackTrace();
+                    loadTasks();
+                } else {
+                    List<Tache> enAttente = serviceTache.rechercherTachesToDo(newValue, currentEventId);
+                    List<Tache> enCours = serviceTache.rechercherTachesEnCours(newValue, currentEventId);
+                    List<Tache> terminees = serviceTache.rechercherTachesDone(newValue, currentEventId);
+                    populateColumn(todoTasks, enAttente);
+                    populateColumn(inProgressTasks, enCours);
+                    populateColumn(doneTasks, terminees);
                 }
-            });
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
+
+        // Listener pour la recherche de fournisseurs
+        rechercheF.textProperty().addListener((observable, oldValue, newValue) -> {
+            try {
+                if (newValue.trim().isEmpty()) {
+                    loadFournisseurs();
+                } else {
+                    List<Fournisseur> filteredFournisseurs = serviceFournisseur.rechercherFournisseursParEventId(currentEventId,newValue);
+                    populateFournisseurList(filteredFournisseurs);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     private void loadFournisseurs() throws SQLException {
-        List<Fournisseur> fournisseurs = serviceFournisseur.afficher();
+        List<Fournisseur> fournisseurs = serviceFournisseur.afficherFournisseursParEventId(currentEventId);
+        System.out.println(fournisseurs.size());
         populateFournisseurList(fournisseurs);
     }
 
@@ -299,17 +298,22 @@ public class EventTache implements Initializable {
         }
     }
 
-    public void RedirectBackF(ActionEvent event) {
+    @FXML
+    void AssignerFournisseur(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjoutFournisseur.fxml"));
+            Node source = (Node) event.getSource();
+            Integer eventId = this.currentEventId;
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AssignerFaE.fxml"));
             Parent root = loader.load();
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.show();
+            AssignerFaE ajoutTacheController = loader.getController();
+            ajoutTacheController.initEventData(eventId);
+            Scene scene = source.getScene();
+            scene.setRoot(root);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
 
     private void populateFournisseurList(List<Fournisseur> fournisseurs) {
         fournisseurContainer.getChildren().clear();
@@ -330,13 +334,6 @@ public class EventTache implements Initializable {
             HBox typeAndContract = new HBox(15);
             typeAndContract.getChildren().addAll(typeLabel, contractLabel);
             HBox buttonContainer = new HBox(10);
-            Button editButton = new Button();
-            ImageView editIcon = new ImageView(new Image(getClass().getResourceAsStream("/images/pencil.png")));
-            editIcon.setFitWidth(16);
-            editIcon.setFitHeight(16);
-            editButton.setGraphic(editIcon);
-            editButton.setStyle("-fx-background-color: transparent;");
-            editButton.setOnAction(event -> modifyFournisseur(fournisseur, event));
             Button deleteButton = new Button();
             ImageView deleteIcon = new ImageView(new Image(getClass().getResourceAsStream("/images/delete.png")));
             deleteIcon.setFitWidth(16);
@@ -344,31 +341,31 @@ public class EventTache implements Initializable {
             deleteButton.setGraphic(deleteIcon);
             deleteButton.setStyle("-fx-background-color: transparent;");
             deleteButton.setOnAction(event -> deleteFournisseur(fournisseur));
-            buttonContainer.getChildren().addAll(editButton, deleteButton);
+            buttonContainer.getChildren().addAll(deleteButton);
             textContainer.getChildren().addAll(nameLabel, typeAndContract, phoneLabel);
             fournisseurContainerItem.getChildren().addAll(textContainer, buttonContainer);
             fournisseurContainer.getChildren().add(fournisseurContainerItem);
         }
     }
 
-    private void modifyFournisseur(Fournisseur fournisseur, ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ModifierFournisseur.fxml"));
-            Parent root = loader.load();
-            ModifierFournisseur controller = loader.getController();
-            controller.setFournisseurData(fournisseur);
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+//    private void modifyFournisseur(Fournisseur fournisseur, ActionEvent event) {
+//        try {
+//            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ModifierFournisseur.fxml"));
+//            Parent root = loader.load();
+//            ModifierFournisseur controller = loader.getController();
+//            controller.setFournisseurData(fournisseur);
+//            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+//            stage.setScene(new Scene(root));
+//            stage.show();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     private void deleteFournisseur(Fournisseur fournisseur) {
         try {
-            ServiceFournisseur serviceFournisseur = new ServiceFournisseur();
-            serviceFournisseur.supprimer(fournisseur.getFournisseurId());
+            ServiceFournisseurEvenement serviceFournisseurEvenement = new ServiceFournisseurEvenement();
+            serviceFournisseurEvenement.desassocierFournisseurDeEvenement(fournisseur.getFournisseurId(),currentEventId);
             loadFournisseurs();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -393,6 +390,7 @@ public class EventTache implements Initializable {
             }
             // Maintenant que currentEventId est défini, on peut charger les tâches
             loadTasks();
+            loadFournisseurs();
         } catch (SQLException e) {
             e.printStackTrace();
         }

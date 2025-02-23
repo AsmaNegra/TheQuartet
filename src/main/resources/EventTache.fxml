@@ -272,7 +272,7 @@
                                  <children>
                                     <VBox>
                                        <children>
-                                          <Label maxWidth="1.7976931348623157E308" prefHeight="18.0" prefWidth="370.0" text="Nos Fournisseurs" textFill="#434343">
+                                          <Label maxWidth="1.7976931348623157E308" prefHeight="18.0" prefWidth="370.0" text="Les fournisseurs associés à cet evenement!" textFill="#434343">
                                              <font>
                                                 <Font name="Montserrat-Bold" size="24.0" />
                                              </font>
@@ -284,7 +284,7 @@
                                           </Label>
                                        </children>
                                     </VBox>
-                                    <Button alignment="CENTER_RIGHT" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#RedirectBackF" prefHeight="34.0" prefWidth="208.0" styleClass="button_crud" text="Ajouter un fournisseur" textFill="WHITE">
+                                    <Button alignment="CENTER_RIGHT" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#AssignerFournisseur" prefHeight="34.0" prefWidth="208.0" styleClass="button_crud" text="Ajouter un fournisseur" textFill="WHITE">
                                        <font>
                                           <Font name="Montserrat-Bold" size="16.0" />
                                        </font>
@@ -367,7 +367,7 @@
                                           <Insets top="15.0" />
                                        </HBox.margin>
                                     </VBox>
-                                    <Button contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#RedirectBackF" prefHeight="34.0" prefWidth="183.0" styleClass="button_crud" text="Ajouter un ticket" textFill="WHITE">
+                                    <Button contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="34.0" prefWidth="183.0" styleClass="button_crud" text="Ajouter un ticket" textFill="WHITE">
                                        <font>
                                           <Font name="Montserrat-Bold" size="16.0" />
                                        </font>

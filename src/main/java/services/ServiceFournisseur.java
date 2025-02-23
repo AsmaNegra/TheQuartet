@@ -131,17 +131,22 @@ public class ServiceFournisseur implements IService<Fournisseur> {
 
     //////////////////////////////RECHERCHE/////////////////////////////////////////
     /**
-     * Recherche des fournisseurs dont le nom, le type de service ou le contrat contient le mot-clé.
+     * Recherche des fournisseurs associés à un événement donné et filtrés par un mot-clé.
      */
-    public List<Fournisseur> rechercherFournisseurs(String keyword) throws SQLException {
+    public List<Fournisseur> rechercherFournisseursParEventId(int eventId, String keyword) throws SQLException {
         List<Fournisseur> fournisseurs = new ArrayList<>();
-        String sql = "SELECT * FROM `fournisseur` WHERE `nom` LIKE ? OR `type_service` LIKE ? OR `contrat` LIKE ?";
+
+        String sql = "SELECT f.* FROM fournisseur f " +
+                "JOIN fournisseur_evenement fe ON f.fournisseur_id = fe.fournisseur_id " +
+                "WHERE fe.evenement_id = ? " +
+                "AND (f.nom LIKE ? OR f.type_service LIKE ? OR f.contrat LIKE ?)";
 
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        preparedStatement.setInt(1, eventId);
         String searchKeyword = "%" + keyword + "%";
-        preparedStatement.setString(1, searchKeyword);
         preparedStatement.setString(2, searchKeyword);
         preparedStatement.setString(3, searchKeyword);
+        preparedStatement.setString(4, searchKeyword);
 
         ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -155,7 +160,37 @@ public class ServiceFournisseur implements IService<Fournisseur> {
             );
             fournisseurs.add(fournisseur);
         }
+
         return fournisseurs;
     }
+
     /////////////////////////////////////////////////////////////////////////////////
+
+    /** ✅ AFFICHER LES FOURNISSEURS D'UN ÉVÉNEMENT SPÉCIFIQUE */
+    public List<Fournisseur> afficherFournisseursParEventId(int eventId) throws SQLException {
+        List<Fournisseur> fournisseurs = new ArrayList<>();
+
+        String sql = "SELECT f.* FROM fournisseur f JOIN fournisseur_evenement fe ON f.fournisseur_id = fe.fournisseur_id WHERE fe.evenement_id =  ?";
+
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        preparedStatement.setInt(1, eventId);
+
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        while (resultSet.next()) {
+            Fournisseur fournisseur = new Fournisseur(
+                    resultSet.getInt("fournisseur_id"),
+                    resultSet.getString("nom"),
+                    resultSet.getString("type_service"),
+                    resultSet.getString("contrat"),
+                    resultSet.getInt("num_tel")
+            );
+
+            fournisseurs.add(fournisseur);
+        }
+
+        return fournisseurs;
+    }
+
+
 }

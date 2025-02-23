@@ -18,7 +18,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="515.0" prefWidth="917.0" styleClass="background_color" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AdminFournisseur">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" styleClass="background_color" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AdminFournisseur">
     <left>
         <AnchorPane prefHeight="200.0" prefWidth="45.0" styleClass="sidebar" stylesheets="@styles.css" BorderPane.alignment="CENTER">
             <children>
@@ -75,6 +75,9 @@
                     </fill>
                 </Circle>
             </children>
+         <BorderPane.margin>
+            <Insets top="10.0" />
+         </BorderPane.margin>
         </AnchorPane>
     </left>
     <center>
@@ -82,20 +85,20 @@
             <children>
                 <ScrollPane fitToWidth="true" hbarPolicy="NEVER" layoutX="6.0" prefHeight="500.0" prefWidth="843.2" styleClass="transparent_bg" stylesheets="@styles.css" vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
                <content>
-                  <VBox prefHeight="655.0" prefWidth="825.0" spacing="15.0">
+                  <VBox prefHeight="681.0" prefWidth="825.0" spacing="15.0">
                      <children>
                         <AnchorPane prefHeight="138.0" prefWidth="794.0">
                            <children>
                               <VBox prefHeight="200.0" prefWidth="794.0" spacing="15.0" styleClass="pane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Liste des Fournisseurs">
+                                    <Text fill="#69583a" strokeType="OUTSIDE" strokeWidth="0.0" text="Carnet des Fournisseurs">
                                        <font>
-                                          <Font name="Montserrat-Regular" size="48.0" />
+                                          <Font name="Calibri Bold" size="48.0" />
                                        </font>
                                     </Text>
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="DescDescDescDesc" wrappingWidth="435.4734802246094">
+                                    <Text fill="#3e3b3b" strokeType="OUTSIDE" strokeWidth="0.0" text="Gérez et consultez la liste des fournisseurs de votre organisation. &#10;Ajoutez, modifiez ou supprimez des fournisseurs pour une gestion optimale." wrappingWidth="755.4734802246094">
                                        <font>
-                                          <Font size="24.0" />
+                                          <Font name="Montserrat-Regular" size="16.0" />
                                        </font>
                                     </Text>
                                  </children>
@@ -105,48 +108,53 @@
                               </VBox>
                            </children>
                         </AnchorPane>
-                        <AnchorPane prefHeight="376.0" prefWidth="794.0">
+                        <AnchorPane prefHeight="472.0" prefWidth="794.0">
                            <children>
-                              <VBox layoutX="8.0" layoutY="8.0" maxHeight="1.7976931348623157E308" prefHeight="200.0" prefWidth="794.0" spacing="15.0" styleClass="pane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <VBox layoutX="8.0" layoutY="8.0" maxHeight="1.7976931348623157E308" prefHeight="415.0" prefWidth="794.0" spacing="15.0" styleClass="pane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
-                                    <HBox VBox.vgrow="ALWAYS">
+                                    <HBox prefHeight="38.0" prefWidth="762.0" VBox.vgrow="ALWAYS">
                                        <children>
-                                          <VBox prefHeight="53.0" prefWidth="568.0" HBox.hgrow="ALWAYS">
+                                          <Text fill="#3e3b3b" nodeOrientation="LEFT_TO_RIGHT" strokeType="OUTSIDE" strokeWidth="0.0" text="Liste des Fournisseurs" wrappingWidth="510.6319122314453" HBox.hgrow="ALWAYS">
+                                             <font>
+                                                <Font name="Montserrat-Regular" size="24.0" />
+                                             </font>
                                              <HBox.margin>
                                                 <Insets top="5.0" />
                                              </HBox.margin>
-                                             <children>
-                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Liste des Fournisseurs" wrappingWidth="510.6319122314453">
-                                                   <font>
-                                                      <Font name="Montserrat-Regular" size="18.0" />
-                                                   </font>
-                                                </Text>
-                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="DescDescDescDesc" wrappingWidth="496.2734069824219">
-                                                   <font>
-                                                      <Font size="15.0" />
-                                                   </font>
-                                                </Text>
-                                             </children>
-                                          </VBox>
-                                          <Button mnemonicParsing="false" prefHeight="42.0" prefWidth="230.0" styleClass="button_crud" text=" Ajouter un fournisseur">
+                                          </Text>
+                                          <Button mnemonicParsing="false" onAction="#RedirectBackF" prefHeight="42.0" prefWidth="230.0" styleClass="button_crud" text=" Ajouter un fournisseur">
                                              <HBox.margin>
-                                                <Insets bottom="15.0" left="15.0" right="15.0" />
+                                                <Insets left="15.0" right="15.0" />
                                              </HBox.margin>
                                           </Button>
                                        </children>
                                     </HBox>
-                                    <TableView maxHeight="1.7976931348623157E308" prefHeight="317.0" prefWidth="762.0">
-                                      <columns>
-                                        <TableColumn prefWidth="75.0" text="C1" />
-                                        <TableColumn prefWidth="75.0" text="C2" />
-                                      </columns>
-                                    </TableView>
+                                    <ScrollPane fitToWidth="true" styleClass="transparent_bg" VBox.vgrow="ALWAYS">
+                                       <content>
+                                           <TableView fx:id="fournisseurTable" maxHeight="1.7976931348623157E308" prefHeight="384.0" prefWidth="864.0">
+                                               <columns>
+                                                   <TableColumn fx:id="idColumn" prefWidth="68.80004739761353" text="ID" />
+                                                   <TableColumn fx:id="nomColumn" prefWidth="231.20001983642578" text="Nom" />
+                                                   <TableColumn fx:id="typeServiceColumn" prefWidth="179.19998168945312" text="Type de Service" />
+                                                   <TableColumn fx:id="contratColumn" prefWidth="132.79995727539062" text="Contrat" />
+                                                   <TableColumn fx:id="numTelColumn" prefWidth="138.4000244140625" text="Téléphone" />
+                                                   <TableColumn fx:id="actionsColumn" prefWidth="150.0" text="Actions" />
+                                               </columns>
+                                             <columnResizePolicy>
+                                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                             </columnResizePolicy>
+                                           </TableView>
+                                       </content>
+                                    </ScrollPane>
                                  </children>
                                  <padding>
                                     <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                                  </padding>
                               </VBox>
                            </children>
+                           <VBox.margin>
+                              <Insets bottom="15.0" />
+                           </VBox.margin>
                         </AnchorPane>
                      </children>
                      <padding>

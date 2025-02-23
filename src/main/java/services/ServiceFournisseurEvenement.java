@@ -17,7 +17,7 @@ public class ServiceFournisseurEvenement {
 
     // 🔹 Associer un fournisseur à un événement
     public void associerFournisseurAEvenement(int fournisseurId, int evenementId) {
-        String sql = "INSERT INTO fournisseur_event (fournisseur_id, evenement_id) VALUES (?, ?)";
+        String sql = "INSERT INTO fournisseur_evenement (fournisseur_id, evenement_id) VALUES (?, ?)";
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, fournisseurId);
@@ -31,7 +31,7 @@ public class ServiceFournisseurEvenement {
 
     // 🔹 Supprimer un fournisseur de tous ses événements
     public void supprimerFournisseurDeTousEvenements(int fournisseurId) {
-        String sql = "DELETE FROM fournisseur_event WHERE fournisseur_id = ?";
+        String sql = "DELETE FROM fournisseur_evenement WHERE fournisseur_id = ?";
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, fournisseurId);
@@ -44,7 +44,7 @@ public class ServiceFournisseurEvenement {
 
     // 🔹 Désassocier un fournisseur d'un événement spécifique
     public void desassocierFournisseurDeEvenement(int fournisseurId, int evenementId) {
-        String sql = "DELETE FROM fournisseur_event WHERE fournisseur_id = ? AND evenement_id = ?";
+        String sql = "DELETE FROM fournisseur_evenement WHERE fournisseur_id = ? AND evenement_id = ?";
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, fournisseurId);
@@ -61,7 +61,7 @@ public class ServiceFournisseurEvenement {
         List<Fournisseur> fournisseurs = new ArrayList<>();
         String sql = "SELECT f.fournisseur_id, f.nom, f.type_service, f.contrat, f.num_tel " +
                 "FROM fournisseur f " +
-                "JOIN fournisseur_event fe ON f.fournisseur_id = fe.fournisseur_id " +
+                "JOIN fournisseur_evenement fe ON f.fournisseur_id = fe.fournisseur_id " +
                 "WHERE fe.evenement_id = ?";
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
@@ -86,9 +86,9 @@ public class ServiceFournisseurEvenement {
     // 🔹 Récupérer tous les événements associés à un fournisseur
     public List<Evenement> getEvenementsByFournisseurId(int fournisseurId) {
         List<Evenement> evenements = new ArrayList<>();
-        String sql = "SELECT e.evenement_id, e.nom, e.description, e.date_debut, e.date_fin, e.lieu, e.categorie, e.budget, e.image_event, e.nb_places " +
+        String sql = "SELECT e.evenement_id, e.nom, e.description, e.date_debut, e.date_fin, e.lieu, e.categorie, e.budget, e.image_evenement, e.nb_places " +
                 "FROM evenement e " +
-                "JOIN fournisseur_event fe ON e.evenement_id = fe.evenement_id " +
+                "JOIN fournisseur_evenement fe ON e.evenement_id = fe.evenement_id " +
                 "WHERE fe.fournisseur_id = ?";
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
@@ -105,7 +105,7 @@ public class ServiceFournisseurEvenement {
                         rs.getString("lieu"),
                         rs.getString("categorie"),
                         rs.getFloat("budget"),
-                        rs.getString("image_event"),
+                        rs.getString("image_evenement"),
                         rs.getInt("nb_places")
                 ));
             }
