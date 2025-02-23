@@ -13,6 +13,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -313,13 +314,21 @@ public class EventTache implements Initializable {
     }
 
     @FXML
-    void RedirectBack(ActionEvent event) {
+    void redirectToAjoutTache(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjoutTache.fxml"));
+            Node source = (Node) event.getSource();
+            // Utiliser l'ID de l'événement courant
+            Integer eventId = this.currentEventId;
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ajoutTache.fxml"));
             Parent root = loader.load();
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.show();
+
+            // Récupérer le contrôleur d'AjoutTache et initialiser les données
+            AjoutTache ajoutTacheController = loader.getController();
+            ajoutTacheController.initEventData(eventId);  // Nouvelle méthode à créer dans AjoutTache
+
+            Scene scene = source.getScene();
+            scene.setRoot(root);
         } catch (IOException e) {
             e.printStackTrace();
         }

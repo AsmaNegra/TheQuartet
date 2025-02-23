@@ -11,7 +11,11 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.TransferMode;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import services.ServiceEvenement;
 import services.ServiceTache;
 import services.ServiceUtilisateurEvenement;
 import services.ServiceFournisseur;
@@ -51,28 +55,53 @@ public class AjoutTache implements Initializable {
     @FXML
     private ComboBox<String> fournisseurComboBox;
 
-    private int evenementId = 3; // Default event ID for testing
+    @FXML
+    private Label eventNameLabel;
+    @FXML
+    private Label eventDescriptionLabel;
 
     @FXML
-    public void initialize() throws SQLException {
-        populateUserAssocieComboBox();
-        populateFournisseurComboBox();
+    private Pane pane_event;
+
+    private ServiceEvenement serviceEvenement = new ServiceEvenement();
+    private final ServiceTache serviceTache = new ServiceTache();
+    private int currentEventId;
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        // Configuration du DatePicker
+        dateLimitePicker.setDayCellFactory(picker -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                if (date.isBefore(LocalDate.now())) {
+                    setDisable(true);
+                    setStyle("-fx-background-color: #EEEEEE;");
+                }
+            }
+        });
+
+        // Initialisation des ComboBox qui ne dépendent pas de currentEventId
+        try {
+            populateFournisseurComboBox();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     private void populateUserAssocieComboBox() {
         ServiceUtilisateurEvenement service = new ServiceUtilisateurEvenement();
-        List<Utilisateur> utilisateurs = service.getUtilisateursByEvenementIdNour(3);
-
+        List<Utilisateur> utilisateurs = service.getUtilisateursByEvenementIdNour(currentEventId);
         userAssocieComboBox.getItems().clear();
         for (Utilisateur user : utilisateurs) {
             userAssocieComboBox.getItems().add(user.getNom());
         }
+        System.out.println("Nombre d'utilisateurs : " + utilisateurs.size());
     }
 
     private void populateFournisseurComboBox() throws SQLException {
         ServiceFournisseur service = new ServiceFournisseur();
         List<Fournisseur> fournisseurs = service.afficher();
-
         fournisseurComboBox.getItems().clear();
         for (Fournisseur fournisseur : fournisseurs) {
             fournisseurComboBox.getItems().add(fournisseur.getNom());
@@ -107,10 +136,6 @@ public class AjoutTache implements Initializable {
                 showAlert("Erreur de validation", "Veuillez sélectionner un utilisateur associé.");
                 return;
             }
-            if (fournisseurComboBox.getValue() == null) {
-                showAlert("Erreur de validation", "Veuillez sélectionner un fournisseur.");
-                return;
-            }
 
             // Vérification que la date limite n'est pas antérieure à aujourd'hui
             LocalDate selectedDate = dateLimitePicker.getValue();
@@ -130,7 +155,7 @@ public class AjoutTache implements Initializable {
             // Création d'un nouvel objet Tache
             Tache t = new Tache();
             Evenement e = new Evenement();
-            e.setEvenement_id(evenementId);
+            e.setEvenement_id(currentEventId);
             Fournisseur f = new Fournisseur();
             f.setNom(fournisseurComboBox.getValue());
             ServiceFournisseur service = new ServiceFournisseur();
@@ -181,18 +206,28 @@ public class AjoutTache implements Initializable {
         }
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        dateLimitePicker.setDayCellFactory(picker -> new DateCell() {
-            @Override
-            public void updateItem(LocalDate date, boolean empty) {
-                super.updateItem(date, empty);
-                if (date.isBefore(LocalDate.now())) {
-                    setDisable(true);
-                    setStyle("-fx-background-color: #EEEEEE;");
+    // Cette méthode est appelée depuis l'autre écran pour initialiser les données de l'événement
+    public void initEventData(int eventId) {
+        this.currentEventId = eventId;
+        try {
+            // Charger les détails de l'événement
+            Evenement event = serviceEvenement.getEvenementById(eventId);
+            if (event != null) {
+                eventNameLabel.setText(event.getNom());
+                eventDescriptionLabel.setText(event.getDescription());
+                String imagePath = event.getImage_event();
+                if (imagePath != null && !imagePath.isEmpty()) {
+                    // Encoder les espaces dans le chemin
+                    String encodedPath = imagePath.replace(" ", "%20");
+                    pane_event.setStyle("-fx-background-image: url('" + encodedPath + "');"
+                            + " -fx-background-size: cover;"
+                            + " -fx-background-position: center center;");
                 }
             }
-        });
-
+            // Appel de la méthode de peuplement une fois que currentEventId est défini
+            populateUserAssocieComboBox();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
