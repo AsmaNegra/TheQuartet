@@ -8,10 +8,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
@@ -30,6 +27,7 @@ import entities.Fournisseur;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -42,7 +40,8 @@ public class EventTache implements Initializable {
     private VBox doneTasks;
     @FXML
     private Pane pane_event;
-
+    @FXML
+    private ChoiceBox<?> filterT;
     @FXML
     private VBox inProgressTasks;
 
@@ -74,18 +73,66 @@ public class EventTache implements Initializable {
             loadFournisseurs();
             setupDragAndDrop();
 
-            // Listener pour la recherche des tâches
+
+
+            // Listener sur le ChoiceBox pour appliquer le tri
+            filterT.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+                try {
+                    if ("Aucun tri".equals(newVal)) {
+                        loadTasks();
+                    } else if ("Par Priorité".equals(newVal)) {
+                        // Récupère toutes les tâches triées par priorité
+                        List<Tache> tasksSorted = serviceTache.trierTachesParPriorite();
+                        // On regroupe les tâches selon leur statut pour afficher dans les colonnes
+                        List<Tache> todo = new ArrayList<>();
+                        List<Tache> inProgress = new ArrayList<>();
+                        List<Tache> done = new ArrayList<>();
+                        for (Tache t : tasksSorted) {
+                            if ("A faire".equalsIgnoreCase(t.getStatut())) {
+                                todo.add(t);
+                            } else if ("En Cours".equalsIgnoreCase(t.getStatut())) {
+                                inProgress.add(t);
+                            } else if ("Terminée".equalsIgnoreCase(t.getStatut())) {
+                                done.add(t);
+                            }
+                        }
+                        populateColumn(todoTasks, todo);
+                        populateColumn(inProgressTasks, inProgress);
+                        populateColumn(doneTasks, done);
+                    } else if ("Par Date".equals(newVal)) {
+                        // Récupère toutes les tâches triées par date limite
+                        List<Tache> tasksSorted = serviceTache.trierTachesParDate();
+                        // Regroupons-les par statut pour afficher dans les colonnes
+                        List<Tache> todo = new ArrayList<>();
+                        List<Tache> inProgress = new ArrayList<>();
+                        List<Tache> done = new ArrayList<>();
+                        for (Tache t : tasksSorted) {
+                            if ("A faire".equalsIgnoreCase(t.getStatut())) {
+                                todo.add(t);
+                            } else if ("En Cours".equalsIgnoreCase(t.getStatut())) {
+                                inProgress.add(t);
+                            } else if ("Terminée".equalsIgnoreCase(t.getStatut())) {
+                                done.add(t);
+                            }
+                        }
+                        populateColumn(todoTasks, todo);
+                        populateColumn(inProgressTasks, inProgress);
+                        populateColumn(doneTasks, done);
+                    }
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            });
+
+            // Vos listeners existants pour la recherche de tâches et fournisseurs…
             rechercheT.textProperty().addListener((observable, oldValue, newValue) -> {
                 try {
                     if (newValue.trim().isEmpty()) {
-                        // Si la recherche est vide, afficher toutes les tâches
                         loadTasks();
                     } else {
-                        // Sinon, filtrer chaque colonne en fonction du mot-clé
                         List<Tache> enAttente = serviceTache.rechercherTachesToDo(newValue);
                         List<Tache> enCours = serviceTache.rechercherTachesEnCours(newValue);
                         List<Tache> terminees = serviceTache.rechercherTachesDone(newValue);
-
                         populateColumn(todoTasks, enAttente);
                         populateColumn(inProgressTasks, enCours);
                         populateColumn(doneTasks, terminees);
@@ -95,14 +142,11 @@ public class EventTache implements Initializable {
                 }
             });
 
-            // Listener pour la recherche des fournisseurs
             rechercheF.textProperty().addListener((observable, oldValue, newValue) -> {
                 try {
                     if (newValue.trim().isEmpty()) {
-                        // Si le champ de recherche est vide, afficher tous les fournisseurs
                         loadFournisseurs();
                     } else {
-                        // Filtrer la liste des fournisseurs en fonction du mot-clé
                         List<Fournisseur> filteredFournisseurs = serviceFournisseur.rechercherFournisseurs(newValue);
                         populateFournisseurList(filteredFournisseurs);
                     }
@@ -114,8 +158,6 @@ public class EventTache implements Initializable {
             throw new RuntimeException(e);
         }
     }
-
-
     private void loadFournisseurs() throws SQLException {
         List<Fournisseur> fournisseurs = serviceFournisseur.afficher();
         populateFournisseurList(fournisseurs);
@@ -136,52 +178,71 @@ public class EventTache implements Initializable {
         column.getChildren().clear();
         for (Tache task : tasks) {
             HBox taskContainer = new HBox(10);
-            taskContainer.setStyle("-fx-background-color: rgba(255, 255, 255, 0.82); -fx-padding: 10; -fx-border-radius: 10px; -fx-background-radius: 10px; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0.5, 2, 2);");
+            // Style de base pour le conteneur (sans modification de couleur du texte)
+            String baseStyle = "-fx-background-color: rgba(255, 255, 255, 0.82); " +
+                    "-fx-padding: 10; " +
+                    "-fx-border-radius: 10px; " +
+                    "-fx-background-radius: 10px; " +
+                    "-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0.5, 2, 2);";
+            taskContainer.setStyle(baseStyle);
 
+            // Création du conteneur de texte
             VBox textContainer = new VBox(5);
             Label nameLabel = new Label(task.getNom());
             nameLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14px; -fx-text-fill: #2b2b2b;");
 
-            Label descriptionLabel = new Label((task.getDescription() != null ? task.getDescription() : ""));
+            Label descriptionLabel = new Label(task.getDescription() != null ? task.getDescription() : "");
             descriptionLabel.setStyle("-fx-font-size: 12px; -fx-text-fill: #666;");
 
             Label assignedLabel = new Label("Assigné à : " + task.getUserAssocie());
             assignedLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 12px;");
 
+            // On détermine la couleur du texte selon la priorité
+            String textColor = "#2b2b2b"; // couleur par défaut
+            if ("Haute".equalsIgnoreCase(task.getPriorite())) {
+                textColor = "rgba(255, 0, 0, 0.6)";      // rouge avec 60% d'opacité
+            } else if ("Moyenne".equalsIgnoreCase(task.getPriorite())) {
+                textColor = "rgba(255, 165, 0, 0.6)";    // orange avec 60% d'opacité
+            } else if ("Basse".equalsIgnoreCase(task.getPriorite())) {
+                textColor = "rgba(0, 128, 0, 0.6)";      // vert avec 60% d'opacité
+            }
+
+            Label priorityLabel = new Label("Priorité : " + task.getPriorite());
+            priorityLabel.setStyle("-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: " + textColor + ";");
+
             HBox statusContainer = new HBox(10);
             Label relativeTime = new Label(task.getDateLimite().toString());
-            Label priorityLabel = new Label("Priorité : " + task.getPriorite());
             statusContainer.getChildren().addAll(relativeTime, priorityLabel);
 
-            // Buttons Container
+            // Container des boutons
             VBox buttonContainer = new VBox(10);
 
-            // Create Edit Button with Image
+            // Bouton d'édition
             Button editButton = new Button();
             ImageView editIcon = new ImageView(new Image(getClass().getResourceAsStream("/images/pencil.png")));
-            editIcon.setFitWidth(10);  // Set icon width
-            editIcon.setFitHeight(10); // Set icon height
+            editIcon.setFitWidth(13);
+            editIcon.setFitHeight(13);
             editButton.setGraphic(editIcon);
-            editButton.setStyle("-fx-background-color: transparent;"); // Hide default button background
+            editButton.setStyle("-fx-background-color: transparent;");
             editButton.setOnAction(event -> modifyTask(task, event));
 
-            // Create Delete Button with Image
+            // Bouton de suppression
             Button deleteButton = new Button();
             ImageView deleteIcon = new ImageView(new Image(getClass().getResourceAsStream("/images/delete.png")));
-            deleteIcon.setFitWidth(10);
-            deleteIcon.setFitHeight(10);
+            deleteIcon.setFitWidth(13);
+            deleteIcon.setFitHeight(13);
             deleteButton.setGraphic(deleteIcon);
             deleteButton.setStyle("-fx-background-color: transparent;");
             deleteButton.setOnAction(event -> deleteTask(task));
 
             buttonContainer.getChildren().addAll(editButton, deleteButton);
-
-             textContainer.getChildren().addAll(nameLabel, descriptionLabel, assignedLabel, statusContainer);
+            textContainer.getChildren().addAll(nameLabel, descriptionLabel, assignedLabel, statusContainer);
             taskContainer.getChildren().addAll(textContainer, buttonContainer);
 
-            // Add task container to column
+            // Ajout du conteneur de tâche à la colonne
             column.getChildren().add(taskContainer);
-            // 🎯 Ajout du Drag & Drop
+
+            // Gestion du Drag & Drop
             taskContainer.setOnDragDetected(event -> {
                 draggedTask = task;
                 Dragboard db = taskContainer.startDragAndDrop(TransferMode.MOVE);
@@ -192,6 +253,8 @@ public class EventTache implements Initializable {
             });
         }
     }
+
+
     private void setupDragAndDrop() {
         // 🚀 Ajouter la gestion du drag and drop pour chaque colonne
         setupDropTarget(todoTasks,"A Faire");

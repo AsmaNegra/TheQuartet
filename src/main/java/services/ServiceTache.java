@@ -320,4 +320,69 @@ public class ServiceTache implements IService<Tache> {
 
 
     /////////////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////          TRI         ////////////////////////////////////////////////////
+    /* Trie toutes les tâches par priorité personnalisée (Haute, Moyenne, Basse).*/
+    public List<Tache> trierTachesParPriorite() throws SQLException {
+        List<Tache> taches = new ArrayList<>();
+        ServiceEvenement serviceEvenement = new ServiceEvenement();
+        ServiceFournisseur serviceFournisseur = new ServiceFournisseur();
+        // On utilise CASE pour définir l'ordre de tri en fonction des valeurs textuelles.
+        String sql = "SELECT * FROM `tache` " +
+                "ORDER BY CASE priorite " +
+                "    WHEN 'Haute' THEN 1 " +
+                "    WHEN 'Moyenne' THEN 2 " +
+                "    WHEN 'Basse' THEN 3 " +
+                "    ELSE 4 END ASC";
+
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery(sql);
+
+        while (resultSet.next()) {
+            Tache tache = new Tache(
+                    resultSet.getInt("tache_id"),
+                    resultSet.getString("nom"),
+                    resultSet.getString("description"),
+                    resultSet.getString("statut"),
+                    resultSet.getDate("date_limite"),
+                    serviceEvenement.getEvenementById(resultSet.getInt("evenement_id")),
+                    serviceFournisseur.rechercherParId(resultSet.getInt("fournisseur_id")),
+                    resultSet.getString("priorite"),
+                    resultSet.getString("user_associe")
+            );
+            taches.add(tache);
+        }
+
+        return taches;
+    }
+
+    /* Trie toutes les tâches par date limite (du plus proche au plus lointain). */
+    public List<Tache> trierTachesParDate() throws SQLException {
+        List<Tache> taches = new ArrayList<>();
+        ServiceEvenement serviceEvenement = new ServiceEvenement();
+        ServiceFournisseur serviceFournisseur = new ServiceFournisseur();
+        String sql = "SELECT * FROM `tache` ORDER BY `date_limite` ASC";
+
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery(sql);
+
+        while (resultSet.next()) {
+            Tache tache = new Tache(
+                    resultSet.getInt("tache_id"),
+                    resultSet.getString("nom"),
+                    resultSet.getString("description"),
+                    resultSet.getString("statut"),
+                    resultSet.getDate("date_limite"),
+                    serviceEvenement.getEvenementById(resultSet.getInt("evenement_id")),
+                    serviceFournisseur.rechercherParId(resultSet.getInt("fournisseur_id")),
+                    resultSet.getString("priorite"),
+                    resultSet.getString("user_associe")
+            );
+            taches.add(tache);
+        }
+
+        return taches;
+    }
+///////////////////////////////////////////////////////////////////////////////////////////
+
 }
