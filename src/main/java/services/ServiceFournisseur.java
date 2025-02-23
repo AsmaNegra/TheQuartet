@@ -17,15 +17,14 @@ public class ServiceFournisseur implements IService<Fournisseur> {
     /** ✅ AJOUTER UN FOURNISSEUR */
     @Override
     public void ajouter(Fournisseur fournisseur) throws SQLException {
-        String sql = "INSERT INTO `fournisseur` (`nom`, `type_service`, `contrat`, `evenement_id`, `num_tel`) " +
-                "VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO `fournisseur` (`nom`, `type_service`, `contrat`, `num_tel`) " +
+                "VALUES (?, ?, ?, ?)";
 
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         preparedStatement.setString(1, fournisseur.getNom());
         preparedStatement.setString(2, fournisseur.getTypeService());
         preparedStatement.setString(3, fournisseur.getContrat());
-        preparedStatement.setInt(4, fournisseur.getEvenementId().getEvenement_id());
-        preparedStatement.setInt(5, fournisseur.getNum_tel()); // Added num_tel
+        preparedStatement.setInt(4, fournisseur.getNum_tel()); // Added num_tel
 
         preparedStatement.executeUpdate();
         System.out.println("✅ Fournisseur ajouté avec succès !");
@@ -34,16 +33,15 @@ public class ServiceFournisseur implements IService<Fournisseur> {
     /** ✅ MODIFIER UN FOURNISSEUR */
     @Override
     public void modifier(Fournisseur fournisseur) throws SQLException {
-        String sql = "UPDATE `fournisseur` SET `nom` = ?, `type_service` = ?, `contrat` = ?, `evenement_id` = ?, `num_tel` = ? " +
+        String sql = "UPDATE `fournisseur` SET `nom` = ?, `type_service` = ?, `contrat` = ?, `num_tel` = ? " +
                 "WHERE `fournisseur_id` = ?";
 
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         preparedStatement.setString(1, fournisseur.getNom());
         preparedStatement.setString(2, fournisseur.getTypeService());
         preparedStatement.setString(3, fournisseur.getContrat());
-        preparedStatement.setInt(4, fournisseur.getEvenementId().getEvenement_id());
-        preparedStatement.setInt(5, fournisseur.getNum_tel()); // Added num_tel
-        preparedStatement.setInt(6, fournisseur.getFournisseurId());
+        preparedStatement.setInt(4, fournisseur.getNum_tel()); // Added num_tel
+        preparedStatement.setInt(5, fournisseur.getFournisseurId());
 
         int rowsUpdated = preparedStatement.executeUpdate();
         if (rowsUpdated > 0) {
@@ -84,7 +82,6 @@ public class ServiceFournisseur implements IService<Fournisseur> {
                     resultSet.getString("nom"),
                     resultSet.getString("type_service"),
                     resultSet.getString("contrat"),
-                    null,
                     resultSet.getInt("num_tel") // Added num_tel
             );
 
@@ -124,7 +121,6 @@ public class ServiceFournisseur implements IService<Fournisseur> {
                     resultSet.getString("nom"),
                     resultSet.getString("type_service"),
                     resultSet.getString("contrat"),
-                    null,
                     resultSet.getInt("num_tel") // Added num_tel
             );
         } else {
@@ -132,6 +128,7 @@ public class ServiceFournisseur implements IService<Fournisseur> {
             return null;
         }
     }
+
     //////////////////////////////RECHERCHE/////////////////////////////////////////
     /**
      * Recherche des fournisseurs dont le nom, le type de service ou le contrat contient le mot-clé.
@@ -154,13 +151,11 @@ public class ServiceFournisseur implements IService<Fournisseur> {
                     resultSet.getString("nom"),
                     resultSet.getString("type_service"),
                     resultSet.getString("contrat"),
-                    null, // L'objet Evenement associé n'est pas chargé ici
                     resultSet.getInt("num_tel")
             );
             fournisseurs.add(fournisseur);
         }
         return fournisseurs;
     }
-
     /////////////////////////////////////////////////////////////////////////////////
 }

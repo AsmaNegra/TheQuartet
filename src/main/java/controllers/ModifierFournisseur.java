@@ -64,14 +64,11 @@ public class ModifierFournisseur {
     @FXML
     public void updateFournisseur(ActionEvent event) {
         try {
-            Evenement e = new Evenement();
-            e.setEvenement_id(3);
             selectedFournisseur.setNom(nomField.getText());
             selectedFournisseur.setTypeService(typeServiceComboBox.getValue());
             selectedFournisseur.setContrat(contratComboBox.getValue());
             selectedFournisseur.setNum_tel(Integer.parseInt(numTelField.getText()));
-            selectedFournisseur.setEvenement(e);
-            // Call service to update the database
+             // Call service to update the database
             System.out.println(selectedFournisseur);
             serviceFournisseur.modifier(selectedFournisseur);
 

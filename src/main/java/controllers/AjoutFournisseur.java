@@ -38,13 +38,11 @@ public class AjoutFournisseur {
             }
 
             Fournisseur fournisseur = new Fournisseur();
-            Evenement evenement = new Evenement();
-            evenement.setEvenement_id(4);
+
 
             fournisseur.setNom(nomField.getText());
             fournisseur.setTypeService(typeServiceComboBox.getValue());
             fournisseur.setContrat(contratComboBox.getValue());
-            fournisseur.setEvenement(evenement);
             fournisseur.setNum_tel(Integer.parseInt(numTelField.getText()));
 
             serviceFournisseur.ajouter(fournisseur);

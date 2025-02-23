@@ -130,86 +130,91 @@ public class ServiceTache implements IService<Tache> {
         return taches;
     }
 
-    /** ✅ AFFICHER LES TÂCHES "EN COURS" */
-    public List<Tache> afficherTachesEnCours() throws SQLException {
+    // Afficher les tâches "A faire" pour un événement donné
+    public List<Tache> afficherTachesToDoByEvenement(int evenementId) throws SQLException {
         ServiceFournisseur serviceFournisseur = new ServiceFournisseur();
         ServiceEvenement serviceEvenement = new ServiceEvenement();
-        String sql = "SELECT * FROM `tache` WHERE `statut` = 'En Cours'";
+        String sql = "SELECT * FROM `tache` WHERE `statut` = 'A faire' AND `evenement_id` = ?";
         List<Tache> taches = new ArrayList<>();
 
-        Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery(sql);
+        PreparedStatement ps = connection.prepareStatement(sql);
+        ps.setInt(1, evenementId);
+        ResultSet rs = ps.executeQuery();
 
-        while (resultSet.next()) {
+        while (rs.next()) {
             taches.add(new Tache(
-                    resultSet.getInt("tache_id"),
-                    resultSet.getString("nom"),
-                    resultSet.getString("description"),
-                    resultSet.getString("statut"),
-                    resultSet.getDate("date_limite"),
-                    serviceEvenement.getEvenementById(resultSet.getInt("evenement_id")),
-                    serviceFournisseur.rechercherParId(resultSet.getInt("fournisseur_id")),
-                    resultSet.getString("priorite"),
-                    resultSet.getString("user_associe")
+                    rs.getInt("tache_id"),
+                    rs.getString("nom"),
+                    rs.getString("description"),
+                    rs.getString("statut"),
+                    rs.getDate("date_limite"),
+                    serviceEvenement.getEvenementById(rs.getInt("evenement_id")),
+                    serviceFournisseur.rechercherParId(rs.getInt("fournisseur_id")),
+                    rs.getString("priorite"),
+                    rs.getString("user_associe")
             ));
         }
 
         return taches;
     }
 
-    /** ✅ AFFICHER LES TÂCHES "DONE" */
-    public List<Tache> afficherTachesDone() throws SQLException {
+    // Afficher les tâches "En Cours" pour un événement donné
+    public List<Tache> afficherTachesEnCoursByEvenement(int evenementId) throws SQLException {
         ServiceFournisseur serviceFournisseur = new ServiceFournisseur();
         ServiceEvenement serviceEvenement = new ServiceEvenement();
-        String sql = "SELECT * FROM `tache` WHERE `statut` = 'Terminée'";
+        String sql = "SELECT * FROM `tache` WHERE `statut` = 'En Cours' AND `evenement_id` = ?";
         List<Tache> taches = new ArrayList<>();
 
-        Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery(sql);
+        PreparedStatement ps = connection.prepareStatement(sql);
+        ps.setInt(1, evenementId);
+        ResultSet rs = ps.executeQuery();
 
-        while (resultSet.next()) {
+        while (rs.next()) {
             taches.add(new Tache(
-                    resultSet.getInt("tache_id"),
-                    resultSet.getString("nom"),
-                    resultSet.getString("description"),
-                    resultSet.getString("statut"),
-                    resultSet.getDate("date_limite"),
-                    serviceEvenement.getEvenementById(resultSet.getInt("evenement_id")),
-                    serviceFournisseur.rechercherParId(resultSet.getInt("fournisseur_id")),
-                    resultSet.getString("priorite"),
-                    resultSet.getString("user_associe")
+                    rs.getInt("tache_id"),
+                    rs.getString("nom"),
+                    rs.getString("description"),
+                    rs.getString("statut"),
+                    rs.getDate("date_limite"),
+                    serviceEvenement.getEvenementById(rs.getInt("evenement_id")),
+                    serviceFournisseur.rechercherParId(rs.getInt("fournisseur_id")),
+                    rs.getString("priorite"),
+                    rs.getString("user_associe")
             ));
         }
 
         return taches;
     }
 
-    /** ✅ AFFICHER LES TÂCHES "TO DO" */
-    public List<Tache> afficherTachesToDo() throws SQLException {
+    // Afficher les tâches "Terminée" pour un événement donné
+    public List<Tache> afficherTachesDoneByEvenement(int evenementId) throws SQLException {
         ServiceFournisseur serviceFournisseur = new ServiceFournisseur();
         ServiceEvenement serviceEvenement = new ServiceEvenement();
-        String sql = "SELECT * FROM `tache` WHERE `statut` = 'A faire'";
+        String sql = "SELECT * FROM `tache` WHERE `statut` = 'Terminée' AND `evenement_id` = ?";
         List<Tache> taches = new ArrayList<>();
 
-        Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery(sql);
+        PreparedStatement ps = connection.prepareStatement(sql);
+        ps.setInt(1, evenementId);
+        ResultSet rs = ps.executeQuery();
 
-        while (resultSet.next()) {
+        while (rs.next()) {
             taches.add(new Tache(
-                    resultSet.getInt("tache_id"),
-                    resultSet.getString("nom"),
-                    resultSet.getString("description"),
-                    resultSet.getString("statut"),
-                    resultSet.getDate("date_limite"),
-                    serviceEvenement.getEvenementById(resultSet.getInt("evenement_id")),
-                    serviceFournisseur.rechercherParId(resultSet.getInt("fournisseur_id")),
-                    resultSet.getString("priorite"),
-                    resultSet.getString("user_associe")
+                    rs.getInt("tache_id"),
+                    rs.getString("nom"),
+                    rs.getString("description"),
+                    rs.getString("statut"),
+                    rs.getDate("date_limite"),
+                    serviceEvenement.getEvenementById(rs.getInt("evenement_id")),
+                    serviceFournisseur.rechercherParId(rs.getInt("fournisseur_id")),
+                    rs.getString("priorite"),
+                    rs.getString("user_associe")
             ));
         }
 
         return taches;
     }
+
+
 
     /** ✅ MODIFIER L'ÉTAT D'UNE TÂCHE */
     public void modifierEtatTache(int tacheId, String nouvelEtat) throws SQLException {
@@ -229,16 +234,19 @@ public class ServiceTache implements IService<Tache> {
     ////////////////////////////////////////RECHERCHE//////////////////////////////////
 
     /**
-     * Recherche des tâches "A faire" dont le nom ou la description contient le mot-clé.
+     * Recherche des tâches "A faire" dont le nom ou la description contient le mot-clé
+     * pour un événement donné.
      */
-    public List<Tache> rechercherTachesToDo(String keyword) throws SQLException {
+    public List<Tache> rechercherTachesToDo(String keyword, int evenementId) throws SQLException {
         ServiceEvenement serviceEvenement = new ServiceEvenement();
         ServiceFournisseur serviceFournisseur = new ServiceFournisseur();
         List<Tache> taches = new ArrayList<>();
-        String sql = "SELECT * FROM `tache` WHERE `statut` = 'A faire' AND ( `nom` LIKE ? OR `description` LIKE ? )";
+        String sql = "SELECT * FROM `tache` WHERE `statut` = 'A faire' AND `evenement_id` = ? " +
+                "AND ( `nom` LIKE ? OR `description` LIKE ? )";
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        preparedStatement.setString(1, "%" + keyword + "%");
+        preparedStatement.setInt(1, evenementId);
         preparedStatement.setString(2, "%" + keyword + "%");
+        preparedStatement.setString(3, "%" + keyword + "%");
 
         ResultSet resultSet = preparedStatement.executeQuery();
         while (resultSet.next()) {
@@ -259,16 +267,19 @@ public class ServiceTache implements IService<Tache> {
     }
 
     /**
-     * Recherche des tâches "En Cours" dont le nom ou la description contient le mot-clé.
+     * Recherche des tâches "En Cours" dont le nom ou la description contient le mot-clé
+     * pour un événement donné.
      */
-    public List<Tache> rechercherTachesEnCours(String keyword) throws SQLException {
+    public List<Tache> rechercherTachesEnCours(String keyword, int evenementId) throws SQLException {
         ServiceEvenement serviceEvenement = new ServiceEvenement();
         ServiceFournisseur serviceFournisseur = new ServiceFournisseur();
         List<Tache> taches = new ArrayList<>();
-        String sql = "SELECT * FROM `tache` WHERE `statut` = 'En Cours' AND ( `nom` LIKE ? OR `description` LIKE ? )";
+        String sql = "SELECT * FROM `tache` WHERE `statut` = 'En Cours' AND `evenement_id` = ? " +
+                "AND ( `nom` LIKE ? OR `description` LIKE ? )";
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        preparedStatement.setString(1, "%" + keyword + "%");
+        preparedStatement.setInt(1, evenementId);
         preparedStatement.setString(2, "%" + keyword + "%");
+        preparedStatement.setString(3, "%" + keyword + "%");
 
         ResultSet resultSet = preparedStatement.executeQuery();
         while (resultSet.next()) {
@@ -289,16 +300,19 @@ public class ServiceTache implements IService<Tache> {
     }
 
     /**
-     * Recherche des tâches "Terminée" dont le nom ou la description contient le mot-clé.
+     * Recherche des tâches "Terminée" dont le nom ou la description contient le mot-clé
+     * pour un événement donné.
      */
-    public List<Tache> rechercherTachesDone(String keyword) throws SQLException {
+    public List<Tache> rechercherTachesDone(String keyword, int evenementId) throws SQLException {
         ServiceEvenement serviceEvenement = new ServiceEvenement();
         ServiceFournisseur serviceFournisseur = new ServiceFournisseur();
         List<Tache> taches = new ArrayList<>();
-        String sql = "SELECT * FROM `tache` WHERE `statut` = 'Terminée' AND ( `nom` LIKE ? OR `description` LIKE ? )";
+        String sql = "SELECT * FROM `tache` WHERE `statut` = 'Terminée' AND `evenement_id` = ? " +
+                "AND ( `nom` LIKE ? OR `description` LIKE ? )";
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        preparedStatement.setString(1, "%" + keyword + "%");
+        preparedStatement.setInt(1, evenementId);
         preparedStatement.setString(2, "%" + keyword + "%");
+        preparedStatement.setString(3, "%" + keyword + "%");
 
         ResultSet resultSet = preparedStatement.executeQuery();
         while (resultSet.next()) {
@@ -317,6 +331,7 @@ public class ServiceTache implements IService<Tache> {
         }
         return taches;
     }
+
 
     /**
      * Recherche une tâche par son nom.
@@ -350,64 +365,61 @@ public class ServiceTache implements IService<Tache> {
 
 //////////////////////////          TRI         ////////////////////////////////////////////////////
     /* Trie toutes les tâches par priorité personnalisée (Haute, Moyenne, Basse).*/
-    public List<Tache> trierTachesParPriorite() throws SQLException {
-        List<Tache> taches = new ArrayList<>();
-        ServiceEvenement serviceEvenement = new ServiceEvenement();
-        ServiceFournisseur serviceFournisseur = new ServiceFournisseur();
-        // On utilise CASE pour définir l'ordre de tri en fonction des valeurs textuelles.
-        String sql = "SELECT * FROM `tache` " +
-                "ORDER BY CASE priorite " +
-                "    WHEN 'Haute' THEN 1 " +
-                "    WHEN 'Moyenne' THEN 2 " +
-                "    WHEN 'Basse' THEN 3 " +
-                "    ELSE 4 END ASC";
+public List<Tache> trierTachesParPriorite(int evenementId) throws SQLException {
+    List<Tache> taches = new ArrayList<>();
+    ServiceEvenement serviceEvenement = new ServiceEvenement();
+    ServiceFournisseur serviceFournisseur = new ServiceFournisseur();
+    String sql = "SELECT * FROM `tache` WHERE evenement_id = ? " +
+            "ORDER BY CASE priorite " +
+            "    WHEN 'Haute' THEN 1 " +
+            "    WHEN 'Moyenne' THEN 2 " +
+            "    WHEN 'Basse' THEN 3 " +
+            "    ELSE 4 END ASC";
+    PreparedStatement ps = connection.prepareStatement(sql);
+    ps.setInt(1, evenementId);
+    ResultSet rs = ps.executeQuery();
 
-        Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery(sql);
-
-        while (resultSet.next()) {
-            Tache tache = new Tache(
-                    resultSet.getInt("tache_id"),
-                    resultSet.getString("nom"),
-                    resultSet.getString("description"),
-                    resultSet.getString("statut"),
-                    resultSet.getDate("date_limite"),
-                    serviceEvenement.getEvenementById(resultSet.getInt("evenement_id")),
-                    serviceFournisseur.rechercherParId(resultSet.getInt("fournisseur_id")),
-                    resultSet.getString("priorite"),
-                    resultSet.getString("user_associe")
-            );
-            taches.add(tache);
-        }
-
-        return taches;
+    while (rs.next()) {
+        Tache tache = new Tache(
+                rs.getInt("tache_id"),
+                rs.getString("nom"),
+                rs.getString("description"),
+                rs.getString("statut"),
+                rs.getDate("date_limite"),
+                serviceEvenement.getEvenementById(rs.getInt("evenement_id")),
+                serviceFournisseur.rechercherParId(rs.getInt("fournisseur_id")),
+                rs.getString("priorite"),
+                rs.getString("user_associe")
+        );
+        taches.add(tache);
     }
+    return taches;
+}
 
     /* Trie toutes les tâches par date limite (du plus proche au plus lointain). */
-    public List<Tache> trierTachesParDate() throws SQLException {
+    public List<Tache> trierTachesParDate(int evenementId) throws SQLException {
         List<Tache> taches = new ArrayList<>();
         ServiceEvenement serviceEvenement = new ServiceEvenement();
         ServiceFournisseur serviceFournisseur = new ServiceFournisseur();
-        String sql = "SELECT * FROM `tache` ORDER BY `date_limite` ASC";
+        String sql = "SELECT * FROM `tache` WHERE evenement_id = ? ORDER BY `date_limite` ASC";
+        PreparedStatement ps = connection.prepareStatement(sql);
+        ps.setInt(1, evenementId);
+        ResultSet rs = ps.executeQuery();
 
-        Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery(sql);
-
-        while (resultSet.next()) {
+        while (rs.next()) {
             Tache tache = new Tache(
-                    resultSet.getInt("tache_id"),
-                    resultSet.getString("nom"),
-                    resultSet.getString("description"),
-                    resultSet.getString("statut"),
-                    resultSet.getDate("date_limite"),
-                    serviceEvenement.getEvenementById(resultSet.getInt("evenement_id")),
-                    serviceFournisseur.rechercherParId(resultSet.getInt("fournisseur_id")),
-                    resultSet.getString("priorite"),
-                    resultSet.getString("user_associe")
+                    rs.getInt("tache_id"),
+                    rs.getString("nom"),
+                    rs.getString("description"),
+                    rs.getString("statut"),
+                    rs.getDate("date_limite"),
+                    serviceEvenement.getEvenementById(rs.getInt("evenement_id")),
+                    serviceFournisseur.rechercherParId(rs.getInt("fournisseur_id")),
+                    rs.getString("priorite"),
+                    rs.getString("user_associe")
             );
             taches.add(tache);
         }
-
         return taches;
     }
 ///////////////////////////////////////////////////////////////////////////////////////////

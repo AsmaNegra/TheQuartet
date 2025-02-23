@@ -63,6 +63,7 @@ public class Main {
         //supprimer une transaction
         //supprimerTransaction(serviceTransaction);
 
+        gererFournisseurs(serviceFournisseur);
 
     }
 
@@ -452,14 +453,12 @@ public class Main {
     }
 
 
-    private static void gererFournisseurs(ServiceFournisseur serviceFournisseur, ServiceEvenement serviceEvenement) {
+    private static void gererFournisseurs(ServiceFournisseur serviceFournisseur) {
         try {
-            // Création d'un événement pour le fournisseur
-            Evenement evenement = new Evenement();
-            evenement.setEvenement_id(3);
+
 
             // Création d'un fournisseur
-            Fournisseur fournisseur = new Fournisseur("Sonorisation Pro", "Matériel audio", "Contrat signé", evenement, 1);
+            Fournisseur fournisseur = new Fournisseur("Sonorisation Pro", "Matériel audio", "Contrat signé", 1);
 
             // Ajout du fournisseur
             serviceFournisseur.ajouter(fournisseur);
