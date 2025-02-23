@@ -11,12 +11,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import services.ServiceEvenement;
@@ -38,12 +40,19 @@ public class EventTache implements Initializable {
     private VBox fournisseurContainer;
     @FXML
     private VBox doneTasks;
+    @FXML
+    private Pane pane_event;
 
     @FXML
     private VBox inProgressTasks;
 
     @FXML
     private VBox todoTasks;
+
+    @FXML
+    private TextField rechercheT;
+    @FXML
+    private TextField rechercheF;
 
     @FXML
     private Label eventNameLabel;
@@ -64,10 +73,48 @@ public class EventTache implements Initializable {
             loadTasks();
             loadFournisseurs();
             setupDragAndDrop();
+
+            // Listener pour la recherche des tâches
+            rechercheT.textProperty().addListener((observable, oldValue, newValue) -> {
+                try {
+                    if (newValue.trim().isEmpty()) {
+                        // Si la recherche est vide, afficher toutes les tâches
+                        loadTasks();
+                    } else {
+                        // Sinon, filtrer chaque colonne en fonction du mot-clé
+                        List<Tache> enAttente = serviceTache.rechercherTachesToDo(newValue);
+                        List<Tache> enCours = serviceTache.rechercherTachesEnCours(newValue);
+                        List<Tache> terminees = serviceTache.rechercherTachesDone(newValue);
+
+                        populateColumn(todoTasks, enAttente);
+                        populateColumn(inProgressTasks, enCours);
+                        populateColumn(doneTasks, terminees);
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            });
+
+            // Listener pour la recherche des fournisseurs
+            rechercheF.textProperty().addListener((observable, oldValue, newValue) -> {
+                try {
+                    if (newValue.trim().isEmpty()) {
+                        // Si le champ de recherche est vide, afficher tous les fournisseurs
+                        loadFournisseurs();
+                    } else {
+                        // Filtrer la liste des fournisseurs en fonction du mot-clé
+                        List<Fournisseur> filteredFournisseurs = serviceFournisseur.rechercherFournisseurs(newValue);
+                        populateFournisseurList(filteredFournisseurs);
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            });
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
+
 
     private void loadFournisseurs() throws SQLException {
         List<Fournisseur> fournisseurs = serviceFournisseur.afficher();
@@ -336,6 +383,15 @@ public class EventTache implements Initializable {
             if (event != null) {
                 eventNameLabel.setText(event.getNom());
                 eventDescriptionLabel.setText(event.getDescription());
+                String imagePath = event.getImage_event();
+                if (imagePath != null && !imagePath.isEmpty()) {
+                    // Encoder les espaces dans le chemin
+                    String encodedPath = imagePath.replace(" ", "%20");
+                    pane_event.setStyle("-fx-background-image: url('" + encodedPath + "');"
+                            + " -fx-background-size: cover;"
+                            + " -fx-background-position: center center;");
+                }
+
             }
         } catch (SQLException e) {
             e.printStackTrace();
