@@ -353,7 +353,6 @@ public class AjouterEvenementController {
 
             // Ajout dans la table d'association avec l'utilisateur connecté
             // Pour cet exemple, j'utilise l'ID 1 comme utilisateur connecté
-            // Vous devrez adapter ceci pour utiliser l'ID de l'utilisateur réellement connecté
             ServiceUtilisateurEvenement serviceUtilisateurEvenement = new ServiceUtilisateurEvenement();
             serviceUtilisateurEvenement.inscrireUtilisateurAEvenement(1, evenement.getEvenement_id());
 

@@ -55,9 +55,9 @@ public class EventOrganisation {
     public void initialize() {
         loadEvents();
 
-        refreshTimeline = new Timeline(new KeyFrame(Duration.seconds(1), event-> loadEvents()));
-        refreshTimeline.setCycleCount(Timeline.INDEFINITE);
-        refreshTimeline.play();
+//        refreshTimeline = new Timeline(new KeyFrame(Duration.seconds(1), event-> loadEvents()));
+//        refreshTimeline.setCycleCount(Timeline.INDEFINITE);
+//        refreshTimeline.play();
     }
 
     public void stopRefresh() {
@@ -252,6 +252,17 @@ public class EventOrganisation {
 
             newStage.show();
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void redirectToHomePage(MouseEvent mouseEvent) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ViewAllEvents.fxml"));
+            Parent root = loader.load();
+            Scene scene = ((Node) mouseEvent.getSource()).getScene();
+            scene.setRoot(root);
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

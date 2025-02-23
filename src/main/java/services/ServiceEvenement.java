@@ -1,14 +1,13 @@
 package services;
 
 import java.sql.Timestamp;
-import java.util.Date;
+import java.util.*;
+
 import entities.Evenement;
 import utils.MyDataBase;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.Date;
 
 public class ServiceEvenement implements IService<Evenement>{
     private Connection connection;
@@ -205,15 +204,18 @@ public class ServiceEvenement implements IService<Evenement>{
         return evenements;
     }
     public List<String> getCategories() throws SQLException {
-        List<String> categories = new ArrayList<>();
-        String sql = "SELECT categorie FROM listecategorieevent";
+        Set<String> uniqueCategories = new HashSet<>();  // Utiliser un Set pour éliminer les doublons
+        String sql = "SELECT DISTINCT categorie FROM listecategorieevent ORDER BY categorie";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                categories.add(rs.getString("categorie"));
+                String categorie = rs.getString("categorie");
+                if (categorie != null && !categorie.trim().isEmpty()) {
+                    uniqueCategories.add(categorie);
+                }
             }
         }
-        return categories;
+        return new ArrayList<>(uniqueCategories);
     }
 
 }
