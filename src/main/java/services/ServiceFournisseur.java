@@ -124,7 +124,7 @@ public class ServiceFournisseur implements IService<Fournisseur> {
                     resultSet.getInt("num_tel") // Added num_tel
             );
         } else {
-            System.out.println("⚠ Aucun fournisseur trouvé avec l'ID : " + id);
+            System.out.println("⚠ Aucun fournisseur trouve avec l'ID : " + id);
             return null;
         }
     }
