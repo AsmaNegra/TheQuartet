@@ -480,6 +480,19 @@
     -fx-text-fill: #000;
 }*/
 
+.table-view .cell {
+    -fx-padding: 0.5em;
+    -fx-text-fill: #333;
+    -fx-font-size: 14px;
+    -fx-background-color: transparent;
+}
+
+/*.table-view .table-row-cell:filled:selected,*/
+/*.table-view .table-row-cell:filled:selected:focused {*/
+/*    -fx-background-color: #d3d3d3;*/
+/*    -fx-text-fill: #000;*/
+/*}*/
+
 /* TableView Styling */
 .table-view {
     -fx-background-color: transparent;
