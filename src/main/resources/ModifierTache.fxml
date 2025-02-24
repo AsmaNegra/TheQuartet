@@ -16,6 +16,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
@@ -89,97 +90,123 @@
     <center>
         <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="590.0" prefWidth="861.0">
             <children>
-            <ScrollPane fitToHeight="true" fitToWidth="true" layoutY="29.0" prefHeight="603.0" prefWidth="861.0" styleClass="transparent_bg" AnchorPane.bottomAnchor="0.6000000000000227" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="29.0">
+            <ScrollPane fitToHeight="true" fitToWidth="true" layoutY="29.0" prefHeight="603.0" prefWidth="861.0" styleClass="transparent_bg" AnchorPane.bottomAnchor="0.6000000000000227" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <content>
-      
-                            <!-- Task Form -->
-                      <GridPane alignment="CENTER" hgap="10" style="-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 2, 2); -fx-background-color: transparent;" vgap="10">
-      
-                                <!-- Task Name -->
-                          <Label text="Nom de la Tâche:" GridPane.rowIndex="2" />
-                          <TextField fx:id="nomField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-      
-                                <!-- Description -->
-                          <Label text="Description:" GridPane.rowIndex="3" />
-                          <TextArea fx:id="descriptionField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-      
-                                <!-- Status -->
-                          <Label text="Statut:" GridPane.rowIndex="4" />
-                          <ComboBox fx:id="statutComboBox" prefHeight="26.0" prefWidth="480.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
-                              <items>
-                                  <FXCollections fx:factory="observableArrayList">
-                                      <String fx:value="En attente" />
-                                      <String fx:value="En cours" />
-                                      <String fx:value="Terminée" />
-                                  </FXCollections>
-                              </items>
-                          </ComboBox>
-      
-                                <!-- Due Date -->
-                          <Label text="Date Limite:" GridPane.rowIndex="5" />
-                          <DatePicker fx:id="dateLimitePicker" prefHeight="26.0" prefWidth="478.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-      
-                                <!-- Priority -->
-                          <Label text="Priorité:" GridPane.rowIndex="6" />
-                          <ComboBox fx:id="prioriteComboBox" prefHeight="26.0" prefWidth="481.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
-                              <items>
-                                  <FXCollections fx:factory="observableArrayList">
-                                      <String fx:value="Haute" />
-                                      <String fx:value="Moyenne" />
-                                      <String fx:value="Basse" />
-                                  </FXCollections>
-                              </items>
-                          </ComboBox>
-      
-                                <!-- Supplier Dropdown -->
-                          <Label text="Fournisseur:" GridPane.rowIndex="8" />
-                          <ComboBox fx:id="fournisseurComboBox" prefHeight="26.0" prefWidth="482.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-      
-                                <!-- User Associated Dropdown -->
-                          <Label text="Utilisateur Associé:" GridPane.rowIndex="9" />
-                          <ComboBox fx:id="userAssocieComboBox" prefHeight="26.0" prefWidth="481.0" GridPane.columnIndex="1" GridPane.rowIndex="9" />
-      
-                                <!-- Submit Button -->
-                          <Button fx:id="submitButton" onAction="#updateTask" prefHeight="26.0" prefWidth="85.0" styleClass="pane" text="Enregistrer" GridPane.columnIndex="1" GridPane.rowIndex="10">
-                        <GridPane.margin>
-                           <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
-                        </GridPane.margin>
-                     </Button>
-                     <Label text="Modifier un ticket!" GridPane.columnIndex="1">
-                        <font>
-                           <Font name="Montserrat-Regular" size="24.0" />
-                        </font>
-                        <padding>
-                           <Insets bottom="15.0" left="15.0" right="15.0" top="30.0" />
-                        </padding>
-                     </Label>
-                     <Button alignment="CENTER" mnemonicParsing="false" onAction="#RedirectBack" styleClass="transparent_bg" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-                        <graphic>
-                           <FontAwesomeIconView glyphName="ARROW_LEFT" size="30" wrappingWidth="32.00000286102295" />
-                        </graphic>
-                     </Button>
-                     <columnConstraints>
-                        <ColumnConstraints />
-                        <ColumnConstraints />
-                     </columnConstraints>
-                     <rowConstraints>
-                        <RowConstraints />
-                        <RowConstraints />
-                        <RowConstraints />
-                        <RowConstraints />
-                        <RowConstraints />
-                        <RowConstraints />
-                        <RowConstraints />
-                        <RowConstraints />
-                        <RowConstraints />
-                        <RowConstraints />
-                        <RowConstraints />
-                     </rowConstraints>
-                     <padding>
-                        <Insets left="30.0" />
-                     </padding>
-      
-                            </GridPane>
+                  <VBox>
+                     <children>
+                        <VBox prefHeight="266.0" prefWidth="1011.0" style="-fx-background-radius: 0px 0px 30px 30px; -fx-border-radius: 0px 0px 30px 30px;" styleClass="pane">
+                           <children>
+                              <Pane fx:id="pane_event" minHeight="200.0" prefHeight="200.0" prefWidth="800.0" style="-fx-background-radius: 30px 30px 0px 0px;" styleClass="pane_event" VBox.vgrow="ALWAYS" />
+                              <Separator prefHeight="22.0" prefWidth="999.0" />
+                              <Label fx:id="eventNameLabel" text="Event_Name" textFill="#404040">
+                                 <font>
+                                    <Font name="Montserrat-Bold" size="18.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets bottom="5.0" left="15.0" right="5.0" top="5.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <Label fx:id="eventDescriptionLabel" prefHeight="99.0" prefWidth="970.0" text="EventDescriptionEventDescriptionEventDescriptionEventDescriptionEventDescription&#10;EventDescriptionEventDescriptionEventDescription&#10;EventDescriptionEventDescription" textFill="#898989">
+                                 <font>
+                                    <Font name="Montserrat-Regular" size="12.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets bottom="15.0" left="15.0" />
+                                 </VBox.margin>
+                              </Label>
+                           </children>
+                        </VBox>
+            
+                                        <!-- Task Form -->
+                            <GridPane alignment="CENTER" hgap="10" style="-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 2, 2); -fx-background-color: transparent;" styleClass="task-form" vgap="10">
+            
+                                            <!-- Task Name -->
+                                <Label text="Nom de la Tâche:" GridPane.rowIndex="2" />
+                                <TextField fx:id="nomField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            
+                                            <!-- Description -->
+                                <Label text="Description:" GridPane.rowIndex="3" />
+                                <TextArea fx:id="descriptionField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            
+                                            <!-- Status -->
+                                <Label text="Statut:" GridPane.rowIndex="4" />
+                                <ComboBox fx:id="statutComboBox" prefHeight="26.0" prefWidth="480.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                    <items>
+                                        <FXCollections fx:factory="observableArrayList">
+                                            <String fx:value="En attente" />
+                                            <String fx:value="En cours" />
+                                            <String fx:value="Terminée" />
+                                        </FXCollections>
+                                    </items>
+                                </ComboBox>
+            
+                                            <!-- Due Date -->
+                                <Label text="Date Limite:" GridPane.rowIndex="5" />
+                                <DatePicker fx:id="dateLimitePicker" prefHeight="26.0" prefWidth="478.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            
+                                            <!-- Priority -->
+                                <Label text="Priorité:" GridPane.rowIndex="6" />
+                                <ComboBox fx:id="prioriteComboBox" prefHeight="26.0" prefWidth="481.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                                    <items>
+                                        <FXCollections fx:factory="observableArrayList">
+                                            <String fx:value="Haute" />
+                                            <String fx:value="Moyenne" />
+                                            <String fx:value="Basse" />
+                                        </FXCollections>
+                                    </items>
+                                </ComboBox>
+            
+                                            <!-- Supplier Dropdown -->
+                                <Label text="Fournisseur:" GridPane.rowIndex="8" />
+                                <ComboBox fx:id="fournisseurComboBox" prefHeight="26.0" prefWidth="482.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+            
+                                            <!-- User Associated Dropdown -->
+                                <Label text="Utilisateur Associé:" GridPane.rowIndex="9" />
+                                <ComboBox fx:id="userAssocieComboBox" prefHeight="26.0" prefWidth="481.0" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+            
+                                            <!-- Submit Button -->
+                                <Button fx:id="submitButton" onAction="#updateTask" prefHeight="42.0" prefWidth="254.0" styleClass="button_crud" text="Enregistrer" GridPane.columnIndex="1" GridPane.rowIndex="10">
+                              <GridPane.margin>
+                                 <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                              </GridPane.margin>
+                           </Button>
+                           <Label text="Modifier un ticket!" GridPane.columnIndex="1">
+                              <font>
+                                 <Font name="Montserrat-Regular" size="24.0" />
+                              </font>
+                              <padding>
+                                 <Insets bottom="15.0" left="15.0" right="15.0" top="30.0" />
+                              </padding>
+                           </Label>
+                           <Button alignment="CENTER" mnemonicParsing="false" onAction="#RedirectBack" styleClass="transparent_bg" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                              <graphic>
+                                 <FontAwesomeIconView glyphName="ARROW_LEFT" size="30" wrappingWidth="32.00000286102295" />
+                              </graphic>
+                           </Button>
+                           <columnConstraints>
+                              <ColumnConstraints />
+                              <ColumnConstraints />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints />
+                              <RowConstraints />
+                              <RowConstraints />
+                              <RowConstraints />
+                              <RowConstraints />
+                              <RowConstraints />
+                              <RowConstraints />
+                              <RowConstraints />
+                              <RowConstraints />
+                              <RowConstraints />
+                              <RowConstraints />
+                           </rowConstraints>
+                           <padding>
+                              <Insets left="30.0" />
+                           </padding>
+            
+                                        </GridPane>
+                     </children>
+                  </VBox>
                </content>
             </ScrollPane>
 
