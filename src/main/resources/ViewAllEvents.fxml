@@ -24,7 +24,8 @@
                 <FontAwesomeIconView fill="#797878" glyphName="BARS" layoutX="20.2" layoutY="30.628571701049804" selectionFill="#bc802d" size="1.5em" text="" wrappingWidth="23.199981689453125" AnchorPane.leftAnchor="20.2" AnchorPane.rightAnchor="13.40001831054687" AnchorPane.topAnchor="15.2" />
                 <VBox layoutX="20.0" layoutY="119.0">
                     <children>
-                        <FontAwesomeIconView fill="#f49617" glyphName="SITEMAP" size="1.5em" styleClass="sidebar_opt" />
+                        <FontAwesomeIconView fx:id="OrganisateurPage" fill="#f49617" glyphName="SITEMAP" onMouseClicked="#redirectToOrganisateurPage" size="1.5em" styleClass="sidebar_opt" wrappingWidth="16.857142448425293" />
+
                         <FontAwesomeIconView glyphName="GIFT" size="1.5em" styleClass="sidebar_opt">
                             <VBox.margin>
                                 <Insets top="15.0" />

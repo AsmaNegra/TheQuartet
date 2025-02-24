@@ -6,11 +6,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
@@ -71,15 +73,24 @@ public class ViewAllEventsController implements Initializable {
 
     private void showEventDetails(Evenement event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/DetailsEvenement.fxml"));
+            // Charger la nouvelle interface FXML
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/DetailsEvent&Transaction.fxml"));
             Parent root = loader.load();
 
-            DetailsEvenement detailsController = loader.getController();
-            DetailsEvenement.setCurrentEvenement(event);
-            detailsController.initialize();
+            // Récupérer le contrôleur associé
+            DetailsEvenementController2 detailsController = loader.getController();
 
+            // Passer l'événement au contrôleur
+            detailsController.setCurrentEvenement(event);
+
+            // Mettre à jour l'interface utilisateur avec les détails de l'événement
+            detailsController.updateUI();
+
+            // Récupérer la scène actuelle et la fenêtre (stage)
             Scene scene = eventsContainer.getScene();
             Stage stage = (Stage) scene.getWindow();
+
+            // Changer la scène pour afficher la nouvelle interface
             stage.setScene(new Scene(root));
         } catch (IOException e) {
             e.printStackTrace();
@@ -227,6 +238,18 @@ public class ViewAllEventsController implements Initializable {
     }
 
 
+    public void redirectToOrganisateurPage(MouseEvent mouseEvent) {
+
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/EventOrganisation.fxml"));
+                Parent root = loader.load();
+                Scene scene = ((Node) mouseEvent.getSource()).getScene();
+                scene.setRoot(root);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+    }
 }
 
 
