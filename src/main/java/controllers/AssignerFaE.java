@@ -21,6 +21,8 @@ import javafx.stage.Stage;
 import services.ServiceEvenement;
 import services.ServiceFournisseur;
 import services.ServiceFournisseurEvenement;
+import javafx.animation.FadeTransition;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
@@ -98,6 +100,24 @@ public class AssignerFaE implements Initializable {
 
         // Attach listener
         fournisseurTable.getSelectionModel().selectedItemProperty().addListener(selectionListener);
+
+        fournisseurTable.setRowFactory(table -> new TableRow<Fournisseur>() {
+            @Override
+            protected void updateItem(Fournisseur item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setGraphic(null);
+                } else {
+                    // Appliquer une animation de fondu à l'apparition de la ligne
+                    setOpacity(0);
+                    FadeTransition fadeIn = new FadeTransition(Duration.millis(300), this);
+                    fadeIn.setFromValue(0);
+                    fadeIn.setToValue(1);
+                    fadeIn.play();
+                }
+            }
+        });
+
     }
 
 
