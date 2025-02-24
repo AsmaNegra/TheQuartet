@@ -2,55 +2,47 @@
 
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.paint.Color?>
-<?import javafx.scene.paint.RadialGradient?>
-<?import javafx.scene.paint.Stop?>
-<?import javafx.scene.shape.Circle?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.TilePane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-            prefHeight="600.0" prefWidth="1000.0" styleClass="background_color" stylesheets="@styles.css"
-            xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="controllers.ViewAllEventsController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" styleClass="background_color" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ViewAllEventsController">
 
     <!-- Sidebar Gauche -->
     <left>
         <AnchorPane prefHeight="567.0" prefWidth="58.0" styleClass="sidebar" stylesheets="@styles.css">
             <children>
-                <FontAwesomeIconView fill="#797878" glyphName="BARS" layoutX="20.2" layoutY="30.628571701049804"
-                                     selectionFill="#bc802d" size="1.5em" text="" wrappingWidth="23.199981689453125"
-                                     AnchorPane.leftAnchor="20.2" AnchorPane.rightAnchor="13.40001831054687"
-                                     AnchorPane.topAnchor="15.2"/>
+                <FontAwesomeIconView fill="#797878" glyphName="BARS" layoutX="20.2" layoutY="30.628571701049804" selectionFill="#bc802d" size="1.5em" text="" wrappingWidth="23.199981689453125" AnchorPane.leftAnchor="20.2" AnchorPane.rightAnchor="13.40001831054687" AnchorPane.topAnchor="15.2" />
                 <VBox layoutX="20.0" layoutY="119.0">
                     <children>
-                        <FontAwesomeIconView fill="#f49617" glyphName="SITEMAP" size="1.5em"/>
+                        <FontAwesomeIconView fill="#f49617" glyphName="SITEMAP" size="1.5em" styleClass="sidebar_opt" />
                         <FontAwesomeIconView glyphName="GIFT" size="1.5em" styleClass="sidebar_opt">
                             <VBox.margin>
-                                <Insets top="15.0"/>
+                                <Insets top="15.0" />
                             </VBox.margin>
                         </FontAwesomeIconView>
                         <FontAwesomeIconView glyphName="USER" size="1.5em" styleClass="sidebar_opt">
                             <VBox.margin>
-                                <Insets top="15.0"/>
+                                <Insets top="15.0" />
                             </VBox.margin>
                         </FontAwesomeIconView>
-                        <FontAwesomeIconView glyphName="HOME" size="1.5em" styleClass="sidebar_opt" >
+                        <FontAwesomeIconView fill="#f49617" glyphName="HOME" size="1.5em">
                             <VBox.margin>
-                                <Insets top="15.0"/>
+                                <Insets top="15.0" />
                             </VBox.margin>
                         </FontAwesomeIconView>
                         <Separator>
                             <VBox.margin>
-                                <Insets bottom="15.0" top="15.0"/>
+                                <Insets bottom="15.0" top="15.0" />
                             </VBox.margin>
                         </Separator>
                     </children>
@@ -65,23 +57,23 @@
             <content>
                 <VBox spacing="20" styleClass="main-container">
                     <!-- En-tête -->
-                    <HBox styleClass="pane" alignment="CENTER" spacing="15">
+                    <HBox alignment="CENTER" spacing="15" styleClass="pane">
                         <padding>
-                            <Insets top="10" right="15" bottom="10" left="15"/>
+                            <Insets bottom="10" left="15" right="15" top="10" />
                         </padding>
                         <ImageView fitHeight="60.0" fitWidth="60.0" preserveRatio="true">
                             <image>
-                                <Image url="@images/Orchestra/1.png"/>
+                                <Image url="@images/Orchestra/1.png" />
                             </image>
                         </ImageView>
-                        <Separator orientation="VERTICAL"/>
-                        <Label text="Ravi de vous revoir !" styleClass="welcome-text">
+                        <Separator orientation="VERTICAL" />
+                        <Label styleClass="welcome-text" text="Ravi de vous revoir !">
                             <font>
-                                <Font name="Montserrat-Regular" size="18.0"/>
+                                <Font name="Montserrat-Regular" size="18.0" />
                             </font>
                         </Label>
-                        <TextField fx:id="searchField" promptText="Chercher un evenement..." styleClass="search-field"/>
-                        <Label text="16:49 16/02/2025" styleClass="time-text"/>
+                        <TextField fx:id="searchField" promptText="Chercher un evenement..." styleClass="search-field" />
+                        <Label styleClass="time-text" text="16:49 16/02/2025" />
                     </HBox>
 
                     <!-- Catégories -->
@@ -89,30 +81,27 @@
                         <content>
                             <HBox fx:id="categoriesContainer" spacing="10" styleClass="categories-container">
                                 <padding>
-                                    <Insets top="10" right="15" bottom="10" left="15"/>
+                                    <Insets bottom="10" left="15" right="15" top="10" />
                                 </padding>
                             </HBox>
                         </content>
                     </ScrollPane>
 
                     <!-- Conteneur des événements -->
-                    <TilePane fx:id="eventsContainer"
-                              hgap="20" vgap="20"
-                              prefTileWidth="340"
-                              prefColumns="2">
+                    <TilePane fx:id="eventsContainer" hgap="20" prefColumns="2" prefTileWidth="340" vgap="20">
                         <padding>
-                            <Insets top="10" right="15" bottom="10" left="15"/>
+                            <Insets bottom="10" left="15" right="15" top="10" />
                         </padding>
                     </TilePane>
 
                     <!-- Pied de page -->
                     <HBox alignment="CENTER" spacing="20" styleClass="footer">
                         <padding>
-                            <Insets top="15" right="15" bottom="15" left="15"/>
+                            <Insets bottom="15" left="15" right="15" top="15" />
                         </padding>
-                        <Label styleClass="footer-text" text="À propos"/>
-                        <Label styleClass="footer-text" text="Contact"/>
-                        <Label styleClass="footer-text" text="Mentions légales"/>
+                        <Label styleClass="footer-text" text="À propos" />
+                        <Label styleClass="footer-text" text="Contact" />
+                        <Label styleClass="footer-text" text="Mentions légales" />
                     </HBox>
                 </VBox>
             </content>
@@ -121,18 +110,18 @@
 
     <!-- Sidebar Droite -->
     <right>
-        <VBox styleClass="sidebar-right" spacing="15">
+        <VBox spacing="15" styleClass="sidebar-right">
             <padding>
-                <Insets top="15" right="15" bottom="15" left="15"/>
+                <Insets bottom="15" left="15" right="15" top="15" />
             </padding>
             <VBox styleClass="sidebar-section">
-                <Label text="Calendrier" styleClass="section-title"/>
+                <Label styleClass="section-title" text="Calendrier" />
             </VBox>
             <VBox styleClass="sidebar-section">
-                <Label text="Événements à la une" styleClass="section-title"/>
+                <Label styleClass="section-title" text="Événements à la une" />
             </VBox>
             <VBox styleClass="sidebar-section">
-                <Label text="Carte" styleClass="section-title"/>
+                <Label styleClass="section-title" text="Carte" />
             </VBox>
         </VBox>
     </right>
