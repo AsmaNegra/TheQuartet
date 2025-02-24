@@ -221,7 +221,7 @@ public class EventOrganisation {
                     if (file.exists()) {
                         image = new Image(file.toURI().toString(), 270, 180, true, true);
                     } else {
-                        //System.out.println("image not found");
+                        System.out.println("image not found");
                         return;
                     }
                 } else {

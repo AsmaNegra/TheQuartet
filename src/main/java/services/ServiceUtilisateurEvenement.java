@@ -110,30 +110,30 @@ public class ServiceUtilisateurEvenement {
     }
 
     // 🔹 Récupérer tous les utilisateurs inscrits à un événement
-    public List<Utilisateur> getUtilisateursByEvenementId(int evenementId) throws SQLException {
+    public List<Utilisateur> getUtilisateursByEvenementId(int evenementId) {
         List<Utilisateur> utilisateurs = new ArrayList<>();
-        String sql = "SELECT u.utilisateur_id, u.nom, u.email, u.role, u.etat, u.note_organisateur, u.entreprise " +
-                "FROM utilisateur u " +
-                "JOIN utilisateur_evenement ue ON u.utilisateur_id = ue.utilisateur_id " +
-                "WHERE ue.evenement_id = ?";
+        String sql = "SELECT f.*, e.*, " +
+            "u.utilisateur_id, u.nom as user_nom, u.email, u.role, u.etat, " +
+            "u.note_organisateur, u.entreprise " +
+            "FROM feedback f " +
+            "JOIN evenement e ON f.evenement_id = e.evenement_id " +
+            "JOIN utilisateur u ON f.utilisateur_id = u.utilisateur_id " +
+            "WHERE e.evenement_id = ?";
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, evenementId);
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    Utilisateur utilisateur = new Utilisateur(
-                            rs.getInt("utilisateur_id"),
-                            rs.getString("nom"),
-                            rs.getString("email"),
-                            null, // mot_de_passe (non nécessaire ici)
-                            rs.getString("role"),
-                            rs.getString("etat"),
-                            rs.getFloat("note_organisateur"),
-                            rs.getString("entreprise")
-                    );
-                    utilisateurs.add(utilisateur);
-                }
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                utilisateurs.add(new Utilisateur(
+                        rs.getInt("utilisateur_id"),
+                        rs.getString("nom"),
+                        rs.getString("email"),
+                        null, null, null, 0, null
+                ));
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return utilisateurs;
     }

@@ -1,7 +1,6 @@
 package controllers;
 
 import entities.Evenement;
-import entities.Utilisateur;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,7 +19,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import services.*;
+import services.ServiceEvenement;
+import services.ServiceFournisseur;
+import services.ServiceFournisseurEvenement;
+import services.ServiceTache;
 import entities.Tache;
 import entities.Fournisseur;
 
@@ -32,8 +34,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class EventTache implements Initializable {
-    @FXML
-    private ListView<Utilisateur> ListeUtilisateur;
     @FXML
     private ScrollPane fournisseurList;
     @FXML
@@ -62,38 +62,12 @@ public class EventTache implements Initializable {
     private final ServiceTache serviceTache = new ServiceTache();
     private Tache draggedTask;
     private ServiceFournisseur serviceFournisseur = new ServiceFournisseur();
-    private ServiceUtilisateurEvenement serviceUtilisateurEvenement = new ServiceUtilisateurEvenement();
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        // Ne pas appeler loadTasks() ici car currentEventId n'est pas encore défini
+
         setupDragAndDrop();
-
-        ListeUtilisateur.setCellFactory(param -> new ListCell<Utilisateur>() {
-            @Override
-            protected void updateItem(Utilisateur utilisateur, boolean empty) {
-                super.updateItem(utilisateur, empty);
-                if (empty || utilisateur == null) {
-                    setText(null);
-                    setGraphic(null);
-                } else {
-                    VBox vbox = new VBox(2); // 2px d'espacement entre les lignes
-                    Label nomLabel = new Label(utilisateur.getNom());
-                    nomLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14px; -fx-text-fill: #333;");
-                    Label emailLabel = new Label(utilisateur.getEmail());
-                    emailLabel.setStyle("-fx-font-size: 12px; -fx-text-fill: #777;");
-
-                    vbox.getChildren().addAll(nomLabel, emailLabel);
-                    // Créer un séparateur horizontal
-                    Separator separator = new Separator();
-
-                    // Disposer le label et le séparateur verticalement
-                    VBox container = new VBox(2); // 2px d'espacement
-                    container.getChildren().addAll(vbox, separator);
-
-                    setGraphic(container);
-                }
-            }
-        });
-
 
         // Listener sur le ChoiceBox pour appliquer le tri
         filterT.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
@@ -175,19 +149,10 @@ public class EventTache implements Initializable {
             }
         });
     }
-//////////////////////////LOADS//////////////////////////////////////////////////////////////////////////////
-private void loadUtilisateurs() throws SQLException {
-    System.out.println("event id : "+ currentEventId);
-    List<Utilisateur> utilisateurs = serviceUtilisateurEvenement.getUtilisateursByEvenementId(currentEventId);
-    System.out.println("Nombre d'utilisateurs récupérés : " + utilisateurs.size());
-    ListeUtilisateur.getItems().clear();
-    ListeUtilisateur.getItems().addAll(utilisateurs);
-}
-
-
 
     private void loadFournisseurs() throws SQLException {
         List<Fournisseur> fournisseurs = serviceFournisseur.afficherFournisseursParEventId(currentEventId);
+        System.out.println(fournisseurs.size());
         populateFournisseurList(fournisseurs);
     }
 
@@ -200,9 +165,7 @@ private void loadUtilisateurs() throws SQLException {
         populateColumn(inProgressTasks, enCours);
         populateColumn(doneTasks, terminees);
     }
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    //////////////////////////////////////////POPULATE/////////////////////////////////////////////////////////
     private void populateColumn(VBox column, List<Tache> tasks) {
         column.getChildren().clear();
         for (Tache task : tasks) {
@@ -302,7 +265,6 @@ private void loadUtilisateurs() throws SQLException {
             Parent root = loader.load();
             ModifierTache controller = loader.getController();
             controller.setTaskData(task);
-            controller.initEventData(currentEventId);
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.show();
@@ -385,7 +347,7 @@ private void loadUtilisateurs() throws SQLException {
             fournisseurContainer.getChildren().add(fournisseurContainerItem);
         }
     }
-//////////////////////////////////////////////////////////////////////////////////////////
+
 //    private void modifyFournisseur(Fournisseur fournisseur, ActionEvent event) {
 //        try {
 //            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ModifierFournisseur.fxml"));
@@ -426,10 +388,9 @@ private void loadUtilisateurs() throws SQLException {
                             + " -fx-background-position: center center;");
                 }
             }
-            // Maintenant que currentEventId est défini, on peut charger les loads qui necessitent l'event id
+            // Maintenant que currentEventId est défini, on peut charger les tâches
             loadTasks();
             loadFournisseurs();
-            loadUtilisateurs();
         } catch (SQLException e) {
             e.printStackTrace();
         }

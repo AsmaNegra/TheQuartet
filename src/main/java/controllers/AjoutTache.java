@@ -83,7 +83,12 @@ public class AjoutTache implements Initializable {
             }
         });
 
-
+        // Initialisation des ComboBox qui ne dépendent pas de currentEventId
+        try {
+            populateFournisseurComboBox();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     private void populateUserAssocieComboBox() {
@@ -98,7 +103,7 @@ public class AjoutTache implements Initializable {
 
     private void populateFournisseurComboBox() throws SQLException {
         ServiceFournisseur service = new ServiceFournisseur();
-        List<Fournisseur> fournisseurs = service.afficherFournisseursParEventId(currentEventId);
+        List<Fournisseur> fournisseurs = service.afficher();
         fournisseurComboBox.getItems().clear();
         for (Fournisseur fournisseur : fournisseurs) {
             fournisseurComboBox.getItems().add(fournisseur.getNom());
@@ -151,8 +156,8 @@ public class AjoutTache implements Initializable {
 
             // Création d'un nouvel objet Tache
             Tache t = new Tache();
-            Evenement ev = new Evenement();
-            ev.setEvenement_id(currentEventId);
+            Evenement e = new Evenement();
+            e.setEvenement_id(currentEventId);
             Fournisseur f = new Fournisseur();
             f.setNom(fournisseurComboBox.getValue());
             ServiceFournisseur service = new ServiceFournisseur();
@@ -163,7 +168,7 @@ public class AjoutTache implements Initializable {
             t.setDescription(descriptionField.getText().isEmpty() ? null : descriptionField.getText());
             t.setPriorite(prioriteComboBox.getValue());
             t.setStatut(statutComboBox.getValue());
-            t.setEvenement(ev);
+            t.setEvenement(e);
             t.setFournisseur(f);
             t.setUserAssocie(userAssocieComboBox.getValue());
 
@@ -173,19 +178,11 @@ public class AjoutTache implements Initializable {
             // Sauvegarde de la tâche
             st.ajouter(t);
 
-            try {
-                Node source = (Node) event.getSource();
-                Integer eventId = this.currentEventId;
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/EventTache.fxml"));
-                Parent root = loader.load();
-                EventTache ajoutTacheController = loader.getController();
-                ajoutTacheController.initEventData(eventId);
-                Scene scene = source.getScene();
-                scene.setRoot(root);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } catch (SQLException e) {
+            // Chargement de la vue des détails
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/EventTache.fxml"));
+            Parent root = loader.load();
+            nomField.getScene().setRoot(root);
+        } catch (IOException | SQLException e) {
             throw new RuntimeException(e);
         }
     }
@@ -251,7 +248,6 @@ public class AjoutTache implements Initializable {
             }
             // Appel de la méthode de peuplement une fois que currentEventId est défini
             populateUserAssocieComboBox();
-            populateFournisseurComboBox();
         } catch (SQLException e) {
             e.printStackTrace();
         }
