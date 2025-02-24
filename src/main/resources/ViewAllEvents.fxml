@@ -80,7 +80,7 @@
                                 <Font name="Montserrat-Regular" size="18.0"/>
                             </font>
                         </Label>
-                        <TextField promptText="Chercher un evenement..." styleClass="search-field"/>
+                        <TextField fx:id="searchField" promptText="Chercher un evenement..." styleClass="search-field"/>
                         <Label text="16:49 16/02/2025" styleClass="time-text"/>
                     </HBox>
 

@@ -8,10 +8,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.OverrunStyle;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -37,6 +34,9 @@ public class ViewAllEventsController implements Initializable {
     @FXML
     private HBox categoriesContainer;
 
+    @FXML
+    private TextField searchField;
+
     private ServiceEvenement serviceEvenement = new ServiceEvenement();
     private Button selectedCategoryButton = null;
 
@@ -48,9 +48,16 @@ public class ViewAllEventsController implements Initializable {
         eventsContainer.setPrefColumns(2); // 2 colonnes
         eventsContainer.setHgap(20); // Espacement horizontal
         eventsContainer.setVgap(20); // Espacement vertical
+
+        //écouteur sur le champ de recherche
+        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+            filterEventsByName(newValue); // Filtrer les événements en temps réel
+        });
     }
 
     private void loadEvents() {
+        String searchText = searchField.getText(); // Récupérer le texte de recherche
+        filterEventsByName(searchText); // Filtrer les événements
         try {
             eventsContainer.getChildren().clear();
             List<Evenement> evenements = serviceEvenement.afficher();
@@ -199,6 +206,27 @@ public class ViewAllEventsController implements Initializable {
 
         eventsContainer.getChildren().add(eventCard);
     }
+
+    private void filterEventsByName(String searchText) {
+        try {
+            // Effacer les cartes actuelles
+            eventsContainer.getChildren().clear();
+
+            // Charger tous les événements
+            List<Evenement> evenements = serviceEvenement.afficher();
+
+            // Filtrer les événements dont le nom contient le texte de recherche
+            for (Evenement event : evenements) {
+                if (event.getNom().toLowerCase().contains(searchText.toLowerCase())) {
+                    createEventCard(event); // Afficher la carte de l'événement
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }
 
 
