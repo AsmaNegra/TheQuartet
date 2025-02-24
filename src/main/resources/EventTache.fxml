@@ -243,7 +243,7 @@
                                     <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                                  </HBox.margin>
                                  <children>
-                                    <HBox maxHeight="-Infinity" prefHeight="55.0" prefWidth="202.0" styleClass="pane">
+                                    <HBox maxHeight="-Infinity" minHeight="60.0" prefHeight="55.0" prefWidth="202.0" styleClass="pane">
                                        <children>
                                           <Label alignment="CENTER" contentDisplay="TOP" prefHeight="47.0" prefWidth="187.0" text="Liste des &#10;Collaborateurs" textAlignment="CENTER" textFill="#484848">
                                              <font>
@@ -260,7 +260,7 @@
                                           <Insets top="15.0" />
                                        </VBox.margin>
                                        <children>
-                                          <ListView fx:id="ListeUtilisateur" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                                          <ListView fx:id="ListeUtilisateur" prefHeight="200.0" prefWidth="200.0" style="-fx-border-radius: 30px; -fx-background-radius: 30px;" styleClass="list-view-user" VBox.vgrow="ALWAYS">
                                              <VBox.margin>
                                                 <Insets />
                                              </VBox.margin>
