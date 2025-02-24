@@ -8,14 +8,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -23,6 +21,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import services.ServiceEvenement;
 import services.ServiceFournisseur;
+import services.ServiceFournisseurEvenement;
 import services.ServiceTache;
 import entities.Tache;
 import entities.Fournisseur;
@@ -30,6 +29,7 @@ import entities.Fournisseur;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -42,18 +42,16 @@ public class EventTache implements Initializable {
     private VBox doneTasks;
     @FXML
     private Pane pane_event;
-
+    @FXML
+    private ChoiceBox<?> filterT;
     @FXML
     private VBox inProgressTasks;
-
     @FXML
     private VBox todoTasks;
-
     @FXML
     private TextField rechercheT;
     @FXML
     private TextField rechercheF;
-
     @FXML
     private Label eventNameLabel;
     @FXML
@@ -61,72 +59,108 @@ public class EventTache implements Initializable {
 
     private ServiceEvenement serviceEvenement = new ServiceEvenement();
     private int currentEventId;
-
-
     private final ServiceTache serviceTache = new ServiceTache();
     private Tache draggedTask;
-    private  ServiceFournisseur serviceFournisseur = new ServiceFournisseur();
+    private ServiceFournisseur serviceFournisseur = new ServiceFournisseur();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        try {
-            loadTasks();
-            loadFournisseurs();
-            setupDragAndDrop();
+        // Ne pas appeler loadTasks() ici car currentEventId n'est pas encore défini
 
-            // Listener pour la recherche des tâches
-            rechercheT.textProperty().addListener((observable, oldValue, newValue) -> {
-                try {
-                    if (newValue.trim().isEmpty()) {
-                        // Si la recherche est vide, afficher toutes les tâches
-                        loadTasks();
-                    } else {
-                        // Sinon, filtrer chaque colonne en fonction du mot-clé
-                        List<Tache> enAttente = serviceTache.rechercherTachesToDo(newValue);
-                        List<Tache> enCours = serviceTache.rechercherTachesEnCours(newValue);
-                        List<Tache> terminees = serviceTache.rechercherTachesDone(newValue);
+        setupDragAndDrop();
 
-                        populateColumn(todoTasks, enAttente);
-                        populateColumn(inProgressTasks, enCours);
-                        populateColumn(doneTasks, terminees);
+        // Listener sur le ChoiceBox pour appliquer le tri
+        filterT.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+            try {
+                if ("Aucun tri".equals(newVal)) {
+                    loadTasks();
+                } else if ("Par Priorité".equals(newVal)) {
+                    // Appel de la méthode avec currentEventId
+                    List<Tache> tasksSorted = serviceTache.trierTachesParPriorite(currentEventId);
+                    List<Tache> todo = new ArrayList<>();
+                    List<Tache> inProgress = new ArrayList<>();
+                    List<Tache> done = new ArrayList<>();
+                    for (Tache t : tasksSorted) {
+                        if ("A faire".equalsIgnoreCase(t.getStatut())) {
+                            todo.add(t);
+                        } else if ("En Cours".equalsIgnoreCase(t.getStatut())) {
+                            inProgress.add(t);
+                        } else if ("Terminée".equalsIgnoreCase(t.getStatut())) {
+                            done.add(t);
+                        }
                     }
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            });
-
-            // Listener pour la recherche des fournisseurs
-            rechercheF.textProperty().addListener((observable, oldValue, newValue) -> {
-                try {
-                    if (newValue.trim().isEmpty()) {
-                        // Si le champ de recherche est vide, afficher tous les fournisseurs
-                        loadFournisseurs();
-                    } else {
-                        // Filtrer la liste des fournisseurs en fonction du mot-clé
-                        List<Fournisseur> filteredFournisseurs = serviceFournisseur.rechercherFournisseurs(newValue);
-                        populateFournisseurList(filteredFournisseurs);
+                    populateColumn(todoTasks, todo);
+                    populateColumn(inProgressTasks, inProgress);
+                    populateColumn(doneTasks, done);
+                } else if ("Par Date".equals(newVal)) {
+                    // Appel de la méthode avec currentEventId
+                    List<Tache> tasksSorted = serviceTache.trierTachesParDate(currentEventId);
+                    List<Tache> todo = new ArrayList<>();
+                    List<Tache> inProgress = new ArrayList<>();
+                    List<Tache> done = new ArrayList<>();
+                    for (Tache t : tasksSorted) {
+                        if ("A faire".equalsIgnoreCase(t.getStatut())) {
+                            todo.add(t);
+                        } else if ("En Cours".equalsIgnoreCase(t.getStatut())) {
+                            inProgress.add(t);
+                        } else if ("Terminée".equalsIgnoreCase(t.getStatut())) {
+                            done.add(t);
+                        }
                     }
-                } catch (SQLException e) {
-                    e.printStackTrace();
+                    populateColumn(todoTasks, todo);
+                    populateColumn(inProgressTasks, inProgress);
+                    populateColumn(doneTasks, done);
                 }
-            });
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        });
+
+        // Listener pour la recherche de tâches
+        rechercheT.textProperty().addListener((observable, oldValue, newValue) -> {
+            try {
+                if (newValue.trim().isEmpty()) {
+
+                    loadTasks();
+                } else {
+                    List<Tache> enAttente = serviceTache.rechercherTachesToDo(newValue, currentEventId);
+                    List<Tache> enCours = serviceTache.rechercherTachesEnCours(newValue, currentEventId);
+                    List<Tache> terminees = serviceTache.rechercherTachesDone(newValue, currentEventId);
+                    populateColumn(todoTasks, enAttente);
+                    populateColumn(inProgressTasks, enCours);
+                    populateColumn(doneTasks, terminees);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
+
+        // Listener pour la recherche de fournisseurs
+        rechercheF.textProperty().addListener((observable, oldValue, newValue) -> {
+            try {
+                if (newValue.trim().isEmpty()) {
+                    loadFournisseurs();
+                } else {
+                    List<Fournisseur> filteredFournisseurs = serviceFournisseur.rechercherFournisseursParEventId(currentEventId,newValue);
+                    populateFournisseurList(filteredFournisseurs);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
-
     private void loadFournisseurs() throws SQLException {
-        List<Fournisseur> fournisseurs = serviceFournisseur.afficher();
+        List<Fournisseur> fournisseurs = serviceFournisseur.afficherFournisseursParEventId(currentEventId);
+        System.out.println(fournisseurs.size());
         populateFournisseurList(fournisseurs);
     }
 
+    // Cette méthode utilise currentEventId pour charger les tâches
     private void loadTasks() throws SQLException {
-        List<Tache> enAttente = serviceTache.afficherTachesToDo();
-        List<Tache> enCours = serviceTache.afficherTachesEnCours();
-        List<Tache> terminees = serviceTache.afficherTachesDone();
-
-
+        List<Tache> enAttente = serviceTache.afficherTachesToDoByEvenement(currentEventId);
+        List<Tache> enCours   = serviceTache.afficherTachesEnCoursByEvenement(currentEventId);
+        List<Tache> terminees = serviceTache.afficherTachesDoneByEvenement(currentEventId);
         populateColumn(todoTasks, enAttente);
         populateColumn(inProgressTasks, enCours);
         populateColumn(doneTasks, terminees);
@@ -136,52 +170,56 @@ public class EventTache implements Initializable {
         column.getChildren().clear();
         for (Tache task : tasks) {
             HBox taskContainer = new HBox(10);
-            taskContainer.setStyle("-fx-background-color: rgba(255, 255, 255, 0.82); -fx-padding: 10; -fx-border-radius: 10px; -fx-background-radius: 10px; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0.5, 2, 2);");
+            String baseStyle = "-fx-background-color: rgba(255, 255, 255, 0.82); " +
+                    "-fx-padding: 10; " +
+                    "-fx-border-radius: 10px; " +
+                    "-fx-background-radius: 10px; " +
+                    "-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0.5, 2, 2);";
+            taskContainer.setStyle(baseStyle);
 
             VBox textContainer = new VBox(5);
             Label nameLabel = new Label(task.getNom());
             nameLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14px; -fx-text-fill: #2b2b2b;");
-
-            Label descriptionLabel = new Label((task.getDescription() != null ? task.getDescription() : ""));
+            Label descriptionLabel = new Label(task.getDescription() != null ? task.getDescription() : "");
             descriptionLabel.setStyle("-fx-font-size: 12px; -fx-text-fill: #666;");
-
             Label assignedLabel = new Label("Assigné à : " + task.getUserAssocie());
             assignedLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 12px;");
 
+            String textColor = "#2b2b2b";
+            if ("Haute".equalsIgnoreCase(task.getPriorite())) {
+                textColor = "rgba(255, 0, 0, 0.6)";
+            } else if ("Moyenne".equalsIgnoreCase(task.getPriorite())) {
+                textColor = "rgba(255, 165, 0, 0.6)";
+            } else if ("Basse".equalsIgnoreCase(task.getPriorite())) {
+                textColor = "rgba(0, 128, 0, 0.6)";
+            }
+            Label priorityLabel = new Label("Priorité : " + task.getPriorite());
+            priorityLabel.setStyle("-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: " + textColor + ";");
+
             HBox statusContainer = new HBox(10);
             Label relativeTime = new Label(task.getDateLimite().toString());
-            Label priorityLabel = new Label("Priorité : " + task.getPriorite());
             statusContainer.getChildren().addAll(relativeTime, priorityLabel);
 
-            // Buttons Container
             VBox buttonContainer = new VBox(10);
-
-            // Create Edit Button with Image
             Button editButton = new Button();
             ImageView editIcon = new ImageView(new Image(getClass().getResourceAsStream("/images/pencil.png")));
-            editIcon.setFitWidth(10);  // Set icon width
-            editIcon.setFitHeight(10); // Set icon height
+            editIcon.setFitWidth(13);
+            editIcon.setFitHeight(13);
             editButton.setGraphic(editIcon);
-            editButton.setStyle("-fx-background-color: transparent;"); // Hide default button background
+            editButton.setStyle("-fx-background-color: transparent;");
             editButton.setOnAction(event -> modifyTask(task, event));
-
-            // Create Delete Button with Image
             Button deleteButton = new Button();
             ImageView deleteIcon = new ImageView(new Image(getClass().getResourceAsStream("/images/delete.png")));
-            deleteIcon.setFitWidth(10);
-            deleteIcon.setFitHeight(10);
+            deleteIcon.setFitWidth(13);
+            deleteIcon.setFitHeight(13);
             deleteButton.setGraphic(deleteIcon);
             deleteButton.setStyle("-fx-background-color: transparent;");
             deleteButton.setOnAction(event -> deleteTask(task));
-
             buttonContainer.getChildren().addAll(editButton, deleteButton);
-
-             textContainer.getChildren().addAll(nameLabel, descriptionLabel, assignedLabel, statusContainer);
+            textContainer.getChildren().addAll(nameLabel, descriptionLabel, assignedLabel, statusContainer);
             taskContainer.getChildren().addAll(textContainer, buttonContainer);
-
-            // Add task container to column
             column.getChildren().add(taskContainer);
-            // 🎯 Ajout du Drag & Drop
+
             taskContainer.setOnDragDetected(event -> {
                 draggedTask = task;
                 Dragboard db = taskContainer.startDragAndDrop(TransferMode.MOVE);
@@ -192,11 +230,11 @@ public class EventTache implements Initializable {
             });
         }
     }
+
     private void setupDragAndDrop() {
-        // 🚀 Ajouter la gestion du drag and drop pour chaque colonne
-        setupDropTarget(todoTasks,"A Faire");
-        setupDropTarget(inProgressTasks,"En Cours");
-        setupDropTarget(doneTasks,"Terminée");
+        setupDropTarget(todoTasks, "A Faire");
+        setupDropTarget(inProgressTasks, "En Cours");
+        setupDropTarget(doneTasks, "Terminée");
     }
 
     private void setupDropTarget(VBox targetColumn, String newStatus) {
@@ -210,8 +248,8 @@ public class EventTache implements Initializable {
         targetColumn.setOnDragDropped(event -> {
             if (draggedTask != null) {
                 try {
-                    serviceTache.modifierEtatTache(draggedTask.getTacheId(), newStatus); // Met à jour la BDD
-                    loadTasks(); // 🔥 Rafraîchir les tâches après déplacement
+                    serviceTache.modifierEtatTache(draggedTask.getTacheId(), newStatus);
+                    loadTasks();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -225,12 +263,9 @@ public class EventTache implements Initializable {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/ModifierTache.fxml"));
             Parent root = loader.load();
-
-             ModifierTache controller = loader.getController();
+            ModifierTache controller = loader.getController();
             controller.setTaskData(task);
-
-
-             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.show();
         } catch (IOException e) {
@@ -238,11 +273,9 @@ public class EventTache implements Initializable {
         }
     }
 
-
     private void deleteTask(Tache task) {
         try {
             serviceTache.supprimer(task.getTacheId());
-            System.out.println(task.getTacheId());
             loadTasks();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -250,75 +283,57 @@ public class EventTache implements Initializable {
     }
 
     @FXML
-    void RedirectBack(ActionEvent event) {
+    void redirectToAjoutTache(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjoutTache.fxml"));
+            Node source = (Node) event.getSource();
+            Integer eventId = this.currentEventId;
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ajoutTache.fxml"));
             Parent root = loader.load();
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.show();
+            AjoutTache ajoutTacheController = loader.getController();
+            ajoutTacheController.initEventData(eventId);
+            Scene scene = source.getScene();
+            scene.setRoot(root);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void RedirectBackF(ActionEvent event) {
+    @FXML
+    void AssignerFournisseur(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjoutFournisseur.fxml"));
+            Node source = (Node) event.getSource();
+            Integer eventId = this.currentEventId;
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AssignerFaE.fxml"));
             Parent root = loader.load();
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.show();
+            AssignerFaE ajoutTacheController = loader.getController();
+            ajoutTacheController.initEventData(eventId);
+            Scene scene = source.getScene();
+            scene.setRoot(root);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
 
     private void populateFournisseurList(List<Fournisseur> fournisseurs) {
-        fournisseurContainer.getChildren().clear(); // Clear previous items
-
+        fournisseurContainer.getChildren().clear();
         for (Fournisseur fournisseur : fournisseurs) {
-            // Create a horizontal container for each supplier
             HBox fournisseurContainerItem = new HBox(20);
-            fournisseurContainerItem.setStyle("-fx-background-color: rgba(255, 255, 255, 0.82); "
-                    + "-fx-padding: 10; -fx-border-radius: 10px; -fx-background-radius: 10px; "
-                    + "-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0.5, 2, 2);");
-
+            fournisseurContainerItem.setStyle("-fx-background-color: rgba(255, 255, 255, 0.82); " +
+                    "-fx-padding: 10; -fx-border-radius: 10px; -fx-background-radius: 10px; " +
+                    "-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0.5, 2, 2);");
             VBox textContainer = new VBox(5);
-
-            // Big Text for Name
             Label nameLabel = new Label(fournisseur.getNom());
             nameLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 16px; -fx-text-fill: #2b2b2b;");
-
-            // Type of Service
             Label typeLabel = new Label("Type: " + fournisseur.getTypeService());
             typeLabel.setStyle("-fx-font-size: 12px; -fx-text-fill: #666;");
-
-            // Contract State
             Label contractLabel = new Label("État du contrat: " + fournisseur.getContrat());
             contractLabel.setStyle("-fx-font-size: 12px; -fx-text-fill: #888;");
-
-            // Phone Number
             Label phoneLabel = new Label("📞 " + fournisseur.getNum_tel());
             phoneLabel.setStyle("-fx-font-size: 12px; -fx-text-fill: #444;");
-
-            // Arrange Elements in a horizontal layout
             HBox typeAndContract = new HBox(15);
             typeAndContract.getChildren().addAll(typeLabel, contractLabel);
-
-            // Buttons Container
             HBox buttonContainer = new HBox(10);
-
-            // Create Edit Button with Image
-            Button editButton = new Button();
-            ImageView editIcon = new ImageView(new Image(getClass().getResourceAsStream("/images/pencil.png")));
-            editIcon.setFitWidth(16);  // Set icon width
-            editIcon.setFitHeight(16); // Set icon height
-            editButton.setGraphic(editIcon);
-            editButton.setStyle("-fx-background-color: transparent;"); // Hide default button background
-            editButton.setOnAction(event -> modifyFournisseur(fournisseur, event));
-
-            // Create Delete Button with Image
             Button deleteButton = new Button();
             ImageView deleteIcon = new ImageView(new Image(getClass().getResourceAsStream("/images/delete.png")));
             deleteIcon.setFitWidth(16);
@@ -326,73 +341,56 @@ public class EventTache implements Initializable {
             deleteButton.setGraphic(deleteIcon);
             deleteButton.setStyle("-fx-background-color: transparent;");
             deleteButton.setOnAction(event -> deleteFournisseur(fournisseur));
-
-            // Add buttons to button container
-            buttonContainer.getChildren().addAll(editButton, deleteButton);
-
-            // Add all elements to text container
+            buttonContainer.getChildren().addAll(deleteButton);
             textContainer.getChildren().addAll(nameLabel, typeAndContract, phoneLabel);
-
-            // Add text and buttons to the supplier container
             fournisseurContainerItem.getChildren().addAll(textContainer, buttonContainer);
-
-            // Add to VBox inside the ScrollPane
             fournisseurContainer.getChildren().add(fournisseurContainerItem);
         }
     }
 
-    /** ✅ Method to Open Modification Form */
-    private void modifyFournisseur(Fournisseur fournisseur, ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ModifierFournisseur.fxml"));
-            Parent root = loader.load();
+//    private void modifyFournisseur(Fournisseur fournisseur, ActionEvent event) {
+//        try {
+//            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ModifierFournisseur.fxml"));
+//            Parent root = loader.load();
+//            ModifierFournisseur controller = loader.getController();
+//            controller.setFournisseurData(fournisseur);
+//            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+//            stage.setScene(new Scene(root));
+//            stage.show();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
-            // Get the controller and set the Fournisseur data
-            ModifierFournisseur controller = loader.getController();
-            controller.setFournisseurData(fournisseur);
-
-            // Load the new scene
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /** ✅ Method to Delete a Fournisseur */
     private void deleteFournisseur(Fournisseur fournisseur) {
         try {
-            ServiceFournisseur serviceFournisseur = new ServiceFournisseur();
-            serviceFournisseur.supprimer(fournisseur.getFournisseurId());
-            System.out.println("✅ Fournisseur supprimé avec succès!");
-
-            // Reload the updated list
+            ServiceFournisseurEvenement serviceFournisseurEvenement = new ServiceFournisseurEvenement();
+            serviceFournisseurEvenement.desassocierFournisseurDeEvenement(fournisseur.getFournisseurId(),currentEventId);
             loadFournisseurs();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-
+    // Méthode appelée par l'écran précédent pour initialiser l'événement courant
     public void initEventData(int eventId) {
         this.currentEventId = eventId;
         try {
-            // Charger les détails de l'événement
             Evenement event = serviceEvenement.getEvenementById(eventId);
             if (event != null) {
                 eventNameLabel.setText(event.getNom());
                 eventDescriptionLabel.setText(event.getDescription());
                 String imagePath = event.getImage_event();
                 if (imagePath != null && !imagePath.isEmpty()) {
-                    // Encoder les espaces dans le chemin
                     String encodedPath = imagePath.replace(" ", "%20");
                     pane_event.setStyle("-fx-background-image: url('" + encodedPath + "');"
                             + " -fx-background-size: cover;"
                             + " -fx-background-position: center center;");
                 }
-
             }
+            // Maintenant que currentEventId est défini, on peut charger les tâches
+            loadTasks();
+            loadFournisseurs();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -410,5 +408,4 @@ public class EventTache implements Initializable {
             e.printStackTrace();
         }
     }
-
 }

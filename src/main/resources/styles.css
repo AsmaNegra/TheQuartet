@@ -178,7 +178,7 @@
 }
 
 .button_crud {
-    -fx-background-color: linear-gradient(to right, #ff992d, rgba(255, 166, 75, 0.79));
+    -fx-background-color: linear-gradient(to right, rgba(244, 150, 23, 0.65), rgba(255, 166, 75, 0.56));
     -fx-text-fill: white;
     -fx-font-size: 14px;
     -fx-font-weight: bold;
@@ -196,28 +196,44 @@
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0, 0, 5);
 }
 
-/* TableView Styling */
 .table-view {
     -fx-background-color: transparent;
-    -fx-border-color: #d1d1d1;
-    -fx-border-radius: 8px;
-    -fx-padding: 5px;
-    -fx-selection-bar: #f49617;
+    -fx-control-inner-background: transparent;
+    -fx-cell-hover-color: transparent;
+    -fx-table-cell-border-color: #e0e0e0;
+    -fx-border-color: #e0e0e0;
+    -fx-border-width: 0 0 1px 0;
+    -fx-padding: 0.5em;
 }
 
-.table-view .column-header {
-    -fx-background-color: linear-gradient(to bottom, #f49617, #e67e22);
-    -fx-text-fill: white;
-    -fx-font-weight: bold;
+.table-view .column-header-background {
+    -fx-background-color: transparent;
 }
 
-.table-view .table-row-cell:filled:selected {
-    -fx-background-color: #f49617;
-    -fx-text-fill: white;
+.table-view .column-header,
+.table-view .filler {
+    -fx-background-color: transparent;
+    -fx-border-width: 0 0 1px 0;
+    -fx-border-color: #ccc;
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 0.5em;
 }
 
-.table-view .table-row-cell:filled:hover {
-    -fx-background-color: #fde3a7;
+.table-view .cell {
+    -fx-padding: 0.5em;
+    -fx-text-fill: #333;
+    -fx-font-size: 14px;
+    -fx-background-color: transparent;
+}
+
+.table-view .table-row-cell {
+    -fx-background-color: transparent;
+}
+
+.table-view .table-row-cell:filled:selected,
+.table-view .table-row-cell:filled:selected:focused {
+    -fx-background-color: #d3d3d3;
+    -fx-text-fill: #000;
 }
 
 /* Styling for action icons */
@@ -304,6 +320,7 @@
 .button_retour:hover {
     -fx-opacity: 0.8;
 }
+
 
 .event-container {
     -fx-background-color: rgba(255, 255, 255, 0.9);
@@ -421,4 +438,62 @@
 
 .category-button-selected {
     -fx-background-color: derive(#f49617, -20%);
+}
+/* Custom Styling for Dialogs */
+.dialog-pane {
+    -fx-background-color: rgb(244, 243, 241);
+    -fx-border-radius: 0px 0px 10px 10px;
+    -fx-background-radius: 0px 0px 10px 10px ;
+    -fx-padding: 20px;
+    -fx-effect: dropshadow(gaussian, rgba(244, 150, 23, 0.3), 10, 0, 0, 0);
+}
+
+.dialog-text {
+    -fx-font-size: 14px;
+    -fx-text-fill: #333;
+    -fx-font-family: "Montserrat SemiBold";
+    -fx-alignment: center;
+}
+
+/* 🟠 Confirmation Dialog Buttons */
+.confirm-button {
+    -fx-background-color: #f49617;
+    -fx-text-fill: rgba(255, 255, 255, 0.9);
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 8px 15px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-cursor: hand;
+}
+
+.confirm-button:hover {
+    -fx-background-color: #df8626;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 5, 0, 0, 2);
+}
+
+.confirm-button:pressed {
+    -fx-background-color: #c36e0b;
+}
+
+/* 🔴 Error Dialog Buttons */
+.error-button {
+    -fx-background-color: #d9534f;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 8px 20px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-cursor: hand;
+    -fx-transition: all 0.3s ease-in-out;
+}
+
+.error-button:hover {
+    -fx-background-color: #c9302c;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 5, 0, 0, 2);
+}
+
+.error-button:pressed {
+    -fx-background-color: #ac2925;
 }

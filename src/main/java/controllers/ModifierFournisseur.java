@@ -64,14 +64,11 @@ public class ModifierFournisseur {
     @FXML
     public void updateFournisseur(ActionEvent event) {
         try {
-            Evenement e = new Evenement();
-            e.setEvenement_id(3);
             selectedFournisseur.setNom(nomField.getText());
             selectedFournisseur.setTypeService(typeServiceComboBox.getValue());
             selectedFournisseur.setContrat(contratComboBox.getValue());
             selectedFournisseur.setNum_tel(Integer.parseInt(numTelField.getText()));
-            selectedFournisseur.setEvenement(e);
-            // Call service to update the database
+             // Call service to update the database
             System.out.println(selectedFournisseur);
             serviceFournisseur.modifier(selectedFournisseur);
 
@@ -86,7 +83,7 @@ public class ModifierFournisseur {
     @FXML
     public void redirectBack(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/EventTache.fxml")); // Change to your actual FXML file
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AdminFournisseur.fxml")); // Change to your actual FXML file
             Parent root = loader.load();
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
