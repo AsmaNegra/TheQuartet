@@ -27,9 +27,13 @@
     -fx-border-color: #CFD3DE;
     -fx-background-radius: 30px;
     -fx-border-radius: 30px;
+}
+.widget{
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 30px;
+    -fx-border-radius: 30px;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0.5, 2, 2);
 }
-
 .background_color {
     -fx-background-color: #f4f7fc;
 }
@@ -62,13 +66,29 @@
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0.5, 2, 2);
 }
 
+
 .scroll-pane .viewport {
     -fx-background-color: transparent;
 }
 
+/* Scrollbar styling */
+.scroll-pane .scroll-bar {
+    -fx-background-color: transparent;
+    -fx-pref-width: 10px; /* Vertical scrollbar width */
+    -fx-pref-height: 10px; /* Horizontal scrollbar height */
+}
+
+/* Thumb styling */
 .scroll-pane .scroll-bar .thumb {
-    -fx-background-color: #CFD3DE;
+    -fx-background-color: rgba(255, 255, 255, 0.65);
     -fx-background-radius: 10px;
+}
+
+/* Hide buttons */
+.scroll-pane .scroll-bar .increment-button,
+.scroll-pane .scroll-bar .decrement-button {
+    -fx-padding: 0;
+    -fx-shape: "";
 }
 
 .task-form Label {
@@ -151,4 +171,7 @@
 
 .footer-text:hover {
     -fx-text-fill: #d87769;
+}
+.transparent_bg{
+    -fx-background-color: transparent;
 }
