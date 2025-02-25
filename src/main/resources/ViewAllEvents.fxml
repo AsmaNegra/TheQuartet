@@ -15,40 +15,105 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.paint.RadialGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.paint.Color?>
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" styleClass="background_color" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ViewAllEventsController">
 
     <!-- Sidebar Gauche -->
     <left>
-        <AnchorPane prefHeight="567.0" prefWidth="58.0" styleClass="sidebar" stylesheets="@styles.css">
+        <!-- Sidebar qui s'étend au survol -->
+        <AnchorPane fx:id="sidebar" onMouseEntered="#expandSidebar" onMouseExited="#collapseSidebar" prefHeight="500.0" prefWidth="70.0" styleClass="sidebar" stylesheets="@styles.css">
             <children>
-                <FontAwesomeIconView fill="#797878" glyphName="BARS" layoutX="20.2" layoutY="30.628571701049804" selectionFill="#bc802d" size="1.5em" text="" wrappingWidth="23.199981689453125" AnchorPane.leftAnchor="20.2" AnchorPane.rightAnchor="13.40001831054687" AnchorPane.topAnchor="15.2" />
-                <VBox layoutX="20.0" layoutY="119.0">
-                    <children>
-                        <FontAwesomeIconView fx:id="OrganisateurPage" fill="#f49617" glyphName="SITEMAP" onMouseClicked="#redirectToOrganisateurPage" size="1.5em" styleClass="sidebar_opt" wrappingWidth="16.857142448425293" />
-
-                        <FontAwesomeIconView glyphName="GIFT" size="1.5em" styleClass="sidebar_opt">
-                            <VBox.margin>
-                                <Insets top="15.0" />
-                            </VBox.margin>
-                        </FontAwesomeIconView>
-                        <FontAwesomeIconView glyphName="USER" size="1.5em" styleClass="sidebar_opt">
-                            <VBox.margin>
-                                <Insets top="15.0" />
-                            </VBox.margin>
-                        </FontAwesomeIconView>
-                        <FontAwesomeIconView fill="#f49617" glyphName="HOME" size="1.5em">
-                            <VBox.margin>
-                                <Insets top="15.0" />
-                            </VBox.margin>
-                        </FontAwesomeIconView>
-                        <Separator>
-                            <VBox.margin>
-                                <Insets bottom="15.0" top="15.0" />
-                            </VBox.margin>
-                        </Separator>
-                    </children>
+                <!-- Conteneur global avec contraintes d'ancrage -->
+                <VBox spacing="15.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                    <!-- En-tête du menu -->
+                    <HBox alignment="CENTER" prefHeight="132.0" prefWidth="41.0">
+                        <Button mnemonicParsing="false" prefHeight="32.0" prefWidth="60.0" styleClass="transparent_bt">
+                            <graphic>
+                                <FontAwesomeIconView fill="#797878" glyphName="BARS" selectionFill="#bc802d" size="2em" text="" />
+                            </graphic>
+                            <HBox.margin>
+                                <Insets bottom="100.0" />
+                            </HBox.margin>
+                        </Button>
+                    </HBox>
+                    <!-- Options du menu -->
+                    <VBox spacing="10.0">
+                        <!-- Option SITEMAP -->
+                        <HBox alignment="CENTER_LEFT" spacing="10" styleClass="menu-item">
+                            <Button fx:id="btnSitemap" mnemonicParsing="false" onAction="#handleSitemapClick" styleClass="transparent_bt">
+                                <graphic>
+                                    <FontAwesomeIconView fill="#797878" glyphName="SITEMAP" size="1.5em" styleClass="sidebar_opt" />
+                                </graphic>
+                                <HBox.margin>
+                                    <Insets left="5.0" />
+                                </HBox.margin>
+                            </Button>
+                        </HBox>
+                        <!-- Option GIFT -->
+                        <HBox alignment="CENTER_LEFT" spacing="10" styleClass="menu-item">
+                            <Button fx:id="btnGift" mnemonicParsing="false" onAction="#handleGiftClick" styleClass="transparent_bt">
+                                <graphic>
+                                    <FontAwesomeIconView fill="#797878" glyphName="GIFT" size="1.5em" styleClass="sidebar_opt" />
+                                </graphic>
+                                <HBox.margin>
+                                    <Insets left="5.0" />
+                                </HBox.margin>
+                            </Button>
+                        </HBox>
+                        <!-- Option HOME -->
+                        <HBox alignment="CENTER_LEFT" spacing="10" styleClass="menu-item">
+                            <Button fx:id="btnHome" mnemonicParsing="false" onAction="#handleHomeClick" styleClass="transparent_bg">
+                                <graphic>
+                                    <FontAwesomeIconView fill="#797878" glyphName="HOME" size="1.5em" styleClass="sidebar_opt" />
+                                </graphic>
+                                <HBox.margin>
+                                    <Insets left="5.0" />
+                                </HBox.margin>
+                            </Button>
+                        </HBox>
+                    </VBox>
+                    <!-- Séparateur pour délimiter des sections -->
+                    <Separator />
+                    <!-- Option additionnelle -->
+                    <HBox alignment="CENTER_LEFT" spacing="10" styleClass="menu-item">
+                        <Button fx:id="btnHome1" mnemonicParsing="false" onAction="#handleHomeClick" styleClass="transparent_bt">
+                            <graphic>
+                                <FontAwesomeIconView fill="#797878" glyphName="USER" size="1.5em" styleClass="sidebar_opt" />
+                            </graphic>
+                            <HBox.margin>
+                                <Insets left="5.0" />
+                            </HBox.margin>
+                        </Button>
+                    </HBox>
                 </VBox>
+                <!-- Cercle décoratif en bas de la sidebar -->
+
+                <Circle radius="21.0" stroke="WHITE" strokeType="INSIDE" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
+                    <fill>
+                        <RadialGradient centerX="0.4469" centerY="1.0" focusAngle="78.69" focusDistance="0.40367" radius="0.86697">
+                            <stops>
+                                <Stop>
+                                    <color>
+                                        <Color red="0.95686" green="0.58824" blue="0.090196" />
+                                    </color>
+                                </Stop>
+                                <Stop offset="1.0">
+                                    <color>
+                                        <Color red="1.0" green="1.0" blue="1.0" />
+                                    </color>
+                                </Stop>
+                            </stops>
+                        </RadialGradient>
+                    </fill>
+                </Circle>
             </children>
+            <BorderPane.margin>
+                <Insets left="5.0" top="15.0" />
+            </BorderPane.margin>
         </AnchorPane>
     </left>
 

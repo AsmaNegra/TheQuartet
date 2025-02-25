@@ -84,9 +84,9 @@ public class Ref {
     void handleHomeClick(ActionEvent event) {
         try {
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Ref.fxml"));
+           // FXMLLoader loader = new FXMLLoader(getClass().getResource("/Ref.fxml"));
 
-                //FXMLLoader loader = new FXMLLoader(getClass().getResource("/EvenementAll.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/ViewAllEvents.fxml"));
 
             Parent root = loader.load();
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();

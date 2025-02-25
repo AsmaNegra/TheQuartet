@@ -1,6 +1,9 @@
 package controllers;
-
 import entities.Evenement;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -13,12 +16,10 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
-import javafx.scene.layout.TilePane;
+import javafx.scene.layout.*;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import services.ServiceEvenement;
 
 import java.io.File;
@@ -31,8 +32,20 @@ import java.util.ResourceBundle;
 
 public class ViewAllEventsController implements Initializable {
     @FXML
-    private TilePane eventsContainer;
+    private Button btnSitemap;
+    @FXML
+    private Button btnGift;
+    @FXML
+    private Button btnHome;
+    @FXML
+    private Button btnHome1;
 
+    @FXML
+    private AnchorPane sidebar;
+
+    @FXML
+    private TilePane eventsContainer;
+private Ref ref;
     @FXML
     private HBox categoriesContainer;
 
@@ -44,6 +57,7 @@ public class ViewAllEventsController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+
         loadCategories();
         loadEvents();
         // Configuration du TilePane
@@ -250,6 +264,86 @@ public class ViewAllEventsController implements Initializable {
             }
 
     }
+    //////////////////////MENU//////////////////////////
+    @FXML
+    void expandSidebar(MouseEvent event) {
+        // Animate sidebar expansion (e.g., from 70 to 200 pixels)
+        Timeline expandTimeline = new Timeline();
+        KeyValue widthValue = new KeyValue(sidebar.prefWidthProperty(), 200);
+        KeyFrame keyFrame = new KeyFrame(Duration.millis(300), widthValue);
+        expandTimeline.getKeyFrames().add(keyFrame);
+        expandTimeline.play();
+
+        // Set the text for each button
+        btnSitemap.setText("Mes evenements");
+        btnGift.setText("Admin");
+        btnHome.setText("Tous les evenements");
+        btnHome1.setText("My Account");
+    }
+
+    @FXML
+    void collapseSidebar(MouseEvent event) {
+        // Animate sidebar collapse (e.g., back to 70 pixels)
+        Timeline collapseTimeline = new Timeline();
+        KeyValue widthValue = new KeyValue(sidebar.prefWidthProperty(), 70);
+        KeyFrame keyFrame = new KeyFrame(Duration.millis(300), widthValue);
+        collapseTimeline.getKeyFrames().add(keyFrame);
+        collapseTimeline.play();
+
+        // Clear the text for each button
+        btnSitemap.setText("");
+        btnGift.setText("");
+        btnHome.setText("");
+        btnHome1.setText("");
+    }
+
+
+
+    @FXML
+    void handleGiftClick(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AdminFournisseur.fxml"));
+            Parent root = loader.load();
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    void handleHomeClick(ActionEvent event) {
+        try {
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Ref.fxml"));
+
+            //FXMLLoader loader = new FXMLLoader(getClass().getResource("/EvenementAll.fxml"));
+
+            Parent root = loader.load();
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @FXML
+    void handleSitemapClick(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/EventOrganisation.fxml"));
+            Parent root = loader.load();
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+/////////////////////////////////////
+    /////////////////////////////////////////////////////////
 }
 
 
