@@ -1,5 +1,7 @@
 package controllers;
 
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import entities.Evenement;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -12,7 +14,9 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -21,6 +25,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -32,6 +37,7 @@ import java.io.InputStream;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Optional;
 
 public class EventOrganisation {
 
@@ -82,19 +88,7 @@ public class EventOrganisation {
         }
     }
 
-//    @FXML
-//    void redirectEvent(MouseEvent event) {
-//        try {
-//            FXMLLoader loader = new FXMLLoader(getClass().getResource("/EventTache.fxml"));
-//            Parent root = loader.load();
-//
-//            Scene scene = ((Node) event.getSource()).getScene();
-//            scene.setRoot(root);
-//
-//        } catch (IOException e) {
-//            e.printStackTrace(); // Meilleur pour le débogage
-//        }
-//    }
+
 
     @FXML
     void redirectEvent(MouseEvent event) {
@@ -174,13 +168,40 @@ public class EventOrganisation {
                     Label categoryLabel = new Label(event.getCategorie());
                     categoryLabel.getStyleClass().add("event-category");
 
+                    // Créer des boutons d'action (modifier, supprimer, etc.)
+                    HBox actionButtons = new HBox(5);
+                    actionButtons.setAlignment(Pos.CENTER);
+
+                    // Bouton Modifier
+                    Button modifyButton = new Button();
+                    modifyButton.getStyleClass().add("action-button");
+                    FontAwesomeIconView editIcon = new FontAwesomeIconView(FontAwesomeIcon.EDIT);
+                    editIcon.setFill(Color.WHITE);
+                    editIcon.setSize("16");
+                    modifyButton.setGraphic(editIcon);
+                    modifyButton.setOnAction(e -> modifierEvenement(e, event));
+
+                    // Bouton Supprimer
+                    Button deleteButton = new Button();
+                    deleteButton.getStyleClass().add("action-button");
+                    deleteButton.getStyleClass().add("delete-button");
+                    FontAwesomeIconView deleteIcon = new FontAwesomeIconView(FontAwesomeIcon.TRASH);
+                    deleteIcon.setFill(Color.WHITE);
+                    deleteIcon.setSize("16");
+                    deleteButton.setGraphic(deleteIcon);
+                    deleteButton.setOnAction(e -> supprimerEvenement(e, event));
+
+                    // Ajouter les boutons à la HBox
+                    actionButtons.getChildren().addAll(modifyButton, deleteButton);
+
                     // Ajouter tous les éléments au VBox
                     vbox.getChildren().addAll(
                         imageContainer,
                         nameLabel,
                         dateLabel,
                         locationLabel,
-                        categoryLabel
+                        categoryLabel,
+                        actionButtons
                     );
 
                     // Ajouter le VBox au container
@@ -195,8 +216,14 @@ public class EventOrganisation {
                     // Stocker l'ID de l'événement
                     newContainer.setUserData(event.getEvenement_id());
 
-                    // Ajouter le gestionnaire de clic
-                    newContainer.setOnMouseClicked(e -> redirectEvent(e));
+                    // Ajouter le gestionnaire de clic pour rediriger vers la vue détaillée
+                    // Mais on exclut les clics sur les boutons d'action
+                    newContainer.setOnMouseClicked(e -> {
+                        if (!(e.getTarget() instanceof Button) &&
+                            !(e.getTarget() instanceof FontAwesomeIconView)) {
+                            redirectEvent(e);
+                        }
+                    });
 
                     // Configurer les marges
                     HBox.setMargin(newContainer, new Insets(15));
@@ -211,6 +238,67 @@ public class EventOrganisation {
             }
         } catch (SQLException e) {
             System.err.println("Erreur lors du chargement des événements");
+            e.printStackTrace();
+        }
+    }
+
+    public void supprimerEvenement(ActionEvent event, Evenement evenement) {
+        // Demander confirmation avant la suppression
+        Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmation.setTitle("Confirmation de suppression");
+        confirmation.setHeaderText("Supprimer l'événement");
+        confirmation.setContentText("Êtes-vous sûr de vouloir supprimer l'événement \"" +
+            evenement.getNom() + "\" ?");
+
+        Optional<ButtonType> result = confirmation.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            try {
+                // Supprimer l'événement
+                serviceEvenement.supprimer(evenement.getEvenement_id());
+
+                // Rafraîchir la liste des événements
+                refreshEvents();
+
+                // Afficher un message de succès
+                Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+                successAlert.setTitle("Succès");
+                successAlert.setHeaderText(null);
+                successAlert.setContentText("L'événement a été supprimé avec succès.");
+                successAlert.showAndWait();
+            } catch (SQLException e) {
+                // Afficher un message d'erreur
+                Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                errorAlert.setTitle("Erreur");
+                errorAlert.setHeaderText("Erreur lors de la suppression");
+                errorAlert.setContentText("Une erreur s'est produite : " + e.getMessage());
+                errorAlert.showAndWait();
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void modifierEvenement(ActionEvent event, Evenement evenement) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ModifierEvenement.fxml"));
+            Parent root = loader.load();
+
+            // Récupérer le contrôleur et initialiser avec l'événement à modifier
+            ModifierEvenementController controller = loader.getController();
+            controller.setEvenement(evenement);
+
+            Stage modifStage = new Stage();
+            modifStage.setTitle("Modifier l'événement");
+            modifStage.setScene(new Scene(root));
+
+            // Définir le propriétaire et la modalité
+            modifStage.initOwner(((Node)event.getSource()).getScene().getWindow());
+            modifStage.initModality(Modality.WINDOW_MODAL);
+
+            // Ajouter un écouteur pour détecter quand la fenêtre se ferme
+            modifStage.setOnHidden(e -> refreshEvents());
+
+            modifStage.show();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -265,6 +353,8 @@ public class EventOrganisation {
 
             newStage.initOwner(((Node) actionEvent.getSource()).getScene().getWindow());
             newStage.initModality(Modality.WINDOW_MODAL);
+
+            newStage.setOnHidden(e -> refreshEvents());
 
             newStage.show();
         } catch (Exception e) {
@@ -357,7 +447,10 @@ public class EventOrganisation {
             e.printStackTrace();
         }
     }
-    //////////////////////////////////////////////////////////////////////////
+
+    public void refreshEvents(){
+        loadEvents();
+    }
 
 }
 

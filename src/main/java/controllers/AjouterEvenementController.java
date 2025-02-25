@@ -349,41 +349,64 @@ public class AjouterEvenementController {
 
             // Sauvegarde dans la base de données
             ServiceEvenement serviceEvenement = new ServiceEvenement();
-            serviceEvenement.ajouter(evenement);
+            try {
+                serviceEvenement.ajouter(evenement);
 
-            // Ajout dans la table d'association avec l'utilisateur connecté
-            // Pour cet exemple, j'utilise l'ID 1 comme utilisateur connecté
-            ServiceUtilisateurEvenement serviceUtilisateurEvenement = new ServiceUtilisateurEvenement();
-            serviceUtilisateurEvenement.inscrireUtilisateurAEvenement(1, evenement.getEvenement_id());
+                // Ajout dans la table d'association avec l'utilisateur connecté
+                // Pour cet exemple, j'utilise l'ID 1 comme utilisateur connecté
+                ServiceUtilisateurEvenement serviceUtilisateurEvenement = new ServiceUtilisateurEvenement();
+                serviceUtilisateurEvenement.inscrireUtilisateurAEvenement(1, evenement.getEvenement_id());
 
-            // Afficher un message de succès
-            Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
-            successAlert.setTitle("Succès");
-            successAlert.setHeaderText(null);
-            successAlert.setContentText("Événement ajouté avec succès !");
-            successAlert.showAndWait();
+                // Afficher un message de succès
+                Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+                successAlert.setTitle("Succès");
+                successAlert.setHeaderText(null);
+                successAlert.setContentText("Événement ajouté avec succès !");
+                successAlert.showAndWait();
 
-            // Charger l'interface DetailsEvenement.fxml
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/DetailsEvenement.fxml"));
-            Parent root = loader.load(); // Crée une nouvelle instance de Parent
-            DetailsEvenement dec = loader.getController();
+                Stage stage = (Stage) evenementAjouterButton.getScene().getWindow();
+                stage.close();
 
-            // Passer les données de l'événement à l'interface DetailsEvenement
-            dec.setResNom(evenement.getNom());
-            dec.setResDescription(evenement.getDescription());
-            dec.setResDateDebut(evenement.getDate_debut().toString());
-            dec.setResDateFin(evenement.getDate_fin().toString());
-            dec.setResLieu(evenement.getLieu());
-            dec.setResCategorie(evenement.getCategorie());
-            dec.setResBudget(String.valueOf(evenement.getBudget()));
-            dec.setResImageEvent(evenement.getImage_event());
-            dec.setResNbPlaces(String.valueOf(evenement.getNb_places()));
-            dec.setEvenementId(evenement.getEvenement_id());
+                // Charger l'interface DetailsEvenement.fxml
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/DetailsEvenement.fxml"));
+                Parent root = loader.load(); // Crée une nouvelle instance de Parent
+                DetailsEvenement dec = loader.getController();
 
-            // Remplacer la scène actuelle par DetailsEvenement
-            Stage currentStage = (Stage) evenementAjouterButton.getScene().getWindow();
-            currentStage.setScene(new Scene(root));
+                // Passer les données de l'événement à l'interface DetailsEvenement
+                dec.setResNom(evenement.getNom());
+                dec.setResDescription(evenement.getDescription());
+                dec.setResDateDebut(evenement.getDate_debut().toString());
+                dec.setResDateFin(evenement.getDate_fin().toString());
+                dec.setResLieu(evenement.getLieu());
+                dec.setResCategorie(evenement.getCategorie());
+                dec.setResBudget(String.valueOf(evenement.getBudget()));
+                dec.setResImageEvent(evenement.getImage_event());
+                dec.setResNbPlaces(String.valueOf(evenement.getNb_places()));
+                dec.setEvenementId(evenement.getEvenement_id());
 
+                // Remplacer la scène actuelle par DetailsEvenement
+                Stage detailStage = new Stage();
+                detailStage.setTitle("Details de l'evenement");
+                detailStage.setScene(new Scene(root));
+                detailStage.show();
+            } catch (SQLException e) {
+                if (e.getMessage().contains("existe déjà")) {
+                    // Si l'erreur est liée à un événement qui existe déjà
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Erreur");
+                    alert.setHeaderText(null);
+                    alert.setContentText(e.getMessage());
+                    alert.showAndWait();
+                } else {
+                    // Pour les autres erreurs SQL
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Erreur");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Une erreur s'est produite : " + e.getMessage());
+                    alert.showAndWait();
+                    e.printStackTrace();
+                }
+            }
         } catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Erreur");

@@ -142,7 +142,7 @@
                                                         <Insets bottom="5.0" left="15.0" right="5.0" top="15.0" />
                                                     </HBox.margin>
                                                     <image>
-                                                        <Image url="@images/Orchestra/Orchestra%20(1).png" />
+                                                        <Image url="@images/Orchestra/Orchestra (1).png" />
                                                     </image>
                                                 </ImageView>
                                                 <Separator orientation="VERTICAL" prefHeight="200.0" />

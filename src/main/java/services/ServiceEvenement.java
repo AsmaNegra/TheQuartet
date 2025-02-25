@@ -35,6 +35,11 @@ public class ServiceEvenement implements IService<Evenement>{
 
     @Override
     public void ajouter(Evenement evenement) throws SQLException {
+        // Vérifier si un événement avec le même nom existe déjà
+        Optional<Evenement> existingEvent = getEvenementParNom(evenement.getNom());
+        if (existingEvent.isPresent()) {
+            throw new SQLException("Un événement avec le nom '" + evenement.getNom() + "' existe déjà.");
+        }
         // Vérifier si la catégorie existe
         String checkCategorySql = "SELECT COUNT(*) FROM listecategorieevent WHERE categorie = ?";
         try (PreparedStatement checkPs = connection.prepareStatement(checkCategorySql)) {
@@ -78,6 +83,12 @@ public class ServiceEvenement implements IService<Evenement>{
 
     @Override
     public void modifier(Evenement evenement) throws SQLException {
+        // Vérifier si un autre événement avec le même nom existe déjà
+        Optional<Evenement> existingEvent = getEvenementParNom(evenement.getNom());
+        if (existingEvent.isPresent() && existingEvent.get().getEvenement_id() != evenement.getEvenement_id()) {
+            throw new SQLException("Un autre événement avec le nom '" + evenement.getNom() + "' existe déjà.");
+        }
+
         String sql = "UPDATE evenement SET nom=?, description=?, date_debut=?, date_fin=?, lieu=?, categorie=?, budget=?, image_event=?, nb_places=? WHERE evenement_id=?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, evenement.getNom());
@@ -105,7 +116,7 @@ public class ServiceEvenement implements IService<Evenement>{
     @Override
     public List<Evenement> afficher() throws SQLException {
         List<Evenement> evenements = new ArrayList<>();
-        String sql = "SELECT * FROM `evenement`";
+        String sql = "SELECT * FROM `evenement` ORDER BY `date_debut` DESC";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             ResultSet rs = statement.executeQuery();

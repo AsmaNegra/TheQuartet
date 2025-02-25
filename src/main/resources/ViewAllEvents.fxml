@@ -20,59 +20,71 @@
 <?import javafx.scene.paint.RadialGradient?>
 <?import javafx.scene.paint.Stop?>
 <?import javafx.scene.paint.Color?>
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" styleClass="background_color" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ViewAllEventsController">
-
-    <!-- Sidebar Gauche -->
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" styleClass="parent" stylesheets="@styles_new.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ViewAllEventsController">
     <left>
         <!-- Sidebar qui s'étend au survol -->
-        <AnchorPane fx:id="sidebar" onMouseEntered="#expandSidebar" onMouseExited="#collapseSidebar" prefHeight="500.0" prefWidth="70.0" styleClass="sidebar" stylesheets="@styles.css">
+        <AnchorPane fx:id="sidebar" onMouseEntered="#expandSidebar" onMouseExited="#collapseSidebar" prefHeight="500.0" prefWidth="70.0" styleClass="sidebar">
             <children>
                 <!-- Conteneur global avec contraintes d'ancrage -->
-                <VBox spacing="15.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
-                    <!-- En-tête du menu -->
-                    <HBox alignment="CENTER" prefHeight="132.0" prefWidth="41.0">
-                        <Button mnemonicParsing="false" prefHeight="32.0" prefWidth="60.0" styleClass="transparent_bt">
-                            <graphic>
-                                <FontAwesomeIconView fill="#797878" glyphName="BARS" selectionFill="#bc802d" size="2em" text="" />
-                            </graphic>
-                            <HBox.margin>
-                                <Insets bottom="100.0" />
-                            </HBox.margin>
-                        </Button>
+                <VBox layoutX="10.0" layoutY="165.0" prefHeight="600.0" prefWidth="87.2" spacing="15.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <HBox>
+                        <children>
+                            <Circle fill="DODGERBLUE" radius="28.0" stroke="BLACK" strokeType="INSIDE" />
+                            <Label fx:id="labelUser" alignment="CENTER" text="Label" textFill="WHITE" visible="false">
+                                <font>
+                                    <Font name="Open Sans Regular" size="12.0" />
+                                </font>
+                                <HBox.margin>
+                                    <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                                </HBox.margin>
+                            </Label>
+                        </children>
+                        <VBox.margin>
+                            <Insets bottom="50.0" />
+                        </VBox.margin>
                     </HBox>
                     <!-- Options du menu -->
                     <VBox spacing="10.0">
                         <!-- Option SITEMAP -->
                         <HBox alignment="CENTER_LEFT" spacing="10" styleClass="menu-item">
-                            <Button fx:id="btnSitemap" mnemonicParsing="false" onAction="#handleSitemapClick" styleClass="transparent_bt">
+                            <Button fx:id="btnSitemap" mnemonicParsing="false" onAction="#handleSitemapClick" styleClass="sidebar_opt" textFill="#e4e4e4">
                                 <graphic>
                                     <FontAwesomeIconView fill="#797878" glyphName="SITEMAP" size="1.5em" styleClass="sidebar_opt" />
                                 </graphic>
                                 <HBox.margin>
                                     <Insets left="5.0" />
                                 </HBox.margin>
+                                <font>
+                                    <Font name="Open Sans Medium" size="12.0" />
+                                </font>
                             </Button>
                         </HBox>
                         <!-- Option GIFT -->
                         <HBox alignment="CENTER_LEFT" spacing="10" styleClass="menu-item">
-                            <Button fx:id="btnGift" mnemonicParsing="false" onAction="#handleGiftClick" styleClass="transparent_bt">
+                            <Button fx:id="btnGift" mnemonicParsing="false" onAction="#handleGiftClick" styleClass="sidebar_opt" textFill="#e4e4e4">
                                 <graphic>
                                     <FontAwesomeIconView fill="#797878" glyphName="GIFT" size="1.5em" styleClass="sidebar_opt" />
                                 </graphic>
                                 <HBox.margin>
                                     <Insets left="5.0" />
                                 </HBox.margin>
+                                <font>
+                                    <Font name="Open Sans Medium" size="12.0" />
+                                </font>
                             </Button>
                         </HBox>
                         <!-- Option HOME -->
                         <HBox alignment="CENTER_LEFT" spacing="10" styleClass="menu-item">
-                            <Button fx:id="btnHome" mnemonicParsing="false" onAction="#handleHomeClick" styleClass="transparent_bg">
+                            <Button fx:id="btnHome" mnemonicParsing="false" onAction="#handleHomeClick" styleClass="sidebar_opt" textFill="#e4e4e4">
                                 <graphic>
                                     <FontAwesomeIconView fill="#797878" glyphName="HOME" size="1.5em" styleClass="sidebar_opt" />
                                 </graphic>
                                 <HBox.margin>
                                     <Insets left="5.0" />
                                 </HBox.margin>
+                                <font>
+                                    <Font name="Open Sans Medium" size="12.0" />
+                                </font>
                             </Button>
                         </HBox>
                     </VBox>
@@ -80,39 +92,41 @@
                     <Separator />
                     <!-- Option additionnelle -->
                     <HBox alignment="CENTER_LEFT" spacing="10" styleClass="menu-item">
-                        <Button fx:id="btnHome1" mnemonicParsing="false" onAction="#handleHomeClick" styleClass="transparent_bt">
+                        <Button fx:id="btnHome1" mnemonicParsing="false" onAction="#handleHomeClick" styleClass="sidebar_opt" textFill="#e4e4e4">
                             <graphic>
                                 <FontAwesomeIconView fill="#797878" glyphName="USER" size="1.5em" styleClass="sidebar_opt" />
                             </graphic>
                             <HBox.margin>
                                 <Insets left="5.0" />
                             </HBox.margin>
+                            <font>
+                                <Font name="Open Sans Medium" size="12.0" />
+                            </font>
                         </Button>
                     </HBox>
+                    <Separator>
+                        <VBox.margin>
+                            <Insets top="100.0" />
+                        </VBox.margin></Separator>
+                    <HBox alignment="CENTER_LEFT" spacing="10" styleClass="menu-item">
+                        <children>
+                            <Button fx:id="btnLogout" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="14.0" prefWidth="86.0" styleClass="sidebar_opt" stylesheets="@styles_new.css" textFill="WHITE">
+                                <graphic>
+                                    <FontAwesomeIconView fill="#eaeaea" glyphName="POWER_OFF" selectionFill="#bc802d" size="1.5em" />
+                                </graphic>
+                                <font>
+                                    <Font name="Open Sans Regular" size="12.0" />
+                                </font>
+                            </Button>
+                        </children>
+                    </HBox>
+                    <padding>
+                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                    </padding>
                 </VBox>
-                <!-- Cercle décoratif en bas de la sidebar -->
-
-                <Circle radius="21.0" stroke="WHITE" strokeType="INSIDE" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
-                    <fill>
-                        <RadialGradient centerX="0.4469" centerY="1.0" focusAngle="78.69" focusDistance="0.40367" radius="0.86697">
-                            <stops>
-                                <Stop>
-                                    <color>
-                                        <Color red="0.95686" green="0.58824" blue="0.090196" />
-                                    </color>
-                                </Stop>
-                                <Stop offset="1.0">
-                                    <color>
-                                        <Color red="1.0" green="1.0" blue="1.0" />
-                                    </color>
-                                </Stop>
-                            </stops>
-                        </RadialGradient>
-                    </fill>
-                </Circle>
             </children>
             <BorderPane.margin>
-                <Insets left="5.0" top="15.0" />
+                <Insets left="5.0" />
             </BorderPane.margin>
         </AnchorPane>
     </left>
@@ -129,7 +143,7 @@
                         </padding>
                         <ImageView fitHeight="60.0" fitWidth="60.0" preserveRatio="true">
                             <image>
-                                <Image url="@images/Orchestra/1.png" />
+                                <Image url="@images/Orchestra/Orchestra (1).png" />
                             </image>
                         </ImageView>
                         <Separator orientation="VERTICAL" />

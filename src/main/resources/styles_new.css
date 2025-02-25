@@ -175,3 +175,74 @@
 .transparent_bg{
     -fx-background-color: transparent;
 }
+
+.action-button {
+    -fx-background-color: #11123c;
+    -fx-background-radius: 30;
+    -fx-min-width: 30px;
+    -fx-min-height: 30px;
+    -fx-max-width: 30px;
+    -fx-max-height: 30px;
+    -fx-padding: 5px;
+}
+
+.action-button:hover {
+    -fx-background-color: #0d8bf2;
+    -fx-cursor: hand;
+}
+
+.edit-button {
+    -fx-background-color: #2196F3;
+}
+
+.edit-button:hover {
+    -fx-background-color: #0d8bf2;
+}
+
+.delete-button {
+    -fx-background-color: #f44336;
+}
+
+.delete-button:hover {
+    -fx-background-color: #d32f2f;
+}
+
+.main-container {
+    -fx-background-color: transparent;
+    -fx-padding: 15;
+}
+
+.search-field {
+    -fx-background-color: white;
+    -fx-background-radius: 20;
+    -fx-padding: 8 15;
+}
+
+.event-card {
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(gaussian, rgb(17, 18, 60), 10, 0, 0, 3);
+    -fx-padding: 15;
+}
+
+.event-card .back {
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(gaussian, rgb(17, 18, 60), 10, 0, 0, 3);
+    -fx-padding: 15;
+    transform: rotateY(180deg);
+}
+
+.event-card:hover .front {
+    transform: rotateY(180deg);
+}
+
+.event-card:hover .back {
+    transform: rotateY(360deg);
+}
+
+
+.event-card:hover {
+    -fx-effect: dropshadow(gaussian, rgb(216, 119, 105), 15, 0, 0, 5);
+    -fx-translate-y: -2;
+}

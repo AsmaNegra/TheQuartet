@@ -167,7 +167,7 @@ public class ModifierEvenementController {
             public void decrement(int steps) {
                 try {
                     LocalTime time = LocalTime.parse(getValue(), formatter);
-                    setValue(time.minusMinutes(1).format(formatter));
+                    setValue(time.minusMinutes(15).format(formatter));
                 } catch (Exception e) {
                     setValue("12:00");
                 }
@@ -177,7 +177,7 @@ public class ModifierEvenementController {
             public void increment(int steps) {
                 try {
                     LocalTime time = LocalTime.parse(getValue(), formatter);
-                    setValue(time.plusMinutes(1).format(formatter));
+                    setValue(time.plusMinutes(15).format(formatter));
                 } catch (Exception e) {
                     setValue("12:00");
                 }
@@ -333,33 +333,52 @@ public class ModifierEvenementController {
 
             // Sauvegarde des modifications
             ServiceEvenement serviceEvenement = new ServiceEvenement();
-            serviceEvenement.modifier(evenementToModify);
+            try {
+                serviceEvenement.modifier(evenementToModify);
 
-            Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
-            successAlert.setTitle("Succès");
-            successAlert.setHeaderText(null);
-            successAlert.setContentText("Événement modifié avec succès !");
-            successAlert.showAndWait();
+                Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+                successAlert.setTitle("Succès");
+                successAlert.setHeaderText(null);
+                successAlert.setContentText("Événement modifié avec succès !");
+                successAlert.showAndWait();
 
-            // Affichage des détails mis à jour
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/DetailsEvenement.fxml"));
-            Parent root = loader.load();
-            DetailsEvenement dec = loader.getController();
+                Stage stage = (Stage) evenementModifierButton.getScene().getWindow();
+                stage.close();
 
-            dec.setResNom(evenementToModify.getNom());
-            dec.setResDescription(evenementToModify.getDescription());
-            dec.setResDateDebut(evenementToModify.getDate_debut().toString());
-            dec.setResDateFin(evenementToModify.getDate_fin().toString());
-            dec.setResLieu(evenementToModify.getLieu());
-            dec.setResCategorie(evenementToModify.getCategorie());
-            dec.setResBudget(String.valueOf(evenementToModify.getBudget()));
-            dec.setResImageEvent(evenementToModify.getImage_event());
-            dec.setResNbPlaces(String.valueOf(evenementToModify.getNb_places()));
+                // Affichage des détails mis à jour
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/DetailsEvenement.fxml"));
+                Parent root = loader.load();
+                DetailsEvenement dec = loader.getController();
 
-            evenementModifierButton.getScene().setRoot(root);
+                dec.setResNom(evenementToModify.getNom());
+                dec.setResDescription(evenementToModify.getDescription());
+                dec.setResDateDebut(evenementToModify.getDate_debut().toString());
+                dec.setResDateFin(evenementToModify.getDate_fin().toString());
+                dec.setResLieu(evenementToModify.getLieu());
+                dec.setResCategorie(evenementToModify.getCategorie());
+                dec.setResBudget(String.valueOf(evenementToModify.getBudget()));
+                dec.setResImageEvent(evenementToModify.getImage_event());
+                dec.setResNbPlaces(String.valueOf(evenementToModify.getNb_places()));
 
-
-
+                evenementModifierButton.getScene().setRoot(root);
+            } catch (SQLException e) {
+                if (e.getMessage().contains("existe déjà")) {
+                    // Si l'erreur est liée à un événement qui existe déjà
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Erreur");
+                    alert.setHeaderText(null);
+                    alert.setContentText(e.getMessage());
+                    alert.showAndWait();
+                } else {
+                    // Pour les autres erreurs SQL
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Erreur");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Une erreur s'est produite : " + e.getMessage());
+                    alert.showAndWait();
+                    e.printStackTrace();
+                }
+            }
         } catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Erreur");
