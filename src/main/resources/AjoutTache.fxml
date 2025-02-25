@@ -20,82 +20,128 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.paint.Color?>
-<?import javafx.scene.paint.RadialGradient?>
-<?import javafx.scene.paint.Stop?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" styleClass="background_color" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AjoutTache">
-
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" styleClass="parent" stylesheets="@styles_new.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AjoutTache">
     <left>
-        <AnchorPane prefHeight="200.0" prefWidth="45.0" styleClass="sidebar" stylesheets="@styles.css" BorderPane.alignment="CENTER">
+        <!-- Sidebar qui s'étend au survol -->
+        <AnchorPane fx:id="sidebar" onMouseEntered="#expandSidebar" onMouseExited="#collapseSidebar" prefHeight="500.0" prefWidth="70.0" styleClass="sidebar">
             <children>
-                <FontAwesomeIconView fill="#797878" glyphName="BARS" layoutX="20.2" layoutY="30.628571701049804" selectionFill="#bc802d" size="1.5em" text="" wrappingWidth="23.199981689453125" AnchorPane.leftAnchor="20.2" AnchorPane.rightAnchor="13.40001831054687" AnchorPane.topAnchor="15.2" />
-                <VBox layoutX="20.0" layoutY="119.0">
-                    <children>
-                        <FontAwesomeIconView fill="#f49617" glyphName="SITEMAP" size="1.5em" />
-                        <FontAwesomeIconView glyphName="GIFT" size="1.5em" styleClass="sidebar_opt">
-                            <VBox.margin>
-                                <Insets top="15.0" />
-                            </VBox.margin>
-                        </FontAwesomeIconView>
-                        <FontAwesomeIconView glyphName="USER" size="1.5em" styleClass="sidebar_opt" textAlignment="CENTER" wrappingWidth="16.857142448425293">
-                            <VBox.margin>
-                                <Insets top="15.0" />
-                            </VBox.margin>
-                        </FontAwesomeIconView>
-                        <FontAwesomeIconView glyphName="HOME" size="1.5em" styleClass="sidebar_opt" wrappingWidth="16.857142448425293">
-                            <VBox.margin>
-                                <Insets top="15.0" />
-                            </VBox.margin>
-                        </FontAwesomeIconView>
-                        <Separator>
-                            <VBox.margin>
-                                <Insets bottom="15.0" top="15.0" />
-                            </VBox.margin>
-                        </Separator>
-                        <FontAwesomeIconView fill="#797878" glyphName="PLUS" size="1.5em">
-                            <VBox.margin>
-                                <Insets />
-                            </VBox.margin>
-                        </FontAwesomeIconView>
-                    </children>
-                    <opaqueInsets>
-                        <Insets />
-                    </opaqueInsets>
+                <!-- Conteneur global avec contraintes d'ancrage -->
+                <VBox layoutX="10.0" layoutY="165.0" prefHeight="600.0" prefWidth="87.2" spacing="15.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <HBox>
+                        <children>
+                            <Circle fill="DODGERBLUE" radius="28.0" stroke="BLACK" strokeType="INSIDE" />
+                            <Label fx:id="labelUser" alignment="CENTER" text="Label" textFill="WHITE" visible="false">
+                                <font>
+                                    <Font name="Open Sans Regular" size="12.0" />
+                                </font>
+                                <HBox.margin>
+                                    <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                                </HBox.margin>
+                            </Label>
+                        </children>
+                        <VBox.margin>
+                            <Insets bottom="50.0" />
+                        </VBox.margin>
+                    </HBox>
+                    <!-- Options du menu -->
+                    <VBox spacing="10.0">
+                        <!-- Option SITEMAP -->
+                        <HBox alignment="CENTER_LEFT" spacing="10" styleClass="menu-item">
+                            <Button fx:id="btnSitemap" mnemonicParsing="false" onAction="#handleSitemapClick" styleClass="sidebar_opt" textFill="#e4e4e4">
+                                <graphic>
+                                    <FontAwesomeIconView fill="#797878" glyphName="SITEMAP" size="1.5em" styleClass="sidebar_opt" />
+                                </graphic>
+                                <HBox.margin>
+                                    <Insets left="5.0" />
+                                </HBox.margin>
+                                <font>
+                                    <Font name="Open Sans Medium" size="12.0" />
+                                </font>
+                            </Button>
+                        </HBox>
+                        <!-- Option GIFT -->
+                        <HBox alignment="CENTER_LEFT" spacing="10" styleClass="menu-item">
+                            <Button fx:id="btnGift" mnemonicParsing="false" onAction="#handleGiftClick" styleClass="sidebar_opt" textFill="#e4e4e4">
+                                <graphic>
+                                    <FontAwesomeIconView fill="#797878" glyphName="GIFT" size="1.5em" styleClass="sidebar_opt" />
+                                </graphic>
+                                <HBox.margin>
+                                    <Insets left="5.0" />
+                                </HBox.margin>
+                                <font>
+                                    <Font name="Open Sans Medium" size="12.0" />
+                                </font>
+                            </Button>
+                        </HBox>
+                        <!-- Option HOME -->
+                        <HBox alignment="CENTER_LEFT" spacing="10" styleClass="menu-item">
+                            <Button fx:id="btnHome" mnemonicParsing="false" onAction="#handleHomeClick" styleClass="sidebar_opt" textFill="#e4e4e4">
+                                <graphic>
+                                    <FontAwesomeIconView fill="#797878" glyphName="HOME" size="1.5em" styleClass="sidebar_opt" />
+                                </graphic>
+                                <HBox.margin>
+                                    <Insets left="5.0" />
+                                </HBox.margin>
+                                <font>
+                                    <Font name="Open Sans Medium" size="12.0" />
+                                </font>
+                            </Button>
+                        </HBox>
+                    </VBox>
+                    <!-- Séparateur pour délimiter des sections -->
+                    <Separator />
+                    <!-- Option additionnelle -->
+                    <HBox alignment="CENTER_LEFT" spacing="10" styleClass="menu-item">
+                        <Button fx:id="btnHome1" mnemonicParsing="false" onAction="#handleHomeClick" styleClass="sidebar_opt" textFill="#e4e4e4">
+                            <graphic>
+                                <FontAwesomeIconView fill="#797878" glyphName="USER" size="1.5em" styleClass="sidebar_opt" />
+                            </graphic>
+                            <HBox.margin>
+                                <Insets left="5.0" />
+                            </HBox.margin>
+                            <font>
+                                <Font name="Open Sans Medium" size="12.0" />
+                            </font>
+                        </Button>
+                    </HBox>
+                    <Separator>
+                        <VBox.margin>
+                            <Insets top="100.0" />
+                        </VBox.margin></Separator>
+                    <HBox alignment="CENTER_LEFT" spacing="10" styleClass="menu-item">
+                        <children>
+                            <Button fx:id="btnLogout" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="14.0" prefWidth="86.0" styleClass="sidebar_opt" stylesheets="@styles_new.css" textFill="WHITE">
+                                <graphic>
+                                    <FontAwesomeIconView fill="#eaeaea" glyphName="POWER_OFF" selectionFill="#bc802d" size="1.5em" />
+                                </graphic>
+                                <font>
+                                    <Font name="Open Sans Regular" size="12.0" />
+                                </font>
+                            </Button>
+                        </children>
+                    </HBox>
+                    <padding>
+                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                    </padding>
                 </VBox>
-                <Circle layoutX="26.0" layoutY="472.0" radius="14.0" stroke="WHITE" strokeType="INSIDE" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0">
-                    <fill>
-                        <RadialGradient centerX="0.44690266330685235" centerY="1.0" focusAngle="78.69" focusDistance="0.4036697772664759" radius="0.8669724770642202">
-                            <stops>
-                                <Stop>
-                                    <color>
-                                        <Color red="0.95686274766922" green="0.5882353186607361" blue="0.09019608050584793" />
-                                    </color>
-                                </Stop>
-                                <Stop offset="1.0">
-                                    <color>
-                                        <Color red="1.0" green="1.0" blue="1.0" />
-                                    </color>
-                                </Stop>
-                            </stops>
-                        </RadialGradient>
-                    </fill>
-                </Circle>
             </children>
+            <BorderPane.margin>
+                <Insets left="5.0" />
+            </BorderPane.margin>
         </AnchorPane>
     </left>
-
-    <!-- Integrating Task Form inside the center section -->
     <center>
-        <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="590.0" prefWidth="861.0">
-            <children>
+        <!-- Zone centrale pour le contenu (redirection via changement de scène) -->
+        <AnchorPane fx:id="mainContent" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="549.0" prefWidth="843.0" styleClass="pane">
+        <children>
             <ScrollPane fitToHeight="true" fitToWidth="true" layoutY="-16.0" prefHeight="615.0" prefWidth="1043.0" styleClass="transparent_bg" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <content>
-                  <VBox>
+                  <VBox styleClass="pa">
                      <children>
-                        <HBox maxWidth="700.0" prefHeight="251.0" prefWidth="700.0">
+                        <HBox maxWidth="700.0" prefHeight="251.0" prefWidth="700.0" styleClass="widget">
                            <children>
                               <VBox prefWidth="872.0" style="-fx-background-radius: 0px 0px 30px 30px; -fx-border-radius: 0px 0px 30px 30px;" styleClass="pane">
                                  <children>
@@ -222,6 +268,9 @@
             </ScrollPane>
 
             </children>
+         <BorderPane.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </BorderPane.margin>
         </AnchorPane>
     </center>
 
