@@ -604,3 +604,9 @@
 #eventImageView {
     -fx-alignment: center;
 }
+.transparent_bt{
+    -fx-background-color: transparent;
+}
+.transparent_bt:hover{
+    -fx-text-fill: #f49617;
+}
