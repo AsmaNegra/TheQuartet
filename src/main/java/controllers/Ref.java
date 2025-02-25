@@ -32,7 +32,11 @@ public class Ref {
 
     @FXML
     private AnchorPane sidebar;
+<<<<<<< Updated upstream
 ////////////////////////////MENU///////////////////////////////////////////////////////////////////////
+=======
+
+>>>>>>> Stashed changes
     @FXML
     void expandSidebar(MouseEvent event) {
         // Animate sidebar expansion (e.g., from 70 to 200 pixels)
@@ -83,7 +87,11 @@ public class Ref {
     @FXML
     void handleHomeClick(ActionEvent event) {
         try {
+<<<<<<< Updated upstream
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/ViewAllEvents.fxml"));
+=======
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/EvenementAll.fxml"));
+>>>>>>> Stashed changes
             Parent root = loader.load();
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
@@ -106,7 +114,10 @@ public class Ref {
             e.printStackTrace();
         }
     }
+<<<<<<< Updated upstream
     //////////////////////////////////////////////////////////////////////////
+=======
+>>>>>>> Stashed changes
 }
 
 

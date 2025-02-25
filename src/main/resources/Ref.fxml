@@ -83,7 +83,11 @@
                     </HBox>
                 </VBox>
                 <!-- Cercle décoratif en bas de la sidebar -->
+<<<<<<< Updated upstream
                 <Circle radius="21.0" stroke="WHITE" strokeType="INSIDE" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
+=======
+                <Circle radius="21.0" stroke="WHITE" strokeType="INSIDE" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="450.0">
+>>>>>>> Stashed changes
                     <fill>
                         <RadialGradient centerX="0.4469" centerY="1.0" focusAngle="78.69" focusDistance="0.40367" radius="0.86697">
                             <stops>
