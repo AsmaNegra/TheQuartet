@@ -20,7 +20,8 @@ import java.io.IOException;
 
 public class Ref {
 
-
+@FXML
+    public Button btnLogout;
     @FXML
     private Button btnSitemap;
     @FXML
@@ -32,6 +33,9 @@ public class Ref {
 
     @FXML
     private AnchorPane sidebar;
+
+    @FXML
+    private Label labelUser;
 
     @FXML
     void expandSidebar(MouseEvent event) {
@@ -47,6 +51,8 @@ public class Ref {
         btnGift.setText("Admin");
         btnHome.setText("Tous les evenements");
         btnHome1.setText("My Account");
+        btnLogout.setText("Logout");
+        labelUser.setVisible(true);
     }
 
     @FXML
@@ -63,6 +69,8 @@ public class Ref {
         btnGift.setText("");
         btnHome.setText("");
         btnHome1.setText("");
+        btnLogout.setText("");
+        labelUser.setVisible(false);
     }
 
 
@@ -109,6 +117,10 @@ public class Ref {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void handleLogoutClick(ActionEvent event) {
+
     }
 /////////////////////////////////////
 }

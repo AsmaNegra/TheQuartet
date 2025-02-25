@@ -600,7 +600,7 @@
     -fx-fill: #17a2b8;
     -fx-cursor: hand;
 }
-<<<<<<< Updated upstream
+
 
 #eventImageView {
     -fx-alignment: center;
@@ -611,11 +611,11 @@
 .transparent_bt:hover{
     -fx-text-fill: #f49617;
 }
-=======
+
 .transparent_bt{
     -fx-background-color: transparent;
 }
 .transparent_bt:hover {
     -fx-text-fill: orange;
 }
->>>>>>> Stashed changes
+

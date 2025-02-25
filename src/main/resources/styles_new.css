@@ -1,0 +1,154 @@
+.parent {
+    -fx-background-color:#111441;
+    -fx-background-radius: 30px;
+}
+
+.sidebar {
+    -fx-background-color: #111441;
+    -fx-background-radius: 30px;
+}
+
+.sidebar_opt {
+    -fx-fill: #CFD3DE;
+    -fx-cursor: hand;
+    -fx-transition: fill 0.3s ease;
+    -fx-background-color: transparent;
+}
+
+.sidebar_opt:hover {
+    -fx-fill: #d87769;
+    -fx-effect: dropshadow(gaussian, rgba(216, 119, 105, 0.3), 10, 0, 0, 0);
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+}
+
+.pane {
+    -fx-background-color: #f8f9fb;
+    -fx-border-color: #CFD3DE;
+    -fx-background-radius: 30px;
+    -fx-border-radius: 30px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0.5, 2, 2);
+}
+
+.background_color {
+    -fx-background-color: #f4f7fc;
+}
+
+.plus_btn {
+    -fx-background-color: transparent;
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+    -fx-border-color: #CFD3DE;
+    -fx-border-style: dashed;
+    -fx-cursor: hand;
+    -fx-transition: all 0.3s ease;
+}
+
+.plus_btn:hover {
+    -fx-background-color: rgba(216, 119, 105, 0.1);
+    -fx-border-color: #d87769;
+    -fx-effect: dropshadow(gaussian, rgba(216, 119, 105, 0.3), 10, 0, 0, 0);
+}
+
+.plus_btn:hover .ikonli-font-icon {
+    -fx-fill: #d87769;
+}
+
+.colored_card {
+    -fx-background-color: radial-gradient(focus-angle 78.69deg, focus-distance 40.367%, center 44.6903% 100.0%, radius 86.6972%, #d87769 0.0%, #f8f9fb 100.0%);
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+    -fx-border-color: #CFD3DE;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0.5, 2, 2);
+}
+
+.scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+
+.scroll-pane .scroll-bar .thumb {
+    -fx-background-color: #CFD3DE;
+    -fx-background-radius: 10px;
+}
+
+.task-form Label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #645F71;
+}
+
+.task-form Button {
+    -fx-background-color: #d87769;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-padding: 10px 20px;
+}
+
+.task-form Button:hover {
+    -fx-background-color: #b76458;
+}
+
+.task-form Button:pressed {
+    -fx-background-color: #964d44;
+}
+
+.button_crud {
+    -fx-background-color: #d87769;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 10px 20px;
+    -fx-background-radius: 25px;
+    -fx-border-radius: 25px;
+    -fx-border-color: transparent;
+    -fx-cursor: hand;
+    -fx-transition: all 0.3s ease-in-out;
+}
+
+.button_crud:hover {
+    -fx-background-color: #b76458;
+}
+
+.welcome-text {
+    -fx-font-size: 18px;
+    -fx-text-fill: #11123c;
+}
+
+.search-field {
+    -fx-background-color: white;
+    -fx-background-radius: 20;
+    -fx-padding: 8 15;
+}
+
+.category-button {
+    -fx-background-color: #d87769;
+    -fx-text-fill: white;
+    -fx-background-radius: 20;
+    -fx-padding: 8 20;
+    -fx-cursor: hand;
+}
+
+.category-button:hover {
+    -fx-background-color: #b76458;
+}
+
+.sidebar-right {
+    -fx-background-color: #CFD3DE;
+    -fx-background-radius: 15;
+}
+
+.footer {
+    -fx-background-color: #CFD3DE;
+    -fx-background-radius: 15;
+}
+
+.footer-text {
+    -fx-font-size: 14px;
+    -fx-text-fill: #645F71;
+    -fx-cursor: hand;
+}
+
+.footer-text:hover {
+    -fx-text-fill: #d87769;
+}
