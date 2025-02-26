@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="background_color" stylesheets="@styles.css"
+            xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="tn.esprit.contollers.EditUserController">
+    <children>
+        <VBox spacing="15" styleClass="pane" alignment="CENTER"
+              AnchorPane.leftAnchor="20" AnchorPane.rightAnchor="20"
+              AnchorPane.topAnchor="20" AnchorPane.bottomAnchor="20">
+
+            <Label styleClass="title" text="Modifier Utilisateur" alignment="CENTER" maxWidth="Infinity" />
+
+            <GridPane vgap="10" hgap="10" alignment="CENTER">
+                <columnConstraints>
+                    <ColumnConstraints halignment="RIGHT" />
+                    <ColumnConstraints halignment="CENTER" />
+                </columnConstraints>
+
+                <Label text="Nom:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                <TextField fx:id="nomField" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+                <Label text="Email:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                <TextField fx:id="emailField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                <Label text="Mot de passe:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                <PasswordField fx:id="passwordField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+                <Label text="Rôle:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                <ComboBox fx:id="roleComboBox" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+
+                <Label text="État:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                <TextField fx:id="etatField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+
+                <Label text="Entreprise:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                <TextField fx:id="entrepriseField" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+
+                <HBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="6" alignment="CENTER">
+                    <Button text="Enregistrer" onAction="#saveChanges" />
+                    <Button text="Annuler" onAction="#cancel" />
+                </HBox>
+            </GridPane>
+        </VBox>
+    </children>
+</AnchorPane>

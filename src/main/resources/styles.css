@@ -37,7 +37,6 @@
 .plus_btn {
     -fx-background-color: transparent;
     -fx-border-radius: 20px;
-    -fx-background-radius: 20px;
     -fx-border-color: #ddc8b0;
     -fx-border-style: dashed;
     -fx-cursor: hand;
@@ -58,13 +57,6 @@
     -fx-background-color: radial-gradient(focus-angle 78.69deg, focus-distance 40.367%, center 44.6903% 100.0%, radius 86.6972%, rgba(244, 150, 23, 0.93) 0.0%, rgba(255, 255, 255, 0.69) 100.0%);
     -fx-border-radius: 20px;
     -fx-background-radius: 20px;
-    -fx-border-color: #ede6de;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0.5, 2, 2);
-}
-
-
-.scroll-pane .viewport {
-    -fx-background-color: transparent;
 }
 
 /* Scrollbar styling */
@@ -619,3 +611,114 @@
     -fx-text-fill: orange;
 }
 
+.transparent_bg{
+    -fx-background-color: transparent;
+}
+
+/* Style des labels */
+.label {
+    -fx-font-family: "Segoe UI", Arial, sans-serif;
+    -fx-font-size: 14px;
+    -fx-text-fill: #594d3f;
+}
+
+/* Style du titre "S'authentifier" */
+.label.title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #f49617;
+    -fx-effect: dropshadow(gaussian, rgba(244, 150, 23, 0.3), 4, 0.2, 0, 1);
+}
+
+/* Style des champs texte */
+.text-field, .password-field {
+    -fx-background-color: rgba(255, 255, 255, 0.9);
+    -fx-background-radius: 15px;
+    -fx-border-radius: 15px;
+    -fx-border-color: #ede6de;
+    -fx-border-width: 1px;
+    -fx-padding: 8px 15px;
+    -fx-font-size: 13px;
+}
+
+.text-field:focused, .password-field:focused {
+    -fx-border-color: #f49617;
+    -fx-effect: dropshadow(gaussian, rgba(244, 150, 23, 0.2), 4, 0.2, 0, 0);
+}
+
+/* Style des boutons */
+.button {
+    -fx-background-color: #f49617;
+    -fx-background-radius: 20px;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 10px 20px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.2, 0, 1);
+}
+
+.button:hover {
+    -fx-background-color: derive(#f49617, 10%);
+    -fx-cursor: hand;
+}
+
+.button:pressed {
+    -fx-background-color: derive(#f49617, -10%);
+}
+
+/* Style du bouton inscription (variante) */
+#btn_inscri {
+    -fx-background-color: transparent;
+    -fx-border-color: #f49617;
+    -fx-border-width: 2px;
+    -fx-border-radius: 20px;
+    -fx-text-fill: #f49617;
+}
+
+#btn_inscri:hover {
+    -fx-background-color: rgba(244, 150, 23, 0.1);
+}
+
+/* Style du lien hypertexte */
+.hyperlink {
+    -fx-text-fill: #594d3f;
+    -fx-border-color: transparent;
+    -fx-font-size: 13px;
+}
+
+.hyperlink:hover {
+    -fx-text-fill: #f49617;
+    -fx-underline: true;
+}
+
+/* Animation de transition pour les interactions */
+.button, .text-field, .password-field, .hyperlink {
+    -fx-transition: all 0.2s ease-in-out;
+}
+
+/* Style pour les petits boutons dans le tableau */
+.table-cell .button {
+    -fx-padding: 4px 8px;
+    -fx-font-size: 11px;
+    -fx-min-width: 60px;
+    -fx-min-height: 25px;
+}
+
+/* Style pour le bouton retour */
+.button-return {
+    -fx-background-color: #594d3f;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-padding: 8px 20px;
+    -fx-background-radius: 20px;
+}
+
+.button-return:hover {
+    -fx-background-color: derive(#594d3f, 10%);
+}
+
+/* Centrage du titre */
+.title {
+    -fx-alignment: center;
+    -fx-padding: 10px 0;
+}
