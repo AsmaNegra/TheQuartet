@@ -1,4 +1,4 @@
-package tn.esprit.contollers;
+package controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,8 +11,8 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import tn.esprit.entities.Utilisateur;
-import tn.esprit.services.ServiceUtilisateur;
+import entities.Utilisateur;
+import services.ServiceUtilisateur;
 
 import java.io.IOException;
 import java.net.URL;
@@ -47,7 +47,7 @@ public class UserProfileController {
         currentUser.setEntreprise(entrepriseField.getText());
 
         try {
-            serviceUtilisateur.modifier_Utili(currentUser);
+            serviceUtilisateur.modifier(currentUser);
             showAlert(AlertType.INFORMATION, "Succès", "Vos informations ont été mises à jour");
             // Rediriger vers la page d'authentification
             redirectToAuthentication(event);

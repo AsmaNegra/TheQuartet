@@ -1,8 +1,9 @@
-package tn.esprit.services;
+package services;
 
-import tn.esprit.entities.Utilisateur;
-import tn.esprit.utils.MyDataBase;
-import tn.esprit.entities.Role;
+import entities.Role;
+import entities.Utilisateur;
+import services.IService;
+import utils.MyDataBase;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ public class ServiceUtilisateur implements IService<Utilisateur> {
 
 
     @Override
-    public void ajouter_Utili(Utilisateur utilisateur) throws SQLException {
+    public void ajouter(Utilisateur utilisateur) throws SQLException {
         String sql = "INSERT INTO `utilisateur`(`nom`, `email`, `mot_de_passe`, `role`, `etat`, `note_organisateur`, `entreprise`) VALUES (?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         ps.setString(1, utilisateur.getNom());
@@ -38,7 +39,7 @@ public class ServiceUtilisateur implements IService<Utilisateur> {
     }
 
     @Override
-    public void modifier_Utili(Utilisateur utilisateur) throws SQLException {
+    public void modifier(Utilisateur utilisateur) throws SQLException {
         String sql = "UPDATE `utilisateur` SET `nom`=?, `email`=?, `mot_de_passe`=?, `role`=? WHERE `utilisateur_id`=?";
         PreparedStatement ps = connection.prepareStatement(sql);
         ps.setString(1, utilisateur.getNom());
@@ -49,7 +50,7 @@ public class ServiceUtilisateur implements IService<Utilisateur> {
         ps.executeUpdate();
     }
 
-    public void supprimer_Utili(int id) throws SQLException {
+    public void supprimer(int id) throws SQLException {
         String sql = "DELETE FROM `utilisateur` WHERE `utilisateur_id`=?";
         PreparedStatement ps = connection.prepareStatement(sql);
         ps.setInt(1, id);
@@ -57,7 +58,7 @@ public class ServiceUtilisateur implements IService<Utilisateur> {
     }
 
 
-    public List<Utilisateur> afficher_Utili() throws SQLException {
+    public List<Utilisateur> afficher() throws SQLException {
         List<Utilisateur> utilisateurs = new ArrayList<>();
         String sql = "SELECT * FROM `utilisateur`";
         Statement statement = connection.createStatement();
@@ -65,6 +66,7 @@ public class ServiceUtilisateur implements IService<Utilisateur> {
         while (rs.next()) {
             // Conversion de la chaîne en énumération Role
             String roleString = rs.getString("role");
+            System.out.println(roleString);
             Role role = Role.valueOf(roleString);
 
             utilisateurs.add(new Utilisateur(

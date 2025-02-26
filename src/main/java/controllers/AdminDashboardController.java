@@ -1,4 +1,5 @@
-package tn.esprit.contollers;
+package controllers;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,11 +11,9 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-import tn.esprit.entities.Role;
-import tn.esprit.services.ServiceUtilisateur;
-import tn.esprit.entities.Utilisateur;
+import entities.Utilisateur;
+import services.ServiceUtilisateur;
 
-import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -85,7 +84,7 @@ public class AdminDashboardController {
 
     private void loadUsers() {
         try {
-            userTable.getItems().setAll(serviceUtilisateur.afficher_Utili());
+            userTable.getItems().setAll(serviceUtilisateur.afficher());
         } catch (SQLException e) {
             showAlert(AlertType.ERROR, "Erreur", "Erreur lors du chargement des utilisateurs");
         }
@@ -127,7 +126,7 @@ public class AdminDashboardController {
         alert.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
                 try {
-                    serviceUtilisateur.supprimer_Utili(user.getUtilisateurId());
+                    serviceUtilisateur.supprimer(user.getUtilisateurId());
                     loadUsers();
                 } catch (SQLException e) {
                     showAlert(AlertType.ERROR, "Erreur", "Erreur lors de la suppression");

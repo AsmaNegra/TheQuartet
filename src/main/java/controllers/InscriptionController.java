@@ -1,16 +1,16 @@
-package tn.esprit.contollers;
+package controllers;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.event.ActionEvent;
 import javafx.stage.Stage;
-import tn.esprit.entities.Role;
-import tn.esprit.entities.Utilisateur;
-import tn.esprit.services.ServiceUtilisateur;
+import entities.Role;
+import entities.Utilisateur;
+import services.ServiceUtilisateur;
 
 import java.io.IOException;
 
@@ -61,7 +61,7 @@ public class InscriptionController {
             );
 
             ServiceUtilisateur serviceUtilisateur = new ServiceUtilisateur();
-            serviceUtilisateur.ajouter_Utili(utilisateur);
+            serviceUtilisateur.ajouter(utilisateur);
 
             clearFields();
             showAlert(Alert.AlertType.INFORMATION, "Succès", "Inscription réussie !");

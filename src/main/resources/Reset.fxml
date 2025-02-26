@@ -7,7 +7,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="background_color" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.contollers.ResetController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="background_color" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ResetController">
    <children>
       <Text layoutX="174.0" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Réinitialiser votre mot de passe ">
          <font>

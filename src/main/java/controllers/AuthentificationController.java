@@ -1,20 +1,20 @@
-package tn.esprit.contollers;
+package controllers;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import tn.esprit.entities.Role;
-import tn.esprit.services.ServiceUtilisateur;
-import tn.esprit.entities.Utilisateur;
+import entities.Role;
+import entities.Utilisateur;
+import services.ServiceUtilisateur;
 
-import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -84,6 +84,7 @@ public class AuthentificationController {
                 showAlert(AlertType.ERROR, "Erreur", "Email ou mot de passe incorrect");
             }
         } catch (SQLException | IOException e) {
+            e.printStackTrace();
             showAlert(AlertType.ERROR, "Erreur", "Erreur : " + e.getMessage());
         }
     }

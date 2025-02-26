@@ -1,12 +1,15 @@
-package tn.esprit.contollers;
+package controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import tn.esprit.entities.Role;
-import tn.esprit.entities.Utilisateur;
-import tn.esprit.services.ServiceUtilisateur;
+import entities.Role;
+import entities.Utilisateur;
+import services.ServiceUtilisateur;
 
 import java.sql.SQLException;
 
@@ -51,7 +54,7 @@ public class EditUserController {
         user.setEntreprise(entrepriseField.getText());
 
         try {
-            serviceUtilisateur.modifier_Utili(user);
+            serviceUtilisateur.modifier(user);
             if (onSaveCallback != null) {
                 onSaveCallback.run();
             }

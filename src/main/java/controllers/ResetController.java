@@ -1,4 +1,4 @@
-package tn.esprit.contollers;
+package controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -10,7 +10,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import tn.esprit.services.ServiceUtilisateur;
+import services.ServiceUtilisateur;
 
 import java.io.IOException;
 import java.sql.SQLException;

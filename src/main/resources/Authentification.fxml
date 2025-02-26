@@ -7,7 +7,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="background_color" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.contollers.AuthentificationController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="background_color" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AuthentificationController">
    <children>
       <Label layoutX="151.0" layoutY="107.0" text="Email:" />
       <Label layoutX="151.0" layoutY="188.0" text="Mot de passe: " />

@@ -1,4 +1,4 @@
-package tn.esprit.entities;
+package entities;
 
 public enum Role {
     ADMIN, PARTICIPANT, ORGANISATEUR;
