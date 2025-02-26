@@ -1,0 +1,47 @@
+[core]
+	repositoryformatversion = 0
+	filemode = false
+	bare = false
+	logallrefupdates = true
+	symlinks = false
+	ignorecase = true
+[submodule]
+	active = .
+[remote "origin"]
+	url = https://github.com/Peryy11/TheQuartet.git
+	fetch = +refs/heads/*:refs/remotes/origin/*
+[branch "main"]
+	remote = origin
+	merge = refs/heads/main
+[lfs]
+	repositoryformatversion = 0
+[branch "Gestion_Evenement"]
+	remote = origin
+	merge = refs/heads/Gestion_Evenement
+[branch "Gestion_Organisation"]
+	remote = origin
+	merge = refs/heads/Gestion_Organisation
+[branch "Gestion_E_O_B"]
+	remote = origin
+	merge = refs/heads/Gestion_E_O_B
+[branch "gestionE_O_B_Asma"]
+	remote = origin
+	merge = refs/heads/gestionE_O_B_Asma
+[branch "Gestion_EOB_Mariem"]
+	remote = origin
+	merge = refs/heads/Gestion_EOB_Mariem
+[branch "Gestion_O_E"]
+	remote = origin
+	merge = refs/heads/Gestion_O_E
+[branch "Gestion_Integre_Nour"]
+	remote = origin
+	merge = refs/heads/Gestion_Integre_Nour
+[branch "G_after_crud_Org_Ev"]
+	remote = origin
+	merge = refs/heads/G_after_crud_Org_Ev
+[branch "Cestion_apresCRUD_EvntOrgBil"]
+	remote = origin
+	merge = refs/heads/Cestion_apresCRUD_EvntOrgBil
+[branch "Cestion_apresCRUD_EvntOrgBilCopy"]
+	remote = origin
+	merge = refs/heads/Cestion_apresCRUD_EvntOrgBilCopy

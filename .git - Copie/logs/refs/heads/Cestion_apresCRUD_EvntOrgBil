@@ -1,0 +1,25 @@
+0000000000000000000000000000000000000000 f99268453f63d20ca264252351e694e2684aa34f Asma <asma.negra@esprit.tn> 1740228168 +0100	branch: Created from origin/Cestion_apresCRUD_EvntOrgBil
+f99268453f63d20ca264252351e694e2684aa34f d761fd35583ae9d8890a619f7c28e5b4fa7cc0ca Asma <asma.negra@esprit.tn> 1740234817 +0100	merge origin/Cestion_apresCRUD_EvntOrgBil: Fast-forward
+d761fd35583ae9d8890a619f7c28e5b4fa7cc0ca 77c6ef4290aa36c002781f9f7bfd1d8f6d53944a Asma <asma.negra@esprit.tn> 1740234832 +0100	commit: idk
+77c6ef4290aa36c002781f9f7bfd1d8f6d53944a 7562abcb3230a29eb9ac01d3fcbd0c6307b6828d Asma <asma.negra@esprit.tn> 1740239952 +0100	merge origin/Cestion_apresCRUD_EvntOrgBil: Merge made by the 'ort' strategy.
+7562abcb3230a29eb9ac01d3fcbd0c6307b6828d 38c944d4627adfba5e7ba58967994b614b05ca4b Asma <asma.negra@esprit.tn> 1740257451 +0100	commit: affichage_event_homePage
+38c944d4627adfba5e7ba58967994b614b05ca4b d484e1333e0d500551ad7287f28262df83ed1811 Asma <asma.negra@esprit.tn> 1740261899 +0100	commit: utilisateurEvenementAjout
+d484e1333e0d500551ad7287f28262df83ed1811 0a378b107b308c6c4e333b676f264058d0a070ca Asma <asma.negra@esprit.tn> 1740272527 +0100	commit: HomePage_AND_FilterByCategory
+0a378b107b308c6c4e333b676f264058d0a070ca 500d040cdb8b55b2f0e6d44a1d36cc11ccf73698 Asma <asma.negra@esprit.tn> 1740272529 +0100	pull --ff --recurse-submodules --progress origin: Merge made by the 'ort' strategy.
+500d040cdb8b55b2f0e6d44a1d36cc11ccf73698 297b5ea78db8e26d5a60de96622ea347abc8cfc5 Asma <asma.negra@esprit.tn> 1740385988 +0100	commit (merge): Merge branch 'Cestion_apresCRUD_EvntOrgBil' of https://github.com/Peryy11/TheQuartet into Cestion_apresCRUD_EvntOrgBil
+297b5ea78db8e26d5a60de96622ea347abc8cfc5 8973d9b9ea07f5d0ae9c0e31a76c0acfa61bbc3b Asma <asma.negra@esprit.tn> 1740388108 +0100	pull --ff --recurse-submodules --progress origin: Fast-forward
+8973d9b9ea07f5d0ae9c0e31a76c0acfa61bbc3b 9507623a54f26bb1606a319f53b100e834fd66fa Asma <asma.negra@esprit.tn> 1740388568 +0100	commit: css_M&A
+9507623a54f26bb1606a319f53b100e834fd66fa ee72b17ec96cbbd61e7d88e4a77210d9899d4829 Asma <asma.negra@esprit.tn> 1740394789 +0100	commit: rechercheParNom
+ee72b17ec96cbbd61e7d88e4a77210d9899d4829 f0e46e40ddb4a1123345aaa66efa8d43d33c8ff3 Asma <asma.negra@esprit.tn> 1740425946 +0100	pull --ff --recurse-submodules --progress origin: Merge made by the 'ort' strategy.
+f0e46e40ddb4a1123345aaa66efa8d43d33c8ff3 c62f65522212c711ee9c919dc670825ab8cfde6f Asma <asma.negra@esprit.tn> 1740425964 +0100	commit: icon_color
+c62f65522212c711ee9c919dc670825ab8cfde6f 53f6cfd51c91dc5c0d54a40b908f67bccc4e3c56 Asma <asma.negra@esprit.tn> 1740437339 +0100	commit: NewInterfaceEvents&Transaction
+53f6cfd51c91dc5c0d54a40b908f67bccc4e3c56 2ae30d41ddaf1f43fe112243e8e6cd41f2cffa57 Asma <asma.negra@esprit.tn> 1740478393 +0100	pull --ff --recurse-submodules --progress origin: Fast-forward
+2ae30d41ddaf1f43fe112243e8e6cd41f2cffa57 63bd374e0bddf9dca2d13eda37d4098bf75c7c41 Asma <asma.negra@esprit.tn> 1740478543 +0100	pull --ff --recurse-submodules --progress origin: Fast-forward
+63bd374e0bddf9dca2d13eda37d4098bf75c7c41 a3eb04dd9bfb7a3a006e5ff4bf38a19327cf879b Asma <asma.negra@esprit.tn> 1740484839 +0100	commit: test
+a3eb04dd9bfb7a3a006e5ff4bf38a19327cf879b 8b75ff994f0919cd52b50ddfd24445d59aca2911 Asma <asma.negra@esprit.tn> 1740516324 +0100	pull --ff --recurse-submodules --progress origin: Merge made by the 'ort' strategy.
+8b75ff994f0919cd52b50ddfd24445d59aca2911 a3eb04dd9bfb7a3a006e5ff4bf38a19327cf879b Asma <asma.negra@esprit.tn> 1740516491 +0100	reset: moving to a3eb04dd9bfb7a3a006e5ff4bf38a19327cf879b
+a3eb04dd9bfb7a3a006e5ff4bf38a19327cf879b 63bd374e0bddf9dca2d13eda37d4098bf75c7c41 Asma <asma.negra@esprit.tn> 1740516523 +0100	reset: moving to 63bd374e0bddf9dca2d13eda37d4098bf75c7c41
+63bd374e0bddf9dca2d13eda37d4098bf75c7c41 d14bd3ec9ee4c4ce01283b817f805634c26c8124 Asma <asma.negra@esprit.tn> 1740516536 +0100	pull --ff --recurse-submodules --progress origin: Fast-forward
+d14bd3ec9ee4c4ce01283b817f805634c26c8124 4699ed4032eb292f47dcb0e847eaf5bd02975eda Asma <asma.negra@esprit.tn> 1740527713 +0100	commit: Asma_Changes
+4699ed4032eb292f47dcb0e847eaf5bd02975eda ecd98a55af9f981460a0877d2381b7affd3c587b Asma <asma.negra@esprit.tn> 1740527716 +0100	pull --ff --recurse-submodules --progress origin: Merge made by the 'ort' strategy.
+ecd98a55af9f981460a0877d2381b7affd3c587b 10b38e593e51c5b3dc5ebf32f29a8d4987a03449 Asma <asma.negra@esprit.tn> 1740567480 +0100	commit: css

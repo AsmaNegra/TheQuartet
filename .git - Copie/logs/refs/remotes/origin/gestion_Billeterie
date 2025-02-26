@@ -1,0 +1,2 @@
+0000000000000000000000000000000000000000 6c3b34da7d72aa096e0ea654bf84a949f9e89d28 Asma <asma.negra@esprit.tn> 1739127126 +0100	fetch --progress --prune --recurse-submodules=on-demand origin: storing head
+6c3b34da7d72aa096e0ea654bf84a949f9e89d28 bd832c7cf106c136abc504322587a42d28319d02 Asma <asma.negra@esprit.tn> 1739262673 +0100	fetch --progress --prune --recurse-submodules=on-demand origin: fast-forward

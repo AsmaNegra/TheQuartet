@@ -1,0 +1,8 @@
+0000000000000000000000000000000000000000 f689699e451ccdee70a8943b56b953adca147541 Asma <asma.negra@esprit.tn> 1739645189 +0100	fetch --progress --prune --recurse-submodules=on-demand origin: storing head
+f689699e451ccdee70a8943b56b953adca147541 420adb0985e55b7e04f21cbb2062702e4d7e4f5a Asma <asma.negra@esprit.tn> 1739647038 +0100	fetch --progress --prune --recurse-submodules=on-demand origin: fast-forward
+420adb0985e55b7e04f21cbb2062702e4d7e4f5a 27f9f591a55cc595bb7d0a8cd2b69423241e7eba Asma <asma.negra@esprit.tn> 1739726520 +0100	fetch --progress --prune --recurse-submodules=on-demand origin: fast-forward
+27f9f591a55cc595bb7d0a8cd2b69423241e7eba 3a23f34c7d5fc8bcdb13eb0c63531a507057cb85 Asma <asma.negra@esprit.tn> 1739733255 +0100	fetch --progress --prune --recurse-submodules=on-demand origin: fast-forward
+3a23f34c7d5fc8bcdb13eb0c63531a507057cb85 72c8a1bfde0e22e8705c3426b829515913d2fd30 Asma <asma.negra@esprit.tn> 1739751737 +0100	fetch --progress --prune --recurse-submodules=on-demand origin: fast-forward
+72c8a1bfde0e22e8705c3426b829515913d2fd30 5913111e0b5fe37c2a7b2fcf51f504dc58c3704f Asma <asma.negra@esprit.tn> 1739842472 +0100	fetch --progress --prune --recurse-submodules=on-demand origin: fast-forward
+5913111e0b5fe37c2a7b2fcf51f504dc58c3704f a9e4495d6ff3677f4afcc2782719217a4c672fa5 Asma <asma.negra@esprit.tn> 1740160244 +0100	fetch --progress --prune --recurse-submodules=on-demand origin: fast-forward
+a9e4495d6ff3677f4afcc2782719217a4c672fa5 8355d6ff5253017f1ae3ce1f9bd3fe21d3e993c1 Asma <asma.negra@esprit.tn> 1740228111 +0100	fetch --progress --prune --recurse-submodules=on-demand origin: fast-forward
