@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
@@ -7,27 +8,153 @@
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="741.0" styleClass="background_color" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AjouterEvenementController">
+<?import javafx.scene.control.Tooltip?>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" styleClass="parent" stylesheets="@styles_new.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AjouterEvenementController">
+    <left>
+        <!-- Sidebar qui s'étend au survol -->
+        <AnchorPane fx:id="sidebar" onMouseEntered="#expandSidebar" onMouseExited="#collapseSidebar" prefHeight="500.0" prefWidth="70.0" styleClass="sidebar">
+            <children>
+                <!-- Conteneur global avec contraintes d'ancrage -->
+                <VBox layoutX="16.8" layoutY="165.0" prefHeight="600.0" prefWidth="126.0" spacing="15.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <HBox>
+                        <children>
+                            <Circle fill="DODGERBLUE" radius="28.0" stroke="BLACK" strokeType="INSIDE" />
+                            <Label fx:id="labelUser" alignment="CENTER" text="Label" textFill="WHITE" visible="false">
+                                <font>
+                                    <Font name="Open Sans Regular" size="12.0" />
+                                </font>
+                                <HBox.margin>
+                                    <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                                </HBox.margin>
+                            </Label>
+                        </children>
+                        <VBox.margin>
+                            <Insets bottom="50.0" />
+                        </VBox.margin>
+                    </HBox>
+                    <!-- Options du menu -->
+                    <VBox spacing="10.0">
+                        <!-- Option SITEMAP -->
+                        <HBox alignment="CENTER_LEFT" spacing="10" styleClass="menu-item">
+                            <Button fx:id="btnSitemap" mnemonicParsing="false" onAction="#handleSitemapClick" styleClass="sidebar_opt" textFill="#e4e4e4">
+                                <graphic>
+                                    <FontAwesomeIconView fill="#797878" glyphName="SITEMAP" size="1.5em" styleClass="sidebar_opt" />
+                                </graphic>
+                                <HBox.margin>
+                                    <Insets left="5.0" />
+                                </HBox.margin>
+                                <font>
+                                    <Font name="Open Sans Medium" size="12.0" />
+                                </font>
+                            </Button>
+                        </HBox>
+                        <!-- Option GIFT -->
+                        <HBox alignment="CENTER_LEFT" spacing="10" styleClass="menu-item">
+                            <Button fx:id="btnGift" mnemonicParsing="false" onAction="#handleGiftClick" styleClass="sidebar_opt" textFill="#e4e4e4">
+                                <graphic>
+                                    <FontAwesomeIconView fill="#797878" glyphName="GIFT" size="1.5em" styleClass="sidebar_opt" />
+                                </graphic>
+                                <HBox.margin>
+                                    <Insets left="5.0" />
+                                </HBox.margin>
+                                <font>
+                                    <Font name="Open Sans Medium" size="12.0" />
+                                </font>
+                            </Button>
+                        </HBox>
+                        <!-- Option HOME -->
+                        <HBox alignment="CENTER_LEFT" spacing="10" styleClass="menu-item">
+                            <Button fx:id="btnHome" mnemonicParsing="false" onAction="#handleHomeClick" styleClass="sidebar_opt" textFill="#e4e4e4">
+                                <graphic>
+                                    <FontAwesomeIconView fill="#797878" glyphName="HOME" size="1.5em" styleClass="sidebar_opt" />
+                                </graphic>
+                                <HBox.margin>
+                                    <Insets left="5.0" />
+                                </HBox.margin>
+                                <font>
+                                    <Font name="Open Sans Medium" size="12.0" />
+                                </font>
+                            </Button>
+                        </HBox>
+                    </VBox>
+                    <!-- Séparateur pour délimiter des sections -->
+                    <Separator />
+                    <!-- Option additionnelle -->
+                    <HBox alignment="CENTER_LEFT" spacing="10" styleClass="menu-item">
+                        <Button fx:id="btnHome1" mnemonicParsing="false" onAction="#handleHomeClick" styleClass="sidebar_opt" textFill="#e4e4e4">
+                            <graphic>
+                                <FontAwesomeIconView fill="#797878" glyphName="USER" size="1.5em" styleClass="sidebar_opt" />
+                            </graphic>
+                            <HBox.margin>
+                                <Insets left="5.0" />
+                            </HBox.margin>
+                            <font>
+                                <Font name="Open Sans Medium" size="12.0" />
+                            </font>
+                        </Button>
+                    </HBox>
+                    <Separator>
+                        <VBox.margin>
+                            <Insets top="100.0" />
+                        </VBox.margin></Separator>
+                    <HBox alignment="CENTER_LEFT" spacing="10" styleClass="menu-item">
+                        <children>
+                            <Button fx:id="btnLogout" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="14.0" prefWidth="86.0" styleClass="sidebar_opt" stylesheets="@styles_new.css" textFill="WHITE">
+                                <graphic>
+                                    <FontAwesomeIconView fill="#eaeaea" glyphName="POWER_OFF" selectionFill="#bc802d" size="1.5em" />
+                                </graphic>
+                                <font>
+                                    <Font name="Open Sans Regular" size="12.0" />
+                                </font>
+                            </Button>
+                        </children>
+                    </HBox>
+                    <padding>
+                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                    </padding>
+                </VBox>
+            </children>
+            <BorderPane.margin>
+                <Insets left="5.0" />
+            </BorderPane.margin>
+        </AnchorPane>
+    </left>
+    <center>
+<AnchorPane prefHeight="600.0" prefWidth="741.0" styleClass="background_color" stylesheets="@styles_new.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <ScrollPane fitToWidth="true" styleClass="transparent_bg" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
             <content>
-        <VBox layoutX="40.0" layoutY="20.0" prefWidth="708.0" spacing="15" stylesheets="@styles.css">
+        <VBox layoutX="40.0" layoutY="20.0" prefWidth="708.0" spacing="15" stylesheets="@styles_new.css">
             <children>
                 <Label fx:id="AjouterEvent" style="-fx-font-size: 20;" styleClass="task-form" text="Ajouter un Evenement" />
 
                 <Label fx:id="nomEvent" styleClass="task-form" text="Nom de l'événement" />
-                <TextField fx:id="evenementNomField" prefWidth="600.0" styleClass="task-form" stylesheets="@styles.css" />
+                <TextField fx:id="evenementNomField" prefWidth="600.0" styleClass="task-form" stylesheets="@styles_new.css" />
 
                 <Label fx:id="descriptionEvent" styleClass="task-form" text="Description de l'événement" />
-                <TextArea fx:id="evenementDescriptionArea" prefHeight="64.0" prefWidth="600.0" styleClass="task-form" stylesheets="@styles.css" />
+                <HBox spacing="10">
+                    <TextArea fx:id="evenementDescriptionArea" prefHeight="64.0" prefWidth="520.0" styleClass="task-form" stylesheets="@styles_new.css" HBox.hgrow="ALWAYS" />
+                    <Button fx:id="genererDescriptionButton" onAction="#genererDescription" styleClass="category-button" text="IA" prefWidth="60">
+                        <graphic>
+                            <FontAwesomeIconView glyphName="MAGIC" size="1.2em" fill="WHITE" />
+                        </graphic>
+                        <tooltip>
+                            <Tooltip text="Générer une description avec l'IA" />
+                        </tooltip>
+                    </Button>
+                </HBox>
 
                 <HBox spacing="10">
                     <children>
@@ -35,7 +162,7 @@
                             <Label fx:id="date_debutEvent" styleClass="task-form" text="Date et heure de début" />
                             <HBox spacing="10">
                                 <DatePicker fx:id="evenementDateDebutPicker" prefWidth="160.0" styleClass="task-form" />
-                                <Spinner fx:id="evenementHeureDebutField" editable="true" prefHeight="38.0" prefWidth="120.0" styleClass="decrement-button" stylesheets="@styles.css">
+                                <Spinner fx:id="evenementHeureDebutField" editable="true" prefHeight="38.0" prefWidth="120.0" styleClass="decrement-button" stylesheets="@styles_new.css">
                                  <HBox.margin>
                                     <Insets top="2.0" />
                                  </HBox.margin></Spinner>
@@ -99,11 +226,13 @@
          </padding>
                <styleClass>
                   <String fx:value="background_color" />
-                  <String fx:value="colored_card" />
-                  <String fx:value="task-form" />
+                  <String fx:value="widget" />
+                        <String fx:value="task-form" />
                </styleClass>
         </VBox>
             </content>
         </ScrollPane>
     </children>
 </AnchorPane>
+    </center>
+</BorderPane>

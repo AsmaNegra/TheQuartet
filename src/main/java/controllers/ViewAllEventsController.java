@@ -1,8 +1,6 @@
 package controllers;
 import entities.Evenement;
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
+import javafx.animation.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,6 +16,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.TextAlignment;
+import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import services.ServiceEvenement;
@@ -29,6 +28,7 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.TimeUnit;
 
 public class ViewAllEventsController implements Initializable {
     @FXML
@@ -180,11 +180,30 @@ private Ref ref;
     }
 
     private void createEventCard(Evenement event) {
-        VBox eventCard = new VBox(10);
-        eventCard.getStyleClass().add("event-card");
-        eventCard.setPrefWidth(340);
-        eventCard.setPadding(new Insets(20));
+        // Créer deux cartes séparées au lieu d'essayer de les flip
+        VBox frontCard = new VBox(10);
+        frontCard.getStyleClass().add("event-card");
+        frontCard.setPrefWidth(340);
+        frontCard.setPrefHeight(380);
+        frontCard.setPadding(new Insets(20));
+        frontCard.setStyle("-fx-background-color: #ffffff; -fx-effect: dropshadow(gaussian, rgb(17,18,60), 10, 0, 0, 2);");
 
+        VBox backCard = new VBox(10);
+        backCard.getStyleClass().add("event-card");
+        backCard.setPrefWidth(340);
+        backCard.setPrefHeight(380);
+        backCard.setPadding(new Insets(20));
+        backCard.setAlignment(Pos.CENTER);
+        backCard.setStyle("-fx-background-color: #ffffff; -fx-effect: dropshadow(gaussian, rgb(17,18,60), 10, 0, 0, 2);");
+        backCard.setVisible(false); // Commencer avec le dos invisible
+
+        // Container pour les deux cartes
+        StackPane cardContainer = new StackPane();
+        cardContainer.getChildren().addAll(frontCard, backCard);
+        cardContainer.setPrefWidth(340);
+        cardContainer.setPrefHeight(380);
+
+        // * Face avant *
         // Image
         try {
             if (event.getImage_event() != null && !event.getImage_event().isEmpty()) {
@@ -196,42 +215,114 @@ private Ref ref;
                     imageView.setFitWidth(300);
                     imageView.setFitHeight(200);
                     imageView.setPreserveRatio(true);
-                    eventCard.getChildren().add(imageView);
+                    frontCard.getChildren().add(imageView);
                 }
             }
         } catch (Exception e) {
             System.err.println("Erreur de chargement d'image: " + e.getMessage());
         }
 
-        // Informations de l'événement
+        // Informations de l'événement (face avant)
         Label titleLabel = new Label(event.getNom());
         titleLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-        Label dateLabel = new Label("Date: " + dateFormat.format(event.getDate_debut()));
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+        // Date de début
+        Label dateDebutLabel = new Label("Du: " + dateFormat.format(event.getDate_debut()) + " à " + timeFormat.format(event.getDate_debut()));
+        dateDebutLabel.getStyleClass().add("event-details");
+
+        // Date de fin
+        Label dateFinLabel = new Label("Au: " + dateFormat.format(event.getDate_fin()) + " à " + timeFormat.format(event.getDate_fin()));
+        dateFinLabel.getStyleClass().add("event-details");
+
         Label lieuLabel = new Label("Lieu: " + event.getLieu());
         Label categorieLabel = new Label("Catégorie: " + event.getCategorie());
-        categorieLabel.setStyle("-fx-text-fill: #f49617;");
+        categorieLabel.setStyle("-fx-text-fill: #d87769;");
 
-        Button detailsButton = new Button("Détails");
-        detailsButton.getStyleClass().add("category-button");
-        detailsButton.setOnAction(e -> showEventDetails(event));
-
-        HBox buttonBox = new HBox();
-        buttonBox.setAlignment(Pos.CENTER_RIGHT);
-        buttonBox.getChildren().add(detailsButton);
-
-        eventCard.getChildren().addAll(
+        // Ajouter tous les éléments à la face avant
+        frontCard.getChildren().addAll(
             titleLabel,
-            dateLabel,
+            dateDebutLabel,
+            dateFinLabel,
             lieuLabel,
-            categorieLabel,
-            buttonBox
+            categorieLabel
         );
 
-        eventsContainer.getChildren().add(eventCard);
-    }
+        // * Face arrière *
+        // Titre sur la face arrière
+        Label backTitle = new Label(event.getNom());
+        backTitle.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #d87769;");
+        backTitle.setWrapText(true);
+        backTitle.setAlignment(Pos.CENTER);
 
+        // Description sur la face arrière
+        ScrollPane scrollDescription = new ScrollPane();
+        scrollDescription.setFitToWidth(true);
+        scrollDescription.setPrefHeight(200);
+        scrollDescription.setStyle("-fx-background: transparent; -fx-background-color: transparent;");
+
+        Label descriptionLabel = new Label(event.getDescription());
+        descriptionLabel.setStyle("-fx-text-fill: #11123c;");
+        descriptionLabel.setWrapText(true);
+        descriptionLabel.setPadding(new Insets(5));
+
+        scrollDescription.setContent(descriptionLabel);
+
+        // Calcul du nombre de jours de l'événement
+        long diffInMillies = event.getDate_fin().getTime() - event.getDate_debut().getTime();
+        long diffInDays = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+        String dureeTexte;
+
+        if (diffInDays == 0) {
+            // Si c'est le même jour
+            dureeTexte = "Événement se déroulant sur une journée";
+        } else if (diffInDays == 1) {
+            dureeTexte = "Événement se déroulant sur 2 jours";
+        } else {
+            dureeTexte = "Événement se déroulant sur " + (diffInDays + 1) + " jours";
+        }
+
+        Label dureeLabel = new Label(dureeTexte);
+        dureeLabel.getStyleClass().add("event-duration");
+        dureeLabel.setStyle("-fx-font-style: italic; -fx-text-fill: #d87769;");
+        dureeLabel.setWrapText(true);
+        dureeLabel.setAlignment(Pos.CENTER);
+        dureeLabel.setMaxWidth(260);
+
+        // Button Détails
+        Button detailsButton = new Button("Voir plus de détails");
+        detailsButton.getStyleClass().add("category-button");
+        detailsButton.setStyle("-fx-background-color: #d87769; -fx-text-fill: white;");
+        detailsButton.setOnAction(e -> showEventDetails(event));
+
+        // Ajouter tous les éléments à la face arrière
+        backCard.getChildren().addAll(
+            backTitle,
+            new Separator(),
+            scrollDescription,
+            dureeLabel,
+            new Separator(),
+            detailsButton
+        );
+
+        // Gestionnaires d'événements pour le survol
+        cardContainer.setOnMouseEntered(e -> {
+            frontCard.setVisible(false);
+            backCard.setVisible(true);
+        });
+
+        cardContainer.setOnMouseExited(e -> {
+            frontCard.setVisible(true);
+            backCard.setVisible(false);
+        });
+
+        // Ajouter au conteneur principal
+        eventsContainer.getChildren().add(cardContainer);
+
+
+    }
     private void filterEventsByName(String searchText) {
         try {
             // Effacer les cartes actuelles

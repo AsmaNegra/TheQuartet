@@ -20,7 +20,7 @@ import java.io.IOException;
 
 public class Ref {
 
-@FXML
+    @FXML
     public Button btnLogout;
     @FXML
     private Button btnSitemap;

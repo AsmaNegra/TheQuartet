@@ -16,23 +16,6 @@ public class ServiceEvenement implements IService<Evenement>{
         connection = MyDataBase.getInstance().getConnection();
     }
 
-
-//    @Override
-//    public void ajouter(Evenement evenement) throws SQLException {
-//        String sql = "INSERT INTO `evenement` (`nom`, `description`, `date_debut`, `date_fin`, `lieu`, `categorie`, `budget`, `image_event`, `nb_places`) " +
-//            "VALUES ('" + evenement.getNom() + "', '" +
-//            evenement.getDescription() + "', '" +
-//            new java.sql.Timestamp(evenement.getDate_debut().getTime()) + "', '" +
-//            new java.sql.Timestamp(evenement.getDate_fin().getTime()) + "', '" +
-//            evenement.getLieu() + "', '" +
-//            evenement.getCategorie() + "', " +
-//            evenement.getBudget() + ", '" +
-//            evenement.getImage_event() + "', " +
-//            evenement.getNb_places() + ")";
-//        Statement statement = connection.createStatement();
-//        statement.executeUpdate(sql);
-//    }
-
     @Override
     public void ajouter(Evenement evenement) throws SQLException {
         // Vérifier si un événement avec le même nom existe déjà
@@ -116,7 +99,7 @@ public class ServiceEvenement implements IService<Evenement>{
     @Override
     public List<Evenement> afficher() throws SQLException {
         List<Evenement> evenements = new ArrayList<>();
-        String sql = "SELECT * FROM `evenement` ORDER BY `date_debut` DESC";
+        String sql = "SELECT * FROM `evenement` ORDER BY `evenement_id` DESC";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             ResultSet rs = statement.executeQuery();
