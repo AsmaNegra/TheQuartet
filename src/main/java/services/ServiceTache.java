@@ -5,7 +5,9 @@ import utils.MyDataBase;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ServiceTache implements IService<Tache> {
     private Connection connection;
@@ -423,5 +425,96 @@ public List<Tache> trierTachesParPriorite(int evenementId) throws SQLException {
         return taches;
     }
 ///////////////////////////////////////////////////////////////////////////////////////////
+    /** ✅ Récupérer les KPI des fournisseurs sur les tâches */
+    public Map<String, Map<String, Object>> getKpiFournisseurs() throws SQLException {
+        String sql = "SELECT f.nom AS fournisseur, " +
+                "COUNT(t.tache_id) AS total_taches, " +
+                "SUM(CASE WHEN t.statut = 'Terminée' THEN 1 ELSE 0 END) AS taches_terminees, " +
+                "ROUND((SUM(CASE WHEN t.statut = 'Terminée' THEN 1 ELSE 0 END) / COUNT(t.tache_id)) * 100, 2) AS taux_completion " +
+                "FROM tache t " +
+                "JOIN fournisseur f ON t.fournisseur_id = f.fournisseur_id " +
+                "GROUP BY f.nom " +
+                "ORDER BY taux_completion DESC";
 
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        Map<String, Map<String, Object>> kpiMap = new HashMap<>();
+
+        while (resultSet.next()) {
+            Map<String, Object> details = new HashMap<>();
+            details.put("total_taches", resultSet.getInt("total_taches"));
+            details.put("taches_terminees", resultSet.getInt("taches_terminees"));
+            details.put("taux_completion", resultSet.getDouble("taux_completion"));
+
+            kpiMap.put(resultSet.getString("fournisseur"), details);
+        }
+
+        return kpiMap;
+    }
+    /** 📌 Analyse la personnalité d'un utilisateur en fonction des tâches */
+    public String analyserPersonnaliteUtilisateur(int utilisateurId) throws SQLException {
+        String sql = "SELECT " +
+                "SUM(CASE WHEN t.statut = 'Terminée' THEN 1 ELSE 0 END) AS taches_terminees, " +
+                "SUM(CASE WHEN t.statut = 'En cours' OR t.statut = 'A faire' THEN 1 ELSE 0 END) AS taches_non_terminees " +
+                "FROM tache t " +
+                "JOIN utilisateur_evenement ue ON t.evenement_id = ue.evenement_id " +
+                "WHERE ue.utilisateur_id = ?";
+
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        preparedStatement.setInt(1, utilisateurId);
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        if (resultSet.next()) {
+            int tachesTerminees = resultSet.getInt("taches_terminees");
+            int tachesNonTerminees = resultSet.getInt("taches_non_terminees");
+            int totalTaches = tachesTerminees + tachesNonTerminees;
+
+            if (totalTaches == 0) {
+                return "❔ Impossible de déterminer la personnalité (aucune tâche trouvée)";
+            }
+
+            double tauxCompletion = (double) tachesTerminees / totalTaches * 100;
+
+            if (tauxCompletion >= 90) {
+                return "🏆 Champion ultime ! Toujours au top, un modèle d'organisation.";
+            } else if (tauxCompletion >= 75) {
+                return "🔥 Travailleur acharné ! Peu de choses lui échappent.";
+            } else if (tauxCompletion >= 50) {
+                return "⚖ Équilibré, mais peut mieux faire. Parfois efficace, parfois distrait.";
+            } else if (tauxCompletion >= 25) {
+                return "⏳ Procrastinateur... il repousse souvent ses tâches.";
+            } else {
+                return "🐢 Fainéant légendaire... toujours en retard et rarement productif.";
+            }
+        }
+
+        return "❌ Utilisateur non trouvé.";
+    }
+//////////KPIS///////////////////////////////
+public int getTachesEnRetardUtilisateur(int utilisateurId) throws SQLException {
+    String sql = "SELECT COUNT(*) AS total FROM tache " +
+            "WHERE statut != 'Terminée' AND date_limite < NOW() " +
+            "AND evenement_id IN (SELECT evenement_id FROM utilisateur_evenement WHERE utilisateur_id = ?)";
+
+    PreparedStatement ps = connection.prepareStatement(sql);
+    ps.setInt(1, utilisateurId);
+    ResultSet rs = ps.executeQuery();
+
+    return rs.next() ? rs.getInt("total") : 0;
+}
+
+    public int getTotalTachesUtilisateur(int utilisateurId) throws SQLException {
+        String sql = "SELECT COUNT(*) AS total FROM tache " +
+                "WHERE evenement_id IN (SELECT evenement_id FROM utilisateur_evenement WHERE utilisateur_id = ?)";
+
+        PreparedStatement ps = connection.prepareStatement(sql);
+        ps.setInt(1, utilisateurId);
+        ResultSet rs = ps.executeQuery();
+
+        return rs.next() ? rs.getInt("total") : 0;
+    }
+
+
+    ///////////////////////////////////////////
 }

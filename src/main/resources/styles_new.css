@@ -249,3 +249,40 @@
     -fx-shape: "";
     -fx-padding: 0;
 }
+/* Apply styling to the BarChart container */
+.chart-container {
+    -fx-background-color: #FFFFFF;
+    -fx-padding: 20px;
+    -fx-background-radius: 12px;
+    -fx-border-radius: 12px;
+    -fx-border-color: #E0E3EB;
+}
+
+/* X and Y Axis Styling */
+.axis {
+    -fx-tick-label-fill: #5A5F7D;
+    -fx-font-size: 12px;
+}
+
+/* Force specific colors for bars */
+.default-color0.chart-bar {
+    -fx-bar-fill: #1E2245; /* Dark Blue */
+}
+
+.default-color1.chart-bar {
+    -fx-bar-fill: #FF6B6B; /* Accent Red */
+}
+
+/* Bar Hover Effect */
+.chart-bar:hover {
+    -fx-bar-fill: #4F5D75;
+    -fx-opacity: 0.8;
+    -fx-cursor: hand;
+}
+
+/* Chart Title */
+.chart-title {
+    -fx-text-fill: #1E2245;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}

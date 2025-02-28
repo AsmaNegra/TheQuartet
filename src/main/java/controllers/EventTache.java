@@ -2,6 +2,7 @@ package controllers;
 
 import entities.Evenement;
 import entities.Utilisateur;
+import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -9,6 +10,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -19,10 +21,7 @@ import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import services.*;
@@ -74,7 +73,13 @@ public class EventTache implements Initializable {
     @FXML
     private Label eventNameLabel;
     @FXML
+    private VBox TaskContainer1;
+
+    @FXML
+    private ScrollPane TaskList1;
+    @FXML
     private Label eventDescriptionLabel;
+    private GeminiClient client = new GeminiClient();
 
     private ServiceEvenement serviceEvenement = new ServiceEvenement();
     private int currentEventId;
@@ -82,6 +87,7 @@ public class EventTache implements Initializable {
     private Tache draggedTask;
     private ServiceFournisseur serviceFournisseur = new ServiceFournisseur();
     private ServiceUtilisateurEvenement serviceUtilisateurEvenement = new ServiceUtilisateurEvenement();
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         setupDragAndDrop();
@@ -249,7 +255,7 @@ private void loadUtilisateurs() throws SQLException {
             } else if ("Basse".equalsIgnoreCase(task.getPriorite())) {
                 textColor = "rgba(0, 128, 0, 0.6)";
             }
-            Label priorityLabel = new Label("Priorité : " + task.getPriorite());
+            Label priorityLabel = new Label( task.getPriorite());
             priorityLabel.setStyle("-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: " + textColor + ";");
 
             HBox statusContainer = new HBox(10);
@@ -374,23 +380,39 @@ private void loadUtilisateurs() throws SQLException {
 
     private void populateFournisseurList(List<Fournisseur> fournisseurs) {
         fournisseurContainer.getChildren().clear();
+
         for (Fournisseur fournisseur : fournisseurs) {
             HBox fournisseurContainerItem = new HBox(20);
             fournisseurContainerItem.setStyle("-fx-background-color: rgba(255, 255, 255, 0.82); " +
                     "-fx-padding: 10; -fx-border-radius: 10px; -fx-background-radius: 10px; " +
                     "-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0.5, 2, 2);");
+            fournisseurContainerItem.setAlignment(Pos.CENTER_LEFT);
+
             VBox textContainer = new VBox(5);
             Label nameLabel = new Label(fournisseur.getNom());
             nameLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 16px; -fx-text-fill: #2b2b2b;");
+
             Label typeLabel = new Label("Type: " + fournisseur.getTypeService());
             typeLabel.setStyle("-fx-font-size: 12px; -fx-text-fill: #666;");
+
             Label contractLabel = new Label("État du contrat: " + fournisseur.getContrat());
             contractLabel.setStyle("-fx-font-size: 12px; -fx-text-fill: #888;");
+
             Label phoneLabel = new Label("📞 " + fournisseur.getNum_tel());
             phoneLabel.setStyle("-fx-font-size: 12px; -fx-text-fill: #444;");
+
             HBox typeAndContract = new HBox(15);
             typeAndContract.getChildren().addAll(typeLabel, contractLabel);
-            HBox buttonContainer = new HBox(10);
+
+            // ESPACEUR pour aligner les boutons à l'extrême droite
+            Region spacer = new Region();
+            HBox.setHgrow(spacer, Priority.ALWAYS);
+
+            // CONTAINER POUR LES BOUTONS
+            VBox buttonContainer = new VBox(5);
+            buttonContainer.setAlignment(Pos.CENTER_RIGHT);
+
+            // Bouton Supprimer
             Button deleteButton = new Button();
             ImageView deleteIcon = new ImageView(new Image(getClass().getResourceAsStream("/images/delete.png")));
             deleteIcon.setFitWidth(16);
@@ -398,12 +420,110 @@ private void loadUtilisateurs() throws SQLException {
             deleteButton.setGraphic(deleteIcon);
             deleteButton.setStyle("-fx-background-color: transparent;");
             deleteButton.setOnAction(event -> deleteFournisseur(fournisseur));
-            buttonContainer.getChildren().addAll(deleteButton);
+
+            // Bouton Générer Tâche
+            Button taskButton = new Button();
+            ImageView taskIcon = new ImageView(new Image(getClass().getResourceAsStream("/images/wand.png")));
+            taskIcon.setFitWidth(16);
+            taskIcon.setFitHeight(16);
+            taskButton.setGraphic(taskIcon);
+            taskButton.setStyle("-fx-background-color: transparent;");
+            taskButton.setOnAction(event -> {
+                try {
+                    genererTache(fournisseur);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+
+            // Ajout des boutons au container
+            buttonContainer.getChildren().addAll(deleteButton, taskButton);
+
+            // Construction finale
             textContainer.getChildren().addAll(nameLabel, typeAndContract, phoneLabel);
-            fournisseurContainerItem.getChildren().addAll(textContainer, buttonContainer);
+            fournisseurContainerItem.getChildren().addAll(textContainer, spacer, buttonContainer);
+
             fournisseurContainer.getChildren().add(fournisseurContainerItem);
         }
     }
+
+    private void genererTache(Fournisseur fournisseur) throws SQLException {
+        List<Tache> taches = client.generateTasksForVendor(serviceEvenement.getEvenementById(currentEventId), fournisseur);
+
+        // Ajouter ces tâches à la liste affichée
+        afficherTaches(taches);
+    }
+    private void afficherTaches(List<Tache> taches) {
+        TaskContainer1.getChildren().clear(); // Vider la liste avant d'ajouter les nouvelles tâches
+
+
+        // Délai simulé pour afficher le chargement (ex: 1 seconde)
+        Timeline delay = new Timeline(new KeyFrame(Duration.seconds(1), actionEvent -> {
+
+            for (Tache tache : taches) {
+                HBox tacheContainer = new HBox(10);
+                tacheContainer.setStyle("-fx-background-color: rgba(255, 255, 255, 0.9); " +
+                        "-fx-padding: 10; -fx-border-radius: 8px; " +
+                        "-fx-background-radius: 8px; " +
+                        "-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 5, 0.5, 1, 1);");
+                tacheContainer.setOpacity(0); // Début invisible
+
+                VBox textContainer = new VBox(5);
+
+                Label nameLabel = new Label(tache.getNom());
+                nameLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14px; -fx-text-fill: #2b2b2b;");
+
+                Label descriptionLabel = new Label(tache.getDescription());
+                descriptionLabel.setStyle("-fx-font-size: 12px; -fx-text-fill: #666;");
+
+                textContainer.getChildren().addAll(nameLabel, descriptionLabel);
+
+                // Ajouter un bouton "Modifier"
+                Button editButton = new Button();
+                ImageView editIcon = new ImageView(new Image(getClass().getResourceAsStream("/images/add.png")));
+                editIcon.setFitWidth(13);
+                editIcon.setFitHeight(13);
+                editButton.setGraphic(editIcon);
+                editButton.setStyle("-fx-background-color: transparent;");
+                editButton.setOnAction(event -> openEditTaskPage(tache, event));
+
+                // Conteneur pour le bouton
+                VBox buttonContainer = new VBox(10);
+                buttonContainer.getChildren().add(editButton);
+
+                tacheContainer.getChildren().addAll(textContainer, buttonContainer);
+                TaskContainer1.getChildren().add(tacheContainer);
+
+                // **Ajouter une animation de fondu**
+                FadeTransition fadeIn = new FadeTransition(Duration.millis(500), tacheContainer);
+                fadeIn.setFromValue(0);
+                fadeIn.setToValue(1);
+                fadeIn.setDelay(Duration.millis(100 * TaskContainer1.getChildren().size())); // Délai pour effet "staggered"
+                fadeIn.play();
+            }
+        }));
+        delay.setCycleCount(1);
+        delay.play();
+    }
+
+    private void openEditTaskPage(Tache task, ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ConfirmerTache.fxml"));
+            Parent root = loader.load();
+
+            ConfirmerTache controller = loader.getController();
+            controller.setTaskData(task); // Passer la tâche à modifier
+            controller.initEventData(currentEventId);
+
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 //////////////////////////////////////////////////////////////////////////////////////////
 //    private void modifyFournisseur(Fournisseur fournisseur, ActionEvent event) {
 //        try {

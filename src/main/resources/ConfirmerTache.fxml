@@ -23,7 +23,7 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" styleClass="parent" stylesheets="@styles_new.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ModifierTache">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" styleClass="parent" stylesheets="@styles_new.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ConfirmerTache">
     <left>
         <!-- Sidebar qui s'étend au survol -->
         <AnchorPane fx:id="sidebar" onMouseEntered="#expandSidebar" onMouseExited="#collapseSidebar" prefHeight="500.0" prefWidth="70.0" styleClass="sidebar">
@@ -172,19 +172,19 @@
                         </HBox>
             
                                         <!-- Task Form -->
-                            <GridPane alignment="CENTER" hgap="10" style="-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 2, 2); -fx-background-color: transparent;" styleClass="task-form" vgap="10">
+                            <GridPane alignment="CENTER" hgap="10" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" prefWidth="935.0" style="-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 2, 2); -fx-background-color: transparent;" styleClass="task-form" vgap="30.0" VBox.vgrow="ALWAYS">
             
                                             <!-- Task Name -->
-                                <Label text="Nom de la Tâche:" GridPane.rowIndex="2" />
-                                <TextField fx:id="nomField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                <Label text="Nom de la Tâche:" GridPane.rowIndex="1" />
+                                <TextField fx:id="nomField" prefWidth="482.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             
                                             <!-- Description -->
-                                <Label text="Description:" GridPane.rowIndex="3" />
-                                <TextArea fx:id="descriptionField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                <Label text="Description:" GridPane.rowIndex="2" />
+                                <TextArea fx:id="descriptionField" prefHeight="90.0" prefWidth="482.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             
                                             <!-- Status -->
-                                <Label text="Statut:" GridPane.rowIndex="4" />
-                                <ComboBox fx:id="statutComboBox" prefHeight="26.0" prefWidth="480.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                <Label text="Statut:" GridPane.rowIndex="3" />
+                                <ComboBox fx:id="statutComboBox" prefHeight="26.0" prefWidth="510.0" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.vgrow="ALWAYS">
                                     <items>
                                         <FXCollections fx:factory="observableArrayList">
                                             <String fx:value="En attente" />
@@ -192,15 +192,18 @@
                                             <String fx:value="Terminée" />
                                         </FXCollections>
                                     </items>
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" top="10.0" />
+                              </GridPane.margin>
                                 </ComboBox>
             
                                             <!-- Due Date -->
-                                <Label text="Date Limite:" GridPane.rowIndex="5" />
-                                <DatePicker fx:id="dateLimitePicker" prefHeight="26.0" prefWidth="478.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                <Label text="Date Limite:" GridPane.rowIndex="4" />
+                                <DatePicker fx:id="dateLimitePicker" prefHeight="26.0" prefWidth="478.0" GridPane.columnIndex="1" GridPane.rowIndex="4" GridPane.vgrow="ALWAYS" />
             
                                             <!-- Priority -->
-                                <Label text="Priorité:" GridPane.rowIndex="6" />
-                                <ComboBox fx:id="prioriteComboBox" prefHeight="26.0" prefWidth="481.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                                <Label text="Priorité:" GridPane.rowIndex="5" />
+                                <ComboBox fx:id="prioriteComboBox" prefHeight="26.0" prefWidth="519.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" GridPane.vgrow="ALWAYS">
                                     <items>
                                         <FXCollections fx:factory="observableArrayList">
                                             <String fx:value="Haute" />
@@ -211,26 +214,26 @@
                                 </ComboBox>
             
                                             <!-- Supplier Dropdown -->
-                                <Label text="Fournisseur:" GridPane.rowIndex="8" />
-                                <ComboBox fx:id="fournisseurComboBox" prefHeight="26.0" prefWidth="482.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                                <Label text="Fournisseur:" GridPane.rowIndex="6" />
+                                <ComboBox fx:id="fournisseurComboBox" prefHeight="26.0" prefWidth="514.0" GridPane.columnIndex="1" GridPane.rowIndex="6" GridPane.vgrow="ALWAYS" />
             
                                             <!-- User Associated Dropdown -->
-                                <Label text="Utilisateur Associé:" GridPane.rowIndex="9" />
-                                <ComboBox fx:id="userAssocieComboBox" prefHeight="26.0" prefWidth="481.0" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+                                <Label text="Utilisateur Associé:" GridPane.rowIndex="7" />
+                                <ComboBox fx:id="userAssocieComboBox" prefHeight="26.0" prefWidth="518.0" GridPane.columnIndex="1" GridPane.rowIndex="7" GridPane.vgrow="ALWAYS" />
             
                                             <!-- Submit Button -->
-                                <Button fx:id="submitButton" onAction="#updateTask" prefHeight="42.0" prefWidth="254.0" styleClass="button_crud" text="Enregistrer" GridPane.columnIndex="1" GridPane.rowIndex="10">
+                                <Button fx:id="submitButton" onAction="#updateTask" prefHeight="42.0" prefWidth="254.0" styleClass="button_crud" text="Enregistrer" GridPane.columnIndex="1" GridPane.rowIndex="8" GridPane.vgrow="ALWAYS">
                               <GridPane.margin>
                                  <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                               </GridPane.margin>
                            </Button>
-                           <Label text="Modifier un ticket!" GridPane.columnIndex="1">
+                           <Label prefHeight="67.0" prefWidth="512.0" styleClass="welcome-text" text="Confirmer votre tâche!" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
                               <font>
-                                 <Font name="Montserrat-Regular" size="24.0" />
+                                 <Font name="Open Sans Regular" size="18.0" />
                               </font>
-                              <padding>
-                                 <Insets bottom="15.0" left="15.0" right="15.0" top="30.0" />
-                              </padding>
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
                            </Label>
                            <Button alignment="CENTER" mnemonicParsing="false" onAction="#RedirectBack" styleClass="transparent_bg" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                               <graphic>
@@ -238,25 +241,26 @@
                               </graphic>
                            </Button>
                            <columnConstraints>
-                              <ColumnConstraints />
-                              <ColumnConstraints />
+                              <ColumnConstraints maxWidth="158.39996337890628" minWidth="121.59997558593753" prefWidth="130.4" />
+                              <ColumnConstraints maxWidth="505.6" minWidth="440.0000366210937" prefWidth="505.6" />
                            </columnConstraints>
                            <rowConstraints>
-                              <RowConstraints />
-                              <RowConstraints />
-                              <RowConstraints />
-                              <RowConstraints />
-                              <RowConstraints />
-                              <RowConstraints />
-                              <RowConstraints />
-                              <RowConstraints />
-                              <RowConstraints />
-                              <RowConstraints />
-                              <RowConstraints />
+                              <RowConstraints maxHeight="59.200036621093744" minHeight="30.399987792968744" prefHeight="30.399987792968744" />
+                              <RowConstraints maxHeight="61.599999999999994" minHeight="28.0" prefHeight="28.0" />
+                              <RowConstraints maxHeight="89.6" minHeight="41.000036621093756" prefHeight="79.1999755859375" />
+                              <RowConstraints maxHeight="30.4000244140625" minHeight="0.0" prefHeight="30.4000244140625" />
+                              <RowConstraints maxHeight="39.20004882812498" minHeight="31.200048828124977" prefHeight="35.20004882812498" />
+                              <RowConstraints maxHeight="35.99997558593748" minHeight="21.599951171874977" prefHeight="25.599951171874977" />
+                              <RowConstraints maxHeight="52.80002441406248" minHeight="24.800024414062477" prefHeight="27.199987792968727" />
+                              <RowConstraints maxHeight="60.79996337890623" minHeight="15.999951171874955" prefHeight="15.999951171874955" />
+                              <RowConstraints maxHeight="67.20002441406245" minHeight="26.40001220703124" prefHeight="59.20004882812498" />
                            </rowConstraints>
                            <padding>
-                              <Insets left="30.0" />
+                              <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
                            </padding>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
             
                                         </GridPane>
                      </children>

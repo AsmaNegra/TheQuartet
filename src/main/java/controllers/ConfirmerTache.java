@@ -30,8 +30,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 
-public class ModifierTache {
-
+public class ConfirmerTache {
 
     @FXML
     public Button btnLogout;
@@ -110,29 +109,12 @@ public class ModifierTache {
                             + " -fx-background-position: center center;");
                 }
                 populateUserAssocieComboBox();
-                populateFournisseurComboBox();
+
 
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
-    private void populateFournisseurComboBox() throws SQLException {
-        ServiceFournisseur service = new ServiceFournisseur();
-        List<Fournisseur> fournisseurs = service.afficherFournisseursParEventId(currentEventId);
-        fournisseurComboBox.getItems().clear();
-        for (Fournisseur fournisseur : fournisseurs) {
-            fournisseurComboBox.getItems().add(fournisseur.getNom());
-        }
-    }
-    private void populateUserAssocieComboBox() {
-        ServiceUtilisateurEvenement service = new ServiceUtilisateurEvenement();
-        List<Utilisateur> utilisateurs = service.getUtilisateursByEvenementIdNour(currentEventId);
-        userAssocieComboBox.getItems().clear();
-        for (Utilisateur user : utilisateurs) {
-            userAssocieComboBox.getItems().add(user.getNom());
-        }
-        System.out.println("Nombre d'utilisateurs : " + utilisateurs.size());
     }
     /**
      * ✅ Set Task Data in Form Fields
@@ -197,7 +179,7 @@ public class ModifierTache {
             selectedTask.setUserAssocie(userAssocieComboBox.getValue());
             selectedTask.setFournisseur(fournisseur);
 
-            serviceTache.modifier(selectedTask);
+            serviceTache.ajouter(selectedTask);
             System.out.println("✅ Tâche mise à jour avec succès !");
 
             // Redirect to EventTache screen
@@ -314,7 +296,15 @@ public class ModifierTache {
         }
 
     }
-
+    private void populateUserAssocieComboBox() {
+        ServiceUtilisateurEvenement service = new ServiceUtilisateurEvenement();
+        List<Utilisateur> utilisateurs = service.getUtilisateursByEvenementIdNour(currentEventId);
+        userAssocieComboBox.getItems().clear();
+        for (Utilisateur user : utilisateurs) {
+            userAssocieComboBox.getItems().add(user.getNom());
+        }
+        System.out.println("Nombre d'utilisateurs : " + utilisateurs.size());
+    }
     @FXML
     void handleSitemapClick(ActionEvent event) {
         try {
