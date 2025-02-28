@@ -107,7 +107,6 @@ public class AjoutTache implements Initializable {
             }
         });
 
-
     }
 
     private void populateUserAssocieComboBox() {
@@ -276,10 +275,13 @@ public class AjoutTache implements Initializable {
             // Appel de la méthode de peuplement une fois que currentEventId est défini
             populateUserAssocieComboBox();
             populateFournisseurComboBox();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
+
     //////////////////////MENU/////////////////////////////////
     @FXML
     void expandSidebar(MouseEvent event) {

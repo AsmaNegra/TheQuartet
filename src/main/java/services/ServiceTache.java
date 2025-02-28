@@ -515,6 +515,29 @@ public int getTachesEnRetardUtilisateur(int utilisateurId) throws SQLException {
         return rs.next() ? rs.getInt("total") : 0;
     }
 
+    public double calculerPourcentageTachesTerminees(int evenementId) throws SQLException {
+        String sql = "SELECT " +
+                "SUM(CASE WHEN statut = 'Terminée' THEN 1 ELSE 0 END) AS taches_terminees, " +
+                "COUNT(*) AS total_taches " +
+                "FROM tache WHERE evenement_id = ?";
+
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        preparedStatement.setInt(1, evenementId);
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        if (resultSet.next()) {
+            int tachesTerminees = resultSet.getInt("taches_terminees");
+            int totalTaches = resultSet.getInt("total_taches");
+
+            if (totalTaches == 0) {
+                return 0.0; // Événement sans tâches, retour 0%
+            }
+
+            return (double) tachesTerminees / totalTaches * 100;
+        }
+
+        return 0.0;
+    }
 
     ///////////////////////////////////////////
 }
