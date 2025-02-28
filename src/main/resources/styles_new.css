@@ -286,3 +286,27 @@
     -fx-font-size: 16px;
     -fx-font-weight: bold;
 }
+/* ProgressBar container */
+.progress-bar {
+    -fx-background-color: #E0E3EB;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+    -fx-pref-height: 12px; /* Ajuste la hauteur */
+}
+
+/* Barre de progression (remplissage) */
+.progress-bar .bar {
+    -fx-background-color: linear-gradient(to right, #d87769, #b76458);
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+}
+
+/* Ajout d'une ombre subtile */
+.progress-bar .bar:hover {
+    -fx-effect: dropshadow(gaussian, rgba(216, 119, 105, 0.3), 10, 0, 0, 0);
+}
+.progress-label {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1E2245;
+}

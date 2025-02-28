@@ -36,6 +36,10 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class EventTache implements Initializable {
+
+    // PROGRESS BAR //
+    @FXML private ProgressBar progressBar;
+    @FXML private Label progressLabel;
     //BOUTTON MENU//
 
     @FXML
@@ -91,7 +95,7 @@ public class EventTache implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         setupDragAndDrop();
-
+        updateProgressBar();
         ListeUtilisateur.setCellFactory(param -> new ListCell<Utilisateur>() {
             @Override
             protected void updateItem(Utilisateur utilisateur, boolean empty) {
@@ -292,11 +296,41 @@ private void loadUtilisateurs() throws SQLException {
             });
         }
     }
+    /** ✅ Met à jour la barre de progression avec une animation fluide */
+    private void updateProgressBar() {
+        try {
+            // Récupérer le pourcentage des tâches terminées
+            double pourcentage = serviceTache.calculerPourcentageTachesTerminees(currentEventId) / 100.0;
 
+            // S'assurer que la valeur est entre 0 et 1
+            if (Double.isNaN(pourcentage) || pourcentage < 0) {
+                pourcentage = 0;
+            }
+
+            // Animation fluide de la barre de progression
+            Timeline timeline = new Timeline(
+                    new KeyFrame(Duration.seconds(1), new KeyValue(progressBar.progressProperty(), pourcentage))
+            );
+            timeline.play();
+
+            // Animation fluide du texte du pourcentage
+            final double finalPourcentage = pourcentage;
+            Timeline textAnimation = new Timeline(
+                    new KeyFrame(Duration.seconds(1), evt ->
+                            progressLabel.setText(String.format("%.2f%%", finalPourcentage * 100))
+                    )
+            );
+            textAnimation.play();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
     private void setupDragAndDrop() {
         setupDropTarget(todoTasks, "A Faire");
         setupDropTarget(inProgressTasks, "En Cours");
         setupDropTarget(doneTasks, "Terminée");
+
     }
 
     private void setupDropTarget(VBox targetColumn, String newStatus) {
@@ -312,6 +346,7 @@ private void loadUtilisateurs() throws SQLException {
                 try {
                     serviceTache.modifierEtatTache(draggedTask.getTacheId(), newStatus);
                     loadTasks();
+                    updateProgressBar();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -569,6 +604,7 @@ private void loadUtilisateurs() throws SQLException {
             loadTasks();
             loadFournisseurs();
             loadUtilisateurs();
+            updateProgressBar();
         } catch (SQLException e) {
             e.printStackTrace();
         }
