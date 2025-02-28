@@ -8,7 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AiUtility {
-    private static final String API_KEY = "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";
+//    private static final String API_KEY = "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";
+private static final String API_KEY = "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";
 
     public static String generateEventDescription(String eventName, String category, String location) {
         OpenAiService service = new OpenAiService(API_KEY);
