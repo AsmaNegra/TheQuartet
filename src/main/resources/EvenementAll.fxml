@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="rootPane" prefHeight="781.0" prefWidth="1365.0" styleClass="background_color" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.EvenementAllController">
+<AnchorPane fx:id="rootPane" prefHeight="781.0" prefWidth="1365.0" styleClass="background_color" stylesheets="@styles_new.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.EvenementAllController">
     <children>
         <VBox layoutX="14.0" layoutY="35.0" prefHeight="591.0" prefWidth="362.0" spacing="10" styleClass="colored_card,task-form">
             <padding>

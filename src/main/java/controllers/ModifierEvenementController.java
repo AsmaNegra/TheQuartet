@@ -1,9 +1,20 @@
 package controllers;
 
 
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import entities.Evenement;
 import java.sql.Timestamp;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
+import javafx.concurrent.Task;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -14,6 +25,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import services.ServiceCategorie;
 import services.ServiceEvenement;
 import javafx.event.ActionEvent;
@@ -23,6 +35,8 @@ import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
+import utils.AiUtility;
+
 import java.time.LocalDateTime;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -32,6 +46,23 @@ import java.time.LocalTime;
 import java.util.List;
 
 public class ModifierEvenementController {
+
+    @FXML
+    public Button btnLogout;
+    @FXML
+    private Button btnSitemap;
+    @FXML
+    private Button btnGift;
+    @FXML
+    private Button btnHome;
+    @FXML
+    private Button btnHome1;
+
+    @FXML
+    private AnchorPane sidebar;
+
+    @FXML
+    private Label labelUser;
 
         @FXML
         private Label AjouterEvent;
@@ -395,6 +426,153 @@ public class ModifierEvenementController {
         Stage stage = (Stage) evenementFermerButton.getScene().getWindow();
         // Close the stage
         stage.close();
+    }
+
+    @FXML
+    void expandSidebar(MouseEvent event) {
+        // Animate sidebar expansion (e.g., from 70 to 200 pixels)
+        Timeline expandTimeline = new Timeline();
+        KeyValue widthValue = new KeyValue(sidebar.prefWidthProperty(), 200);
+        KeyFrame keyFrame = new KeyFrame(Duration.millis(300), widthValue);
+        expandTimeline.getKeyFrames().add(keyFrame);
+        expandTimeline.play();
+
+        // Set the text for each button
+        btnSitemap.setText("Mes evenements");
+        btnGift.setText("Admin");
+        btnHome.setText("Tous les evenements");
+        btnHome1.setText("My Account");
+        btnLogout.setText("Logout");
+        labelUser.setVisible(true);
+    }
+
+    @FXML
+    void collapseSidebar(MouseEvent event) {
+        // Animate sidebar collapse (e.g., back to 70 pixels)
+        Timeline collapseTimeline = new Timeline();
+        KeyValue widthValue = new KeyValue(sidebar.prefWidthProperty(), 70);
+        KeyFrame keyFrame = new KeyFrame(Duration.millis(300), widthValue);
+        collapseTimeline.getKeyFrames().add(keyFrame);
+        collapseTimeline.play();
+
+        // Clear the text for each button
+        btnSitemap.setText("");
+        btnGift.setText("");
+        btnHome.setText("");
+        btnHome1.setText("");
+        btnLogout.setText("");
+        labelUser.setVisible(false);
+    }
+
+
+
+    @FXML
+    void handleGiftClick(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AdminFournisseur.fxml"));
+            Parent root = loader.load();
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    void handleHomeClick(ActionEvent event) {
+        try {
+
+            // FXMLLoader loader = new FXMLLoader(getClass().getResource("/Ref.fxml"));
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ViewAllEvents.fxml"));
+
+            Parent root = loader.load();
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @FXML
+    void handleSitemapClick(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/EventOrganisation.fxml"));
+            Parent root = loader.load();
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void handleLogoutClick(ActionEvent event) {
+
+    }
+
+    @FXML
+    void genererDescription(ActionEvent event) {
+        // Vérifier que les champs nécessaires sont remplis
+        if (evenementNomField.getText().isEmpty() ||
+            evenementCategorieComboBox.getValue() == null ||
+            evenementLieuField.getText().isEmpty()) {
+
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Informations manquantes");
+            alert.setHeaderText(null);
+            alert.setContentText("Veuillez d'abord remplir le nom, la catégorie et le lieu de l'événement pour générer une description.");
+            alert.showAndWait();
+            return;
+        }
+
+        // Montrer un indicateur de chargement
+        Button sourceButton = (Button) event.getSource();
+        String originalText = sourceButton.getText();
+        FontAwesomeIconView originalIcon = (FontAwesomeIconView) sourceButton.getGraphic();
+
+        sourceButton.setText("...");
+        FontAwesomeIconView spinnerIcon = new FontAwesomeIconView(FontAwesomeIcon.SPINNER);
+        spinnerIcon.setFill(Color.WHITE);
+        spinnerIcon.setSize("1.2em");
+        sourceButton.setGraphic(spinnerIcon);
+        sourceButton.setDisable(true);
+
+        // Appel à l'API dans un thread séparé pour ne pas bloquer l'interface
+        Task<String> task = new Task<String>() {
+            @Override
+            protected String call() throws Exception {
+                return AiUtility.generateEventDescription(
+                    evenementNomField.getText(),
+                    evenementCategorieComboBox.getValue(),
+                    evenementLieuField.getText()
+                );
+            }
+        };
+
+        task.setOnSucceeded(e -> {
+            evenementDescriptionArea.setText(task.getValue());
+            sourceButton.setText(originalText);
+            sourceButton.setGraphic(originalIcon);
+            sourceButton.setDisable(false);
+        });
+
+        task.setOnFailed(e -> {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erreur");
+            alert.setHeaderText(null);
+            alert.setContentText("Erreur lors de la génération de la description: " + task.getException().getMessage());
+            alert.showAndWait();
+
+            sourceButton.setText(originalText);
+            sourceButton.setGraphic(originalIcon);
+            sourceButton.setDisable(false);
+        });
+
+        new Thread(task).start();
     }
 
 }

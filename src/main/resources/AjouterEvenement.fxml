@@ -12,6 +12,7 @@
 <?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
@@ -20,7 +21,6 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<?import javafx.scene.control.Tooltip?>
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" styleClass="parent" stylesheets="@styles_new.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AjouterEvenementController">
     <left>
         <!-- Sidebar qui s'étend au survol -->
@@ -145,10 +145,14 @@
 
                 <Label fx:id="descriptionEvent" styleClass="task-form" text="Description de l'événement" />
                 <HBox spacing="10">
-                    <TextArea fx:id="evenementDescriptionArea" prefHeight="64.0" prefWidth="520.0" styleClass="task-form" stylesheets="@styles_new.css" HBox.hgrow="ALWAYS" />
-                    <Button fx:id="genererDescriptionButton" onAction="#genererDescription" styleClass="category-button" text="IA" prefWidth="60">
+                           <VBox HBox.hgrow="ALWAYS">
+                              <children>
+                          <TextArea fx:id="evenementDescriptionArea" prefHeight="64.0" prefWidth="520.0" styleClass="task-form" stylesheets="@styles_new.css" />
+                              </children>
+                           </VBox>
+                    <Button fx:id="genererDescriptionButton" onAction="#genererDescription" prefWidth="60" styleClass="category-button" text="IA">
                         <graphic>
-                            <FontAwesomeIconView glyphName="MAGIC" size="1.2em" fill="WHITE" />
+                            <FontAwesomeIconView fill="WHITE" glyphName="MAGIC" size="1.2em" />
                         </graphic>
                         <tooltip>
                             <Tooltip text="Générer une description avec l'IA" />
@@ -156,29 +160,19 @@
                     </Button>
                 </HBox>
 
-                <HBox spacing="10">
+                <HBox spacing="15" styleClass="transparent_bg">
                     <children>
-                        <VBox prefWidth="290" spacing="5">
-                            <Label fx:id="date_debutEvent" styleClass="task-form" text="Date et heure de début" />
-                            <HBox spacing="10">
-                                <DatePicker fx:id="evenementDateDebutPicker" prefWidth="160.0" styleClass="task-form" />
-                                <Spinner fx:id="evenementHeureDebutField" editable="true" prefHeight="38.0" prefWidth="120.0" styleClass="decrement-button" stylesheets="@styles_new.css">
-                                 <HBox.margin>
-                                    <Insets top="2.0" />
-                                 </HBox.margin></Spinner>
-                            </HBox>
-                        </VBox>
+                        <Label fx:id="date_debutEvent" prefHeight="20.0" prefWidth="169.0" styleClass="task-form" text="Date et heure de début" />
+                        <DatePicker fx:id="evenementDateDebutPicker" styleClass="task-form" HBox.hgrow="ALWAYS" />
+                        <Spinner fx:id="evenementHeureDebutField" editable="true" prefHeight="26.0" prefWidth="150.0" styleClass="task-form" />
+                    </children>
+                </HBox>
 
-                        <VBox prefWidth="290" spacing="5">
-                            <Label fx:id="date_finEvent" styleClass="task-form" text="Date et heure de fin" />
-                            <HBox spacing="10">
-                                <DatePicker fx:id="evenementDateFinPicker" prefWidth="160.0" styleClass="task-form" />
-                                <Spinner fx:id="evenementHeureFinField" editable="true" prefHeight="38.0" prefWidth="120.0" styleClass="decrement-button">
-                                 <HBox.margin>
-                                    <Insets top="2.0" />
-                                 </HBox.margin></Spinner>
-                            </HBox>
-                        </VBox>
+                <HBox spacing="15" styleClass="transparent_bg">
+                    <children>
+                        <Label fx:id="date_finEvent" prefHeight="20.0" prefWidth="170.0" styleClass="task-form" text="Date et heure de fin" />
+                        <DatePicker fx:id="evenementDateFinPicker" styleClass="task-form" HBox.hgrow="ALWAYS" />
+                        <Spinner fx:id="evenementHeureFinField" editable="true" prefHeight="18.0" prefWidth="150.0" styleClass="task-form" />
                     </children>
                 </HBox>
 
@@ -186,7 +180,7 @@
                 <TextField fx:id="evenementLieuField" prefWidth="600.0" styleClass="task-form" />
 
                 <Label fx:id="categorieEvent" styleClass="task-form" text="Catégorie de l'événement" />
-                <ComboBox fx:id="evenementCategorieComboBox" editable="true" prefWidth="600.0" styleClass="task-form" />
+                <ComboBox fx:id="evenementCategorieComboBox" editable="true" prefHeight="26.0" prefWidth="176.0" styleClass="task-form" />
 
                 <HBox alignment="CENTER_LEFT" spacing="10">
                     <VBox prefWidth="290" spacing="5">
