@@ -4,17 +4,27 @@ package controllers;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import entities.Evenement;
+
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.sql.Timestamp;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
+import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
+import javafx.concurrent.Worker;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 import javafx.stage.FileChooser;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -26,6 +36,12 @@ import java.nio.file.StandardCopyOption;
 
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import netscape.javascript.JSObject;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import services.ServiceCategorie;
 import services.ServiceEvenement;
 import javafx.event.ActionEvent;
@@ -140,6 +156,18 @@ public class ModifierEvenementController {
         private Label nomEvent;
 
         private File selectedImageFile;
+
+    @FXML
+    private AnchorPane lieuContainer;
+
+    @FXML
+    private WebView mapWebView;
+    private WebEngine webEngine;
+
+    private OkHttpClient client = new OkHttpClient();
+    private ListView<String> placeSuggestions;
+    private String googleApiKey = "AIzaSyDVp922yWQ9Dt6P3QzYFaB0VCRzNIfpPA8";
+    private PauseTransition pause = new PauseTransition(Duration.millis(300));
 
 
 
@@ -267,6 +295,165 @@ public class ModifierEvenementController {
             alert.setHeaderText(null);
             alert.setContentText("Erreur lors du chargement des catégories : " + e.getMessage());
             alert.showAndWait();
+        }
+
+        // Configuration du WebView et du moteur JavaScript pour Google Maps
+        if (mapWebView != null) {
+            webEngine = mapWebView.getEngine();
+            webEngine.setJavaScriptEnabled(true);
+
+            // Charger la page HTML pour Google Maps
+            String htmlPath = getClass().getResource("/maps_autocomplete.html").toExternalForm();
+            webEngine.load(htmlPath);
+
+            // Initialiser le pont Java-JavaScript
+            webEngine.getLoadWorker().stateProperty().addListener((obs, oldState, newState) -> {
+                if (newState == Worker.State.SUCCEEDED) {
+                    try {
+                        JSObject window = (JSObject) webEngine.executeScript("window");
+                        window.setMember("javaConnector", new JavaConnector());
+                    } catch (Exception e) {
+                        System.err.println("Erreur lors de l'initialisation: " + e.getMessage());
+                    }
+                }
+            });
+
+            // Cacher la carte initialement
+            mapWebView.setVisible(false);
+            mapWebView.setPrefHeight(0);
+
+            // Créer une liste pour les suggestions
+            placeSuggestions = new ListView<>();
+            placeSuggestions.setPrefHeight(0);
+            placeSuggestions.setVisible(false);
+            placeSuggestions.getStyleClass().add("place-suggestions");
+
+            // Ajouter la liste au conteneur si lieuContainer est présent
+            if (lieuContainer != null) {
+                // Configurer le conteneur
+                lieuContainer.setMinHeight(40);
+
+                // Ajouter la liste au conteneur
+                AnchorPane.setLeftAnchor(placeSuggestions, 0.0);
+                AnchorPane.setRightAnchor(placeSuggestions, 0.0);
+                AnchorPane.setTopAnchor(placeSuggestions, evenementLieuField.getPrefHeight());
+                lieuContainer.getChildren().add(placeSuggestions);
+
+                // Positionner le champ de texte
+                AnchorPane.setTopAnchor(evenementLieuField, 0.0);
+                AnchorPane.setLeftAnchor(evenementLieuField, 0.0);
+                AnchorPane.setRightAnchor(evenementLieuField, 0.0);
+            }
+
+            // Délai pour la recherche
+            pause = new PauseTransition(Duration.millis(300));
+            pause.setOnFinished(e -> {
+                String searchText = evenementLieuField.getText();
+                if (searchText.length() > 2) {
+                    // Rechercher des suggestions
+                    fetchPlaceSuggestions(searchText);
+
+                    // Cacher la carte pendant la recherche
+                    mapWebView.setVisible(false);
+                    mapWebView.setPrefHeight(0);
+                } else {
+                    placeSuggestions.setVisible(false);
+                    placeSuggestions.setPrefHeight(0);
+                }
+            });
+
+            // Écouter les changements dans le champ de lieu
+            evenementLieuField.textProperty().addListener((observable, oldValue, newValue) -> {
+                pause.playFromStart();
+            });
+
+            // Action lorsqu'un lieu est sélectionné dans la liste
+            placeSuggestions.setOnMouseClicked(event -> {
+                String selectedPlace = placeSuggestions.getSelectionModel().getSelectedItem();
+                if (selectedPlace != null) {
+                    // Mettre à jour le champ
+                    evenementLieuField.setText(selectedPlace);
+
+                    // Masquer les suggestions
+                    placeSuggestions.setVisible(false);
+                    placeSuggestions.setPrefHeight(0);
+
+                    // Afficher la carte avec le lieu sélectionné
+                    showMap(selectedPlace);
+                }
+            });
+        }
+    }
+
+    // Méthode pour obtenir des suggestions de lieux
+    private void fetchPlaceSuggestions(String input) {
+        try {
+            String encodedInput = URLEncoder.encode(input, StandardCharsets.UTF_8.toString());
+            String url = "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=" + encodedInput +
+                "&key=" + googleApiKey + "&types=establishment&language=fr";
+
+            Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+            // Exécuter la requête dans un thread séparé
+            new Thread(() -> {
+                try (Response response = client.newCall(request).execute()) {
+                    if (response.isSuccessful()) {
+                        String jsonData = response.body().string();
+                        JSONObject jsonObject = new JSONObject(jsonData);
+                        JSONArray predictions = jsonObject.getJSONArray("predictions");
+
+                        ObservableList<String> suggestions = FXCollections.observableArrayList();
+                        for (int i = 0; i < predictions.length(); i++) {
+                            JSONObject prediction = predictions.getJSONObject(i);
+                            suggestions.add(prediction.getString("description"));
+                        }
+
+                        // Mettre à jour l'UI dans le thread JavaFX
+                        Platform.runLater(() -> {
+                            placeSuggestions.setItems(suggestions);
+                            if (!suggestions.isEmpty()) {
+                                placeSuggestions.setPrefHeight(Math.min(suggestions.size() * 24, 150));
+                                placeSuggestions.setVisible(true);
+                            } else {
+                                placeSuggestions.setVisible(false);
+                                placeSuggestions.setPrefHeight(0);
+                            }
+                        });
+                    }
+                } catch (Exception e) {
+                    System.err.println("Exception: " + e.getMessage());
+                }
+            }).start();
+        } catch (Exception e) {
+            System.err.println("Exception: " + e.getMessage());
+        }
+    }
+
+    // Méthode pour afficher la carte APRÈS la sélection d'un lieu
+    private void showMap(String place) {
+        // Afficher la carte
+        mapWebView.setVisible(true);
+        mapWebView.setPrefHeight(400);
+
+        // Force le rendu
+        mapWebView.requestLayout();
+
+        // Rechercher le lieu sur la carte
+        try {
+            String escapedPlace = place.replace("'", "\\'");
+            webEngine.executeScript("searchPlace('" + escapedPlace + "');");
+        } catch (Exception e) {
+            System.err.println("Erreur lors de la recherche sur la carte: " + e.getMessage());
+        }
+    }
+
+    // Classe JavaConnector pour la communication avec JavaScript
+    public class JavaConnector {
+        public void onPlaceSelected(String name, String address, double lat, double lng) {
+            // Ne rien faire ici, puisque nous avons déjà le lieu dans le champ
+            System.out.println("Lieu confirmé sur la carte: " + name);
         }
     }
     @FXML

@@ -21,6 +21,7 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
+<?import javafx.scene.web.WebView?>
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" styleClass="parent" stylesheets="@styles_new.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ModifierEvenementController">
     <left>
         <!-- Sidebar qui s'étend au survol -->
@@ -188,13 +189,14 @@
                         <Spinner fx:id="evenementHeureFinField" editable="true" prefHeight="18.0" prefWidth="150.0" styleClass="task-form" />
                     </children>
                 </HBox>
-                  <Label fx:id="lieuEvent" prefHeight="20.0" prefWidth="166.0" styleClass="task-form" text="Lieu de l'événement" />
-
-                <HBox spacing="15" styleClass="transparent_bg">
-                    <children>
-                        <TextField fx:id="evenementLieuField" styleClass="task-form" HBox.hgrow="ALWAYS" />
-                    </children>
-                </HBox>
+                <Label text="Lieu de l'événement" styleClass="form-label" />
+                <AnchorPane fx:id="lieuContainer" styleClass="map-container" prefHeight="450.0" minHeight="40.0" VBox.vgrow="ALWAYS">
+                    <TextField fx:id="evenementLieuField" promptText="Recherchez un lieu..."
+                               styleClass="form-field" prefHeight="30.0"
+                               AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                    <WebView fx:id="mapWebView" prefHeight="0.0" visible="false"
+                             AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0" />
+                </AnchorPane>
 
                 <HBox spacing="15" styleClass="transparent_bg">
                     <children>

@@ -185,7 +185,7 @@
 
 
                     <!-- Conteneur des événements -->
-                    <TilePane fx:id="eventsContainer" hgap="20" prefColumns="2" prefTileWidth="340" vgap="20">
+                    <TilePane fx:id="eventsContainer" hgap="20" prefColumns="2" prefTileWidth="330" vgap="20">
                         <padding>
                             <Insets bottom="10" left="15" right="15" top="10" />
                         </padding>
@@ -213,12 +213,15 @@
             </padding>
             <VBox styleClass="sidebar-section">
                 <Label styleClass="section-title" text="Calendrier" />
+                <!-- Contenu du calendrier à ajouter ici -->
             </VBox>
             <VBox styleClass="sidebar-section">
                 <Label styleClass="section-title" text="Événements à la une" />
+                <!-- Liste des événements à la une -->
             </VBox>
-            <VBox styleClass="sidebar-section">
+            <VBox styleClass="sidebar-section" VBox.vgrow="ALWAYS">
                 <Label styleClass="section-title" text="Carte" />
+                <VBox fx:id="mapContainer" VBox.vgrow="ALWAYS" styleClass="map-container" />
             </VBox>
         </VBox>
     </right>

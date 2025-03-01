@@ -20,6 +20,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.web.WebView?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" styleClass="parent" stylesheets="@styles_new.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AjouterEvenementController">
     <left>
@@ -176,8 +177,14 @@
                     </children>
                 </HBox>
 
-                <Label fx:id="lieuEvent" styleClass="task-form" text="Lieu de l'événement" />
-                <TextField fx:id="evenementLieuField" prefWidth="600.0" styleClass="task-form" />
+                <Label text="Lieu de l'événement" styleClass="form-label" />
+                <AnchorPane fx:id="lieuContainer" styleClass="map-container" prefHeight="450.0" minHeight="40.0" VBox.vgrow="ALWAYS">
+                    <TextField fx:id="evenementLieuField" promptText="Recherchez un lieu..."
+                               styleClass="form-field" prefHeight="30.0"
+                               AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                    <WebView fx:id="mapWebView" prefHeight="0.0" visible="false"
+                             AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0" />
+                </AnchorPane>
 
                 <Label fx:id="categorieEvent" styleClass="task-form" text="Catégorie de l'événement" />
                 <ComboBox fx:id="evenementCategorieComboBox" editable="true" prefHeight="26.0" prefWidth="176.0" styleClass="task-form" />

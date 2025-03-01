@@ -1,6 +1,8 @@
 package controllers;
+
 import entities.Evenement;
 import javafx.animation.*;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -26,9 +28,17 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.TimeUnit;
+
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
+import javafx.fxml.FXML;
+import javafx.scene.layout.VBox;
+import netscape.javascript.JSObject;
+import services.GeocodingService;
 
 public class ViewAllEventsController implements Initializable {
     @FXML
@@ -39,36 +49,64 @@ public class ViewAllEventsController implements Initializable {
     private Button btnHome;
     @FXML
     private Button btnHome1;
-
     @FXML
     private AnchorPane sidebar;
-
     @FXML
     private TilePane eventsContainer;
-private Ref ref;
+    private Ref ref;
     @FXML
     private HBox categoriesContainer;
-
     @FXML
     private TextField searchField;
-
     private ServiceEvenement serviceEvenement = new ServiceEvenement();
     private Button selectedCategoryButton = null;
+    @FXML
+    private VBox mapContainer;
+
+    private WebView webView;
+    private WebEngine webEngine;
+
+//    @Override
+//    public void initialize(URL url, ResourceBundle rb) {
+//        loadCategories();
+//        System.out.println("hello");
+//        loadEvents();
+//        initializeMap();
+//        // Configuration du TilePane
+//        eventsContainer.setPrefColumns(2); // 2 colonnes
+//        eventsContainer.setHgap(20); // Espacement horizontal
+//        eventsContainer.setVgap(20); // Espacement vertical
+//
+//        //écouteur sur le champ de recherche
+//        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+//            filterEventsByName(newValue); // Filtrer les événements en temps réel
+//        });
+//    }
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        System.out.println("Début initialisation...");
 
+        // Charger les catégories d'abord (cela n'interagit pas avec la carte)
         loadCategories();
-        loadEvents();
-        // Configuration du TilePane
-        eventsContainer.setPrefColumns(2); // 2 colonnes
-        eventsContainer.setHgap(20); // Espacement horizontal
-        eventsContainer.setVgap(20); // Espacement vertical
 
-        //écouteur sur le champ de recherche
+        // Configurer le TilePane
+        eventsContainer.setPrefColumns(2);
+        eventsContainer.setHgap(20);
+        eventsContainer.setVgap(20);
+
+        // Initialiser la carte simple en dernier
+        initializeMap();
+
+        // Écouteur sur le champ de recherche
         searchField.textProperty().addListener((observable, oldValue, newValue) -> {
-            filterEventsByName(newValue); // Filtrer les événements en temps réel
+            filterEventsByName(newValue);
         });
+
+        // Charger les événements
+        loadEvents();
+
+        System.out.println("Fin initialisation.");
     }
 
     private void loadEvents() {
@@ -167,11 +205,30 @@ private Ref ref;
     private void filterEventsByCategory(String category) {
         try {
             eventsContainer.getChildren().clear();
+
+//            if (webEngine != null) {
+//                webEngine.executeScript("clearMarkers()");
+//            }
+
             List<Evenement> evenements = serviceEvenement.afficher();
 
             for (Evenement event : evenements) {
-                if (event.getCategorie().equals(category)) {
+                if (event.getCategorie().equals(category) || category.equals("Tous")) {
+                    // Ajouter la carte d'événement
                     createEventCard(event);
+
+//                    // Ajouter le marqueur sur la carte
+//                    double[] coordinates = GeocodingService.geocodeAddressWithCache(event.getLieu());
+//                    if (coordinates != null) {
+//                        String script = String.format(
+//                            "addMarker(%f, %f, '%s', '%s', '%s')",
+//                            coordinates[0], coordinates[1],
+//                            escapeJavaScript(event.getNom()),
+//                            escapeJavaScript(event.getLieu()),
+//                            escapeJavaScript(event.getCategorie())
+//                        );
+//                        webEngine.executeScript(script);
+//                    }
                 }
             }
         } catch (SQLException e) {
@@ -183,14 +240,14 @@ private Ref ref;
         // Créer deux cartes séparées au lieu d'essayer de les flip
         VBox frontCard = new VBox(10);
         frontCard.getStyleClass().add("event-card");
-        frontCard.setPrefWidth(340);
+        frontCard.setPrefWidth(330);
         frontCard.setPrefHeight(380);
         frontCard.setPadding(new Insets(20));
         frontCard.setStyle("-fx-background-color: #ffffff; -fx-effect: dropshadow(gaussian, rgb(17,18,60), 10, 0, 0, 2);");
 
         VBox backCard = new VBox(10);
         backCard.getStyleClass().add("event-card");
-        backCard.setPrefWidth(340);
+        backCard.setPrefWidth(330);
         backCard.setPrefHeight(380);
         backCard.setPadding(new Insets(20));
         backCard.setAlignment(Pos.CENTER);
@@ -200,7 +257,7 @@ private Ref ref;
         // Container pour les deux cartes
         StackPane cardContainer = new StackPane();
         cardContainer.getChildren().addAll(frontCard, backCard);
-        cardContainer.setPrefWidth(340);
+        cardContainer.setPrefWidth(330);
         cardContainer.setPrefHeight(380);
 
         // * Face avant *
@@ -323,18 +380,38 @@ private Ref ref;
 
 
     }
+
     private void filterEventsByName(String searchText) {
         try {
-            // Effacer les cartes actuelles
+            // Effacer les cartes d'événements actuelles
             eventsContainer.getChildren().clear();
 
-            // Charger tous les événements
+            // NE PAS effacer les marqueurs pour l'instant
+            // if (webEngine != null) {
+            //     webEngine.executeScript("clearMarkers()");
+            // }
+
             List<Evenement> evenements = serviceEvenement.afficher();
 
-            // Filtrer les événements dont le nom contient le texte de recherche
             for (Evenement event : evenements) {
                 if (event.getNom().toLowerCase().contains(searchText.toLowerCase())) {
-                    createEventCard(event); // Afficher la carte de l'événement
+                    // Ajouter la carte d'événement
+                    createEventCard(event);
+
+                    // NE PAS ajouter de marqueurs pour l'instant
+                    // if (webEngine != null) {
+                    //     double[] coordinates = GeocodingService.geocodeAddressWithCache(event.getLieu());
+                    //     if (coordinates != null) {
+                    //         String script = String.format(
+                    //             "addMarker(%f, %f, '%s', '%s', '%s')",
+                    //             coordinates[0], coordinates[1],
+                    //             escapeJavaScript(event.getNom()),
+                    //             escapeJavaScript(event.getLieu()),
+                    //             escapeJavaScript(event.getCategorie())
+                    //         );
+                    //         webEngine.executeScript(script);
+                    //     }
+                    // }
                 }
             }
         } catch (SQLException e) {
@@ -345,16 +422,320 @@ private Ref ref;
 
     public void redirectToOrganisateurPage(MouseEvent mouseEvent) {
 
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/EventOrganisation.fxml"));
-                Parent root = loader.load();
-                Scene scene = ((Node) mouseEvent.getSource()).getScene();
-                scene.setRoot(root);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/EventOrganisation.fxml"));
+            Parent root = loader.load();
+            Scene scene = ((Node) mouseEvent.getSource()).getScene();
+            scene.setRoot(root);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
+
+
+
+//    private void initializeMap() {
+//        // Configurer le conteneur de carte
+//        mapContainer.setMinHeight(300);  // Hauteur adaptée à votre sidebar
+//        mapContainer.setPrefHeight(300);
+//
+//        // Créer WebView
+//        webView = new WebView();
+//        webEngine = webView.getEngine();
+//
+//        // Configurer WebView
+//        webView.setPrefHeight(300);
+//        webView.setPrefWidth(Double.MAX_VALUE);  // Utiliser toute la largeur disponible
+//
+//        // Ajouter WebView au container
+//        mapContainer.getChildren().add(webView);
+//
+//        // Configurer l'écouteur d'état
+//        webEngine.getLoadWorker().stateProperty().addListener((obs, oldState, newState) -> {
+//            System.out.println("État du chargement de la carte: " + newState);
+//
+//            if (newState == javafx.concurrent.Worker.State.SUCCEEDED) {
+//                System.out.println("Carte chargée avec succès");
+//
+//                try {
+//                    // Créer un pont Java-JavaScript
+//                    JSObject window = (JSObject) webEngine.executeScript("window");
+//                    window.setMember("javaConnector", new MapJavaConnector());
+//
+//                    webEngine.executeScript(
+//                        "window.showEventOnMap = function(lat, lng, name, location) {" +
+//                            "    if (typeof map !== 'undefined' && map !== null) {" +
+//                            "        L.marker([lat, lng]).addTo(map)" +
+//                            "          .bindPopup('<b>' + name + '</b><br>' + location + '<br>" +
+//                            "                     <button onclick=\"javaConnector.showEventDetails(\\'' + name + '\\')\">Voir détails</button>');" +
+//                            "        return true;" +
+//                            "    }" +
+//                            "    return false;" +
+//                            "};"
+//                    );
+//
+//                    // Charger les événements sur la carte
+//                    loadEventsOnMap();
+//                } catch (Exception e) {
+//                    System.err.println("Erreur lors de l'initialisation de la carte:");
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
+//
+//        // Charger une carte Leaflet avec la variable map exposée globalement
+//        String leafletHtml =
+//            "<html>" +
+//                "<head>" +
+//                "    <link rel=\"stylesheet\" href=\"https://unpkg.com/leaflet@1.9.4/dist/leaflet.css\" />" +
+//                "    <script src=\"https://unpkg.com/leaflet@1.9.4/dist/leaflet.js\"></script>" +
+//                "    <style>" +
+//                "        html, body { height: 100%; margin: 0; padding: 0; }" +
+//                "        #map { width: 100%; height: 100%; position: absolute; top: 0; left: 0; }" +
+//                "    </style>" +
+//                "</head>" +
+//                "<body>" +
+//                "    <div id=\"map\"></div>" +
+//                "    <script>" +
+//                "        // Variable globale pour la carte" +
+//                "        var map;" +
+//                "        window.onload = function() {" +
+//                "            console.log('Initialisation de la carte...');" +
+//                "            map = L.map('map').setView([46.227638, 2.213749], 5);" +
+//                "            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {" +
+//                "                attribution: '&copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors'" +
+//                "            }).addTo(map);" +
+//                "            console.log('Carte initialisée et disponible globalement');" +
+//                "            // Informer Java que la carte est prête" +
+//                "            if (window.javaConnector) {" +
+//                "                javaConnector.logMessage('Carte prête');" +
+//                "            }" +
+//                "        };" +
+//                "    </script>" +
+//                "</body>" +
+//                "</html>";
+//
+//        // Configurer l'écouteur d'état
+//        webEngine.getLoadWorker().stateProperty().addListener((obs, oldState, newState) -> {
+//            System.out.println("État du chargement de la carte: " + newState);
+//
+//            if (newState == javafx.concurrent.Worker.State.SUCCEEDED) {
+//                System.out.println("Page HTML chargée avec succès");
+//
+//                try {
+//                    // Créer un pont Java-JavaScript
+//                    JSObject window = (JSObject) webEngine.executeScript("window");
+//                    window.setMember("javaConnector", new MapJavaConnector());
+//
+//                    // Attendre un moment pour s'assurer que la carte est initialisée
+//                    Platform.runLater(() -> {
+//                        try {
+//                            Thread.sleep(1000);  // Attendre 1 seconde
+//                            loadEventsOnMap();
+//                        } catch (InterruptedException e) {
+//                            e.printStackTrace();
+//                        }
+//                    });
+//                } catch (Exception e) {
+//                    System.err.println("Erreur lors de l'initialisation de la carte:");
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
+//
+//        webEngine.loadContent(leafletHtml);
+//    }
+
+    private void initializeMap() {
+        // Configuration du conteneur
+        mapContainer.setStyle("-fx-border-color: #cccccc; -fx-border-width: 1px;");
+        mapContainer.setMinHeight(180);
+        mapContainer.setPrefHeight(180);
+        mapContainer.setMaxHeight(180);
+        mapContainer.setMaxWidth(180);
+        mapContainer.setPrefWidth(180);
+
+        // Créer WebView
+        webView = new WebView();
+        webEngine = webView.getEngine();
+
+        // Configurer WebView
+        webView.setPrefHeight(180);
+        webView.setPrefWidth(180);
+
+        // Ajouter WebView au container
+        mapContainer.getChildren().add(webView);
+
+        // HTML avec marqueurs en forme de cercles colorés
+        String mapHtml =
+            "<html>" +
+                "<head>" +
+                "    <link rel=\"stylesheet\" href=\"https://unpkg.com/leaflet@1.9.4/dist/leaflet.css\" />" +
+                "    <script src=\"https://unpkg.com/leaflet@1.9.4/dist/leaflet.js\"></script>" +
+                "    <style>" +
+                "        body, html, #map { width: 100%; height: 100%; margin: 0; padding: 0; }" +
+                "        .circle-marker { border-radius: 50%; width: 15px; height: 15px; }" +
+                "    </style>" +
+                "</head>" +
+                "<body>" +
+                "    <div id=\"map\"></div>" +
+                "    <script>" +
+                "        var mymap = L.map('map').setView([36.8, 10.18], 9);" +
+                "        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {" +
+                "            attribution: '&copy; OpenStreetMap'" +
+                "        }).addTo(mymap);" +
+                "        " +
+                "        // Fonction pour créer un marqueur circulaire coloré" +
+                "        function createCircleMarker(lat, lng, color, title) {" +
+                "            var circleIcon = L.divIcon({" +
+                "                html: '<div style=\"background-color:' + color + '; width:15px; height:15px; border-radius:50%; border:2px solid white;\"></div>'," +
+                "                className: ''," +
+                "                iconSize: [19, 19]" +
+                "            });" +
+                "            return L.marker([lat, lng], {icon: circleIcon}).addTo(mymap).bindPopup(title);" +
+                "        }" +
+                "        " +
+                "        // Marqueurs colorés" +
+                "        createCircleMarker(36.8, 10.18, '#FF0000', '<b>Tunis</b>');" +
+                "        createCircleMarker(36.4, 10.62, '#00FF00', '<b>Hammamet</b>');" +
+                "        createCircleMarker(37.27, 9.87, '#0000FF', '<b>Bizerte</b>');" +
+                "    </script>" +
+                "</body>" +
+                "</html>";
+
+        webEngine.loadContent(mapHtml);
+    }
+
+    // Méthode de géocodage simplifiée pour les lieux tunisiens
+    private double[] geocodeSimple(String lieu) {
+        if (lieu == null || lieu.trim().isEmpty()) {
+            return null;
+        }
+
+        String normalizedLieu = lieu.trim().toLowerCase();
+        System.out.println("Géocodage de: " + normalizedLieu);
+
+        // Table de correspondance pour les lieux courants
+        HashMap<String, double[]> locations = new HashMap<>();
+        locations.put("tunis", new double[]{36.8, 10.18});
+        locations.put("hammamet", new double[]{36.4, 10.62});
+        locations.put("bizerte", new double[]{37.27, 9.87});
+        locations.put("tabarka", new double[]{36.95, 8.76});
+        locations.put("marsa", new double[]{36.88, 10.32});
+
+        // Vérifier si le lieu contient l'un des mots clés
+        for (String key : locations.keySet()) {
+            if (normalizedLieu.contains(key)) {
+                System.out.println("Lieu reconnu: " + key + " pour " + normalizedLieu);
+                return locations.get(key);
+            }
+        }
+
+        // Pour les lieux non reconnus, générer des coordonnées légèrement décalées de Tunis
+        // (pour les visualiser quand même sur la carte)
+        double randomLat = 36.8 + (Math.random() * 0.1 - 0.05);
+        double randomLng = 10.18 + (Math.random() * 0.1 - 0.05);
+        System.out.println("Lieu non reconnu: " + normalizedLieu + " - coordonnées aléatoires générées");
+        return new double[]{randomLat, randomLng};
+    }
+
+    private void loadEventsOnMap() {
+        try {
+            // Vérifier d'abord si la carte est disponible
+            Boolean mapExists = (Boolean) webEngine.executeScript(
+                "typeof map !== 'undefined' && map !== null"
+            );
+
+            if (!mapExists) {
+                System.out.println("La carte n'est pas encore initialisée, réessai ultérieur...");
+                // Réessayer après un court délai
+                Platform.runLater(() -> {
+                    try {
+                        Thread.sleep(500);
+                        loadEventsOnMap();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                });
+                return;
+            }
+
+            List<Evenement> evenements = serviceEvenement.afficher();
+            System.out.println("Chargement de " + evenements.size() + " événements sur la carte");
+
+            for (Evenement event : evenements) {
+                double[] coordinates = GeocodingService.geocodeAddressWithCache(event.getLieu());
+                if (coordinates != null) {
+                    Boolean success = (Boolean) webEngine.executeScript(
+                        "window.showEventOnMap(" +
+                            coordinates[0] + ", " +
+                            coordinates[1] + ", '" +
+                            escapeJavaScript(event.getNom()) + "', '" +
+                            escapeJavaScript(event.getLieu()) + "')"
+                    );
+                    if (success) {
+                        System.out.println("Marqueur ajouté pour: " + event.getNom());
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Erreur lors du chargement des événements sur la carte");
+            e.printStackTrace();
+        }
+    }
+    // Échapper les caractères spéciaux pour JavaScript
+    private String escapeJavaScript(String str) {
+        if (str == null) return "";
+        return str.replace("\\", "\\\\")
+            .replace("'", "\\'")
+            .replace("\"", "\\\"")
+            .replace("\n", "\\n")
+            .replace("\r", "\\r");
+    }
+
+    public class MapJavaConnector {
+        public void logMessage(String message) {
+            System.out.println("Message reçu de JavaScript: " + message);
+
+            // Si on reçoit le message que la carte est prête, charger les événements
+            if (message.equals("Carte prête")) {
+                Platform.runLater(() -> loadEventsOnMap());
+            }
+        }
+
+        // Méthode appelée depuis JavaScript quand on clique sur un marqueur
+        public void showEventDetails(String eventName) {
+            System.out.println("Demande d'affichage des détails pour: " + eventName);
+            Platform.runLater(() -> showEventDetailsFromMap(eventName));
+        }
+    }
+
+    private void showEventDetailsFromMap(String eventName) {
+        try {
+            List<Evenement> evenements = serviceEvenement.afficher();
+            for (Evenement event : evenements) {
+                if (event.getNom().equals(eventName)) {
+                    showEventDetails(event);
+                    break;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Méthode pour centrer la carte sur un lieu spécifique
+    public void centerMapOnLocation(String location) {
+        double[] coordinates = GeocodingService.geocodeAddressWithCache(location);
+        if (coordinates != null) {
+            webEngine.executeScript(String.format(
+                "centerMap(%f, %f, 13)",
+                coordinates[0], coordinates[1]
+            ));
+        }
+    }
+
     //////////////////////MENU//////////////////////////
     @FXML
     void expandSidebar(MouseEvent event) {
@@ -387,7 +768,6 @@ private Ref ref;
         btnHome.setText("");
         btnHome1.setText("");
     }
-
 
 
     @FXML
