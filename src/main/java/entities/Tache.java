@@ -12,11 +12,12 @@ public class Tache {
     private Evenement evenement;
     private Fournisseur fournisseur;
     private String userAssocie;
+    private float budget; // Ajout de l'attribut budget
 
     public Tache() {}
 
     public Tache(int tacheId, String nom, String description, String statut, Date dateLimite,
-                 Evenement evenement, Fournisseur fournisseur, String priorite, String userAssocie) {
+                 Evenement evenement, Fournisseur fournisseur, String priorite, String userAssocie, float budget) {
         this.tacheId = tacheId;
         this.nom = nom;
         this.description = description;
@@ -26,10 +27,11 @@ public class Tache {
         this.fournisseur = fournisseur;
         this.priorite = priorite;
         this.userAssocie = userAssocie;
+        this.budget = budget;
     }
 
     public Tache(String nom, String description, String statut, Date dateLimite,
-                 Evenement evenement, Fournisseur fournisseur, String priorite, String userAssocie) {
+                 Evenement evenement, Fournisseur fournisseur, String priorite, String userAssocie, float budget) {
         this.nom = nom;
         this.description = description;
         this.statut = statut;
@@ -38,6 +40,7 @@ public class Tache {
         this.fournisseur = fournisseur;
         this.priorite = priorite;
         this.userAssocie = userAssocie;
+        this.budget = budget;
     }
 
     public int getTacheId() {
@@ -112,6 +115,14 @@ public class Tache {
         this.userAssocie = userAssocie;
     }
 
+    public float getBudget() {
+        return budget;
+    }
+
+    public void setBudget(float budget) {
+        this.budget = budget;
+    }
+
     @Override
     public String toString() {
         return "Tache{" +
@@ -124,6 +135,7 @@ public class Tache {
                 ", evenement=" + evenement +
                 ", fournisseur=" + fournisseur +
                 ", userAssocie='" + userAssocie + '\'' +
+                ", budget=" + budget +
                 '}';
     }
 }

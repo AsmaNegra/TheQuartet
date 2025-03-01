@@ -23,6 +23,7 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
+<?import javafx.scene.control.Slider?>
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" styleClass="parent" stylesheets="@styles_new.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AjoutTache">
     <left>
         <!-- Sidebar qui s'étend au survol -->
@@ -217,8 +218,15 @@
                                       <!-- User Associated Dropdown -->
                                 <Label text="Utilisateur Associé:" GridPane.rowIndex="9" />
                                 <ComboBox fx:id="userAssocieComboBox" maxWidth="1.7976931348623157E308" prefHeight="26.0" prefWidth="481.0" GridPane.columnIndex="1" GridPane.rowIndex="9" />
-            
-                                      <!-- Submit Button -->
+                                <!-- Budget Field -->
+                                <Label text="Budget:" GridPane.rowIndex="7" />
+                                <HBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                                    <Label text="DT" />
+                                    <TextField fx:id="budgetField" prefWidth="80" />
+                                    <Slider fx:id="budgetSlider" min="0" max="1000" blockIncrement="50" />
+                                </HBox>
+
+                                <!-- Submit Button -->
                                 <Button fx:id="submitButton" onAction="#handleSubmit" prefHeight="42.0" prefWidth="226.0" styleClass="button_crud" text="Enregistrer" GridPane.columnIndex="1" GridPane.rowIndex="10">
                               <GridPane.margin>
                                  <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />

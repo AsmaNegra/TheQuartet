@@ -91,30 +91,9 @@
     -fx-shape: "";
 }
 
-.task-form Label {
-    -fx-font-size: 14px;
-    -fx-text-fill: #645F71;
-}
-
-.task-form Button {
-    -fx-background-color: #d87769;
-    -fx-text-fill: white;
-    -fx-font-size: 14px;
-    -fx-border-radius: 8px;
-    -fx-background-radius: 8px;
-    -fx-padding: 10px 20px;
-}
-
-.task-form Button:hover {
-    -fx-background-color: #b76458;
-}
-
-.task-form Button:pressed {
-    -fx-background-color: #964d44;
-}
 
 .button_crud {
-    -fx-background-color: #d87769;
+    -fx-background-color: rgba(228, 105, 105, 0.84);
     -fx-text-fill: white;
     -fx-font-size: 14px;
     -fx-font-weight: bold;
@@ -270,7 +249,7 @@
 }
 
 .default-color1.chart-bar {
-    -fx-bar-fill: #FF6B6B; /* Accent Red */
+    -fx-bar-fill: rgba(228, 105, 105, 0.99); /* Accent Red */
 }
 
 /* Bar Hover Effect */
@@ -309,4 +288,190 @@
     -fx-font-size: 14px;
     -fx-font-weight: bold;
     -fx-text-fill: #1E2245;
+}
+/* ✅ Modern Alert Styling */
+.alert {
+    -fx-background-color: white;
+    -fx-border-color: #d87769;
+    -fx-border-width: 2px;
+    -fx-border-radius: 15px;
+    -fx-background-radius: 15px;
+    -fx-padding: 15px;
+}
+
+/* Alert Header */
+.alert .header-panel {
+    -fx-background-color: linear-gradient(to right, #d87769, #b76458);
+    -fx-padding: 10px;
+    -fx-border-radius: 15px 15px 0px 0px;
+}
+
+/* Alert Header Label */
+.alert .header-panel .label {
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+/* Alert Content */
+.alert .content {
+    -fx-font-size: 14px;
+    -fx-text-fill: #5A5F7D;
+}
+
+/* Alert Buttons Styling */
+.alert .button-bar .button {
+    -fx-background-color: #d87769;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-padding: 8px 15px;
+}
+
+.alert .button-bar .button:hover {
+    -fx-background-color: #b76458;
+}
+
+/* Cancel Button Specific */
+.alert .button-bar .button:cancel {
+    -fx-background-color: #E0E3EB;
+    -fx-text-fill: #5A5F7D;
+}
+
+.alert .button-bar .button:cancel:hover {
+    -fx-background-color: #d87769;
+    -fx-text-fill: white;
+}
+
+/* ✅ Styling for GridPane (Form Container) */
+.task-form {
+    -fx-background-color: transparent;
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+    -fx-padding: 20px;
+}
+
+/* Form Labels */
+.task-form Label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #5A5F7D;
+    -fx-font-weight: bold;
+}
+
+/* Form Input Fields */
+.task-form TextField,
+.task-form TextArea,
+.task-form ComboBox,
+.task-form DatePicker {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #E0E3EB;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-padding: 8px;
+    -fx-font-size: 13px;
+}
+
+/* Focus Effect */
+.task-form TextField:focused,
+.task-form TextArea:focused,
+.task-form ComboBox:focused,
+.task-form DatePicker:focused {
+    -fx-border-color: #d87769;
+    -fx-effect: dropshadow(gaussian, rgba(216, 119, 105, 0.3), 10, 0, 0, 0);
+}
+
+/* ✅ Form Buttons */
+.task-form Button {
+    -fx-background-color: #d87769;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-padding: 10px 20px;
+    -fx-font-weight: bold;
+}
+
+.task-form Button:hover {
+    -fx-background-color: #b76458;
+}
+
+.task-form Button:pressed {
+    -fx-background-color: #964d44;
+}
+/* ✅ Styling for Slider Track */
+.slider .track {
+    -fx-background-color: #E0E3EB;
+    -fx-background-radius: 10px;
+    -fx-pref-height: 6px;
+}
+
+/* ✅ Styling for Slider Filled Track */
+.slider .track .filled {
+    -fx-background-color: linear-gradient(to right, #d87769, #b76458);
+    -fx-background-radius: 10px;
+}
+
+/* ✅ Styling for Slider Thumb */
+.slider .thumb {
+    -fx-background-color: #d87769;
+
+    -fx-border-width: 2px;
+    -fx-pref-width: 18px;
+    -fx-pref-height: 18px;
+}
+
+.slider .thumb:hover {
+    -fx-background-color: #b76458;
+}
+
+/* ✅ Styling for Slider Tick Marks */
+.slider .tick-mark {
+    -fx-stroke: #5A5F7D;
+}
+
+.slider .tick-label {
+    -fx-fill: #5A5F7D;
+    -fx-font-size: 12px;
+}
+
+/* ✅ Add Glow Effect on Focus */
+.slider:focused .thumb {
+    -fx-effect: dropshadow(gaussian, rgba(216, 119, 105, 0.5), 10, 0, 0, 0);
+}
+
+.chart-pie-label {
+    -fx-fill: white; /* Couleur du texte à l'intérieur du PieChart */
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+/* ✅ Personnalisation des couleurs des segments du PieChart */
+.default-color0.chart-pie {
+    -fx-pie-color: #FF6B6B; /* Rouge principal */
+}
+.default-color1.chart-pie {
+    -fx-pie-color: rgba(166, 166, 166, 0.16); /* Gris clair */
+}
+.default-color2.chart-pie {
+    -fx-pie-color: #645F71; /* Gris foncé */
+}
+
+
+/* ✅ Personnalisation de la légende */
+.chart-legend {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+}
+
+.chart-legend-item-symbol {
+    -fx-background-radius: 10px;
+    -fx-padding: 5px;
+}
+
+.chart-pie:hover {
+    -fx-opacity: 0.8;
+    -fx-cursor: hand;
 }

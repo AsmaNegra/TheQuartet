@@ -4,6 +4,7 @@
 <?import java.lang.String?>
 <?import javafx.collections.FXCollections?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
@@ -263,7 +264,7 @@
                                          <HBox spacing="10" VBox.vgrow="ALWAYS">
 
                                              <!-- To Do Column -->
-                                             <VBox fx:id="todoColumn" maxWidth="1.7976931348623157E308" prefWidth="250.0" spacing="10" style="-fx-background-color: D87769CD; -fx-padding: 10; -fx-border-radius: 8; -fx-background-radius: 20px 0px 0px 20px; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0.5, 2, 2);">
+                                             <VBox fx:id="todoColumn" maxWidth="1.7976931348623157E308" prefWidth="250.0" spacing="10" style="-fx-background-color: E46969D5; -fx-padding: 10; -fx-border-radius: 8; -fx-background-radius: 20px 0px 0px 20px; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0.5, 2, 2);">
                                                  <Label style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0.5, 2, 2);" text="En Attente" textFill="WHITE">
                                                  <font>
                                                    <Font name="Open Sans Bold" size="18.0" />
@@ -302,7 +303,7 @@
                                  </HBox.margin>
 
                                </AnchorPane>
-                              <VBox maxHeight="500.0" maxWidth="300.0" HBox.hgrow="ALWAYS">
+                              <VBox maxHeight="1.7976931348623157E308" maxWidth="300.0" prefWidth="250.0" HBox.hgrow="ALWAYS">
                                  <HBox.margin>
                                     <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                                  </HBox.margin>
@@ -319,7 +320,7 @@
                                           </Label>
                                        </children>
                                     </HBox>
-                                    <VBox styleClass="widget">
+                                    <VBox maxHeight="1.7976931348623157E308" styleClass="widget">
                                        <VBox.margin>
                                           <Insets top="15.0" />
                                        </VBox.margin>
@@ -334,6 +335,15 @@
                                           </ListView>
                                        </children>
                                     </VBox>
+                                     <PieChart fx:id="budgetPieChart" prefHeight="275.0" prefWidth="250.0" style="-fx-border-color: transparent;">
+                                     <VBox.margin>
+                                          <Insets top="15.0" />
+                                       </VBox.margin>
+                                       <styleClass>
+                                          <String fx:value="chart-container" />
+                                          <String fx:value="widget" />
+                                       </styleClass>
+                                    </PieChart>
                                  </children>
                               </VBox>
                            </children>

@@ -16,11 +16,12 @@ public class ServiceTache implements IService<Tache> {
         connection = MyDataBase.getInstance().getConnection();
     }
 
+
     /** ✅ AJOUTER UNE TÂCHE (sans tacheId) */
     @Override
     public void ajouter(Tache tache) throws SQLException {
-        String sql = "INSERT INTO `tache` (`nom`, `description`, `statut`, `date_limite`, `evenement_id`, `fournisseur_id`, `priorite`, `user_associe`)" +
-                " VALUES (?,?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO `tache` (`nom`, `description`, `statut`, `date_limite`, `evenement_id`, `fournisseur_id`, `priorite`, `user_associe`, `budget`)" +
+                " VALUES (?,?,?,?,?,?,?,?,?)";
 
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         preparedStatement.setString(1, tache.getNom());
@@ -31,6 +32,7 @@ public class ServiceTache implements IService<Tache> {
         preparedStatement.setInt(6, tache.getFournisseur().getFournisseurId());
         preparedStatement.setString(7, tache.getPriorite());
         preparedStatement.setString(8, tache.getUserAssocie());
+        preparedStatement.setFloat(9, tache.getBudget());
 
         preparedStatement.executeUpdate();
         System.out.println("✅ Tâche ajoutée avec succès !");
@@ -39,7 +41,7 @@ public class ServiceTache implements IService<Tache> {
     /** ✅ MODIFIER UNE TÂCHE */
     @Override
     public void modifier(Tache tache) throws SQLException {
-        String sql = "UPDATE `tache` SET `nom` = ?, `description` = ?, `statut` = ?, `date_limite` = ?, `evenement_id` = ?, `fournisseur_id` = ?, `priorite` = ?, `user_associe` = ? " +
+        String sql = "UPDATE `tache` SET `nom` = ?, `description` = ?, `statut` = ?, `date_limite` = ?, `evenement_id` = ?, `fournisseur_id` = ?, `priorite` = ?, `user_associe` = ?, `budget` = ? " +
                 "WHERE `tache_id` = ?";
 
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -51,7 +53,8 @@ public class ServiceTache implements IService<Tache> {
         preparedStatement.setInt(6, tache.getFournisseur().getFournisseurId());
         preparedStatement.setString(7, tache.getPriorite());
         preparedStatement.setString(8, tache.getUserAssocie());
-        preparedStatement.setInt(9, tache.getTacheId());
+        preparedStatement.setDouble(9, tache.getBudget());
+        preparedStatement.setInt(10, tache.getTacheId());
 
         int rowsUpdated = preparedStatement.executeUpdate();
         if (rowsUpdated > 0) {
@@ -59,6 +62,36 @@ public class ServiceTache implements IService<Tache> {
         } else {
             System.out.println("⚠ Tâche non trouvée !");
         }
+    }
+
+    /** ✅ AFFICHER TOUTES LES TÂCHES */
+    @Override
+    public List<Tache> afficher() throws SQLException {
+        List<Tache> taches = new ArrayList<>();
+        String sql = "SELECT * FROM `tache`";
+
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery(sql);
+
+        while (resultSet.next()) {
+            ServiceEvenement serviceEvenement= new ServiceEvenement();
+            ServiceFournisseur serviceFournisseur = new ServiceFournisseur();
+            Tache tache = new Tache(
+                    resultSet.getInt("tache_id"),
+                    resultSet.getString("nom"),
+                    resultSet.getString("description"),
+                    resultSet.getString("statut"),
+                    resultSet.getDate("date_limite"),
+                    serviceEvenement.getEvenementById(resultSet.getInt("evenement_id")),
+                    serviceFournisseur.rechercherParId(resultSet.getInt("fournisseur_id")),
+                    resultSet.getString("priorite"),
+                    resultSet.getString("user_associe"),
+                    resultSet.getFloat("budget")
+            );
+            taches.add(tache);
+        }
+
+        return taches;
     }
 
     /** ✅ SUPPRIMER UNE TÂCHE */
@@ -77,32 +110,7 @@ public class ServiceTache implements IService<Tache> {
         }
     }
 
-    /** ✅ AFFICHER TOUTES LES TÂCHES */
-    @Override
-    public List<Tache> afficher() throws SQLException {
-        List<Tache> taches = new ArrayList<>();
-        String sql = "SELECT * FROM `tache`";
 
-        Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery(sql);
-
-        while (resultSet.next()) {
-            Tache tache = new Tache(
-                    resultSet.getString("nom"),
-                    resultSet.getString("description"),
-                    resultSet.getString("statut"),
-                    resultSet.getDate("date_limite"),
-                    null,
-                    null,
-                    resultSet.getString("priorite"),
-                    resultSet.getString("user_associe")
-            );
-
-            taches.add(tache);
-        }
-
-        return taches;
-    }
 
     /** ✅ AFFICHER LES TÂCHES PAR ÉVÉNEMENT */
     public List<Tache> afficherParEvenement(int evenementId) throws SQLException {
@@ -125,7 +133,8 @@ public class ServiceTache implements IService<Tache> {
                     serviceEvenement.getEvenementById(resultSet.getInt("evenement_id")),
                     serviceFournisseur.rechercherParId(resultSet.getInt("fournisseur_id")),
                     resultSet.getString("priorite"),
-                    resultSet.getString("user_associe")
+                    resultSet.getString("user_associe"),
+                    resultSet.getFloat("budget")
             ));
         }
 
@@ -141,19 +150,20 @@ public class ServiceTache implements IService<Tache> {
 
         PreparedStatement ps = connection.prepareStatement(sql);
         ps.setInt(1, evenementId);
-        ResultSet rs = ps.executeQuery();
+        ResultSet resultSet = ps.executeQuery();
 
-        while (rs.next()) {
+        while (resultSet.next()) {
             taches.add(new Tache(
-                    rs.getInt("tache_id"),
-                    rs.getString("nom"),
-                    rs.getString("description"),
-                    rs.getString("statut"),
-                    rs.getDate("date_limite"),
-                    serviceEvenement.getEvenementById(rs.getInt("evenement_id")),
-                    serviceFournisseur.rechercherParId(rs.getInt("fournisseur_id")),
-                    rs.getString("priorite"),
-                    rs.getString("user_associe")
+                    resultSet.getInt("tache_id"),
+                    resultSet.getString("nom"),
+                    resultSet.getString("description"),
+                    resultSet.getString("statut"),
+                    resultSet.getDate("date_limite"),
+                    serviceEvenement.getEvenementById(resultSet.getInt("evenement_id")),
+                    serviceFournisseur.rechercherParId(resultSet.getInt("fournisseur_id")),
+                    resultSet.getString("priorite"),
+                    resultSet.getString("user_associe"),
+                    resultSet.getFloat("budget")
             ));
         }
 
@@ -181,7 +191,8 @@ public class ServiceTache implements IService<Tache> {
                     serviceEvenement.getEvenementById(rs.getInt("evenement_id")),
                     serviceFournisseur.rechercherParId(rs.getInt("fournisseur_id")),
                     rs.getString("priorite"),
-                    rs.getString("user_associe")
+                    rs.getString("user_associe"),
+                    rs.getFloat("budget")
             ));
         }
 
@@ -209,7 +220,8 @@ public class ServiceTache implements IService<Tache> {
                     serviceEvenement.getEvenementById(rs.getInt("evenement_id")),
                     serviceFournisseur.rechercherParId(rs.getInt("fournisseur_id")),
                     rs.getString("priorite"),
-                    rs.getString("user_associe")
+                    rs.getString("user_associe"),
+                    rs.getFloat("budget")
             ));
         }
 
@@ -261,7 +273,8 @@ public class ServiceTache implements IService<Tache> {
                     serviceEvenement.getEvenementById(resultSet.getInt("evenement_id")),
                     serviceFournisseur.rechercherParId(resultSet.getInt("fournisseur_id")),
                     resultSet.getString("priorite"),
-                    resultSet.getString("user_associe")
+                    resultSet.getString("user_associe"),
+                    resultSet.getFloat("budget")
             );
             taches.add(tache);
         }
@@ -294,7 +307,8 @@ public class ServiceTache implements IService<Tache> {
                     serviceEvenement.getEvenementById(resultSet.getInt("evenement_id")),
                     serviceFournisseur.rechercherParId(resultSet.getInt("fournisseur_id")),
                     resultSet.getString("priorite"),
-                    resultSet.getString("user_associe")
+                    resultSet.getString("user_associe"),
+                    resultSet.getFloat("budget")
             );
             taches.add(tache);
         }
@@ -327,7 +341,8 @@ public class ServiceTache implements IService<Tache> {
                     serviceEvenement.getEvenementById(resultSet.getInt("evenement_id")),
                     serviceFournisseur.rechercherParId(resultSet.getInt("fournisseur_id")),
                     resultSet.getString("priorite"),
-                    resultSet.getString("user_associe")
+                    resultSet.getString("user_associe"),
+                    resultSet.getFloat("budget")
             );
             taches.add(tache);
         }
@@ -357,6 +372,7 @@ public class ServiceTache implements IService<Tache> {
             tache.setDateLimite(rs.getDate("date_limite"));
             tache.setPriorite(rs.getString("priorite"));
             tache.setUserAssocie(rs.getString("user_associe"));
+            tache.setBudget(rs.getFloat("budget"));
             // Note : L'événement et le fournisseur ne sont pas initialisés ici.
             return tache;
         }
@@ -391,7 +407,8 @@ public List<Tache> trierTachesParPriorite(int evenementId) throws SQLException {
                 serviceEvenement.getEvenementById(rs.getInt("evenement_id")),
                 serviceFournisseur.rechercherParId(rs.getInt("fournisseur_id")),
                 rs.getString("priorite"),
-                rs.getString("user_associe")
+                rs.getString("user_associe"),
+                rs.getFloat("budget")
         );
         taches.add(tache);
     }
@@ -418,7 +435,8 @@ public List<Tache> trierTachesParPriorite(int evenementId) throws SQLException {
                     serviceEvenement.getEvenementById(rs.getInt("evenement_id")),
                     serviceFournisseur.rechercherParId(rs.getInt("fournisseur_id")),
                     rs.getString("priorite"),
-                    rs.getString("user_associe")
+                    rs.getString("user_associe"),
+                    rs.getFloat("budget")
             );
             taches.add(tache);
         }
@@ -537,6 +555,34 @@ public int getTachesEnRetardUtilisateur(int utilisateurId) throws SQLException {
         }
 
         return 0.0;
+    }
+    /** ✅ CALCULER LE POURCENTAGE DU BUDGET UTILISÉ PAR RAPPORT À L'ÉVÉNEMENT */
+    public Map<String, Double> calculerBudgetEvenement(int evenementId) throws SQLException {
+        String sql = "SELECT e.budget AS budget_total, COALESCE(SUM(t.budget), 0) AS budget_utilise " +
+                "FROM evenement e " +
+                "LEFT JOIN tache t ON e.evenement_id = t.evenement_id " +
+                "WHERE e.evenement_id = ?";
+
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        preparedStatement.setInt(1, evenementId);
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        Map<String, Double> budgetDetails = new HashMap<>();
+
+        if (resultSet.next()) {
+            double budgetTotal = resultSet.getDouble("budget_total");
+            double budgetUtilise = resultSet.getDouble("budget_utilise");
+
+            double pourcentageUtilise = (budgetTotal > 0) ? (budgetUtilise / budgetTotal) * 100 : 0;
+            double budgetRestant = budgetTotal - budgetUtilise;
+
+            budgetDetails.put("budget_total", budgetTotal);
+            budgetDetails.put("budget_utilise", budgetUtilise);
+            budgetDetails.put("pourcentage_utilise", pourcentageUtilise);
+            budgetDetails.put("budget_restant", budgetRestant);
+        }
+
+        return budgetDetails;
     }
 
     ///////////////////////////////////////////

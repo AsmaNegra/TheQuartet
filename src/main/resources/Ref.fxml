@@ -124,7 +124,7 @@
         </AnchorPane>
     </left>
     <center>
-        <!-- Zone centrale pour le contenu (redirection via changement de scène) -->
+        <!-- Zone centrale pour le contenu -->
         <AnchorPane fx:id="mainContent" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="549.0" prefWidth="843.0" styleClass="pane">
             <children>
                 <ScrollPane hbarPolicy="NEVER" prefHeight="500.0" prefWidth="843.2" styleClass="transparent_bg" stylesheets="@styles.css" vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />

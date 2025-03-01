@@ -118,7 +118,7 @@ public class GeminiClient {
                 Date dateLimite = new Date(); // Date limite par défaut (aujourd'hui)
 
                 // Créer une tâche et l'ajouter à la liste
-                tasks.add(new Tache(taskName, taskDescription, statut, dateLimite, evenement, fournisseur, priorite, "Aucun utilisateur associé"));
+                tasks.add(new Tache(taskName, taskDescription, statut, dateLimite, evenement, fournisseur, priorite, "Aucun utilisateur associé",0));
             }
         }
 

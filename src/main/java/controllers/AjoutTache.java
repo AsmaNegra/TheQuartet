@@ -56,6 +56,11 @@ public class AjoutTache implements Initializable {
     @FXML
     private Label labelUser;
     /////////////////
+    @FXML
+    private TextField budgetField;
+
+    @FXML
+    private Slider budgetSlider;
 
     @FXML
     private DatePicker dateLimitePicker;
@@ -95,6 +100,21 @@ public class AjoutTache implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        // Liaison du slider et du champ texte
+        budgetSlider.valueProperty().addListener((obs, oldVal, newVal) -> {
+            budgetField.setText(String.format("%.0f", newVal.doubleValue()));
+        });
+
+        budgetField.textProperty().addListener((obs, oldVal, newVal) -> {
+            try {
+                double value = Double.parseDouble(newVal);
+                if (value >= budgetSlider.getMin() && value <= budgetSlider.getMax()) {
+                    budgetSlider.setValue(value);
+                }
+            } catch (NumberFormatException ignored) {
+            }
+        });
+
         // Configuration du DatePicker
         dateLimitePicker.setDayCellFactory(picker -> new DateCell() {
             @Override
@@ -106,8 +126,8 @@ public class AjoutTache implements Initializable {
                 }
             }
         });
-
     }
+
 
     private void populateUserAssocieComboBox() {
         ServiceUtilisateurEvenement service = new ServiceUtilisateurEvenement();
@@ -131,13 +151,9 @@ public class AjoutTache implements Initializable {
     @FXML
     void handleSubmit(ActionEvent event) {
         try {
-            // Validation des champs obligatoires
+            // Validation des champs
             if (nomField.getText().isEmpty()) {
                 showAlert("Erreur de validation", "Le nom de la tâche est obligatoire.");
-                return;
-            }
-            if (nomField.getText().length() < 4) {
-                showAlert("Erreur de validation", "Le nom de la tâche doit contenir au moins 4 caractères.");
                 return;
             }
             if (dateLimitePicker.getValue() == null) {
@@ -156,15 +172,12 @@ public class AjoutTache implements Initializable {
                 showAlert("Erreur de validation", "Veuillez sélectionner un utilisateur associé.");
                 return;
             }
-
-            // Vérification que la date limite n'est pas antérieure à aujourd'hui
-            LocalDate selectedDate = dateLimitePicker.getValue();
-            if (selectedDate.isBefore(LocalDate.now())) {
-                showAlert("Erreur de validation", "La date limite ne peut pas être antérieure à aujourd'hui.");
+            if (budgetField.getText().isEmpty() || !budgetField.getText().matches("\\d+")) {
+                showAlert("Erreur de validation", "Veuillez entrer un budget valide.");
                 return;
             }
 
-            // Vérification de l'unicité de la tâche par nom
+            // Vérification de l'unicité de la tâche
             ServiceTache st = new ServiceTache();
             Tache existingTask = st.chercherTacheParNom(nomField.getText());
             if (existingTask != null) {
@@ -172,7 +185,7 @@ public class AjoutTache implements Initializable {
                 return;
             }
 
-            // Création d'un nouvel objet Tache
+            // Création de la tâche
             Tache t = new Tache();
             Evenement ev = new Evenement();
             ev.setEvenement_id(currentEventId);
@@ -181,7 +194,7 @@ public class AjoutTache implements Initializable {
             ServiceFournisseur service = new ServiceFournisseur();
             f.setFournisseurId(service.rechercherIdParNom(fournisseurComboBox.getValue()));
 
-            // Attribution des valeurs des champs
+            // Affectation des valeurs
             t.setNom(nomField.getText());
             t.setDescription(descriptionField.getText().isEmpty() ? null : descriptionField.getText());
             t.setPriorite(prioriteComboBox.getValue());
@@ -189,13 +202,13 @@ public class AjoutTache implements Initializable {
             t.setEvenement(ev);
             t.setFournisseur(f);
             t.setUserAssocie(userAssocieComboBox.getValue());
+            t.setDateLimite(Date.valueOf(dateLimitePicker.getValue()));
+            t.setBudget(Float.parseFloat(budgetField.getText()));
 
-            // Conversion de la date
-            t.setDateLimite(Date.valueOf(selectedDate));
-
-            // Sauvegarde de la tâche
+            // Ajout de la tâche
             st.ajouter(t);
 
+            // Redirection après ajout
             try {
                 Node source = (Node) event.getSource();
                 Integer eventId = this.currentEventId;
@@ -212,6 +225,7 @@ public class AjoutTache implements Initializable {
             throw new RuntimeException(e);
         }
     }
+
 
     private void showAlert(String title, String message) {
         Dialog<ButtonType> errorDialog = new Dialog<>();

@@ -10,6 +10,7 @@ import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -25,13 +26,20 @@ import services.ServiceTache;
 import services.ServiceUtilisateurEvenement;
 
 import java.io.IOException;
+import java.net.URL;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.ResourceBundle;
 
 public class ModifierTache {
 
+    @FXML
+    private TextField budgetField;
+
+    @FXML
+    private Slider budgetSlider;
 
     @FXML
     public Button btnLogout;
@@ -143,13 +151,14 @@ public class ModifierTache {
 
         nomField.setText(task.getNom());
         descriptionField.setText(task.getDescription());
+        budgetField.setText(String.valueOf(task.getBudget()));
+        budgetSlider.setValue(task.getBudget());
 
         // Conversion de la date
         LocalDate localDate = dateLimitePicker.getValue();
         if (localDate != null) {
             task.setDateLimite(Date.valueOf(localDate));
         }
-
         prioriteComboBox.getItems().setAll("Basse", "Moyenne", "Haute");
         prioriteComboBox.setValue(task.getPriorite());
 
@@ -172,6 +181,7 @@ public class ModifierTache {
         }
     }
 
+
     /**
      * ✅ Update Task and Save Changes
      */
@@ -180,27 +190,51 @@ public class ModifierTache {
         if (selectedTask == null) return;
 
         try {
-            int idF = serviceFournisseur.rechercherIdParNom(fournisseurComboBox.getValue());
-            Fournisseur fournisseur = serviceFournisseur.rechercherParId(idF);
-
-            LocalDate localDate = dateLimitePicker.getValue();
-            if (localDate == null) {
-                showAlert("Erreur", "Veuillez sélectionner une date limite valide.");
+            // Validation des champs
+            if (nomField.getText().isEmpty()) {
+                showAlert("Erreur de validation", "Le nom de la tâche est obligatoire.");
+                return;
+            }
+            if (dateLimitePicker.getValue() == null) {
+                showAlert("Erreur de validation", "Veuillez sélectionner une date limite.");
+                return;
+            }
+            if (prioriteComboBox.getValue() == null) {
+                showAlert("Erreur de validation", "Veuillez sélectionner une priorité.");
+                return;
+            }
+            if (statutComboBox.getValue() == null) {
+                showAlert("Erreur de validation", "Veuillez sélectionner un statut.");
+                return;
+            }
+            if (userAssocieComboBox.getValue() == null) {
+                showAlert("Erreur de validation", "Veuillez sélectionner un utilisateur associé.");
+                return;
+            }
+            if (budgetField.getText().isEmpty() || !budgetField.getText().matches("\\d+(\\.\\d{1,2})?")) {
+                showAlert("Erreur de validation", "Veuillez entrer un budget valide.");
                 return;
             }
 
+            // Mise à jour des valeurs de la tâche
             selectedTask.setNom(nomField.getText());
             selectedTask.setDescription(descriptionField.getText());
-            selectedTask.setDateLimite(Date.valueOf(localDate));
+            selectedTask.setDateLimite(Date.valueOf(dateLimitePicker.getValue()));
             selectedTask.setPriorite(prioriteComboBox.getValue());
             selectedTask.setStatut(statutComboBox.getValue());
             selectedTask.setUserAssocie(userAssocieComboBox.getValue());
+            selectedTask.setBudget(Float.parseFloat(budgetField.getText()));
+
+            // Mise à jour du fournisseur
+            int idF = serviceFournisseur.rechercherIdParNom(fournisseurComboBox.getValue());
+            Fournisseur fournisseur = serviceFournisseur.rechercherParId(idF);
             selectedTask.setFournisseur(fournisseur);
 
+            // Modifier la tâche
             serviceTache.modifier(selectedTask);
             System.out.println("✅ Tâche mise à jour avec succès !");
 
-            // Redirect to EventTache screen
+            // Redirection après modification
             goToEventTache(event);
 
         } catch (SQLException e) {
@@ -208,6 +242,7 @@ public class ModifierTache {
             showAlert("Erreur", "Une erreur est survenue lors de la mise à jour.");
         }
     }
+
 
     /**
      * ✅ Redirect to EventTache.fxml
@@ -331,4 +366,23 @@ public class ModifierTache {
     public void handleLogoutClick(ActionEvent event) {
 
     }
+
+    @FXML
+    public void initialize() {
+        // Synchronisation du Slider et du champ Budget
+        budgetSlider.valueProperty().addListener((obs, oldVal, newVal) -> {
+            budgetField.setText(String.format("%.0f", newVal.doubleValue()));
+        });
+
+        budgetField.textProperty().addListener((obs, oldVal, newVal) -> {
+            try {
+                double value = Double.parseDouble(newVal);
+                if (value >= budgetSlider.getMin() && value <= budgetSlider.getMax()) {
+                    budgetSlider.setValue(value);
+                }
+            } catch (NumberFormatException ignored) {
+            }
+        });
+    }
+
 }

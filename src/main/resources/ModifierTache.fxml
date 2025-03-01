@@ -10,6 +10,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -217,8 +218,18 @@
                                             <!-- User Associated Dropdown -->
                                 <Label text="Utilisateur Associé:" GridPane.rowIndex="9" />
                                 <ComboBox fx:id="userAssocieComboBox" prefHeight="26.0" prefWidth="481.0" GridPane.columnIndex="1" GridPane.rowIndex="9" />
-            
-                                            <!-- Submit Button -->
+                                <!-- Champ Budget -->
+                                <Label text="Budget:" GridPane.rowIndex="7" />
+                                <HBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                                    <Label text="DT" />
+                                    <TextField fx:id="budgetField" prefWidth="80" />
+                                    <Slider fx:id="budgetSlider" blockIncrement="50" max="1000" min="0">
+                                 <HBox.margin>
+                                    <Insets top="10.0" />
+                                 </HBox.margin></Slider>
+                                </HBox>
+
+                                <!-- Submit Button -->
                                 <Button fx:id="submitButton" onAction="#updateTask" prefHeight="42.0" prefWidth="254.0" styleClass="button_crud" text="Enregistrer" GridPane.columnIndex="1" GridPane.rowIndex="10">
                               <GridPane.margin>
                                  <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />

@@ -505,7 +505,7 @@ loadChartData();
             String personnalite = serviceTache.analyserPersonnaliteUtilisateur(TacheId);
 
             lblPersonnalite.setText(personnalite);
-            lblPersonnalite.setStyle("-fx-font-size: 18px; -fx-text-fill: #935151; -fx-font-weight: bold; -fx-text-alignment: center;");
+            lblPersonnalite.setStyle("-fx-font-size: 18px; -fx-text-fill: #1b1b1b; -fx-font-weight: bold; -fx-text-alignment: center;");
 
             // 🎨 Appliquer une couleur en fonction de la personnalité
             if (personnalite.contains("🏆")) {

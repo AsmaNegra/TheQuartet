@@ -6,6 +6,8 @@ import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,6 +16,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -33,6 +36,7 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 public class EventTache implements Initializable {
@@ -50,6 +54,8 @@ public class EventTache implements Initializable {
     private Button btnHome;
     @FXML
     private Button btnHome1;
+    @FXML
+    private PieChart budgetPieChart;
 
     @FXML
     private AnchorPane sidebar;
@@ -96,6 +102,7 @@ public class EventTache implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         setupDragAndDrop();
         updateProgressBar();
+        updateBudgetPieChart();
         ListeUtilisateur.setCellFactory(param -> new ListCell<Utilisateur>() {
             @Override
             protected void updateItem(Utilisateur utilisateur, boolean empty) {
@@ -246,8 +253,12 @@ private void loadUtilisateurs() throws SQLException {
             VBox textContainer = new VBox(5);
             Label nameLabel = new Label(task.getNom());
             nameLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14px; -fx-text-fill: #2b2b2b;");
+            nameLabel.setWrapText(true); // ✅ Permet d'afficher le texte en entier
+
             Label descriptionLabel = new Label(task.getDescription() != null ? task.getDescription() : "");
             descriptionLabel.setStyle("-fx-font-size: 12px; -fx-text-fill: #666;");
+            descriptionLabel.setWrapText(true); // ✅ Empêche la coupure du texte
+
             Label assignedLabel = new Label("Assigné à : " + task.getUserAssocie());
             assignedLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 12px;");
 
@@ -259,12 +270,18 @@ private void loadUtilisateurs() throws SQLException {
             } else if ("Basse".equalsIgnoreCase(task.getPriorite())) {
                 textColor = "rgba(0, 128, 0, 0.6)";
             }
-            Label priorityLabel = new Label( task.getPriorite());
+            Label priorityLabel = new Label(task.getPriorite());
             priorityLabel.setStyle("-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: " + textColor + ";");
 
             HBox statusContainer = new HBox(10);
             Label relativeTime = new Label(task.getDateLimite().toString());
             statusContainer.getChildren().addAll(relativeTime, priorityLabel);
+
+            // ✅ Correction ici : Suppression de l'auto-ajout du `budgetContainer`
+            HBox budgetContainer = new HBox(10);
+            Label budgetLabel = new Label("Budget : " + String.format("%.2f", task.getBudget()) + " DT");
+            budgetLabel.setStyle("-fx-font-size: 12px; -fx-text-fill: rgba(102,166,102,0.73); -fx-font-weight: bold;");
+            budgetContainer.getChildren().addAll(budgetLabel);
 
             VBox buttonContainer = new VBox(10);
             Button editButton = new Button();
@@ -274,6 +291,7 @@ private void loadUtilisateurs() throws SQLException {
             editButton.setGraphic(editIcon);
             editButton.setStyle("-fx-background-color: transparent;");
             editButton.setOnAction(event -> modifyTask(task, event));
+
             Button deleteButton = new Button();
             ImageView deleteIcon = new ImageView(new Image(getClass().getResourceAsStream("/images/delete.png")));
             deleteIcon.setFitWidth(13);
@@ -281,8 +299,9 @@ private void loadUtilisateurs() throws SQLException {
             deleteButton.setGraphic(deleteIcon);
             deleteButton.setStyle("-fx-background-color: transparent;");
             deleteButton.setOnAction(event -> deleteTask(task));
+
             buttonContainer.getChildren().addAll(editButton, deleteButton);
-            textContainer.getChildren().addAll(nameLabel, descriptionLabel, assignedLabel, statusContainer);
+            textContainer.getChildren().addAll(nameLabel, descriptionLabel, assignedLabel, statusContainer, budgetContainer);
             taskContainer.getChildren().addAll(textContainer, buttonContainer);
             column.getChildren().add(taskContainer);
 
@@ -296,6 +315,7 @@ private void loadUtilisateurs() throws SQLException {
             });
         }
     }
+
     /** ✅ Met à jour la barre de progression avec une animation fluide */
     private void updateProgressBar() {
         try {
@@ -347,6 +367,7 @@ private void loadUtilisateurs() throws SQLException {
                     serviceTache.modifierEtatTache(draggedTask.getTacheId(), newStatus);
                     loadTasks();
                     updateProgressBar();
+
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -370,15 +391,41 @@ private void loadUtilisateurs() throws SQLException {
             e.printStackTrace();
         }
     }
-
     private void deleteTask(Tache task) {
-        try {
-            serviceTache.supprimer(task.getTacheId());
-            loadTasks();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation de suppression");
+        alert.setHeaderText("Suppression de la tâche");
+        alert.setContentText("Voulez-vous vraiment supprimer la tâche : \"" + task.getNom() + "\" ?");
+        DialogPane dialogPane = alert.getDialogPane();
+        dialogPane.getStylesheets().add(getClass().getResource("/styles.css").toExternalForm());
+        dialogPane.getStyleClass().add("alert");
+        ButtonType buttonYes = new ButtonType("Oui", ButtonBar.ButtonData.OK_DONE);
+        ButtonType buttonNo = new ButtonType("Annuler", ButtonBar.ButtonData.CANCEL_CLOSE);
+        alert.getButtonTypes().setAll(buttonYes, buttonNo);
+
+        alert.showAndWait().ifPresent(response -> {
+            if (response == buttonYes) {
+                try {
+                    serviceTache.supprimer(task.getTacheId());
+                    loadTasks();
+                    Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+                    successAlert.setTitle("Suppression réussie");
+                    successAlert.setHeaderText(null);
+                    successAlert.setContentText("✅ La tâche a été supprimée avec succès !");
+                    successAlert.show();
+                    updateBudgetPieChart();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                    errorAlert.setTitle("Erreur");
+                    errorAlert.setHeaderText("Échec de la suppression");
+                    errorAlert.setContentText("Une erreur s'est produite lors de la suppression de la tâche.");
+                    errorAlert.show();
+                }
+            }
+        });
     }
+
 
     @FXML
     void redirectToAjoutTache(ActionEvent event) {
@@ -575,14 +622,41 @@ private void loadUtilisateurs() throws SQLException {
 //    }
 
     private void deleteFournisseur(Fournisseur fournisseur) {
-        try {
-            ServiceFournisseurEvenement serviceFournisseurEvenement = new ServiceFournisseurEvenement();
-            serviceFournisseurEvenement.desassocierFournisseurDeEvenement(fournisseur.getFournisseurId(),currentEventId);
-            loadFournisseurs();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation de suppression");
+        alert.setHeaderText("Suppression du fournisseur");
+        alert.setContentText("Voulez-vous vraiment désassocier le fournisseur : \"" + fournisseur.getNom() + "\" de cet événement ?");
+        DialogPane dialogPane = alert.getDialogPane();
+        dialogPane.getStylesheets().add(getClass().getResource("/styles.css").toExternalForm());
+        dialogPane.getStyleClass().add("alert");
+        ButtonType buttonYes = new ButtonType("Oui", ButtonBar.ButtonData.OK_DONE);
+        ButtonType buttonNo = new ButtonType("Annuler", ButtonBar.ButtonData.CANCEL_CLOSE);
+        alert.getButtonTypes().setAll(buttonYes, buttonNo);
+
+        alert.showAndWait().ifPresent(response -> {
+            if (response == buttonYes) {
+                try {
+                    ServiceFournisseurEvenement serviceFournisseurEvenement = new ServiceFournisseurEvenement();
+                    serviceFournisseurEvenement.desassocierFournisseurDeEvenement(fournisseur.getFournisseurId(), currentEventId);
+                    loadFournisseurs();
+
+                    Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+                    successAlert.setTitle("Suppression réussie");
+                    successAlert.setHeaderText(null);
+                    successAlert.setContentText("✅ Le fournisseur a été désassocié avec succès !");
+                    successAlert.show();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                    errorAlert.setTitle("Erreur");
+                    errorAlert.setHeaderText("Échec de la suppression");
+                    errorAlert.setContentText("Une erreur s'est produite lors de la désassociation du fournisseur.");
+                    errorAlert.show();
+                }
+            }
+        });
     }
+
 
     // Méthode appelée par l'écran précédent pour initialiser l'événement courant
     public void initEventData(int eventId) {
@@ -605,6 +679,7 @@ private void loadUtilisateurs() throws SQLException {
             loadFournisseurs();
             loadUtilisateurs();
             updateProgressBar();
+            updateBudgetPieChart();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -698,5 +773,47 @@ private void loadUtilisateurs() throws SQLException {
         }
     }
     //////////////////////////////////////////////////////////////////////////
+//////////CHART////////////////////////////////////////////////
+    /** ✅ Met à jour le PieChart avec le budget utilisé/restant */
+    private void updateBudgetPieChart() {
+        try {
+            Map<String, Double> budgetInfos = serviceTache.calculerBudgetEvenement(currentEventId);
 
+            double budgetTotal = budgetInfos.get("budget_total");
+            double budgetUtilise = budgetInfos.get("budget_utilise");
+            double budgetRestant = budgetInfos.get("budget_restant");
+
+            // Vérifier si le budget total est valide
+            if (budgetTotal == 0) {
+                budgetPieChart.setData(FXCollections.observableArrayList(
+                        new PieChart.Data("Aucun budget défini", 1)
+                ));
+                return;
+            }
+
+            // Créer les données du PieChart
+            ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
+                    new PieChart.Data("Budget Utilisé", budgetUtilise),
+                    new PieChart.Data("Budget Restant", budgetRestant)
+            );
+
+            budgetPieChart.setData(pieChartData);
+            budgetPieChart.setTitle("Répartition du Budget");
+
+            // Animation fluide
+            for (PieChart.Data data : budgetPieChart.getData()) {
+                data.getNode().addEventHandler(MouseEvent.MOUSE_ENTERED, event -> {
+                    Tooltip.install(data.getNode(), new Tooltip(
+                            String.format("%s: %.2f DT (%.2f%%)", data.getName(),
+                                    data.getPieValue(),
+                                    (data.getPieValue() / budgetTotal) * 100)
+                    ));
+                });
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+/////////////////////////////////////
 }
