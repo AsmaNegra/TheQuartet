@@ -16,8 +16,8 @@
 }
 
 .sidebar_opt:hover {
-    -fx-fill: #f49617;  /* Couleur orange au survol */
-    -fx-effect: dropshadow(gaussian, rgba(244, 150, 23, 0.3), 10, 0, 0, 0); /* Effet d'ombre */
+    -fx-fill: #d87769;  /* Couleur orange au survol */
+    -fx-effect: dropshadow(gaussian, rgba(216, 119, 105, 0.54), 10, 0, 0, 0); /* Effet d'ombre */
     -fx-scale-x: 1.1;  /* Léger effet de zoom */
     -fx-scale-y: 1.1;
 }
@@ -44,17 +44,17 @@
 }
 
 .plus_btn:hover {
-    -fx-background-color: rgba(244, 150, 23, 0.1);
-    -fx-border-color: #f49617;
-    -fx-effect: dropshadow(gaussian, rgba(244, 150, 23, 0.3), 10, 0, 0, 0);
+    -fx-background-color: rgba(216, 119, 105, 0.54);
+    -fx-border-color: #d87769;
+    -fx-effect: dropshadow(gaussian, rgba(216, 119, 105, 0.54), 10, 0, 0, 0);
 }
 
 .plus_btn:hover .ikonli-font-icon {
-    -fx-fill: #f49617;
+    -fx-fill: #d87769;
 }
 
 .colored_card {
-    -fx-background-color: radial-gradient(focus-angle 78.69deg, focus-distance 40.367%, center 44.6903% 100.0%, radius 86.6972%, rgba(244, 150, 23, 0.93) 0.0%, rgba(255, 255, 255, 0.69) 100.0%);
+    -fx-background-color: radial-gradient(focus-angle 78.69deg, focus-distance 40.367%, center 44.6903% 100.0%, radius 86.6972%, rgb(216, 119, 105) 0.0%, rgba(255, 255, 255, 0.69) 100.0%);
     -fx-border-radius: 20px;
     -fx-background-radius: 20px;
 }
@@ -130,12 +130,12 @@
 
 /* Hover Effects */
 .task-form TextField:hover, .task-form TextArea:hover, .task-form ComboBox:hover, .task-form DatePicker:hover {
-    -fx-border-color: #d4a373;
+    -fx-border-color: rgba(216, 119, 105, 0.54);
 }
 
 /* Focus Effects */
 .task-form TextField:focused, .task-form TextArea:focused, .task-form ComboBox:focused, .task-form DatePicker:focused {
-    -fx-border-color: #f49617;
+    -fx-border-color: #d87769;
     -fx-background-color: rgba(255, 255, 255, 1);
 }
 
@@ -152,12 +152,12 @@
 
 /* Submit Button Hover */
 .task-form Button:hover {
-    -fx-background-color: #dd840e;
+    -fx-background-color: #d87769;
 }
 
 /* Submit Button Pressed */
 .task-form Button:pressed {
-    -fx-background-color: #c36e0b;
+    -fx-background-color: #d87769;
 }
 
 .pane_event {
@@ -179,7 +179,7 @@
 }
 
 .button_crud {
-    -fx-background-color: linear-gradient(to right, rgba(244, 150, 23, 0.65), rgba(255, 166, 75, 0.56));
+    -fx-background-color: linear-gradient(to right, rgba(216, 119, 105, 0.54), rgb(216, 119, 105));
     -fx-text-fill: white;
     -fx-font-size: 14px;
     -fx-font-weight: bold;
@@ -193,7 +193,7 @@
 
 /* Effet au survol */
 .button_crud:hover {
-    -fx-background-color: linear-gradient(to right, #df8626, rgba(225, 134, 42, 0.79));
+    -fx-background-color: linear-gradient(to right, #d87769, rgba(216, 119, 105, 0.54));
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0, 0, 5);
 }
 
@@ -204,7 +204,7 @@
 }
 
 .event-container:hover .colored_card {
-    -fx-effect: dropshadow(gaussian, rgba(244, 150, 23, 0.3), 10, 0.5, 0, 0);
+    -fx-effect: dropshadow(gaussian, rgba(216, 119, 105, 0.54), 10, 0.5, 0, 0);
 }
 
 .event-title {
@@ -222,9 +222,9 @@
 .event-category {
     -fx-font-family: "Montserrat SemiBold";
     -fx-font-size: 14px;
-    -fx-text-fill: #f49617;
+    -fx-text-fill: #d87769;
     -fx-padding: 5px 10px;
-    -fx-background-color: rgba(244, 150, 23, 0.1);
+    -fx-background-color: rgba(216, 119, 105, 0.18);
     -fx-background-radius: 15px;
 }
 
@@ -244,7 +244,7 @@
 }
 
 .scroll-pane .scroll-bar:horizontal .thumb {
-    -fx-background-color: #f49617;
+    -fx-background-color: #d87769;
     -fx-background-radius: 5px;
 }
 
@@ -278,12 +278,12 @@
 }
 
 .event-container:hover {
-    -fx-effect: dropshadow(gaussian, rgba(244, 150, 23, 0.3), 15, 0, 0, 5);
+    -fx-effect: dropshadow(gaussian, rgba(216, 119, 105, 0.54), 15, 0, 0, 5);
     -fx-translate-y: -2;
 }
 
 .button_crud {
-    -fx-background-color: #f49617;
+    -fx-background-color: #d87769;
     -fx-text-fill: white;
     -fx-background-radius: 20;
     -fx-padding: 8 15;
@@ -291,7 +291,7 @@
 }
 
 .button_crud:hover {
-    -fx-background-color: derive(#f49617, -10%);
+    -fx-background-color: derive(#d87769, -10%);
 }
 
 .transparent_bg {
@@ -320,7 +320,7 @@
 }
 
 .category-button {
-    -fx-background-color: #f49617;
+    -fx-background-color: #d87769;
     -fx-text-fill: white;
     -fx-background-radius: 20;
     -fx-padding: 8 20;
@@ -328,7 +328,7 @@
 }
 
 .category-button:hover {
-    -fx-background-color: derive(#f49617, -10%);
+    -fx-background-color: derive(#d87769, -10%);
 }
 
 .event-card {
@@ -339,7 +339,7 @@
 }
 
 .event-card:hover {
-    -fx-effect: dropshadow(gaussian, rgba(244,150,23,0.3), 15, 0, 0, 5);
+    -fx-effect: dropshadow(gaussian, rgba(216, 119, 105, 0.54), 15, 0, 0, 5);
     -fx-translate-y: -2;
 }
 
@@ -368,11 +368,11 @@
 }
 
 .footer-text:hover {
-    -fx-text-fill: #f49617;
+    -fx-text-fill: #d87769;
 }
 
 .category-button {
-    -fx-background-color: #f49617;
+    -fx-background-color: #d87769;
     -fx-text-fill: white;
     -fx-background-radius: 20;
     -fx-padding: 8 15;
@@ -382,11 +382,11 @@
 }
 
 .category-button:hover {
-    -fx-background-color: derive(#f49617, -10%);
+    -fx-background-color: derive(#d87769, -10%);
 }
 
 .category-button-selected {
-    -fx-background-color: derive(#f49617, -20%);
+    -fx-background-color: derive(#d87769, -20%);
 }
 /* Custom Styling for Dialogs */
 .dialog-pane {
@@ -394,7 +394,7 @@
     -fx-border-radius: 0px 0px 10px 10px;
     -fx-background-radius: 0px 0px 10px 10px ;
     -fx-padding: 20px;
-    -fx-effect: dropshadow(gaussian, rgba(244, 150, 23, 0.3), 10, 0, 0, 0);
+    -fx-effect: dropshadow(gaussian, rgba(216, 119, 105, 0.54), 10, 0, 0, 0);
 }
 
 .dialog-text {
@@ -406,7 +406,7 @@
 
 /* 🟠 Confirmation Dialog Buttons */
 .confirm-button {
-    -fx-background-color: #f49617;
+    -fx-background-color: #d87769;
     -fx-text-fill: rgba(255, 255, 255, 0.9);
     -fx-font-size: 14px;
     -fx-font-weight: bold;
@@ -417,12 +417,12 @@
 }
 
 .confirm-button:hover {
-    -fx-background-color: #df8626;
+    -fx-background-color: #d87769;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 5, 0, 0, 2);
 }
 
 .confirm-button:pressed {
-    -fx-background-color: #c36e0b;
+    -fx-background-color: #d87769;
 }
 
 /* 🔴 Error Dialog Buttons */
@@ -451,7 +451,7 @@
     -fx-border-color: #d1d1d1;
     -fx-border-radius: 8px;
     -fx-padding: 5px;
-    -fx-selection-bar: #f49617;
+    -fx-selection-bar: #D87769FF;
 }
 
 .table-view .column-header-background {
@@ -475,7 +475,7 @@
 }
 
 .list-view_user .scroll-bar .thumb {
-    -fx-background-color: rgba(255, 166, 75, 0.6);
+    -fx-background-color: rgba(216, 119, 105, 0.54);
     -fx-background-radius: 30px;
 }
 
@@ -498,21 +498,21 @@
 
 /* 🖱️ Hover Effect for List Cells */
 .list-cell:hover {
-    -fx-background-color: rgba(244, 150, 23, 0.2);
-    -fx-effect: dropshadow(gaussian, rgba(244, 150, 23, 0.3), 5, 0, 0, 2);
+    -fx-background-color: rgba(216, 119, 105, 0.18);
+    -fx-effect: dropshadow(gaussian, rgba(216, 119, 105, 0.54), 5, 0, 0, 2);
     -fx-cursor: hand;
 }
 
 /* 📌 Selected List Cell */
 .list-cell:selected {
-    -fx-background-color: rgba(244, 150, 23, 0.7);
+    -fx-background-color: rgba(216, 119, 105, 0.54);
     -fx-text-fill: white;
     -fx-font-weight: bold;
 }
 
 /* 🔥 Pressed Effect */
 .list-cell:pressed {
-    -fx-background-color: rgba(244, 150, 23, 0.9);
+    -fx-background-color: rgba(216, 119, 105, 0.54);
 }
 
 /* 🌟 Empty ListView (When No Items Are Present) */
@@ -522,7 +522,7 @@
 }
 
 .table-view .column-header {
-    -fx-background-color: linear-gradient(to bottom, #f49617, #e67e22);
+    -fx-background-color: linear-gradient(to bottom, rgba(216, 119, 105, 0.89), #d87769);
     -fx-text-fill: white;
     -fx-font-weight: bold;
 }
@@ -563,17 +563,17 @@
     -fx-border-color: #d1d1d1;
     -fx-border-radius: 8px;
     -fx-padding: 5px;
-    -fx-selection-bar: #f49617;
+    -fx-selection-bar: #d87769;
 }
 
 .table-view .column-header {
-    -fx-background-color: linear-gradient(to bottom, #f49617, #e67e22);
+    -fx-background-color: linear-gradient(to bottom, rgba(216, 119, 105, 0.89), #d87769);
     -fx-text-fill: white;
     -fx-font-weight: bold;
 }
 
 .table-view .table-row-cell:filled:selected {
-    -fx-background-color: #f49617;
+    -fx-background-color: #d87769;
     -fx-text-fill: white;
 }
 
@@ -601,14 +601,14 @@
     -fx-background-color: transparent;
 }
 .transparent_bt:hover{
-    -fx-text-fill: #f49617;
+    -fx-text-fill: #d87769;
 }
 
 .transparent_bt{
     -fx-background-color: transparent;
 }
 .transparent_bt:hover {
-    -fx-text-fill: orange;
+    -fx-text-fill: #d87769;
 }
 
 .transparent_bg{
@@ -626,7 +626,7 @@
 .label.title {
     -fx-font-size: 24px;
     -fx-font-weight: bold;
-    -fx-text-fill: #f49617;
+    -fx-text-fill: #D87769FF;
     -fx-effect: dropshadow(gaussian, rgba(244, 150, 23, 0.3), 4, 0.2, 0, 1);
 }
 
@@ -642,13 +642,13 @@
 }
 
 .text-field:focused, .password-field:focused {
-    -fx-border-color: #f49617;
+    -fx-border-color: #D87769FF;
     -fx-effect: dropshadow(gaussian, rgba(244, 150, 23, 0.2), 4, 0.2, 0, 0);
 }
 
 /* Style des boutons */
 .button {
-    -fx-background-color: #f49617;
+    -fx-background-color: #D87769FF;
     -fx-background-radius: 20px;
     -fx-text-fill: white;
     -fx-font-size: 14px;
@@ -658,21 +658,21 @@
 }
 
 .button:hover {
-    -fx-background-color: derive(#f49617, 10%);
+    -fx-background-color: derive(#D87769FF, 10%);
     -fx-cursor: hand;
 }
 
 .button:pressed {
-    -fx-background-color: derive(#f49617, -10%);
+    -fx-background-color: derive(#D87769FF, -10%);
 }
 
 /* Style du bouton inscription (variante) */
 #btn_inscri {
     -fx-background-color: transparent;
-    -fx-border-color: #f49617;
+    -fx-border-color: #D87769FF;
     -fx-border-width: 2px;
     -fx-border-radius: 20px;
-    -fx-text-fill: #f49617;
+    -fx-text-fill: #D87769FF;
 }
 
 #btn_inscri:hover {
@@ -687,7 +687,7 @@
 }
 
 .hyperlink:hover {
-    -fx-text-fill: #f49617;
+    -fx-text-fill: #D87769FF;
     -fx-underline: true;
 }
 

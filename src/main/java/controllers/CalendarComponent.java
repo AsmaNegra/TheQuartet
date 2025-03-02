@@ -29,17 +29,33 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import static javafx.scene.control.PopupControl.USE_COMPUTED_SIZE;
+import static javafx.scene.control.PopupControl.USE_PREF_SIZE;
+
 public class CalendarComponent {
+
+    public interface DateClickHandler {
+        void filterEventsByDate(LocalDate date, List<Evenement> events);
+        void resetDateFilter();
+    }
+    private DateClickHandler dateClickHandler;
+
+    public void setDateClickHandler(DateClickHandler handler) {
+        this.dateClickHandler = handler;
+    }
 
     @FXML
     private VBox calendarContainer;
 
+    private LocalDate selectedDate = null;
     private YearMonth currentYearMonth;
     private Label monthYearLabel;
     private GridPane calendarGrid;
     private ServiceEvenement serviceEvenement;
 
     private Map<LocalDate, List<Evenement>> eventsByDate = new HashMap<>();
+
+
 
     public CalendarComponent(VBox container, ServiceEvenement service) {
         this.calendarContainer = container;
@@ -57,16 +73,20 @@ public class CalendarComponent {
 
         // Créer la grille du calendrier
         calendarGrid = new GridPane();
-        calendarGrid.setHgap(5);
-        calendarGrid.setVgap(5);
+        calendarGrid.setHgap(0);
+        calendarGrid.setVgap(2);
         calendarGrid.setAlignment(Pos.CENTER);
 
         // Ajouter les composants au conteneur
         calendarContainer.getChildren().clear();
         calendarContainer.getChildren().addAll(header, weekdaysHeader, calendarGrid);
-        calendarContainer.setSpacing(10);
-        calendarContainer.setPadding(new Insets(10));
+        calendarContainer.setSpacing(2);
+        calendarContainer.setPadding(new Insets(0,0,2,0));
         calendarContainer.setStyle("-fx-background-color: white; -fx-background-radius: 10px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);");
+
+        calendarContainer.setPrefWidth(USE_COMPUTED_SIZE);
+        calendarContainer.setMinWidth(USE_PREF_SIZE);
+        calendarContainer.setMaxWidth(Double.MAX_VALUE);
 
         // Charger les événements et remplir le calendrier
         loadEventsForMonth();
@@ -76,7 +96,7 @@ public class CalendarComponent {
     private HBox createCalendarHeader() {
         HBox header = new HBox();
         header.setAlignment(Pos.CENTER);
-        header.setSpacing(20);
+        header.setSpacing(5);
 
         Button prevButton = new Button("<");
         prevButton.setOnAction(e -> {
@@ -91,7 +111,7 @@ public class CalendarComponent {
         });
 
         monthYearLabel = new Label();
-        monthYearLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
+        monthYearLabel.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
         updateMonthYearLabel();
 
         header.getChildren().addAll(prevButton, monthYearLabel, nextButton);
@@ -101,14 +121,14 @@ public class CalendarComponent {
     private HBox createWeekdaysHeader() {
         HBox weekdays = new HBox();
         weekdays.setAlignment(Pos.CENTER);
-        weekdays.setSpacing(20);
+        weekdays.setSpacing(5);
 
         // Ajouter les labels des jours de la semaine (S, M, T, W, T, F, S)
         String[] days = {"D", "L", "M", "M", "J", "V", "S"};
         for (String day : days) {
             Label dayLabel = new Label(day);
             dayLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #777777;");
-            dayLabel.setPrefWidth(30);
+            dayLabel.setPrefWidth(20);
             dayLabel.setAlignment(Pos.CENTER);
             weekdays.getChildren().add(dayLabel);
         }
@@ -133,29 +153,28 @@ public class CalendarComponent {
         try {
             List<Evenement> allEvents = serviceEvenement.afficher();
 
-            // Format pour extraire la date
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            // Date actuelle pour comparer
+            Date now = new Date();
 
             for (Evenement event : allEvents) {
-                // Pour la date de début
-                Date startDate = event.getDate_debut();
-                if (startDate != null) {
-                    LocalDate localStartDate = startDate.toInstant()
-                        .atZone(ZoneId.systemDefault())
-                        .toLocalDate();
+                // Vérifier si l'événement n'est pas terminé (date de fin dans le futur)
+                if (event.getDate_fin().after(now)) {
+                    // Pour la date de début
+                    Date startDate = event.getDate_debut();
+                    if (startDate != null) {
+                        LocalDate localStartDate = startDate.toInstant()
+                            .atZone(ZoneId.systemDefault())
+                            .toLocalDate();
 
-                    // Si l'événement commence dans le mois courant
-                    if (localStartDate.getYear() == currentYearMonth.getYear() &&
-                        localStartDate.getMonthValue() == currentYearMonth.getMonthValue()) {
+                        // Si l'événement commence dans le mois courant
+                        if (localStartDate.getYear() == currentYearMonth.getYear() &&
+                            localStartDate.getMonthValue() == currentYearMonth.getMonthValue()) {
 
-                        eventsByDate.computeIfAbsent(localStartDate, k -> new ArrayList<>()).add(event);
+                            eventsByDate.computeIfAbsent(localStartDate, k -> new ArrayList<>()).add(event);
+                        }
                     }
                 }
-
-                // On pourrait aussi gérer les événements qui s'étendent sur plusieurs jours
-                // en ajoutant des entrées pour chaque jour de l'événement
             }
-
         } catch (SQLException e) {
             System.err.println("Erreur lors du chargement des événements : " + e.getMessage());
         }
@@ -212,28 +231,34 @@ public class CalendarComponent {
     }
 
     private void addDayCell(int day, int row, int col, boolean isOtherMonth, LocalDate date) {
-        VBox cell = new VBox(5);
+        VBox cell = new VBox(2);
         cell.setAlignment(Pos.CENTER);
-        cell.setPadding(new Insets(5));
-        cell.setPrefSize(40, 40);
+        cell.setPadding(new Insets(0));
+        cell.setPrefSize(25, 25);
 
         // Label pour le jour
         Label dayLabel = new Label(String.valueOf(day));
+        dayLabel.setStyle("-fx-font-size: 11px;");
 
-        // Vérifier si c'est aujourd'hui
+        // Vérifier si c'est aujourd'hui ou la date sélectionnée
         boolean isToday = date.equals(LocalDate.now());
+        boolean isSelected = date.equals(selectedDate);
 
         // Style de base
         String baseStyle = "-fx-background-radius: 20px;";
 
-        if (isOtherMonth) {
+        if (isSelected) {
+            // Date sélectionnée (priorité la plus haute)
+            dayLabel.setStyle("-fx-text-fill: white; -fx-font-weight: bold;");
+            cell.setStyle(baseStyle + "-fx-background-color: #d87769;"); // Rouge-orange comme sur votre capture
+        } else if (isOtherMonth) {
             // Jour d'un autre mois
             dayLabel.setStyle("-fx-text-fill: #AAAAAA;");
             cell.setStyle(baseStyle + "-fx-background-color: #FFFFFF;");
         } else if (isToday) {
             // Aujourd'hui
             dayLabel.setStyle("-fx-text-fill: white; -fx-font-weight: bold;");
-            cell.setStyle(baseStyle + "-fx-background-color: #007BFF;");
+            cell.setStyle(baseStyle + "-fx-background-color: #11123c;");
         } else {
             // Jour normal du mois courant
             dayLabel.setStyle("-fx-text-fill: #000000;");
@@ -242,7 +267,7 @@ public class CalendarComponent {
             // Vérifier si ce jour a des événements
             if (eventsByDate.containsKey(date)) {
                 // Marqueur d'événement
-                Circle eventMarker = new Circle(3, Color.ORANGE);
+                Circle eventMarker = new Circle(3, Color.web("#d87769"));
                 cell.getChildren().add(eventMarker);
 
                 // Ajouter l'info-bulle avec les noms des événements
@@ -255,23 +280,52 @@ public class CalendarComponent {
                 javafx.scene.control.Tooltip eventTooltip = new javafx.scene.control.Tooltip(tooltip.toString());
                 javafx.scene.control.Tooltip.install(cell, eventTooltip);
 
-                // Ajouter l'action de clic pour afficher les détails
-                cell.setOnMouseClicked(e -> showEventsForDate(date));
-                cell.setStyle(baseStyle + "-fx-background-color: #F0F8FF; -fx-cursor: hand;");
+                cell.setStyle(cell.getStyle() + " -fx-cursor: hand;");
+
+                // Appliquer un style légèrement différent pour les jours avec événements
+                if (!isSelected) { // Ne pas écraser le style si déjà sélectionné
+                    cell.setStyle(baseStyle + "-fx-background-color: #F0F8FF; -fx-cursor: hand;");
+                }
             }
         }
 
         cell.getChildren().add(0, dayLabel);
 
-        // Permettre à l'utilisateur de cliquer sur une date pour voir ou ajouter des événements
+        // Permettre à l'utilisateur de cliquer sur une date
+        cell.setStyle(cell.getStyle() + " -fx-cursor: hand;");
         cell.setOnMouseClicked(e -> dateClicked(date));
 
         calendarGrid.add(cell, col, row);
     }
 
+    public void clearSelection() {
+        selectedDate = null;
+        populateCalendar();
+    }
+
+
     private void dateClicked(LocalDate date) {
-        // Ici vous pouvez implémenter l'action lors du clic sur une date
-        System.out.println("Date cliquée: " + date);
+        // Mettre à jour la date sélectionnée
+        selectedDate = date;
+
+        // Rafraîchir l'affichage du calendrier pour montrer la sélection
+        populateCalendar();
+
+        // Vérifier si cette date a des événements
+        if (eventsByDate.containsKey(date)) {
+            // Récupérer les événements pour cette date
+            List<Evenement> eventsForDate = eventsByDate.get(date);
+
+            // Appeler la méthode de filtrage dans le contrôleur principal
+            if (dateClickHandler != null) {
+                dateClickHandler.filterEventsByDate(date, eventsForDate);
+            }
+        } else {
+            // Si pas d'événements, réinitialiser le filtre
+            if (dateClickHandler != null) {
+                dateClickHandler.resetDateFilter();
+            }
+        }
     }
 
     private void showEventsForDate(LocalDate date) {

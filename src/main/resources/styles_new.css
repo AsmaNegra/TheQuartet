@@ -140,6 +140,16 @@
     -fx-background-radius: 20;
     -fx-padding: 8 15;
 }
+.avis-button {
+    -fx-background-color: #11123c;
+    -fx-text-fill: white;
+    -fx-background-radius: 20;
+    -fx-padding: 8 20;
+    -fx-cursor: hand;
+}
+.avis-button:hover {
+    -fx-background-color: rgba(17, 18, 60, 0.6);
+}
 
 .category-button {
     -fx-background-color: #d87769;
@@ -150,7 +160,7 @@
 }
 
 .category-button:hover {
-    -fx-background-color: #b76458;
+    -fx-background-color: rgba(216, 119, 105, 0.82);
 }
 
 .categories-container .button {
@@ -441,7 +451,9 @@
     -fx-border-radius: 10px;
     -fx-background-radius: 10px;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);
-    -fx-padding: 10px;
+    -fx-padding: 0px;
+    -fx-border-insets: 0;
+    -fx-background-insets: 0;
 }
 
 .day-cell {
@@ -475,7 +487,7 @@
 }
 
 .event-marker {
-    -fx-fill: #FF9800;
+    -fx-fill: #d87769;
 }
 
 .calendar-header {
@@ -510,4 +522,49 @@
     -fx-text-fill: #777777;
     -fx-pref-width: 30px;
     -fx-alignment: center;
+}
+.clear-filter-button {
+    -fx-background-color: rgb(216, 119, 105);
+    -fx-background-radius: 15px;
+    -fx-padding: 3 5;
+    -fx-cursor: hand;
+}
+
+.clear-filter-button:hover {
+    -fx-background-color: rgba(216, 119, 105, 0.54);
+    -fx-background-radius: 3px;
+}
+
+.past-event-card {
+    -fx-background-color: rgba(255, 255, 255, 0.9);
+    -fx-background-radius: 8px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 1);
+    -fx-border-color: #e0e0e0;
+    -fx-border-radius: 8px;
+}
+
+.past-event-date {
+    -fx-text-fill: #d87769;
+    -fx-font-style: italic;
+}
+
+.archive-button {
+    -fx-background-color: #11123c;
+    -fx-text-fill: white;
+    -fx-background-radius: 4px;
+    -fx-padding: 5 10;
+    -fx-cursor: hand;
+}
+
+.details-button {
+    -fx-background-color: #d87769;
+    -fx-text-fill: white;
+    -fx-background-radius: 4px;
+    -fx-padding: 5 10;
+    -fx-cursor: hand;
+}
+
+.past-events-container {
+    -fx-padding: 10px;
+    -fx-background-color: transparent;
 }

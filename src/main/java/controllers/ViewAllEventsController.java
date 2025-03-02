@@ -28,10 +28,11 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.HashMap;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import javafx.scene.web.WebEngine;
@@ -41,7 +42,7 @@ import javafx.scene.layout.VBox;
 import netscape.javascript.JSObject;
 import services.GeocodingService;
 
-public class ViewAllEventsController implements Initializable {
+public class ViewAllEventsController implements Initializable, CalendarComponent.DateClickHandler {
     @FXML
     private Button btnSitemap;
     @FXML
@@ -63,6 +64,14 @@ public class ViewAllEventsController implements Initializable {
     private Button selectedCategoryButton = null;
     @FXML
     private VBox mapContainer;
+    @FXML
+    private Label activeFilterLabel;
+    @FXML
+    private Button clearFilterButton;
+    @FXML
+    private HBox pastEventsContainer;
+    @FXML
+    private HBox filterContainer;
 
     private WebView webView;
     private WebEngine webEngine;
@@ -71,38 +80,23 @@ public class ViewAllEventsController implements Initializable {
     // Ajoutez cette déclaration FXML
     @FXML
     private VBox calendarContainer;
+    @FXML
+    private HBox DateFilterLabel;
 
     // Ajoutez une variable membre
     private CalendarComponent calendar;
 
-//    @Override
-//    public void initialize(URL url, ResourceBundle rb) {
-//        loadCategories();
-//        System.out.println("hello");
-//        loadEvents();
-//        initializeMap();
-//        // Configuration du TilePane
-//        eventsContainer.setPrefColumns(2); // 2 colonnes
-//        eventsContainer.setHgap(20); // Espacement horizontal
-//        eventsContainer.setVgap(20); // Espacement vertical
-//
-//        //écouteur sur le champ de recherche
-//        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
-//            filterEventsByName(newValue); // Filtrer les événements en temps réel
-//        });
-//    }
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        System.out.println("Début initialisation...");
-
-        // Charger les catégories d'abord (cela n'interagit pas avec la carte)
         loadCategories();
-
+        if (filterContainer != null) {
+            filterContainer.setVisible(false);
+        }
         // Configurer le TilePane
         eventsContainer.setPrefColumns(2);
-        eventsContainer.setHgap(20);
-        eventsContainer.setVgap(20);
+        eventsContainer.setHgap(15);
+        eventsContainer.setVgap(15);
 
         initializeCalendar();
 
@@ -116,18 +110,29 @@ public class ViewAllEventsController implements Initializable {
 
         // Charger les événements
         loadEvents();
+        Platform.runLater(() -> {
+            try {
+                loadPastEvents();
+            } catch (Exception e) {
+                System.out.println("Error loading past events: " + e.getMessage());
+                e.printStackTrace();
+            }
+        });
 
-        System.out.println("Fin initialisation.");
     }
 
     private void loadEvents() {
         String searchText = searchField.getText(); // Récupérer le texte de recherche
         filterEventsByName(searchText); // Filtrer les événements
+
+        Date now = new Date();
         try {
             eventsContainer.getChildren().clear();
             List<Evenement> evenements = serviceEvenement.afficher();
             for (Evenement event : evenements) {
-                createEventCard(event);
+                if(event.getDate_fin().after(now)) {
+                    createEventCard(event);
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -222,9 +227,10 @@ public class ViewAllEventsController implements Initializable {
 //            }
 
             List<Evenement> evenements = serviceEvenement.afficher();
+            Date now = new Date();
 
             for (Evenement event : evenements) {
-                if (event.getCategorie().equals(category) || category.equals("Tous")) {
+                if (event.getCategorie().equals(category) || category.equals("Tous") && event.getDate_fin().after(now)) {
                     // Ajouter la carte d'événement
                     createEventCard(event);
 
@@ -419,9 +425,11 @@ public class ViewAllEventsController implements Initializable {
             // }
 
             List<Evenement> evenements = serviceEvenement.afficher();
+            Date now = new Date();
+
 
             for (Evenement event : evenements) {
-                if (event.getNom().toLowerCase().contains(searchText.toLowerCase())) {
+                if (event.getNom().toLowerCase().contains(searchText.toLowerCase()) && event.getDate_fin().after(now)) {
                     // Ajouter la carte d'événement
                     createEventCard(event);
 
@@ -723,6 +731,8 @@ public class ViewAllEventsController implements Initializable {
             .replace("\r", "\\r");
     }
 
+
+
     public class MapJavaConnector {
         public void logMessage(String message) {
             System.out.println("Message reçu de JavaScript: " + message);
@@ -767,7 +777,9 @@ public class ViewAllEventsController implements Initializable {
 
     private void initializeCalendar() {
         if (calendarContainer != null) {
+
             calendar = new CalendarComponent(calendarContainer, serviceEvenement);
+            calendar.setDateClickHandler(this);
         }
     }
 
@@ -777,6 +789,249 @@ public class ViewAllEventsController implements Initializable {
             calendar.refreshCalendar();
         }
     }
+
+    @FXML
+    private void clearFilter() {
+        resetDateFilter();
+        clearFilterButton.setVisible(false);
+
+        if(calendar != null){
+            calendar.clearSelection();
+        }
+
+        // Si un bouton de catégorie est sélectionné, le désélectionner
+        if (selectedCategoryButton != null && !selectedCategoryButton.getText().equals("Tous")) {
+            // Trouver et sélectionner le bouton "Tous"
+            for (Node node : categoriesContainer.getChildren()) {
+                if (node instanceof Button && ((Button) node).getText().equals("Tous")) {
+                    updateSelectedButton((Button) node);
+                    break;
+                }
+            }
+        }
+    }
+
+    @Override
+    public void filterEventsByDate(LocalDate date, List<Evenement> events) {
+        // Filtre les événements par date
+        eventsContainer.getChildren().clear();
+
+        for (Evenement event : events) {
+            createEventCard(event);
+        }
+
+        // Mettre à jour l'indication de filtre
+        if (activeFilterLabel != null) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            activeFilterLabel.setText("Événements du " + date.format(formatter));
+            activeFilterLabel.setVisible(true);
+        }
+
+        // Rendre le conteneur et le bouton visibles
+        if (filterContainer != null) {
+            filterContainer.setVisible(true);
+        }
+
+        if (clearFilterButton != null) {
+            clearFilterButton.setVisible(true);
+        }
+    }
+    @Override
+    public void resetDateFilter() {
+        // Réinitialiser le filtre et afficher tous les événements
+        loadEvents();
+
+        // Masquer l'indication de filtre et le conteneur
+        if (activeFilterLabel != null) {
+            activeFilterLabel.setVisible(false);
+        }
+
+        if (filterContainer != null) {
+            filterContainer.setVisible(false);
+        }
+
+        if (clearFilterButton != null) {
+            clearFilterButton.setVisible(false);
+        }
+    }
+
+
+    private void loadPastEvents() {
+        try {
+            // Utilisez le HBox pastEventsContainer
+            if (pastEventsContainer == null) return;
+
+            pastEventsContainer.getChildren().clear();
+
+            // Date actuelle
+            Timestamp now = new Timestamp(System.currentTimeMillis());
+
+            // Date une semaine dans le passé
+            Calendar cal = Calendar.getInstance();
+            cal.setTimeInMillis(now.getTime());
+            cal.add(Calendar.DAY_OF_YEAR, -7);
+            Timestamp oneWeekAgo = new Timestamp(cal.getTimeInMillis());
+
+            List<Evenement> allEvents = serviceEvenement.afficher();
+            int eventsAdded = 0;
+
+            for (Evenement event : allEvents) {
+                // Vérifier si l'événement est terminé mais pas plus vieux qu'une semaine
+                if (event.getDate_fin().before(now) && event.getDate_fin().after(oneWeekAgo)) {
+                    // Créer une carte pour cet événement passé - maintenant elle sera affichée horizontalement
+                    VBox pastEventCard = createPastEventCard(event);
+                    pastEventsContainer.getChildren().add(pastEventCard);
+                    eventsAdded++;
+                }
+            }
+
+            System.out.println("Added " + eventsAdded + " past events to the container");
+        } catch (Exception e) {
+            System.out.println("Error in loadPastEvents: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    // Méthode pour créer une carte d'événement passé
+    private VBox createPastEventCard(Evenement event) {
+        // Créer deux cartes séparées au lieu d'essayer de les flip
+        VBox frontCard = new VBox(10);
+        frontCard.getStyleClass().add("event-card");
+        frontCard.setPrefWidth(200);  // Taille réduite pour past events
+        frontCard.setPrefHeight(220); // Taille réduite pour past events
+        frontCard.setPadding(new Insets(10));
+        frontCard.setStyle("-fx-background-color: #ffffff; -fx-effect: dropshadow(gaussian, rgb(17,18,60), 10, 0, 0, 2);");
+
+        VBox backCard = new VBox(10);
+        backCard.getStyleClass().add("event-card");
+        backCard.setPrefWidth(200);  // Même taille que frontCard
+        backCard.setPrefHeight(220); // Même taille que frontCard
+        backCard.setPadding(new Insets(10));
+        backCard.setAlignment(Pos.CENTER);
+        backCard.setStyle("-fx-background-color: #ffffff; -fx-effect: dropshadow(gaussian, rgb(17,18,60), 10, 0, 0, 2);");
+        backCard.setVisible(false); // Commencer avec le dos invisible
+
+        // Container pour les deux cartes
+        StackPane cardContainer = new StackPane();
+        cardContainer.getChildren().addAll(frontCard, backCard);
+        cardContainer.setPrefWidth(200);
+        cardContainer.setPrefHeight(220);
+
+        // * Face avant *
+        // Image
+        try {
+            if (event.getImage_event() != null && !event.getImage_event().isEmpty()) {
+                String projectPath = System.getProperty("user.dir");
+                String fullPath = projectPath + "/src/main/resources/" + event.getImage_event();
+                File file = new File(fullPath);
+                if (file.exists()) {
+                    ImageView imageView = new ImageView(new Image(file.toURI().toString()));
+                    imageView.setFitWidth(180);
+                    imageView.setFitHeight(100);
+                    imageView.setPreserveRatio(true);
+                    frontCard.getChildren().add(imageView);
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("Erreur de chargement d'image: " + e.getMessage());
+        }
+
+        // Informations de l'événement (face avant)
+        Label titleLabel = new Label(event.getNom());
+        titleLabel.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
+        titleLabel.setWrapText(true);
+        titleLabel.setMaxWidth(180);
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+
+        // Date de fin
+        Label dateFinLabel = new Label("Terminé le: " + dateFormat.format(event.getDate_fin()));
+        dateFinLabel.getStyleClass().add("past-event-date");
+        dateFinLabel.setWrapText(true);
+        dateFinLabel.setMaxWidth(180);
+
+        // Lieu
+        Label lieuLabel = new Label("Lieu: " + event.getLieu());
+        lieuLabel.setWrapText(true);
+        lieuLabel.setMaxWidth(180);
+
+        // Catégorie
+        Label categorieLabel = new Label("Catégorie: " + event.getCategorie());
+        categorieLabel.setStyle("-fx-text-fill: #d87769;");
+        categorieLabel.setWrapText(true);
+        categorieLabel.setMaxWidth(180);
+
+        // Ajouter tous les éléments à la face avant
+        frontCard.getChildren().addAll(
+            titleLabel,
+            dateFinLabel,
+            lieuLabel,
+            categorieLabel
+        );
+
+        // * Face arrière *
+        // Titre sur la face arrière
+        Label backTitle = new Label(event.getNom());
+        backTitle.setStyle("-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #d87769;");
+        backTitle.setWrapText(true);
+        backTitle.setAlignment(Pos.CENTER);
+        backTitle.setMaxWidth(180);
+
+        // Description abrégée sur la face arrière
+        ScrollPane scrollDescription = new ScrollPane();
+        scrollDescription.setFitToWidth(true);
+        scrollDescription.setPrefHeight(100); // Plus petite que les événements actifs
+        scrollDescription.setStyle("-fx-background: transparent; -fx-background-color: transparent;");
+
+        // On limite la description à un nombre raisonnable de caractères
+        String descText = event.getDescription();
+        if (descText != null && descText.length() > 150) {
+            descText = descText.substring(0, 147) + "...";
+        }
+
+        Label descriptionLabel = new Label(descText);
+        descriptionLabel.setStyle("-fx-text-fill: #11123c;");
+        descriptionLabel.setWrapText(true);
+        descriptionLabel.setPadding(new Insets(5));
+
+        scrollDescription.setContent(descriptionLabel);
+
+        // Boutons
+        Button detailsButton = new Button("Voir détails");
+        detailsButton.getStyleClass().add("category-button");
+        detailsButton.setStyle("-fx-background-color: #d87769; -fx-text-fill: white;");
+        detailsButton.setOnAction(e -> showEventDetails(event));
+
+        // Bouton Archiver (préparé pour une utilisation future)
+        Button archiveButton = new Button("Voir les avis");
+        archiveButton.getStyleClass().add("avis-button");
+        archiveButton.setStyle("-fx-background-color: #11123c; -fx-text-fill: white;");
+
+        // Ajouter tous les éléments à la face arrière
+        backCard.getChildren().addAll(
+            backTitle,
+            new Separator(),
+            scrollDescription,
+            new Separator(),
+            detailsButton,
+            archiveButton
+        );
+
+        // Gestionnaires d'événements pour le survol
+        cardContainer.setOnMouseEntered(e -> {
+            frontCard.setVisible(false);
+            backCard.setVisible(true);
+        });
+
+        cardContainer.setOnMouseExited(e -> {
+            frontCard.setVisible(true);
+            backCard.setVisible(false);
+        });
+
+        // Retourner le StackPane directement
+        return new VBox(cardContainer);
+    }
+
 
     //////////////////////MENU//////////////////////////
     @FXML
