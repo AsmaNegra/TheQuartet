@@ -18,10 +18,13 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import services.ServiceFournisseur;
+import utils.GeoLocator;
 
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AjoutFournisseur {
 
@@ -45,6 +48,47 @@ public class AjoutFournisseur {
     private AnchorPane sidebar;
 
     private File selectedFile;
+    private String indicatifPays;
+    @FXML
+    private Label indicatifLabel;
+    // 📌 Base des longueurs de numéros valides par pays
+    private static final Map<String, Integer> numLengthByCountry = new HashMap<>();
+
+    static {
+        numLengthByCountry.put("+33", 9);  // France
+        numLengthByCountry.put("+1", 10);  // USA, Canada
+        numLengthByCountry.put("+49", 10); // Allemagne
+        numLengthByCountry.put("+216", 8); // Tunisie
+        numLengthByCountry.put("+39", 10); // Italie
+        numLengthByCountry.put("+44", 10); // Royaume-Uni
+        numLengthByCountry.put("+34", 9);  // Espagne
+        numLengthByCountry.put("+212", 9); // Maroc
+        numLengthByCountry.put("+213", 9); // Algérie
+        numLengthByCountry.put("+32", 9);  // Belgique
+        numLengthByCountry.put("+41", 9);  // Suisse
+        numLengthByCountry.put("+31", 9);  // Pays-Bas
+    }
+
+    public void initialize() {
+        indicatifPays = GeoLocator.getDialCode();
+        indicatifLabel.setText( indicatifPays);
+        }
+
+    private boolean validatePhoneNumber() {
+        String phone = numTelField.getText();
+        if (!phone.matches("\\d+")) {
+            showAlert("Numéro invalide", "Le numéro doit contenir uniquement des chiffres.");
+            return false;
+        }
+
+        int expectedLength = numLengthByCountry.getOrDefault(indicatifPays, 8);
+        if (phone.length() != expectedLength) {
+            showAlert("Longueur incorrecte", "Le numéro doit contenir " + expectedLength + " chiffres.");
+            return false;
+        }
+
+        return true;
+    }
 
     @FXML
     void expandSidebar(MouseEvent event) {
@@ -160,6 +204,8 @@ public class AjoutFournisseur {
             showAlert("Numéro invalide", "Le numéro de téléphone doit contenir uniquement des chiffres et avoir une longueur valide (8-15 caractères).");
             return false;
         }
+        if (!validatePhoneNumber()) return false;
+
         return true;
     }
 

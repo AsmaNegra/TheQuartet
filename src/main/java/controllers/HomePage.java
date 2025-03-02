@@ -18,7 +18,7 @@ public class HomePage extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/Ref.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("/EvenementAll.fxml"));
             Scene scene = new Scene(root);
             primaryStage.setScene(scene);
             primaryStage.show();

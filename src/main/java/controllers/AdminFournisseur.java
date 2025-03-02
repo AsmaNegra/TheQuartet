@@ -164,7 +164,6 @@ public class AdminFournisseur implements Initializable {
             e.printStackTrace();
         }
     }
-    //////////////////MENU////////////////////////
 
     @FXML
     void expandSidebar(MouseEvent event) {
@@ -176,8 +175,7 @@ public class AdminFournisseur implements Initializable {
         expandTimeline.play();
 
         // Set the text for each button
-        btnSitemap.setText("Mes evenements");
-        btnGift.setText("Admin");
+        btnSitemap.setText("Les Fournisseurs");
         btnHome.setText("Tous les evenements");
         btnHome1.setText("My Account");
         btnLogout.setText("Logout");
@@ -204,18 +202,7 @@ public class AdminFournisseur implements Initializable {
 
 
 
-    @FXML
-    void handleGiftClick(ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AdminFournisseur.fxml"));
-            Parent root = loader.load();
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+
 
     @FXML
     void handleHomeClick(ActionEvent event) {
@@ -223,7 +210,7 @@ public class AdminFournisseur implements Initializable {
 
             // FXMLLoader loader = new FXMLLoader(getClass().getResource("/Ref.fxml"));
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ViewAllEvents.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/EvenementAll.fxml"));
 
             Parent root = loader.load();
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -238,7 +225,7 @@ public class AdminFournisseur implements Initializable {
     @FXML
     void handleSitemapClick(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/EventOrganisation.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AdminFournisseur.fxml"));
             Parent root = loader.load();
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));

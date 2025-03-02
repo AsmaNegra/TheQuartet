@@ -147,7 +147,7 @@
 
                             <!-- Type de Service -->
                             <Label text="Type de Service:" GridPane.rowIndex="2" />
-                            <ComboBox fx:id="typeServiceComboBox" prefHeight="26.0" prefWidth="480.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                            <ComboBox fx:id="typeServiceComboBox" prefHeight="45.0" prefWidth="491.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                 <items>
                                     <FXCollections fx:factory="observableArrayList">
                                         <String fx:value="Traiteur" />
@@ -193,7 +193,20 @@
 
                             <!-- Numéro de Téléphone -->
                             <Label text="Numéro de Téléphone:" GridPane.rowIndex="5" />
-                            <TextField fx:id="numTelField" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                     <HBox GridPane.columnIndex="1" GridPane.rowIndex="5">
+                        <children>
+                           <Label fx:id="indicatifLabel" text="Label">
+                              <HBox.margin>
+                                 <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                              </HBox.margin>
+                           </Label>
+                                  <TextField fx:id="numTelField" maxWidth="1.7976931348623157E308" prefHeight="38.0" prefWidth="416.0">
+                              <HBox.margin>
+                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                              </HBox.margin>
+                           </TextField>
+                        </children>
+                     </HBox>
 
 
                             <!-- Submit Button -->
