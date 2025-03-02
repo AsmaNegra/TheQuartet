@@ -4,6 +4,7 @@ import entities.Evenement;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
+import javafx.concurrent.Worker;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,6 +22,12 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import javafx.scene.web.WebView;
+import javafx.scene.web.WebEngine;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import javafx.scene.layout.AnchorPane;
+import netscape.javascript.JSObject;
 
 import java.io.File;
 import java.io.IOException;
@@ -66,7 +73,13 @@ public class DetailsEvenementController2 {
 
     @FXML
     private Button retourButton;
+    @FXML
+    private WebView locationMapView;
 
+    @FXML
+    private AnchorPane mapContainer;
+
+    private WebEngine webEngine;
 
     private Evenement currentEvenement;
 
@@ -95,6 +108,81 @@ public class DetailsEvenementController2 {
             eventImageView.setFitHeight(height);
             centerImage();
         });
+
+        // Initialiser le WebView pour la carte
+        if (locationMapView != null) {
+            webEngine = locationMapView.getEngine();
+            webEngine.setJavaScriptEnabled(true);
+
+            // Masquer initialement la carte
+            mapContainer.setVisible(false);
+            mapContainer.setManaged(false);
+
+            // Charger le fichier HTML de la carte
+            String mapHtmlPath = getClass().getResource("/location_map.html").toExternalForm();
+            System.out.println("Chargement de la carte depuis: " + mapHtmlPath);
+            webEngine.load(mapHtmlPath);
+
+            // Configurer un listener pour le chargement de la page
+            webEngine.getLoadWorker().stateProperty().addListener((obs, oldState, newState) -> {
+                if (newState == Worker.State.SUCCEEDED) {
+                    System.out.println("La page HTML de la carte a été chargée avec succès");
+                    // Créer un pont Java-JavaScript
+                    JSObject window = (JSObject) webEngine.executeScript("window");
+                    window.setMember("javaConnector", new JavaConnector());
+
+                    // Si nous avons déjà un événement à afficher, mettre à jour la carte
+                    if (currentEvenement != null) {
+                        loadMapForEvent();
+                    }
+                } else if (newState == Worker.State.FAILED) {
+                    System.err.println("Échec de chargement de la carte");
+                }
+            });
+        }
+    }
+
+    // Ajoutez une classe interne pour la communication avec JavaScript
+    public class JavaConnector {
+        public void onLocationFound(boolean success, String name, String address) {
+            if (success) {
+                System.out.println("Localisation trouvée: " + name + " à " + address);
+            } else {
+                System.err.println("Impossible de trouver la localisation sur la carte");
+            }
+        }
+    }
+
+    // Méthode pour charger la carte pour l'événement courant
+    private void loadMapForEvent() {
+        if (currentEvenement != null && locationMapView != null) {
+            String location = currentEvenement.getLieu();
+            if (location != null && !location.isEmpty()) {
+                // Rendre la carte visible
+                mapContainer.setVisible(true);
+                mapContainer.setManaged(true);
+
+                try {
+                    // Échapper les caractères spéciaux dans le nom et l'adresse
+                    String escapedLocation = location.replace("'", "\\'");
+                    String escapedName = currentEvenement.getNom().replace("'", "\\'");
+
+                    // Préparer un message de statut si nécessaire (optionnel)
+                    String status = ""; // Exemple: "Boutique fermée actuellement, réouverture dimanche à 10:00"
+                    String escapedStatus = status.replace("'", "\\'");
+
+                    // Exécuter la recherche via JavaScript
+                    String script = "searchLocation('" + escapedLocation + "', '" + escapedName + "', '" + escapedStatus + "')";
+                    webEngine.executeScript(script);
+                } catch (Exception e) {
+                    System.err.println("Erreur lors de l'exécution du script de carte: " + e.getMessage());
+                }
+            } else {
+                // Masquer la carte si pas de lieu
+                mapContainer.setVisible(false);
+                mapContainer.setManaged(false);
+            }
+        }
     }
 
     // Méthode pour centrer l'image manuellement
@@ -152,10 +240,59 @@ public class DetailsEvenementController2 {
                     System.err.println("Erreur lors du chargement de l'image : " + e.getMessage());
                 }
             }
+
+            // Afficher le lieu
+            String location = currentEvenement.getLieu();
+            eventLocationLabel.setText("Location: " + currentEvenement.getLieu());
+
+            // Charger la carte avec l'adresse du lieu
+            if (webEngine != null && webEngine.getLoadWorker().getState() == Worker.State.SUCCEEDED) {
+                loadMapForEvent();
+            }
+
+            // Charger la carte avec l'adresse du lieu
+            if (location != null && !location.isEmpty()) {
+                loadGoogleMap(location);
+            } else {
+                // Masquer la carte si pas de lieu spécifié
+                mapContainer.setVisible(false);
+                mapContainer.setManaged(false);
+            }
+
         } else {
             System.err.println("Aucun événement n'est défini pour afficher les détails.");
         }
     }
+
+    private void loadGoogleMap(String location) {
+        try {
+            // Afficher le conteneur de carte
+            mapContainer.setVisible(true);
+            mapContainer.setManaged(true);
+
+            // Charger le fichier HTML
+            String mapHtmlPath = getClass().getResource("/location_map.html").toExternalForm();
+            webEngine.load(mapHtmlPath);
+
+            // Configurer un écouteur pour exécuter le script après le chargement de la page
+            webEngine.getLoadWorker().stateProperty().addListener((obs, oldState, newState) -> {
+                if (newState == Worker.State.SUCCEEDED) {
+                    // Créer un pont Java-JavaScript
+                    JSObject window = (JSObject) webEngine.executeScript("window");
+                    window.setMember("javaConnector", new JavaConnector());
+
+                    // Rechercher l'adresse
+                    webEngine.executeScript("searchLocation('" + location.replace("'", "\\'") + "')");
+                }
+            });
+        } catch (Exception e) {
+            System.err.println("Erreur lors du chargement de la carte: " + e.getMessage());
+            e.printStackTrace();
+            mapContainer.setVisible(false);
+            mapContainer.setManaged(false);
+        }
+    }
+
 
 
 

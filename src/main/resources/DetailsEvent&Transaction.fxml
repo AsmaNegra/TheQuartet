@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -9,22 +10,20 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.paint.Color?>
-<?import javafx.scene.paint.RadialGradient?>
-<?import javafx.scene.paint.Stop?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.web.WebView?>
 
-<?import javafx.scene.layout.HBox?>
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" styleClass="parent" stylesheets="@styles_new.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.DetailsEvenementController2">
     <left>
         <!-- Sidebar qui s'étend au survol -->
         <AnchorPane fx:id="sidebar" onMouseEntered="#expandSidebar" onMouseExited="#collapseSidebar" prefHeight="500.0" prefWidth="70.0" styleClass="sidebar">
-        <children>
+            <children>
                 <!-- Conteneur global avec contraintes d'ancrage -->
-                <VBox layoutX="10.0" layoutY="165.0" prefHeight="600.0" prefWidth="87.2" spacing="15.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                <VBox  layoutX="10.0" layoutY="165.0" prefHeight="600.0" prefWidth="87.2" spacing="15.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <HBox>
                         <children>
                             <Circle fill="DODGERBLUE" radius="28.0" stroke="BLACK" strokeType="INSIDE" />
@@ -105,7 +104,8 @@
                     <Separator>
                         <VBox.margin>
                             <Insets top="100.0" />
-                        </VBox.margin></Separator>
+                        </VBox.margin>
+                    </Separator>
                     <HBox alignment="CENTER_LEFT" spacing="10" styleClass="menu-item">
                         <children>
                             <Button fx:id="btnLogout" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="14.0" prefWidth="86.0" styleClass="sidebar_opt" stylesheets="@styles_new.css" textFill="WHITE">
@@ -129,61 +129,88 @@
         </AnchorPane>
     </left>
     <center>
-        <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="549.0" prefWidth="843.0" styleClass="background_color" stylesheets="@styles_new.css">
+        <!-- Zone centrale pour le contenu (redirection via changement de scène) -->
+        <AnchorPane fx:id="mainContent" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="549.0" prefWidth="843.0" styleClass="pane">
             <children>
                 <ScrollPane hbarPolicy="NEVER" layoutX="6.0" prefHeight="500.0" prefWidth="843.2" styleClass="transparent_bg" stylesheets="@styles_new.css" vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
                     <content>
-                        <VBox fx:id="eventDetailsContainer" prefHeight="500.0" prefWidth="843.0" styleClass="pane">
-                            <children>
-                                <Pane fx:id="pane_event" minHeight="156.0" prefHeight="156.0" prefWidth="818.0" style="-fx-background-radius: 30px 30px 0px 0px;" styleClass="pane_no_bg_img" VBox.vgrow="ALWAYS">
-                                    <ImageView fx:id="eventImageView" fitHeight="156.0" fitWidth="818.0" pickOnBounds="true" preserveRatio="true" />
-                                </Pane>
-                                <Separator prefHeight="22.0" prefWidth="999.0" />
-                                <Label fx:id="eventNameLabel" styleClass="event-title" text="Event_Name" textFill="#404040">
-                                    <font>
-                                        <Font name="Montserrat-Bold" size="18.0" />
-                                    </font>
-                                    <VBox.margin>
-                                        <Insets bottom="15.0" left="15.0" right="5.0" top="5.0" />
-                                    </VBox.margin>
-                                </Label>
-                                <Label fx:id="eventDateLabel" styleClass="event-details" text="Date: 01/01/2023">
-                                    <VBox.margin>
-                                        <Insets bottom="5.0" left="15.0" right="5.0" />
-                                    </VBox.margin>
-                                </Label>
-                                <Label fx:id="eventLocationLabel" styleClass="event-details" text="Location: Paris, France">
-                                    <VBox.margin>
-                                        <Insets bottom="5.0" left="15.0" right="5.0" />
-                                    </VBox.margin>
-                                </Label>
-                                <Label fx:id="eventCategoryLabel" styleClass="event-category" text="Category: Concert">
-                                    <VBox.margin>
-                                        <Insets bottom="15.0" left="15.0" right="5.0" />
-                                    </VBox.margin>
-                                </Label>
-                                <Label fx:id="eventDescriptionLabel" styleClass="event-details" text="Description: This is a sample event description." wrapText="true">
-                                    <VBox.margin>
-                                        <Insets bottom="15.0" left="15.0" right="15.0" />
-                                    </VBox.margin>
-                                </Label>
+                  <ScrollPane styleClass="widget" stylesheets="@styles_new.css">
+                     <content>
+                              <VBox fx:id="eventDetailsContainer" prefHeight="654.0" prefWidth="930.0" stylesheets="@styles_new.css">
+                                  <children>
+                                      <Pane fx:id="pane_event" minHeight="156.0" prefHeight="156.0" prefWidth="818.0" styleClass="widget" stylesheets="@styles_new.css" VBox.vgrow="ALWAYS">
+                                          <ImageView fx:id="eventImageView" fitHeight="156.0" fitWidth="818.0" pickOnBounds="true" preserveRatio="true" styleClass="widget" />
+                                      </Pane>
+                                      <Separator prefHeight="22.0" prefWidth="999.0" />
+                                      <Label fx:id="eventNameLabel" styleClass="event-title" text="Event_Name" textFill="#404040">
+                                          <font>
+                                              <Font name="Montserrat-Bold" size="18.0" />
+                                          </font>
+                                          <VBox.margin>
+                                              <Insets bottom="15.0" left="15.0" right="5.0" top="5.0" />
+                                          </VBox.margin>
+                                      </Label>
+                                      <Label fx:id="eventDateLabel" styleClass="event-details" text="Date: 01/01/2023">
+                                          <VBox.margin>
+                                              <Insets bottom="5.0" left="15.0" right="5.0" />
+                                          </VBox.margin>
+                                      </Label>
+                              <VBox>
+                                 <VBox.margin>
+                                    <Insets bottom="15.0" left="15.0" right="15.0" />
+                                 </VBox.margin>
+                                 <children>
 
-                            </children>
-                        </VBox>
+                                            <Label fx:id="eventDescriptionLabel" styleClass="event-details" text="Description: This is a sample event description." wrapText="true" />
+                                 </children>
+                              </VBox>
+
+
+                                      <Label fx:id="eventCategoryLabel" styleClass="event-category" text="Categorie : Concert">
+                                          <VBox.margin>
+                                              <Insets bottom="15.0" left="10.0" right="5.0" />
+                                          </VBox.margin>
+                                      </Label>
+
+
+                                      <!-- Ajoutez ce code après le Label eventLocationLabel dans DetailsEvenement2.fxml -->
+
+                                      <VBox spacing="10" VBox.vgrow="NEVER">
+                                          <Label fx:id="eventLocationLabel" styleClass="event-details" text="Localisation: Paris, France">
+                                              <VBox.margin>
+                                                  <Insets bottom="5.0" left="15.0" right="5.0" />
+                                              </VBox.margin>
+                                          </Label>
+
+                                          <!-- Container pour la carte Google Maps -->
+                                          <AnchorPane fx:id="mapContainer" minHeight="300.0" prefHeight="350.0" VBox.vgrow="NEVER">
+                                              <WebView fx:id="locationMapView" prefHeight="350.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="0.0" />
+                                              <VBox.margin>
+                                                  <Insets bottom="15.0" left="15.0" right="15.0" top="0.0" />
+                                              </VBox.margin>
+                                          </AnchorPane>
+
+
+                                      </VBox>
+
+
+                                  </children>
+                           <styleClass>
+                              <String fx:value="pane" />
+                              <String fx:value="widget" />
+                           </styleClass>
+                              </VBox>
+                     </content>
+                  </ScrollPane>
                     </content>
                 </ScrollPane>
                 <Button fx:id="retourButton" mnemonicParsing="false" onAction="#retourPage" styleClass="button_retour" AnchorPane.leftAnchor="10" AnchorPane.topAnchor="10">
-               <graphic>
-                  <FontAwesomeIconView fill="#434040" glyphName="ARROW_LEFT" size="2em" styleClass="sidebar" />
-               </graphic></Button>
+                    <graphic>
+                        <FontAwesomeIconView fill="#434040" glyphName="ARROW_LEFT" size="2em" styleClass="sidebar" />
+                    </graphic>
+                </Button>
             </children>
         </AnchorPane>
     </center>
-<!--    <top>-->
-<!--        <FontAwesomeIconView fill="#434040" glyphName="ARROW_LEFT" size="2em" styleClass="sidebar" BorderPane.alignment="TOP_LEFT">-->
-<!--            <BorderPane.margin>-->
-<!--                <Insets left="70.0" />-->
-<!--            </BorderPane.margin>-->
-<!--        </FontAwesomeIconView>-->
-<!--    </top>-->
+
 </BorderPane>

@@ -108,6 +108,8 @@ public class EventOrganisation {
         }
     }
 
+
+
     private void loadEvents() {
         try {
             List<Evenement> evenements = serviceEvenement.afficher();
@@ -320,6 +322,8 @@ public class EventOrganisation {
             e.printStackTrace();
         }
     }
+
+
 
     public void supprimerEvenement(ActionEvent event, Evenement evenement) {
         // Demander confirmation avant la suppression

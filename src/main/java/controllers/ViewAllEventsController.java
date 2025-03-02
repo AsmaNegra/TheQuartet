@@ -22,6 +22,7 @@ import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import services.ServiceEvenement;
+import javafx.scene.layout.VBox;
 
 import java.io.File;
 import java.io.IOException;
@@ -66,6 +67,14 @@ public class ViewAllEventsController implements Initializable {
     private WebView webView;
     private WebEngine webEngine;
 
+
+    // Ajoutez cette déclaration FXML
+    @FXML
+    private VBox calendarContainer;
+
+    // Ajoutez une variable membre
+    private CalendarComponent calendar;
+
 //    @Override
 //    public void initialize(URL url, ResourceBundle rb) {
 //        loadCategories();
@@ -94,6 +103,8 @@ public class ViewAllEventsController implements Initializable {
         eventsContainer.setPrefColumns(2);
         eventsContainer.setHgap(20);
         eventsContainer.setVgap(20);
+
+        initializeCalendar();
 
         // Initialiser la carte simple en dernier
         initializeMap();
@@ -234,6 +245,8 @@ public class ViewAllEventsController implements Initializable {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        refreshCalendar();
     }
 
     private void createEventCard(Evenement event) {
@@ -282,21 +295,35 @@ public class ViewAllEventsController implements Initializable {
         // Informations de l'événement (face avant)
         Label titleLabel = new Label(event.getNom());
         titleLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
-
+// Ajouter wrapping pour le titre
+        titleLabel.setWrapText(true);
+        titleLabel.setMaxWidth(250); // Ajustez cette valeur selon la largeur de votre carte
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
-        // Date de début
+
+// Date de début
         Label dateDebutLabel = new Label("Du: " + dateFormat.format(event.getDate_debut()) + " à " + timeFormat.format(event.getDate_debut()));
         dateDebutLabel.getStyleClass().add("event-details");
+        dateDebutLabel.setWrapText(true);
+        dateDebutLabel.setMaxWidth(250);
 
-        // Date de fin
+// Date de fin
         Label dateFinLabel = new Label("Au: " + dateFormat.format(event.getDate_fin()) + " à " + timeFormat.format(event.getDate_fin()));
         dateFinLabel.getStyleClass().add("event-details");
+        dateFinLabel.setWrapText(true);
+        dateFinLabel.setMaxWidth(250);
 
+// Lieu
         Label lieuLabel = new Label("Lieu: " + event.getLieu());
+        lieuLabel.setWrapText(true);
+        lieuLabel.setMaxWidth(250);
+
+// Catégorie
         Label categorieLabel = new Label("Catégorie: " + event.getCategorie());
         categorieLabel.setStyle("-fx-text-fill: #d87769;");
+        categorieLabel.setWrapText(true);
+        categorieLabel.setMaxWidth(250);
 
         // Ajouter tous les éléments à la face avant
         frontCard.getChildren().addAll(
@@ -417,6 +444,8 @@ public class ViewAllEventsController implements Initializable {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        refreshCalendar();
     }
 
 
@@ -733,6 +762,19 @@ public class ViewAllEventsController implements Initializable {
                 "centerMap(%f, %f, 13)",
                 coordinates[0], coordinates[1]
             ));
+        }
+    }
+
+    private void initializeCalendar() {
+        if (calendarContainer != null) {
+            calendar = new CalendarComponent(calendarContainer, serviceEvenement);
+        }
+    }
+
+    // Ajoutez cette méthode pour rafraîchir le calendrier lorsque vous filtrez ou ajoutez des événements
+    private void refreshCalendar() {
+        if (calendar != null) {
+            calendar.refreshCalendar();
         }
     }
 

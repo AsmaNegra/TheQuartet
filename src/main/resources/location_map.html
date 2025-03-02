@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        #map-container {
+            position: relative;
+            height: 100%;
+            width: 100%;
+        }
+        #map {
+            height: 100%;
+            width: 100%;
+            border-radius: 8px;
+        }
+        #map-type-control {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: white;
+            border-radius: 2px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+            z-index: 10;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
+        #map-type-control button {
+            background: none;
+            border: none;
+            padding: 8px 16px;
+            cursor: pointer;
+            outline: none;
+            float: left;
+            font-size: 14px;
+        }
+        #map-type-control button.active {
+            background-color: #f1f1f1;
+            color: #000;
+            font-weight: 500;
+        }
+        #map-type-control button:not(.active) {
+            color: #666;
+        }
+        #map-type-control button:hover:not(.active) {
+            background-color: #f8f8f8;
+        }
+        .location-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: white;
+            padding: 15px;
+            box-shadow: 0 -2px 6px rgba(0,0,0,0.1);
+            border-top: 1px solid #e0e0e0;
+            font-family: Arial, sans-serif;
+            z-index: 2;
+            border-radius: 0 0 8px 8px;
+        }
+        .location-info h3 {
+            margin: 0 0 5px 0;
+            font-size: 16px;
+            font-weight: 500;
+        }
+        .location-info p {
+            margin: 5px 0;
+            font-size: 14px;
+            color: #666;
+        }
+        .location-status {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+            color: #777;
+        }
+        .location-status:before {
+            content: "";
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #e53935;
+            margin-right: 8px;
+        }
+        .google-maps-link {
+            display: block;
+            margin-top: 10px;
+            color: #1a73e8;
+            text-decoration: none;
+            font-size: 14px;
+            text-align: center;
+        }
+        .google-maps-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+<div id="map-container">
+    <div id="map"></div>
+    <div id="map-type-control">
+        <button id="btn-map" class="active">Map</button>
+        <button id="btn-satellite">Satellite</button>
+    </div>
+</div>
+
+<script>
+    var map, marker, infowindow;
+    var locationName = "";
+    var locationAddress = "";
+    var locationStatus = "";
+
+    function initMap() {
+        // Configuration par défaut de la carte
+        var mapOptions = {
+            zoom: 15,
+            center: {lat: 36.8065, lng: 10.1815}, // Tunis par défaut
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            mapTypeControl: false, // Désactiver le contrôle de type de carte par défaut
+            zoomControl: true,
+            zoomControlOptions: {
+                position: google.maps.ControlPosition.RIGHT_CENTER
+            },
+            streetViewControl: false,
+            fullscreenControl: false
+        };
+
+        // Créer la carte
+        map = new google.maps.Map(document.getElementById('map'), mapOptions);
+
+        // Boutons pour changer le type de carte
+        document.getElementById('btn-map').addEventListener('click', function() {
+            map.setMapTypeId(google.maps.MapTypeId.ROADMAP);
+            document.getElementById('btn-map').classList.add('active');
+            document.getElementById('btn-satellite').classList.remove('active');
+        });
+
+        document.getElementById('btn-satellite').addEventListener('click', function() {
+            map.setMapTypeId(google.maps.MapTypeId.HYBRID);
+            document.getElementById('btn-satellite').classList.add('active');
+            document.getElementById('btn-map').classList.remove('active');
+        });
+
+        // Initialiser le geocoder
+        var geocoder = new google.maps.Geocoder();
+
+        // Fonction pour rechercher une adresse et placer un marqueur
+        window.searchLocation = function(address, name, status) {
+            locationName = name || address;
+            locationAddress = address;
+            locationStatus = status || "";
+
+            geocoder.geocode({'address': address}, function(results, status) {
+                if (status === 'OK' && results[0]) {
+                    // Centrer la carte sur le résultat
+                    map.setCenter(results[0].geometry.location);
+
+                    // Créer un marqueur s'il n'existe pas
+                    if (!marker) {
+                        marker = new google.maps.Marker({
+                            map: map,
+                            position: results[0].geometry.location,
+                            animation: google.maps.Animation.DROP
+                        });
+                    } else {
+                        // Ou mettre à jour sa position
+                        marker.setPosition(results[0].geometry.location);
+                    }
+
+                    // Créer une fenêtre d'info
+                    var contentString = '<div id="content" style="min-width:200px;">'+
+                        '<h3 style="margin:0;padding:5px 0;font-size:16px;">' + locationName + '</h3>'+
+                        '<p style="margin:0;padding:5px 0;font-size:13px;color:#555;">' + locationAddress + '</p>'+
+                        (locationStatus ? '<p style="margin:0;padding:5px 0;font-size:13px;color:#c00;"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#c00;margin-right:5px;"></span>' + locationStatus + '</p>' : '') +
+                        '<a href="https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(locationAddress) + '" target="_blank" style="display:block;margin-top:8px;color:#1a73e8;font-size:13px;">Voir sur Google Maps</a>'+
+                        '</div>';
+
+                    if (!infowindow) {
+                        infowindow = new google.maps.InfoWindow();
+                    }
+
+                    infowindow.setContent(contentString);
+                    infowindow.open(map, marker);
+
+                    // Ouvrir l'infowindow au clic sur le marqueur
+                    marker.addListener('click', function() {
+                        infowindow.open(map, marker);
+                    });
+
+                    // Créer une div d'information en bas de la carte
+                    createBottomInfo();
+
+                    // Communiquer avec Java si disponible
+                    if (window.javaConnector) {
+                        try {
+                            window.javaConnector.onLocationFound(true, locationName, locationAddress);
+                        } catch(e) {
+                            console.error("Erreur lors de la communication avec Java:", e);
+                        }
+                    }
+                } else {
+                    console.error("Impossible de trouver cette adresse:", status);
+                    // Communiquer l'échec à Java si disponible
+                    if (window.javaConnector) {
+                        try {
+                            window.javaConnector.onLocationFound(false, "", "");
+                        } catch(e) {
+                            console.error("Erreur lors de la communication avec Java:", e);
+                        }
+                    }
+                }
+            });
+        };
+
+        // Créer une div d'information en bas
+        function createBottomInfo() {
+            // Supprimer l'ancienne info si elle existe
+            var existingInfo = document.querySelector('.location-info');
+            if (existingInfo) {
+                existingInfo.parentNode.removeChild(existingInfo);
+            }
+
+            // Créer la nouvelle div d'info
+            var infoDiv = document.createElement('div');
+            infoDiv.className = 'location-info';
+            infoDiv.innerHTML =
+                '<h3>' + locationName + '</h3>' +
+                '<p>' + locationAddress + '</p>' +
+                (locationStatus ? '<div class="location-status">' + locationStatus + '</div>' : '') +
+                '<a href="https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(locationAddress) + '" target="_blank" class="google-maps-link">Voir sur Google Maps</a>';
+
+            document.getElementById('map-container').appendChild(infoDiv);
+        }
+    }
+</script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDVp922yWQ9Dt6P3QzYFaB0VCRzNIfpPA8&callback=initMap" async defer></script>
+</body>
+</html>

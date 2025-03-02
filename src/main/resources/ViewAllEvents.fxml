@@ -213,7 +213,7 @@
             </padding>
             <VBox styleClass="sidebar-section">
                 <Label styleClass="section-title" text="Calendrier" />
-                <!-- Contenu du calendrier à ajouter ici -->
+                <VBox fx:id="calendarContainer" styleClass="calendar-container" VBox.vgrow="ALWAYS" />
             </VBox>
             <VBox styleClass="sidebar-section">
                 <Label styleClass="section-title" text="Événements à la une" />

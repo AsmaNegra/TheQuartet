@@ -147,9 +147,14 @@
                 <Label fx:id="descriptionEvent" styleClass="task-form" text="Description de l'événement" />
                 <HBox spacing="10">
                            <VBox HBox.hgrow="ALWAYS">
-                              <children>
-                          <TextArea fx:id="evenementDescriptionArea" prefHeight="64.0" prefWidth="520.0" styleClass="task-form" stylesheets="@styles_new.css" />
-                              </children>
+                               <children>
+                                   <TextArea fx:id="evenementDescriptionArea"
+                                             prefHeight="64.0"
+                                             prefWidth="818.0"
+                                             wrapText="true"
+                                             styleClass="task-form"
+                                             stylesheets="@styles_new.css" />
+                               </children>
                            </VBox>
                     <Button fx:id="genererDescriptionButton" onAction="#genererDescription" prefWidth="60" styleClass="category-button" text="IA">
                         <graphic>
