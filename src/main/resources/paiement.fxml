@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane styleClass="background_color" stylesheets="@styles_new.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.PaiementController">
+
+    <VBox alignment="CENTER" layoutX="50.0" layoutY="11.0" prefHeight="406.0" prefWidth="443.0" spacing="10" styleClass="background_color" stylesheets="@styles_new.css" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="30.0">
+        <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" stylesheets="@styles_new.css" text="Paiement Sécurisé" />
+
+        <TextField fx:id="amountField" prefHeight="34.0" prefWidth="443.0" promptText="Montant" styleClass="pane" stylesheets="@styles_new.css" />
+        <!-- Champ Numéro de Carte -->
+        <HBox prefHeight="35.0" prefWidth="443.0" spacing="10">
+            <Label prefHeight="25.0" prefWidth="100.0" stylesheets="@styles_new.css" text="Numéro de carte:" />
+            <TextField fx:id="cardNumberField" prefHeight="25.0" prefWidth="150.0" promptText="1234 5678 9012 3456" styleClass="pane" stylesheets="@styles_new.css" />
+        </HBox>
+
+        <!-- Champs Date d'Expiration et Code CVC -->
+        <HBox prefHeight="35.0" prefWidth="443.0" spacing="10">
+            <Label prefHeight="25.0" prefWidth="100.0" stylesheets="@styles_new.css" text="Expiration:" />
+            <TextField fx:id="expirationField" prefHeight="25.0" prefWidth="100.0" promptText="MM/YY" styleClass="pane" stylesheets="@styles_new.css" />
+            <Label prefHeight="25.0" prefWidth="100.0" stylesheets="@styles_new.css" text="       CVC:" textAlignment="CENTER" />
+            <TextField fx:id="cvcField" prefHeight="25.0" prefWidth="100.0" promptText="CVC" styleClass="pane" stylesheets="@styles_new.css" />
+        </HBox>
+         <TextField fx:id="emailField" prefHeight="25.0" prefWidth="100.0" promptText="Email" styleClass="pane" stylesheets="@styles_new.css" />
+
+        <!-- Sélection du Pays -->
+        <HBox prefHeight="46.0" prefWidth="443.0" spacing="10">
+            <Label prefHeight="25.0" prefWidth="100.0" stylesheets="@styles_new.css" text="Pays:" />
+            <ComboBox fx:id="countryBox" prefHeight="27.0" prefWidth="333.0" styleClass="pane" stylesheets="@styles_new.css">
+                <items>
+                    <FXCollections fx:factory="observableArrayList">
+                        <String fx:value="Tunisia" />
+                        <String fx:value="France" />
+                        <String fx:value="USA" />
+                        <String fx:value="Germany" />
+                    </FXCollections>
+                </items>
+            </ComboBox>
+        </HBox>
+
+        <!-- Bouton de Paiement -->
+        <Button fx:id="payButton" prefHeight="42.0" prefWidth="188.0" style="-fx-background-color: #007bff; -fx-text-fill: white; -fx-padding: 10px;" styleClass="button_crud" stylesheets="@styles_new.css" text="  Payer  " />
+
+        <!-- Label pour afficher le statut du paiement -->
+        <Label fx:id="messageLabel" style="-fx-text-fill: red;" text="" />
+    </VBox>
+</AnchorPane>

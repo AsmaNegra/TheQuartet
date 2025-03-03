@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.RadialGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="515.0" prefWidth="917.0" styleClass="background_color" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.DetailsEvenementController2">
+    <left>
+        <AnchorPane prefHeight="532.0" prefWidth="57.0" styleClass="sidebar" stylesheets="@styles.css" BorderPane.alignment="CENTER">
+            <children>
+                <FontAwesomeIconView fill="#797878" glyphName="BARS" layoutX="20.2" layoutY="30.628571701049804" selectionFill="#bc802d" size="1.5em" text="" wrappingWidth="23.199981689453125" AnchorPane.leftAnchor="20.2" AnchorPane.rightAnchor="13.40001831054687" AnchorPane.topAnchor="15.2" />
+                <VBox layoutX="20.0" layoutY="119.0">
+                    <children>
+                        <FontAwesomeIconView fill="#f49617" glyphName="SITEMAP" size="1.5em" />
+                        <FontAwesomeIconView glyphName="GIFT" size="1.5em" styleClass="sidebar_opt">
+                            <VBox.margin>
+                                <Insets top="15.0" />
+                            </VBox.margin>
+                        </FontAwesomeIconView>
+                        <FontAwesomeIconView glyphName="USER" size="1.5em" styleClass="sidebar_opt" textAlignment="CENTER" wrappingWidth="16.857142448425293">
+                            <VBox.margin>
+                                <Insets top="15.0" />
+                            </VBox.margin>
+                        </FontAwesomeIconView>
+                        <FontAwesomeIconView glyphName="HOME" size="1.5em" styleClass="sidebar_opt" wrappingWidth="16.857142448425293">
+                            <VBox.margin>
+                                <Insets top="15.0" />
+                            </VBox.margin>
+                        </FontAwesomeIconView>
+                        <Separator>
+                            <VBox.margin>
+                                <Insets bottom="15.0" top="15.0" />
+                            </VBox.margin>
+                        </Separator>
+                        <FontAwesomeIconView fill="#797878" glyphName="PLUS" size="1.5em">
+                            <VBox.margin>
+                                <Insets />
+                            </VBox.margin>
+                        </FontAwesomeIconView>
+                    </children>
+                    <opaqueInsets>
+                        <Insets />
+                    </opaqueInsets>
+                </VBox>
+                <Circle layoutX="26.0" layoutY="472.0" radius="14.0" stroke="WHITE" strokeType="INSIDE" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0">
+                    <fill>
+                        <RadialGradient centerX="0.44690266330685235" centerY="1.0" focusAngle="78.69" focusDistance="0.4036697772664759" radius="0.8669724770642202">
+                            <stops>
+                                <Stop>
+                                    <color>
+                                        <Color red="0.95686274766922" green="0.5882353186607361" blue="0.09019608050584793" />
+                                    </color>
+                                </Stop>
+                                <Stop offset="1.0">
+                                    <color>
+                                        <Color red="1.0" green="1.0" blue="1.0" />
+                                    </color>
+                                </Stop>
+                            </stops>
+                        </RadialGradient>
+                    </fill>
+                </Circle>
+            </children>
+        </AnchorPane>
+    </left>
+    <center>
+        <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="549.0" prefWidth="843.0" styleClass="background_color" stylesheets="@styles.css">
+            <children>
+                <ScrollPane hbarPolicy="NEVER" layoutX="6.0" prefHeight="500.0" prefWidth="843.2" styleClass="transparent_bg" stylesheets="@styles.css" vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                    <content>
+                        <VBox fx:id="eventDetailsContainer" prefHeight="500.0" prefWidth="843.0" styleClass="pane">
+                            <children>
+                                <Pane fx:id="pane_event" minHeight="156.0" prefHeight="156.0" prefWidth="818.0" style="-fx-background-radius: 30px 30px 0px 0px;" styleClass="pane_no_bg_img" VBox.vgrow="ALWAYS">
+                                    <ImageView fx:id="eventImageView" fitHeight="156.0" fitWidth="818.0" pickOnBounds="true" preserveRatio="true" />
+                                </Pane>
+                                <Separator prefHeight="22.0" prefWidth="999.0" />
+                                <Label fx:id="eventNameLabel" styleClass="event-title" text="Event_Name" textFill="#404040">
+                                    <font>
+                                        <Font name="Montserrat-Bold" size="18.0" />
+                                    </font>
+                                    <VBox.margin>
+                                        <Insets bottom="15.0" left="15.0" right="5.0" top="5.0" />
+                                    </VBox.margin>
+                                </Label>
+                                <Label fx:id="eventDateLabel" styleClass="event-details" text="Date: 01/01/2023">
+                                    <VBox.margin>
+                                        <Insets bottom="5.0" left="15.0" right="5.0" />
+                                    </VBox.margin>
+                                </Label>
+                                <Label fx:id="eventLocationLabel" styleClass="event-details" text="Location: Paris, France">
+                                    <VBox.margin>
+                                        <Insets bottom="5.0" left="15.0" right="5.0" />
+                                    </VBox.margin>
+                                </Label>
+                                <Label fx:id="eventCategoryLabel" styleClass="event-category" text="Category: Concert">
+                                    <VBox.margin>
+                                        <Insets bottom="15.0" left="15.0" right="5.0" />
+                                    </VBox.margin>
+                                </Label>
+                                <Label fx:id="eventDescriptionLabel" styleClass="event-details" text="Description: This is a sample event description." wrapText="true">
+                                    <VBox.margin>
+                                        <Insets bottom="15.0" left="15.0" right="15.0" />
+                                    </VBox.margin>
+                                </Label>
+
+                            </children>
+                        </VBox>
+                    </content>
+                </ScrollPane>
+                <Button fx:id="retourButton" mnemonicParsing="false" onAction="#retourPage" styleClass="button_retour" AnchorPane.leftAnchor="10" AnchorPane.topAnchor="10">
+               <graphic>
+                  <FontAwesomeIconView fill="#434040" glyphName="ARROW_LEFT" size="2em" styleClass="sidebar" />
+               </graphic></Button>
+            </children>
+        </AnchorPane>
+    </center>
+<!--    <top>-->
+<!--        <FontAwesomeIconView fill="#434040" glyphName="ARROW_LEFT" size="2em" styleClass="sidebar" BorderPane.alignment="TOP_LEFT">-->
+<!--            <BorderPane.margin>-->
+<!--                <Insets left="70.0" />-->
+<!--            </BorderPane.margin>-->
+<!--        </FontAwesomeIconView>-->
+<!--    </top>-->
+</BorderPane>

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" styleClass="parent" stylesheets="@styles_new.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AjouterTicketsController">
+    <left>
+        <AnchorPane fx:id="sidebar" onMouseEntered="#expandSidebar" onMouseExited="#collapseSidebar" prefHeight="500.0" prefWidth="70.0" styleClass="sidebar">
+            <children>
+                <VBox layoutX="10.0" layoutY="165.0" prefHeight="600.0" prefWidth="87.2" spacing="15.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <HBox>
+                        <children>
+                            <Circle fill="DODGERBLUE" radius="28.0" stroke="BLACK" strokeType="INSIDE" />
+                            <Label fx:id="labelUser" alignment="CENTER" text="Utilisateur" textFill="WHITE" visible="false">
+                                <font>
+                                    <Font name="Open Sans Regular" size="12.0" />
+                                </font>
+                            </Label>
+                        </children>
+                    </HBox>
+                    <VBox spacing="10.0">
+                        <HBox alignment="CENTER_LEFT" spacing="10" styleClass="menu-item">
+                            <Button fx:id="btnSitemap" mnemonicParsing="false" onAction="#handleSitemapClick" styleClass="sidebar_opt" textFill="#e4e4e4">
+                                <graphic>
+                                    <FontAwesomeIconView fill="#797878" glyphName="SITEMAP" size="1.5em" styleClass="sidebar_opt" />
+                                </graphic>
+                            </Button>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" spacing="10" styleClass="menu-item">
+                            <Button fx:id="btnGift" mnemonicParsing="false" onAction="#handleGiftClick" styleClass="sidebar_opt" textFill="#e4e4e4">
+                                <graphic>
+                                    <FontAwesomeIconView fill="#797878" glyphName="GIFT" size="1.5em" styleClass="sidebar_opt" />
+                                </graphic>
+                            </Button>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" spacing="10" styleClass="menu-item">
+                            <Button fx:id="btnHome" mnemonicParsing="false" onAction="#handleHomeClick" styleClass="sidebar_opt" textFill="#e4e4e4">
+                                <graphic>
+                                    <FontAwesomeIconView fill="#797878" glyphName="HOME" size="1.5em" styleClass="sidebar_opt" />
+                                </graphic>
+                            </Button>
+                        </HBox>
+                    </VBox>
+                    <Separator />
+                    <HBox alignment="CENTER_LEFT" spacing="10" styleClass="menu-item">
+                        <Button fx:id="btnLogout" mnemonicParsing="false" onAction="#handleLogoutClick" styleClass="sidebar_opt" textFill="#e4e4e4">
+                            <graphic>
+                                <FontAwesomeIconView fill="#eaeaea" glyphName="POWER_OFF" selectionFill="#bc802d" size="1.5em" />
+                            </graphic>
+                        </Button>
+                    </HBox>
+                </VBox>
+            </children>
+        </AnchorPane>
+    </left>
+    <center>
+        <AnchorPane prefHeight="600.0" prefWidth="1100.0" styleClass="pane">
+            <children>
+                <GridPane alignment="center" hgap="10" prefHeight="608.0" prefWidth="1030.0" vgap="10">
+                    <padding>
+                        <Insets bottom="20" left="20" right="20" top="20" />
+                    </padding>
+                    <Label style="-fx-font-size: 20px; -fx-font-weight: bold;" text="Ajouter un Ticket" />
+
+                    <!-- Détails de l'événement (remplace le ComboBox) -->
+                    <Label text="Événement :" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                    <Label fx:id="nomEvenementLabel" style="-fx-font-weight: bold;" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+
+                    <Label text="Lieu :" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                    <Label fx:id="lieuEvenementLabel" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+
+                    <Label text="Date de début :" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                    <Label fx:id="dateDebutEvenementLabel" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+
+                    <Label text="Date de fin :" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                    <Label fx:id="dateFinEvenementLabel" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+
+                    <!-- Champs pour ajouter un ticket -->
+                    <Label text="Type de ticket :" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                    <TextField fx:id="typeTextField" prefHeight="35.0" prefWidth="150.0" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+
+                    <Label text="Prix (TND):" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+                    <TextField fx:id="prixTextField" prefHeight="35.0" prefWidth="150.0" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+
+                    <Label text="Date de validité:" GridPane.columnIndex="0" GridPane.rowIndex="7" />
+                    <DatePicker fx:id="dateValiditePicker" prefHeight="35.0" prefWidth="300.0" GridPane.columnIndex="2" GridPane.rowIndex="7" />
+
+                    <Label text="Nombre de tickets:" GridPane.columnIndex="0" GridPane.rowIndex="8" />
+                    <TextField fx:id="nbTicketsTextField" prefHeight="35.0" prefWidth="150.0" GridPane.columnIndex="2" GridPane.rowIndex="8" />
+
+                    <!-- Bouton Ajouter -->
+                    <Button fx:id="ajouterButton" onAction="#ajouterTicket" prefHeight="35.0" prefWidth="300.0" styleClass="button_crud" text="Ajouter Tickets" GridPane.columnIndex="2" GridPane.rowIndex="10" />
+                    <Label fx:id="messageLabel" style="-fx-text-fill: red;" GridPane.columnIndex="2" GridPane.rowIndex="11" />
+
+                    <columnConstraints>
+                        <ColumnConstraints prefWidth="250.0" />
+                        <ColumnConstraints />
+                        <ColumnConstraints prefWidth="300.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+
+                    </rowConstraints>
+                </GridPane>
+            </children>
+        </AnchorPane>
+    </center>
+</BorderPane>
