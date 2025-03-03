@@ -128,7 +128,15 @@ public class ViewAllEventsController implements Initializable, CalendarComponent
         Date now = new Date();
         try {
             eventsContainer.getChildren().clear();
-            List<Evenement> evenements = serviceEvenement.afficher();
+
+            // Si un texte de recherche est spécifié, utilisez la méthode de filtrage existante
+            if (searchText != null && !searchText.isEmpty()) {
+                filterEventsByName(searchText);
+                return;
+            }
+
+            // Sinon, chargez les événements triés par nombre de vues
+            List<Evenement> evenements = serviceEvenement.afficherParVues();
             for (Evenement event : evenements) {
                 if(event.getDate_fin().after(now)) {
                     createEventCard(event);
@@ -208,14 +216,29 @@ public class ViewAllEventsController implements Initializable, CalendarComponent
         }
     }
 
+    // Dans ViewAllEventsController.java
+// Modifiez la méthode updateSelectedButton ou l'événement onClick du bouton "Tous"
+
     private void updateSelectedButton(Button newSelection) {
         // Réinitialiser le style du bouton précédemment sélectionné
         if (selectedCategoryButton != null) {
             selectedCategoryButton.getStyleClass().remove("category-button-selected");
         }
+
         // Appliquer le style au nouveau bouton sélectionné
         newSelection.getStyleClass().add("category-button-selected");
         selectedCategoryButton = newSelection;
+
+        // Vérifier si c'est le bouton "Tous" et ajuster l'alignement en conséquence
+        if (newSelection.getText().equals("Tous")) {
+            // Centrer les cartes d'événements
+            eventsContainer.setAlignment(Pos.CENTER);
+            eventsContainer.setTileAlignment(Pos.CENTER); // Si TilePane a cette méthode
+        } else {
+            // Restaurer l'alignement par défaut pour les autres catégories
+            eventsContainer.setAlignment(Pos.TOP_LEFT);
+            eventsContainer.setTileAlignment(Pos.TOP_LEFT); // Si TilePane a cette méthode
+        }
     }
 
     private void filterEventsByCategory(String category) {
@@ -259,14 +282,14 @@ public class ViewAllEventsController implements Initializable, CalendarComponent
         // Créer deux cartes séparées au lieu d'essayer de les flip
         VBox frontCard = new VBox(10);
         frontCard.getStyleClass().add("event-card");
-        frontCard.setPrefWidth(330);
+        frontCard.setPrefWidth(300);
         frontCard.setPrefHeight(380);
         frontCard.setPadding(new Insets(20));
         frontCard.setStyle("-fx-background-color: #ffffff; -fx-effect: dropshadow(gaussian, rgb(17,18,60), 10, 0, 0, 2);");
 
         VBox backCard = new VBox(10);
         backCard.getStyleClass().add("event-card");
-        backCard.setPrefWidth(330);
+        backCard.setPrefWidth(300);
         backCard.setPrefHeight(380);
         backCard.setPadding(new Insets(20));
         backCard.setAlignment(Pos.CENTER);
@@ -276,7 +299,7 @@ public class ViewAllEventsController implements Initializable, CalendarComponent
         // Container pour les deux cartes
         StackPane cardContainer = new StackPane();
         cardContainer.getChildren().addAll(frontCard, backCard);
-        cardContainer.setPrefWidth(330);
+        cardContainer.setPrefWidth(300);
         cardContainer.setPrefHeight(380);
 
         // * Face avant *
@@ -288,7 +311,7 @@ public class ViewAllEventsController implements Initializable, CalendarComponent
                 File file = new File(fullPath);
                 if (file.exists()) {
                     ImageView imageView = new ImageView(new Image(file.toURI().toString()));
-                    imageView.setFitWidth(300);
+                    imageView.setFitWidth(280);
                     imageView.setFitHeight(200);
                     imageView.setPreserveRatio(true);
                     frontCard.getChildren().add(imageView);
@@ -816,8 +839,19 @@ public class ViewAllEventsController implements Initializable, CalendarComponent
         // Filtre les événements par date
         eventsContainer.getChildren().clear();
 
-        for (Evenement event : events) {
-            createEventCard(event);
+        if (events.isEmpty()) {
+            // Afficher un message quand il n'y a pas d'événements pour cette date
+            Label noEventsLabel = new Label("Aucun événement pour le " + date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+            noEventsLabel.setStyle("-fx-font-style: italic; -fx-text-fill: #645F71; -fx-font-size: 16px;");
+            noEventsLabel.setAlignment(Pos.CENTER);
+            noEventsLabel.setMaxWidth(Double.MAX_VALUE);
+            noEventsLabel.setPadding(new Insets(50, 0, 0, 0));
+            eventsContainer.getChildren().add(noEventsLabel);
+        } else {
+            // Afficher les événements pour cette date
+            for (Evenement event : events) {
+                createEventCard(event);
+            }
         }
 
         // Mettre à jour l'indication de filtre
@@ -1002,10 +1036,36 @@ public class ViewAllEventsController implements Initializable, CalendarComponent
         detailsButton.setStyle("-fx-background-color: #d87769; -fx-text-fill: white;");
         detailsButton.setOnAction(e -> showEventDetails(event));
 
-        // Bouton Archiver (préparé pour une utilisation future)
         Button archiveButton = new Button("Voir les avis");
         archiveButton.getStyleClass().add("avis-button");
         archiveButton.setStyle("-fx-background-color: #11123c; -fx-text-fill: white;");
+        archiveButton.setOnAction(e -> {
+            try {
+                // Load the feedback page
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/EventFeedback.fxml"));
+                Parent root = loader.load();
+
+                // Get the controller and set the current event
+                EventFeedbackController feedbackController = loader.getController();
+                feedbackController.setCurrentEvent(event);
+
+                // Navigate to the feedback page
+                Scene scene = ((Node) e.getSource()).getScene();
+                Stage stage = (Stage) scene.getWindow();
+                stage.setScene(new Scene(root));
+                stage.show();
+            } catch (IOException ex) {
+                System.err.println("Error loading feedback page: " + ex.getMessage());
+                ex.printStackTrace();
+
+                // Show error alert
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Erreur");
+                alert.setHeaderText("Impossible d'ouvrir la page des avis");
+                alert.setContentText("Une erreur s'est produite lors du chargement de la page des avis: " + ex.getMessage());
+                alert.showAndWait();
+            }
+        });
 
         // Ajouter tous les éléments à la face arrière
         backCard.getChildren().addAll(

@@ -28,6 +28,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import javafx.scene.layout.AnchorPane;
 import netscape.javascript.JSObject;
+import services.ServiceEventViews;
 
 import java.io.File;
 import java.io.IOException;
@@ -196,8 +197,14 @@ public class DetailsEvenementController2 {
         }
     }
 
+    private ServiceEventViews serviceEventViews = new ServiceEventViews();
+
     public void setCurrentEvenement(Evenement evenement) {
         this.currentEvenement = evenement;
+        // Incrémenter le compteur de vues
+        if (evenement != null) {
+            serviceEventViews.incrementViewCount(evenement.getEvenement_id());
+        }
         updateUI();
     }
 

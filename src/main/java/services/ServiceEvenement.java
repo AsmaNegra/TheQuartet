@@ -212,4 +212,33 @@ public class ServiceEvenement implements IService<Evenement>{
         return new ArrayList<>(uniqueCategories);
     }
 
+    // Ajoutez cette méthode à votre ServiceEvenement
+    public List<Evenement> afficherParVues() throws SQLException {
+        List<Evenement> evenements = new ArrayList<>();
+        String sql = "SELECT e.*, COALESCE(v.view_count, 0) as view_count " +
+            "FROM evenement e " +
+            "LEFT JOIN event_views v ON e.evenement_id = v.event_id " +
+            "ORDER BY view_count DESC, e.evenement_id DESC";
+
+        try (Statement statement = connection.createStatement();
+             ResultSet rs = statement.executeQuery(sql)) {
+            while (rs.next()) {
+                Evenement evenement = new Evenement(
+                    rs.getString("nom"),
+                    rs.getString("description"),
+                    rs.getTimestamp("date_debut"),
+                    rs.getTimestamp("date_fin"),
+                    rs.getString("lieu"),
+                    rs.getString("categorie"),
+                    rs.getFloat("budget"),
+                    rs.getString("image_event"),
+                    rs.getInt("nb_places")
+                );
+                evenement.setEvenement_id(rs.getInt("evenement_id"));
+                evenements.add(evenement);
+            }
+        }
+        return evenements;
+    }
+
 }

@@ -323,7 +323,7 @@ public class CalendarComponent {
         } else {
             // Si pas d'événements, réinitialiser le filtre
             if (dateClickHandler != null) {
-                dateClickHandler.resetDateFilter();
+                dateClickHandler.filterEventsByDate(date, new ArrayList<>());
             }
         }
     }
