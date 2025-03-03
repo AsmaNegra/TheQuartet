@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            overflow: auto;
+
+        }
+        #map {
+            height: 200%;
+            width: 100%;
+            min-width: 800px;
+            border-radius: 8px;
+        }
+        .marker-info {
+            min-width: 150px;
+            max-width: 250px;
+        }
+        .marker-info h3 {
+            margin: 0 0 5px 0;
+            font-size: 14px;
+            color: #d87769;
+        }
+        .marker-info p {
+            margin: 3px 0;
+            font-size: 12px;
+            color: #666;
+        }
+        .marker-category {
+            display: inline-block;
+            background-color: #11123c;
+            color: white;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 10px;
+            margin-top: 5px;
+        }
+        .google-maps-link {
+            display: block;
+            margin-top: 8px;
+            color: #1a73e8;
+            font-size: 12px;
+            text-decoration: none;
+        }
+
+        .google-maps-link:hover {
+            text-decoration: underline;
+        }
+
+    </style>
+</head>
+<body>
+<div id="map"></div>
+
+<script>
+    var map;
+    var markers = [];
+    var infoWindow;
+
+    function initMap() {
+        // Configuration par défaut de la carte
+        var mapOptions = {
+            zoom: 12,
+            center: {lat: 36.8065, lng: 10.1815}, // Tunis par défaut
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            mapTypeControl: false,
+            zoomControl: true,
+            zoomControlOptions: {
+                position: google.maps.ControlPosition.RIGHT_BOTTOM
+            },
+            streetViewControl: false,
+            fullscreenControl: false
+        };
+
+        // Créer la carte
+        map = new google.maps.Map(document.getElementById('map'), mapOptions);
+        infoWindow = new google.maps.InfoWindow();
+
+        document.getElementById('map-container').addEventListener('wheel', function(event) {
+            if (event.deltaY === 0) {
+                event.preventDefault();
+                this.scrollLeft += event.deltaX;
+            }
+        }, { passive: false });
+
+        // Écouter les changements de zoom
+        map.addListener('zoom_changed', function() {
+            closeInfoWindow();
+        });
+
+        // Écouter les déplacements de la carte
+        map.addListener('dragend', function() {
+            closeInfoWindow();
+        });
+    }
+
+    function closeInfoWindow() {
+        if (infoWindow) {
+            infoWindow.close();
+        }
+    }
+
+    function clearMarkers() {
+        for (var i = 0; i < markers.length; i++) {
+            markers[i].setMap(null);
+        }
+        markers = [];
+        closeInfoWindow();
+    }
+
+    function searchAndAddMarker(address, name, category) {
+        var geocoder = new google.maps.Geocoder();
+
+        geocoder.geocode({'address': address}, function(results, status) {
+            if (status === 'OK' && results[0]) {
+                addMarker(results[0].geometry.location.lat(), results[0].geometry.location.lng(), name, address, category);
+            } else {
+                console.log("Impossible de trouver l'adresse: " + address);
+            }
+        });
+    }
+
+    function addMarker(lat, lng, name, address, category) {
+        var position = new google.maps.LatLng(lat, lng);
+
+        var marker = new google.maps.Marker({
+            position: position,
+            map: map,
+            title: name,
+            animation: google.maps.Animation.DROP,
+            icon: {
+                path: google.maps.SymbolPath.CIRCLE,
+                scale: 10,
+                fillColor: "#d87769",
+                fillOpacity: 0.8,
+                strokeColor: "white",
+                strokeWeight: 2
+            }
+        });
+
+        markers.push(marker);
+
+        // Créer le contenu de l'info-bulle avec un lien vers Google Maps
+        var contentString =
+            '<div class="marker-info">' +
+            '<h3>' + name + '</h3>' +
+            '<p>' + address + '</p>' +
+            '<div class="marker-category">' + category + '</div>' +
+            '<a href="https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(address) + '" target="_blank" class="google-maps-link">Voir sur Google Maps</a>' +
+            '</div>';
+
+        // Ajouter un écouteur de clic sur le marqueur
+        marker.addListener('click', function() {
+            closeInfoWindow();
+            infoWindow.setContent(contentString);
+            infoWindow.open(map, marker);
+
+            // Si javaConnector est disponible, appeler la méthode showEventDetails
+            if (window.javaConnector) {
+                try {
+                    window.javaConnector.showEventDetails(name);
+                } catch (e) {
+                    console.error("Erreur lors de l'appel à javaConnector:", e);
+                }
+            }
+        });
+
+        // Si c'est le premier marqueur, centrer la carte
+        if (markers.length === 1) {
+            map.setCenter(position);
+        }
+
+        // Si on a plusieurs marqueurs, ajuster la vue pour afficher tous les marqueurs
+        if (markers.length > 1) {
+            var bounds = new google.maps.LatLngBounds();
+            for (var i = 0; i < markers.length; i++) {
+                bounds.extend(markers[i].getPosition());
+            }
+            map.fitBounds(bounds);
+        }
+    }
+</script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDVp922yWQ9Dt6P3QzYFaB0VCRzNIfpPA8&callback=initMap" async defer></script>
+</body>
+</html>

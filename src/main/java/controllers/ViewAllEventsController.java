@@ -75,9 +75,7 @@ public class ViewAllEventsController implements Initializable, CalendarComponent
 
     private WebView webView;
     private WebEngine webEngine;
-
-
-    // Ajoutez cette déclaration FXML
+    private SidebarMapController sidebarMapController;
     @FXML
     private VBox calendarContainer;
     @FXML
@@ -100,8 +98,8 @@ public class ViewAllEventsController implements Initializable, CalendarComponent
 
         initializeCalendar();
 
-        // Initialiser la carte simple en dernier
         initializeMap();
+
 
         // Écouteur sur le champ de recherche
         searchField.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -119,6 +117,13 @@ public class ViewAllEventsController implements Initializable, CalendarComponent
             }
         });
 
+    }
+
+    // Méthode pour initialiser la carte
+    private void initializeMap() {
+        if (mapContainer != null) {
+            sidebarMapController = new SidebarMapController(mapContainer, serviceEvenement);
+        }
     }
 
     private void loadEvents() {
@@ -245,10 +250,6 @@ public class ViewAllEventsController implements Initializable, CalendarComponent
         try {
             eventsContainer.getChildren().clear();
 
-//            if (webEngine != null) {
-//                webEngine.executeScript("clearMarkers()");
-//            }
-
             List<Evenement> evenements = serviceEvenement.afficher();
             Date now = new Date();
 
@@ -256,20 +257,11 @@ public class ViewAllEventsController implements Initializable, CalendarComponent
                 if (event.getCategorie().equals(category) || category.equals("Tous") && event.getDate_fin().after(now)) {
                     // Ajouter la carte d'événement
                     createEventCard(event);
-
-//                    // Ajouter le marqueur sur la carte
-//                    double[] coordinates = GeocodingService.geocodeAddressWithCache(event.getLieu());
-//                    if (coordinates != null) {
-//                        String script = String.format(
-//                            "addMarker(%f, %f, '%s', '%s', '%s')",
-//                            coordinates[0], coordinates[1],
-//                            escapeJavaScript(event.getNom()),
-//                            escapeJavaScript(event.getLieu()),
-//                            escapeJavaScript(event.getCategorie())
-//                        );
-//                        webEngine.executeScript(script);
-//                    }
                 }
+            }
+
+            if(sidebarMapController != null) {
+                sidebarMapController.filterEventsByCategory(category);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -441,12 +433,6 @@ public class ViewAllEventsController implements Initializable, CalendarComponent
         try {
             // Effacer les cartes d'événements actuelles
             eventsContainer.getChildren().clear();
-
-            // NE PAS effacer les marqueurs pour l'instant
-            // if (webEngine != null) {
-            //     webEngine.executeScript("clearMarkers()");
-            // }
-
             List<Evenement> evenements = serviceEvenement.afficher();
             Date now = new Date();
 
@@ -455,21 +441,6 @@ public class ViewAllEventsController implements Initializable, CalendarComponent
                 if (event.getNom().toLowerCase().contains(searchText.toLowerCase()) && event.getDate_fin().after(now)) {
                     // Ajouter la carte d'événement
                     createEventCard(event);
-
-                    // NE PAS ajouter de marqueurs pour l'instant
-                    // if (webEngine != null) {
-                    //     double[] coordinates = GeocodingService.geocodeAddressWithCache(event.getLieu());
-                    //     if (coordinates != null) {
-                    //         String script = String.format(
-                    //             "addMarker(%f, %f, '%s', '%s', '%s')",
-                    //             coordinates[0], coordinates[1],
-                    //             escapeJavaScript(event.getNom()),
-                    //             escapeJavaScript(event.getLieu()),
-                    //             escapeJavaScript(event.getCategorie())
-                    //         );
-                    //         webEngine.executeScript(script);
-                    //     }
-                    // }
                 }
             }
         } catch (SQLException e) {
@@ -491,213 +462,6 @@ public class ViewAllEventsController implements Initializable, CalendarComponent
             e.printStackTrace();
         }
 
-    }
-
-
-
-//    private void initializeMap() {
-//        // Configurer le conteneur de carte
-//        mapContainer.setMinHeight(300);  // Hauteur adaptée à votre sidebar
-//        mapContainer.setPrefHeight(300);
-//
-//        // Créer WebView
-//        webView = new WebView();
-//        webEngine = webView.getEngine();
-//
-//        // Configurer WebView
-//        webView.setPrefHeight(300);
-//        webView.setPrefWidth(Double.MAX_VALUE);  // Utiliser toute la largeur disponible
-//
-//        // Ajouter WebView au container
-//        mapContainer.getChildren().add(webView);
-//
-//        // Configurer l'écouteur d'état
-//        webEngine.getLoadWorker().stateProperty().addListener((obs, oldState, newState) -> {
-//            System.out.println("État du chargement de la carte: " + newState);
-//
-//            if (newState == javafx.concurrent.Worker.State.SUCCEEDED) {
-//                System.out.println("Carte chargée avec succès");
-//
-//                try {
-//                    // Créer un pont Java-JavaScript
-//                    JSObject window = (JSObject) webEngine.executeScript("window");
-//                    window.setMember("javaConnector", new MapJavaConnector());
-//
-//                    webEngine.executeScript(
-//                        "window.showEventOnMap = function(lat, lng, name, location) {" +
-//                            "    if (typeof map !== 'undefined' && map !== null) {" +
-//                            "        L.marker([lat, lng]).addTo(map)" +
-//                            "          .bindPopup('<b>' + name + '</b><br>' + location + '<br>" +
-//                            "                     <button onclick=\"javaConnector.showEventDetails(\\'' + name + '\\')\">Voir détails</button>');" +
-//                            "        return true;" +
-//                            "    }" +
-//                            "    return false;" +
-//                            "};"
-//                    );
-//
-//                    // Charger les événements sur la carte
-//                    loadEventsOnMap();
-//                } catch (Exception e) {
-//                    System.err.println("Erreur lors de l'initialisation de la carte:");
-//                    e.printStackTrace();
-//                }
-//            }
-//        });
-//
-//        // Charger une carte Leaflet avec la variable map exposée globalement
-//        String leafletHtml =
-//            "<html>" +
-//                "<head>" +
-//                "    <link rel=\"stylesheet\" href=\"https://unpkg.com/leaflet@1.9.4/dist/leaflet.css\" />" +
-//                "    <script src=\"https://unpkg.com/leaflet@1.9.4/dist/leaflet.js\"></script>" +
-//                "    <style>" +
-//                "        html, body { height: 100%; margin: 0; padding: 0; }" +
-//                "        #map { width: 100%; height: 100%; position: absolute; top: 0; left: 0; }" +
-//                "    </style>" +
-//                "</head>" +
-//                "<body>" +
-//                "    <div id=\"map\"></div>" +
-//                "    <script>" +
-//                "        // Variable globale pour la carte" +
-//                "        var map;" +
-//                "        window.onload = function() {" +
-//                "            console.log('Initialisation de la carte...');" +
-//                "            map = L.map('map').setView([46.227638, 2.213749], 5);" +
-//                "            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {" +
-//                "                attribution: '&copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors'" +
-//                "            }).addTo(map);" +
-//                "            console.log('Carte initialisée et disponible globalement');" +
-//                "            // Informer Java que la carte est prête" +
-//                "            if (window.javaConnector) {" +
-//                "                javaConnector.logMessage('Carte prête');" +
-//                "            }" +
-//                "        };" +
-//                "    </script>" +
-//                "</body>" +
-//                "</html>";
-//
-//        // Configurer l'écouteur d'état
-//        webEngine.getLoadWorker().stateProperty().addListener((obs, oldState, newState) -> {
-//            System.out.println("État du chargement de la carte: " + newState);
-//
-//            if (newState == javafx.concurrent.Worker.State.SUCCEEDED) {
-//                System.out.println("Page HTML chargée avec succès");
-//
-//                try {
-//                    // Créer un pont Java-JavaScript
-//                    JSObject window = (JSObject) webEngine.executeScript("window");
-//                    window.setMember("javaConnector", new MapJavaConnector());
-//
-//                    // Attendre un moment pour s'assurer que la carte est initialisée
-//                    Platform.runLater(() -> {
-//                        try {
-//                            Thread.sleep(1000);  // Attendre 1 seconde
-//                            loadEventsOnMap();
-//                        } catch (InterruptedException e) {
-//                            e.printStackTrace();
-//                        }
-//                    });
-//                } catch (Exception e) {
-//                    System.err.println("Erreur lors de l'initialisation de la carte:");
-//                    e.printStackTrace();
-//                }
-//            }
-//        });
-//
-//        webEngine.loadContent(leafletHtml);
-//    }
-
-    private void initializeMap() {
-        // Configuration du conteneur
-        mapContainer.setStyle("-fx-border-color: #cccccc; -fx-border-width: 1px;");
-        mapContainer.setMinHeight(180);
-        mapContainer.setPrefHeight(180);
-        mapContainer.setMaxHeight(180);
-        mapContainer.setMaxWidth(180);
-        mapContainer.setPrefWidth(180);
-
-        // Créer WebView
-        webView = new WebView();
-        webEngine = webView.getEngine();
-
-        // Configurer WebView
-        webView.setPrefHeight(180);
-        webView.setPrefWidth(180);
-
-        // Ajouter WebView au container
-        mapContainer.getChildren().add(webView);
-
-        // HTML avec marqueurs en forme de cercles colorés
-        String mapHtml =
-            "<html>" +
-                "<head>" +
-                "    <link rel=\"stylesheet\" href=\"https://unpkg.com/leaflet@1.9.4/dist/leaflet.css\" />" +
-                "    <script src=\"https://unpkg.com/leaflet@1.9.4/dist/leaflet.js\"></script>" +
-                "    <style>" +
-                "        body, html, #map { width: 100%; height: 100%; margin: 0; padding: 0; }" +
-                "        .circle-marker { border-radius: 50%; width: 15px; height: 15px; }" +
-                "    </style>" +
-                "</head>" +
-                "<body>" +
-                "    <div id=\"map\"></div>" +
-                "    <script>" +
-                "        var mymap = L.map('map').setView([36.8, 10.18], 9);" +
-                "        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {" +
-                "            attribution: '&copy; OpenStreetMap'" +
-                "        }).addTo(mymap);" +
-                "        " +
-                "        // Fonction pour créer un marqueur circulaire coloré" +
-                "        function createCircleMarker(lat, lng, color, title) {" +
-                "            var circleIcon = L.divIcon({" +
-                "                html: '<div style=\"background-color:' + color + '; width:15px; height:15px; border-radius:50%; border:2px solid white;\"></div>'," +
-                "                className: ''," +
-                "                iconSize: [19, 19]" +
-                "            });" +
-                "            return L.marker([lat, lng], {icon: circleIcon}).addTo(mymap).bindPopup(title);" +
-                "        }" +
-                "        " +
-                "        // Marqueurs colorés" +
-                "        createCircleMarker(36.8, 10.18, '#FF0000', '<b>Tunis</b>');" +
-                "        createCircleMarker(36.4, 10.62, '#00FF00', '<b>Hammamet</b>');" +
-                "        createCircleMarker(37.27, 9.87, '#0000FF', '<b>Bizerte</b>');" +
-                "    </script>" +
-                "</body>" +
-                "</html>";
-
-        webEngine.loadContent(mapHtml);
-    }
-
-    // Méthode de géocodage simplifiée pour les lieux tunisiens
-    private double[] geocodeSimple(String lieu) {
-        if (lieu == null || lieu.trim().isEmpty()) {
-            return null;
-        }
-
-        String normalizedLieu = lieu.trim().toLowerCase();
-        System.out.println("Géocodage de: " + normalizedLieu);
-
-        // Table de correspondance pour les lieux courants
-        HashMap<String, double[]> locations = new HashMap<>();
-        locations.put("tunis", new double[]{36.8, 10.18});
-        locations.put("hammamet", new double[]{36.4, 10.62});
-        locations.put("bizerte", new double[]{37.27, 9.87});
-        locations.put("tabarka", new double[]{36.95, 8.76});
-        locations.put("marsa", new double[]{36.88, 10.32});
-
-        // Vérifier si le lieu contient l'un des mots clés
-        for (String key : locations.keySet()) {
-            if (normalizedLieu.contains(key)) {
-                System.out.println("Lieu reconnu: " + key + " pour " + normalizedLieu);
-                return locations.get(key);
-            }
-        }
-
-        // Pour les lieux non reconnus, générer des coordonnées légèrement décalées de Tunis
-        // (pour les visualiser quand même sur la carte)
-        double randomLat = 36.8 + (Math.random() * 0.1 - 0.05);
-        double randomLng = 10.18 + (Math.random() * 0.1 - 0.05);
-        System.out.println("Lieu non reconnu: " + normalizedLieu + " - coordonnées aléatoires générées");
-        return new double[]{randomLat, randomLng};
     }
 
     private void loadEventsOnMap() {
