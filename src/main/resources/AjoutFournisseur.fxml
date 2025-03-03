@@ -14,48 +14,127 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" styleClass="background_color" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AjoutFournisseur">
-
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" styleClass="parent" stylesheets="@styles_new.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AjoutFournisseur">
     <left>
-        <AnchorPane prefHeight="200.0" prefWidth="45.0" styleClass="sidebar" stylesheets="@styles.css">
+        <!-- Sidebar qui s'étend au survol -->
+        <AnchorPane fx:id="sidebar" onMouseEntered="#expandSidebar" onMouseExited="#collapseSidebar" prefHeight="500.0" prefWidth="70.0" styleClass="sidebar">
             <children>
-                <FontAwesomeIconView fill="#797878" glyphName="BARS" layoutX="20.2" layoutY="30.6" selectionFill="#bc802d" size="1.5em" text="" wrappingWidth="23.2" />
-                <VBox layoutX="20.0" layoutY="119.0">
-                    <children>
-                        <FontAwesomeIconView fill="#f49617" glyphName="SITEMAP" size="1.5em" />
-                        <FontAwesomeIconView glyphName="GIFT" size="1.5em" styleClass="sidebar_opt">
-                            <VBox.margin>
-                                <Insets top="15.0" />
-                            </VBox.margin>
-                        </FontAwesomeIconView>
-                        <FontAwesomeIconView glyphName="USER" size="1.5em" styleClass="sidebar_opt">
-                     <VBox.margin>
-                        <Insets bottom="15.0" top="15.0" />
-                     </VBox.margin></FontAwesomeIconView>
-                        <FontAwesomeIconView glyphName="HOME" size="1.5em" styleClass="sidebar_opt" />
-                        <Separator>
-                            <VBox.margin>
-                                <Insets bottom="15.0" top="15.0" />
-                            </VBox.margin>
-                        </Separator>
-                        <FontAwesomeIconView fill="#797878" glyphName="PLUS" size="1.5em" />
-                    </children>
+                <!-- Conteneur global avec contraintes d'ancrage -->
+                <VBox layoutX="10.0" layoutY="165.0" prefHeight="600.0" prefWidth="87.2" spacing="15.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <HBox>
+                        <children>
+                            <Circle fill="DODGERBLUE" radius="28.0" stroke="BLACK" strokeType="INSIDE" />
+                            <Label fx:id="labelUser" alignment="CENTER" text="Label" textFill="WHITE" visible="false">
+                                <font>
+                                    <Font name="Open Sans Regular" size="12.0" />
+                                </font>
+                                <HBox.margin>
+                                    <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                                </HBox.margin>
+                            </Label>
+                        </children>
+                        <VBox.margin>
+                            <Insets bottom="50.0" />
+                        </VBox.margin>
+                    </HBox>
+                    <!-- Options du menu -->
+                    <VBox spacing="10.0">
+                        <!-- Option SITEMAP -->
+                        <HBox alignment="CENTER_LEFT" spacing="10" styleClass="menu-item">
+                            <Button fx:id="btnSitemap" mnemonicParsing="false" onAction="#handleSitemapClick" styleClass="sidebar_opt" textFill="#e4e4e4">
+                                <graphic>
+                                    <FontAwesomeIconView fill="#797878" glyphName="SITEMAP" size="1.5em" styleClass="sidebar_opt" />
+                                </graphic>
+                                <HBox.margin>
+                                    <Insets left="5.0" />
+                                </HBox.margin>
+                                <font>
+                                    <Font name="Open Sans Medium" size="12.0" />
+                                </font>
+                            </Button>
+                        </HBox>
+                        <!-- Option GIFT -->
+                        <HBox alignment="CENTER_LEFT" spacing="10" styleClass="menu-item">
+                            <Button fx:id="btnGift" mnemonicParsing="false" onAction="#handleGiftClick" styleClass="sidebar_opt" textFill="#e4e4e4">
+                                <graphic>
+                                    <FontAwesomeIconView fill="#797878" glyphName="GIFT" size="1.5em" styleClass="sidebar_opt" />
+                                </graphic>
+                                <HBox.margin>
+                                    <Insets left="5.0" />
+                                </HBox.margin>
+                                <font>
+                                    <Font name="Open Sans Medium" size="12.0" />
+                                </font>
+                            </Button>
+                        </HBox>
+                        <!-- Option HOME -->
+                        <HBox alignment="CENTER_LEFT" spacing="10" styleClass="menu-item">
+                            <Button fx:id="btnHome" mnemonicParsing="false" onAction="#handleHomeClick" styleClass="sidebar_opt" textFill="#e4e4e4">
+                                <graphic>
+                                    <FontAwesomeIconView fill="#797878" glyphName="HOME" size="1.5em" styleClass="sidebar_opt" />
+                                </graphic>
+                                <HBox.margin>
+                                    <Insets left="5.0" />
+                                </HBox.margin>
+                                <font>
+                                    <Font name="Open Sans Medium" size="12.0" />
+                                </font>
+                            </Button>
+                        </HBox>
+                    </VBox>
+                    <!-- Séparateur pour délimiter des sections -->
+                    <Separator />
+                    <!-- Option additionnelle -->
+                    <HBox alignment="CENTER_LEFT" spacing="10" styleClass="menu-item">
+                        <Button fx:id="btnHome1" mnemonicParsing="false" onAction="#handleHomeClick" styleClass="sidebar_opt" textFill="#e4e4e4">
+                            <graphic>
+                                <FontAwesomeIconView fill="#797878" glyphName="USER" size="1.5em" styleClass="sidebar_opt" />
+                            </graphic>
+                            <HBox.margin>
+                                <Insets left="5.0" />
+                            </HBox.margin>
+                            <font>
+                                <Font name="Open Sans Medium" size="12.0" />
+                            </font>
+                        </Button>
+                    </HBox>
+                    <Separator>
+                        <VBox.margin>
+                            <Insets top="100.0" />
+                        </VBox.margin></Separator>
+                    <HBox alignment="CENTER_LEFT" spacing="10" styleClass="menu-item">
+                        <children>
+                            <Button fx:id="btnLogout" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="14.0" prefWidth="86.0" styleClass="sidebar_opt" stylesheets="@styles_new.css" textFill="WHITE">
+                                <graphic>
+                                    <FontAwesomeIconView fill="#eaeaea" glyphName="POWER_OFF" selectionFill="#bc802d" size="1.5em" />
+                                </graphic>
+                                <font>
+                                    <Font name="Open Sans Regular" size="12.0" />
+                                </font>
+                            </Button>
+                        </children>
+                    </HBox>
+                    <padding>
+                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                    </padding>
                 </VBox>
             </children>
-         <padding>
-            <Insets right="15.0" />
-         </padding>
+            <BorderPane.margin>
+                <Insets left="5.0" />
+            </BorderPane.margin>
         </AnchorPane>
     </left>
-
-    <!-- Center Content - Fournisseur Form -->
     <center>
-        <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="590.0" prefWidth="861.0">
-            <children>
+        <!-- Zone centrale pour le contenu (redirection via changement de scène) -->
+        <AnchorPane fx:id="mainContent" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="549.0" prefWidth="843.0" styleClass="pane">
+        <children>
                 <ScrollPane fitToHeight="true" fitToWidth="true" layoutY="29.0" prefHeight="603.0" prefWidth="861.0" styleClass="transparent_bg" AnchorPane.bottomAnchor="0.6" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="29.0">
                     <content>
 
@@ -68,7 +147,7 @@
 
                             <!-- Type de Service -->
                             <Label text="Type de Service:" GridPane.rowIndex="2" />
-                            <ComboBox fx:id="typeServiceComboBox" prefHeight="26.0" prefWidth="480.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                            <ComboBox fx:id="typeServiceComboBox" prefHeight="45.0" prefWidth="491.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                 <items>
                                     <FXCollections fx:factory="observableArrayList">
                                         <String fx:value="Traiteur" />
@@ -96,20 +175,38 @@
                                 </items>
                             </ComboBox>
 
-                            <!-- Contract State -->
-                            <Label text="État du Contrat:" GridPane.rowIndex="3" />
-                            <ComboBox fx:id="contratComboBox" prefHeight="26.0" prefWidth="480.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                                <items>
-                                    <FXCollections fx:factory="observableArrayList">
-                                        <String fx:value="En attente" />
-                                        <String fx:value="Signé" />
-                                        <String fx:value="Expiré" />
-                                    </FXCollections>
-                                </items>
-                            </ComboBox>
+                            <Label text="Contrat (PDF ou Image):" GridPane.rowIndex="3" />
+                     <HBox GridPane.columnIndex="1" GridPane.rowIndex="3">
+                        <children>
+                                  <Button fx:id="uploadButton" onAction="#handleFileUpload" text="📂 Choisir un fichier" />
+                           <Text fx:id="EtatContrat" strokeType="OUTSIDE" strokeWidth="0.0" text="...">
+                              <HBox.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </HBox.margin>
+                              <font>
+                                 <Font name="Open Sans Regular" size="14.0" />
+                              </font>
+                           </Text>
+                        </children>
+                     </HBox>
+                            <Label fx:id="fileLabel" text="Aucun fichier sélectionné" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+
                             <!-- Numéro de Téléphone -->
                             <Label text="Numéro de Téléphone:" GridPane.rowIndex="5" />
-                            <TextField fx:id="numTelField" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                     <HBox GridPane.columnIndex="1" GridPane.rowIndex="5">
+                        <children>
+                           <Label fx:id="indicatifLabel" text="Label">
+                              <HBox.margin>
+                                 <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                              </HBox.margin>
+                           </Label>
+                                  <TextField fx:id="numTelField" maxWidth="1.7976931348623157E308" prefHeight="38.0" prefWidth="416.0">
+                              <HBox.margin>
+                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                              </HBox.margin>
+                           </TextField>
+                        </children>
+                     </HBox>
 
 
                             <!-- Submit Button -->
@@ -148,6 +245,9 @@
                     </content>
                 </ScrollPane>
             </children>
+         <BorderPane.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </BorderPane.margin>
         </AnchorPane>
     </center>
 

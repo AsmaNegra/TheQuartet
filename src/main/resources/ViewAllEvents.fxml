@@ -2,6 +2,7 @@
 
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
@@ -38,7 +39,7 @@
                             </Label>
                         </children>
                         <VBox.margin>
-                            <Insets top="15.0" right="15.0" bottom="15.0" left="15.0"/>
+                            <Insets bottom="50.0" />
                         </VBox.margin>
                     </HBox>
                     <!-- Options du menu -->
@@ -104,14 +105,14 @@
                     </HBox>
                     <Separator>
                         <VBox.margin>
-                            <Insets top="15.0" right="15.0" bottom="15.0" left="15.0"/>
+                            <Insets top="100.0" />
                         </VBox.margin>
                     </Separator>
                     <HBox alignment="CENTER_LEFT" spacing="10" styleClass="menu-item">
                         <children>
                             <Button fx:id="btnLogout" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="14.0" prefWidth="86.0" styleClass="sidebar_opt" stylesheets="@styles_new.css" textFill="WHITE">
                                 <graphic>
-                                    <FontAwesomeIconView fill="#eaeaea" glyphName="POWER_OFF" selectionFill="#bc802d" size="1.5em" />
+                                    <FontAwesomeIconView fill="#eaeaea" glyphName="POWER_OFF" selectionFill="#D87769" size="1.5em" />
                                 </graphic>
                                 <font>
                                     <Font name="Open Sans Regular" size="12.0" />
@@ -132,11 +133,11 @@
 
     <!-- Contenu Principal -->
     <center>
-        <ScrollPane fitToWidth="true" styleClass="transparent_bg">
+        <ScrollPane fitToWidth="true" styleClass="pane">
             <content>
                 <VBox spacing="20" styleClass="main-container">
                     <!-- En-tête -->
-                    <HBox alignment="CENTER" spacing="15" styleClass="pane">
+                    <HBox alignment="CENTER_LEFT" spacing="15" styleClass="widget">
                         <padding>
                             <Insets bottom="10" left="15" right="15" top="10" />
                         </padding>
@@ -146,31 +147,50 @@
                             </image>
                         </ImageView>
                         <Separator orientation="VERTICAL" />
-                        <Label styleClass="welcome-text" text="Ravi de vous revoir !">
+                        <Label prefHeight="23.0" prefWidth="199.0" styleClass="welcome-text" text="Ravi de vous revoir !">
                             <font>
                                 <Font name="Montserrat-Regular" size="18.0" />
                             </font>
                         </Label>
-                        <TextField fx:id="searchField" promptText="Chercher un evenement..." styleClass="search-field" />
-                        <Label styleClass="time-text" text="16:49 16/02/2025" />
+                        <!--                        <TextField fx:id="searchField" promptText="Chercher un evenement..." styleClass="search-field" />-->
+                        <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="18.0" prefWidth="336.0" styleClass="time-text" text="16:49 16/02/2025" />
                     </HBox>
 
-                    <!-- Catégories -->
-                    <ScrollPane fitToWidth="true" styleClass="transparent_bg">
-                        <content>
-                            <HBox fx:id="categoriesContainer" spacing="10" styleClass="categories-container">
-                                <padding>
-                                    <Insets bottom="10" left="15" right="15" top="10" />
-                                </padding>
-                            </HBox>
-                        </content>
-                    </ScrollPane>
-
-                    <!-- Conteneur des événements -->
-                    <TilePane fx:id="eventsContainer" hgap="20" prefColumns="2" prefTileWidth="340" vgap="20">
+                    <!-- Barre de recherche en haut -->
+                    <HBox alignment="CENTER" spacing="10" style="-fx-background-color: #ffffff;" styleClass="widget">
                         <padding>
                             <Insets bottom="10" left="15" right="15" top="10" />
                         </padding>
+                        <TextField fx:id="searchField" promptText="Rechercher un événement..." styleClass="search-field" HBox.hgrow="ALWAYS" />
+                        <Button fx:id="searchButton" styleClass="search-button">
+                            <graphic>
+                                <FontAwesomeIconView fill="WHITE" glyphName="SEARCH" size="1.2em" />
+                            </graphic>
+                        </Button>
+                    </HBox>
+
+                    <!-- Section des catégories -->
+                    <VBox spacing="10">
+                        <ScrollPane fitToHeight="true" hbarPolicy="ALWAYS" styleClass="transparent_bg" vbarPolicy="NEVER">
+                            <content>
+                                <HBox fx:id="categoriesContainer" spacing="10">
+                                    <padding>
+                                        <Insets bottom="10" left="15" right="15" top="10" />
+                                    </padding>
+                                </HBox>
+                            </content>
+                        </ScrollPane>
+                    </VBox>
+
+
+                    <!-- Conteneur des événements -->
+                    <TilePane fx:id="eventsContainer" hgap="20" prefColumns="2" prefTileWidth="300" vgap="20">
+                        <padding>
+                            <Insets bottom="10.0" left="15.0" top="10.0" />
+                        </padding>
+                        <VBox.margin>
+                            <Insets />
+                        </VBox.margin>
                     </TilePane>
 
                     <!-- Pied de page -->
@@ -184,25 +204,61 @@
                     </HBox>
                 </VBox>
             </content>
+            <BorderPane.margin>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+            </BorderPane.margin>
         </ScrollPane>
     </center>
 
     <!-- Sidebar Droite -->
     <right>
-        <VBox spacing="15" styleClass="sidebar-right">
-            <padding>
-                <Insets bottom="15" left="15" right="15" top="15" />
-            </padding>
-            <VBox styleClass="sidebar-section">
-                <Label styleClass="section-title" text="Calendrier" />
-            </VBox>
-            <VBox styleClass="sidebar-section">
-                <Label styleClass="section-title" text="Événements à la une" />
-            </VBox>
-            <VBox styleClass="sidebar-section">
-                <Label styleClass="section-title" text="Carte" />
-            </VBox>
-        </VBox>
+        <ScrollPane fitToWidth="true" hbarPolicy="ALWAYS" styleClass="transparent_bg">
+            <content>
+                <VBox spacing="15" styleClass="pane">
+                    <padding>
+                        <Insets bottom="15" left="15" right="15" top="15" />
+                    </padding>
+                    <VBox styleClass="sidebar-section">
+                        <Label styleClass="section-title" text="Calendrier des événements" wrapText="true" />
+                        <HBox fx:id="filterContainer" alignment="CENTER" minHeight="-Infinity" prefHeight="30.0" prefWidth="180.0" spacing="10" styleClass="pane" visible="false">
+                            <padding>
+                                <Insets bottom="10" left="15" right="15" top="10" />
+                            </padding>
+                            <Label fx:id="activeFilterLabel" styleClass="filter-label" text="Événements filtrés par date" visible="false" />
+                            <Button fx:id="clearFilterButton" onAction="#clearFilter" styleClass="clear-filter-button" visible="false">
+                                <graphic>
+                                    <FontAwesomeIconView fill="#ffffff" glyphName="TIMES" size="1.2em" />
+                                </graphic>
+                            </Button>
+                            <VBox.margin>
+                                <Insets bottom="5.0" />
+                            </VBox.margin>
+                        </HBox>
+                        <VBox fx:id="calendarContainer" maxWidth="Infinity" styleClass="calendar-container" VBox.vgrow="ALWAYS">
+                            <VBox.margin>
+                                <Insets left="0" right="0" />
+                            </VBox.margin>
+                        </VBox>
+                    </VBox>
+                    <VBox prefWidth="180.0" styleClass="sidebar-section">
+                        <Label styleClass="section-title" text="Voir les retours sur les événements récents" wrapText="true" />
+                        <ScrollPane fitToWidth="true" hbarPolicy="ALWAYS" styleClass="transparent_bg" vbarPolicy="NEVER">
+                            <content>
+                                <HBox fx:id="pastEventsContainer" spacing="10" styleClass="past-events-container" />
+                            </content>
+                        </ScrollPane>
+                    </VBox>
+                    <VBox prefWidth="180.0" styleClass="sidebar-section" VBox.vgrow="ALWAYS">
+                        <Label styleClass="section-title" text="Consulter les lieux des événements sur Maps" wrapText="true" />
+                        <ScrollPane fitToWidth="true" hbarPolicy="ALWAYS" styleClass="transparent_bg" vbarPolicy="ALWAYS">
+                            <content>
+                                <VBox fx:id="mapContainer" styleClass="map-container" VBox.vgrow="ALWAYS" />
+                            </content>
+                        </ScrollPane>
+                    </VBox>
+                </VBox>
+            </content>
+        </ScrollPane>
     </right>
 
 </BorderPane>

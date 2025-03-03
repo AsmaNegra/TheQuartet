@@ -3,6 +3,7 @@ package services;
 import entities.Evenement;
 import entities.Utilisateur;
 import utils.MyDataBase;
+import entities.Role;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -93,14 +94,19 @@ public class ServiceUtilisateurEvenement {
              ResultSet rs = stmt.executeQuery(query)) {
 
             while (rs.next()) {
+                String roleString = rs.getString("role");
+                Role role = Role.valueOf(roleString);
+
                 Utilisateur utilisateur = new Utilisateur(
                         rs.getInt("utilisateur_id"),
                         rs.getString("nom"),
                         rs.getString("email"),
                         rs.getString("mot_de_passe"),
-                        rs.getString("role"),
-                        rs.getString("etat"),
-                        rs.getFloat("note_organisateur"),
+//                        rs.getString("role"),
+                        role,  // Assignation du rôle converti
+
+                    rs.getString("etat"),
+                        rs.getInt("note_organisateur"),
                         rs.getString("entreprise")
                 );
                 utilisateurs.add(utilisateur);
@@ -114,21 +120,24 @@ public class ServiceUtilisateurEvenement {
         List<Utilisateur> utilisateurs = new ArrayList<>();
         String sql = "SELECT u.utilisateur_id, u.nom, u.email, u.role, u.etat, u.note_organisateur, u.entreprise " +
                 "FROM utilisateur u " +
-                "JOIN utilisateur_evenement ue ON u.utilisateur_id = ue.utilisateur_id " +
+                "JOIN                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                utilisateur_evenement ue ON u.utilisateur_id = ue.utilisateur_id " +
                 "WHERE ue.evenement_id = ?";
 
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, evenementId);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
+                    String roleString = rs.getString("role");
+                    Role role = Role.valueOf(roleString);
+
                     Utilisateur utilisateur = new Utilisateur(
                             rs.getInt("utilisateur_id"),
                             rs.getString("nom"),
                             rs.getString("email"),
                             null, // mot_de_passe (non nécessaire ici)
-                            rs.getString("role"),
+                            role,
                             rs.getString("etat"),
-                            rs.getFloat("note_organisateur"),
+                            rs.getInt("note_organisateur"),
                             rs.getString("entreprise")
                     );
                     utilisateurs.add(utilisateur);
@@ -173,9 +182,9 @@ public class ServiceUtilisateurEvenement {
                         rs.getString("nom"),                  // Correspond à 'nom'
                         rs.getString("email"),                // Correspond à 'email'
                         rs.getString("mot_de_passe"),         // Correspond à 'motDePasse'
-                        rs.getString("role"),                 // Correspond à 'role'
+                        Role.valueOf(rs.getString("role")),
                         rs.getString("etat"),                 // Correspond à 'etat'
-                        rs.getFloat("note_organisateur"),     // Correspond à 'noteOrganisateur'
+                        rs.getInt("note_organisateur"),     // Correspond à 'noteOrganisateur'
                         rs.getString("entreprise"),           // Correspond à 'entreprise'
                         new ArrayList<>()                     // La liste des événements peut être initialisée ici si nécessaire
                 );

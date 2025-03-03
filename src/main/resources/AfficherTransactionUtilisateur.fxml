@@ -106,7 +106,6 @@
                         <ColumnConstraints />
                         <ColumnConstraints />
                         <ColumnConstraints />
-
                      </columnConstraints>
                      <rowConstraints>
                         <RowConstraints />
@@ -117,7 +116,6 @@
                         <RowConstraints />
                         <RowConstraints />
                         <RowConstraints />
-
                      </rowConstraints>
                         </GridPane>
                 </content>

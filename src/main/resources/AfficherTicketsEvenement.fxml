@@ -107,7 +107,6 @@
                         <RowConstraints />
                         <RowConstraints />
                         <RowConstraints />
-
                      </rowConstraints>
                         </GridPane>
                     </content>

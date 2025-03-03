@@ -1,0 +1,136 @@
+.review-card {
+    -fx-background-color: white;
+    -fx-background-radius: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 1);
+    -fx-padding: 15px;
+}
+
+.review-card:hover {
+    -fx-effect: dropshadow(gaussian, rgba(216, 119, 105, 0.3), 8, 0, 0, 2);
+    -fx-translate-y: -2px;
+    -fx-transition: all 0.3s ease;
+}
+
+.review-author {
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+    -fx-text-fill: #11123c;
+}
+
+.review-date {
+    -fx-font-style: italic;
+    -fx-text-fill: #645F71;
+    -fx-font-size: 12px;
+}
+
+.review-comment {
+    -fx-font-size: 14px;
+    -fx-text-fill: #333333;
+    -fx-wrap-text: true;
+}
+
+.star-rating {
+    -fx-spacing: 2px;
+}
+
+.star-filled {
+    -fx-fill: #f8ce0b;
+    -fx-effect: dropshadow(gaussian, rgba(248, 206, 11, 0.4), 3, 0, 0, 0);
+}
+
+.star-empty {
+    -fx-fill: #CCCCCC;
+}
+
+/* Dialog styles */
+.review-dialog {
+    -fx-background-color: white;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+    -fx-border-color: #CFD3DE;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 3);
+}
+
+.review-dialog-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #11123c;
+}
+
+.comment-area {
+    -fx-background-color: #f8f9fb;
+    -fx-border-color: #CFD3DE;
+    -fx-border-radius: 5px;
+    -fx-padding: 8px;
+}
+
+.comment-area:focused {
+    -fx-border-color: #d87769;
+}
+
+.rating-selector {
+    -fx-spacing: 5px;
+    -fx-cursor: hand;
+}
+
+.rating-instruction {
+    -fx-font-size: 14px;
+    -fx-text-fill: #645F71;
+}
+
+.review-submit-button {
+    -fx-background-color: #d87769;
+    -fx-text-fill: white;
+    -fx-background-radius: 20px;
+    -fx-padding: 8 20;
+    -fx-cursor: hand;
+}
+
+.review-submit-button:hover {
+    -fx-background-color: #b76458;
+}
+
+.review-cancel-button {
+    -fx-background-color: #CFD3DE;
+    -fx-text-fill: #11123c;
+    -fx-background-radius: 20px;
+    -fx-padding: 8 20;
+    -fx-cursor: hand;
+}
+
+.review-cancel-button:hover {
+    -fx-background-color: #bdc3d1;
+}
+/* Styles pour les boutons d'action (modifier/supprimer) */
+.action-button {
+    -fx-background-radius: 50%;
+    -fx-min-width: 30px;
+    -fx-min-height: 30px;
+    -fx-max-width: 30px;
+    -fx-max-height: 30px;
+    -fx-padding: 5px;
+    -fx-cursor: hand;
+    -fx-transition: all 0.2s ease;
+}
+
+.action-button:hover {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 5, 0, 0, 1);
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+}
+
+.edit-button {
+    -fx-background-color: #11123c;
+}
+
+.edit-button:hover {
+    -fx-background-color: rgba(17, 18, 60, 0.37);
+}
+
+.delete-button {
+    -fx-background-color: #e74c3c;
+}
+
+.delete-button:hover {
+    -fx-background-color: #c0392b;
+}

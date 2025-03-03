@@ -495,7 +495,8 @@ public class Main {
                     evenement,
                     fournisseur,
                     "Haute", // Priorité
-                    "A"
+                    "A",
+                    0
             );
 
             // Ajout de la tâche

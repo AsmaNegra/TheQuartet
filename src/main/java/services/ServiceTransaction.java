@@ -17,7 +17,6 @@ public class ServiceTransaction implements IService<Transaction> {
     public ServiceTransaction() {
         connection = MyDataBase.getInstance().getConnection();
     }
-
     public void ajouter(Transaction transaction) throws SQLException {
         String checkUtilisateurQuery = "SELECT * FROM utilisateur WHERE utilisateur_id = ?";
         try (PreparedStatement pst = connection.prepareStatement(checkUtilisateurQuery)) {

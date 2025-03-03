@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Carte des événements</title>
+    <!-- Inclure les bibliothèques Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+        .event-popup {
+            text-align: center;
+        }
+        .event-popup h3 {
+            margin: 5px 0;
+            color: #d87769;
+        }
+        .event-popup p {
+            margin: 3px 0;
+        }
+        .event-popup button {
+            background-color: #d87769;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            margin-top: 8px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+<div id="map"></div>
+
+<script>
+    // Initialiser la carte
+    var map = L.map('map').setView([46.227638, 2.213749], 5); // Centre de la France
+
+    // Ajouter la couche de fond OpenStreetMap
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    // Stocker les marqueurs pour pouvoir les effacer
+    var markers = [];
+
+    // Fonction pour ajouter un marqueur (sera appelée depuis Java)
+    function addMarker(lat, lng, name, location, category) {
+        var marker = L.marker([lat, lng]).addTo(map);
+
+        // Créer popup avec détails de l'événement
+        var popupContent = '<div class="event-popup">' +
+            '<h3>' + name + '</h3>' +
+            '<p><strong>Lieu:</strong> ' + location + '</p>' +
+            '<p><strong>Catégorie:</strong> ' + category + '</p>' +
+            '<button onclick="showDetails(\'' + name + '\')">Voir détails</button>' +
+            '</div>';
+
+        marker.bindPopup(popupContent);
+        markers.push(marker);
+
+        return marker;
+    }
+
+    // Fonction pour afficher les détails (appelle Java)
+    function showDetails(eventName) {
+        // Appeler la méthode Java via le connecteur
+        if (window.javaConnector) {
+            window.javaConnector.showEventDetails(eventName);
+        } else {
+            console.error("Le pont Java n'est pas disponible");
+        }
+    }
+
+    // Fonction pour effacer tous les marqueurs
+    function clearMarkers() {
+        for (var i = 0; i < markers.length; i++) {
+            map.removeLayer(markers[i]);
+        }
+        markers = [];
+    }
+
+    // Fonction pour centrer la carte sur un lieu
+    function centerMap(lat, lng, zoom) {
+        map.setView([lat, lng], zoom || 13);
+    }
+</script>
+</body>
+</html>

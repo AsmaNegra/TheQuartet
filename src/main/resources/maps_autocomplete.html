@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Google Maps</title>
+    <style>
+        html, body, #map {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+<div id="map"></div>
+
+<script>
+    var map, marker, infoWindow, placesService, geocoder;
+
+    function initMap() {
+        // Initialiser la carte
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: {lat: 36.8065, lng: 10.1815}, // Centre sur la Tunisie
+            zoom: 13,
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            mapTypeControl: true
+        });
+
+        // Initialiser le marqueur
+        marker = new google.maps.Marker({
+            map: map,
+            visible: false
+        });
+
+        // Initialiser l'infoWindow
+        infoWindow = new google.maps.InfoWindow();
+
+        // Initialiser les services
+        placesService = new google.maps.places.PlacesService(map);
+        geocoder = new google.maps.Geocoder();
+    }
+
+    // Fonction pour rechercher un lieu (appelée depuis Java)
+    function searchPlace(query) {
+        if (!query || query.trim() === "") return;
+
+        // Rechercher avec le service Places
+        var request = {
+            query: query,
+            fields: ['place_id', 'geometry', 'name', 'formatted_address']
+        };
+
+        placesService.findPlaceFromQuery(request, function(results, status) {
+            if (status === google.maps.places.PlacesServiceStatus.OK && results.length > 0) {
+                displayPlace(results[0]);
+            } else {
+                // Si la recherche Places échoue, essayer le géocodage
+                geocoder.geocode({'address': query}, function(results, status) {
+                    if (status === 'OK' && results[0]) {
+                        displayPlace(results[0]);
+                    }
+                });
+            }
+        });
+    }
+
+    // Fonction pour afficher un lieu sur la carte
+    function displayPlace(place) {
+        if (!place || !place.geometry) return;
+
+        // Centrer la carte
+        if (place.geometry.viewport) {
+            map.fitBounds(place.geometry.viewport);
+        } else {
+            map.setCenter(place.geometry.location);
+            map.setZoom(17);
+        }
+
+        // Afficher le marqueur
+        marker.setPosition(place.geometry.location);
+        marker.setVisible(true);
+
+        // Créer le contenu de l'InfoWindow
+        var placeInfoContent = `
+                <div style="padding: 10px; max-width: 280px;">
+                    <h3 style="margin-top: 0; margin-bottom: 5px;">${place.name || "Lieu sélectionné"}</h3>
+                    <div style="margin-bottom: 8px;">${place.formatted_address || ""}</div>
+                    <a href="https://www.google.com/maps/search/?api=1&query=${place.geometry.location.lat()},${place.geometry.location.lng()}&query_place_id=${place.place_id || ''}"
+                       target="_blank" style="color: #4285F4; text-decoration: none;">
+                        Voir sur Google Maps
+                    </a>
+                </div>
+            `;
+
+        // Afficher l'InfoWindow
+        infoWindow.setContent(placeInfoContent);
+        infoWindow.open(map, marker);
+
+        // Envoyer les informations au Java
+        if (window.javaConnector) {
+            try {
+                window.javaConnector.onPlaceSelected(
+                    place.name || "",
+                    place.formatted_address || "",
+                    place.geometry.location.lat(),
+                    place.geometry.location.lng()
+                );
+            } catch (e) {
+                console.error("Erreur:", e);
+            }
+        }
+    }
+</script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDVp922yWQ9Dt6P3QzYFaB0VCRzNIfpPA8&libraries=places&callback=initMap" async defer></script>
+</body>
+</html>
