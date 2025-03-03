@@ -200,6 +200,7 @@ public class ServiceUtilisateur implements IService<Utilisateur> {
      * @return true si le mot de passe correspond, false sinon
      */
     private boolean verifyPassword(String plainPassword, String hashedPassword) {
+        System.out.println("hello");
         return BCrypt.checkpw(plainPassword, hashedPassword);
     }
 }
