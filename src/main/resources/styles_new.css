@@ -2,6 +2,32 @@
     -fx-background-color:#111441;
     -fx-background-radius: 30px;
 }
+.root {
+    -fx-background-color: #111441; /* Bleu vif */
+}
+
+.text-field {
+    -fx-text-fill: white;          /* Texte blanc */
+    -fx-font-weight: bold;         /* Texte en gras */
+    -fx-background-color: #111441; /* Bleu plus foncé pour les champs */
+    -fx-border-color: #ffffff;     /* Bordure blanche */
+    -fx-border-radius: 5px;
+    -fx-padding: 5px;
+}
+
+.button {
+    -fx-background-color: #ffcc00; /* Bouton jaune */
+    -fx-text-fill: #000000;        /* Texte noir */
+    -fx-font-weight: bold;
+    -fx-border-radius: 5px;
+    -fx-padding: 10px;
+}
+
+.button:hover {
+    -fx-background-color: #ffdd44; /* Bouton jaune clair au survol */
+}
+
+
 
 .sidebar {
     -fx-background-color: #111441;
@@ -119,6 +145,16 @@
     -fx-background-radius: 20;
     -fx-padding: 8 15;
 }
+.avis-button {
+    -fx-background-color: #11123c;
+    -fx-text-fill: white;
+    -fx-background-radius: 20;
+    -fx-padding: 8 20;
+    -fx-cursor: hand;
+}
+.avis-button:hover {
+    -fx-background-color: rgba(17, 18, 60, 0.6);
+}
 
 .category-button {
     -fx-background-color: #d87769;
@@ -129,7 +165,26 @@
 }
 
 .category-button:hover {
-    -fx-background-color: #b76458;
+    -fx-background-color: rgba(113, 62, 56, 0.82);
+}
+
+.categories-container .button {
+    -fx-background-color: rgba(216, 119, 105, 0.8);
+    -fx-text-fill: white;
+    -fx-background-radius: 30;
+    -fx-border-radius: 30;
+    -fx-padding: 8 20;
+    -fx-font-family: "Montserrat SemiBold";
+    -fx-min-width: 100px;
+}
+
+.categories-container .button:hover {
+    -fx-background-color: #d87769;
+    -fx-effect: dropshadow(gaussian, rgba(216, 119, 105, 0.3), 5, 0, 0, 0);
+}
+
+.categories-container .button.selected {
+    -fx-background-color: #11123c;
 }
 
 .sidebar-right {
@@ -474,4 +529,479 @@
 .chart-pie:hover {
     -fx-opacity: 0.8;
     -fx-cursor: hand;
+}
+
+.action-button {
+    -fx-background-color: #11123c;
+    -fx-background-radius: 30;
+    -fx-min-width: 30px;
+    -fx-min-height: 30px;
+    -fx-max-width: 30px;
+    -fx-max-height: 30px;
+    -fx-padding: 5px;
+}
+
+.action-button:hover {
+    -fx-background-color: #0d8bf2;
+    -fx-cursor: hand;
+}
+
+.edit-button {
+    -fx-background-color: #2196F3;
+}
+
+.edit-button:hover {
+    -fx-background-color: #0d8bf2;
+}
+
+.delete-button {
+    -fx-background-color: #f44336;
+}
+
+.delete-button:hover {
+    -fx-background-color: #d32f2f;
+}
+
+.main-container {
+    -fx-background-color: transparent;
+    -fx-padding: 15;
+}
+
+.search-field {
+    -fx-background-color: white;
+    -fx-background-radius: 20;
+    -fx-padding: 8 15;
+}
+
+.event-card {
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(gaussian, rgb(17, 18, 60), 10, 0, 0, 3);
+    -fx-padding: 15;
+}
+
+
+.event-card:hover {
+    -fx-effect: dropshadow(gaussian, rgb(216, 119, 105), 15, 0, 0, 5);
+    -fx-translate-y: -2;
+}
+
+/* Style pour le conteneur principal de la flip card */
+.flip-card-container {
+    -fx-perspective: 1000px;
+}
+
+/* Style pour la carte intérieure qui va pivoter */
+.flip-card-inner {
+    -fx-transition: transform 0.6s;
+    -fx-transform-style: preserve-3d;
+    -fx-position: relative;
+    -fx-background-color: transparent;
+}
+
+/* Effet de retournement au survol */
+/*.flip-card-container:hover .flip-card-inner {*/
+/*    -fx-transform: rotateY(180deg);*/
+/*}*/
+
+/* Styles communs pour les deux faces */
+.flip-card-front, .flip-card-back {
+    -fx-backface-visibility: hidden;
+    -fx-position: absolute;
+    -fx-width: 100%;
+    -fx-height: 100%;
+    -fx-background-radius: 8px;
+}
+
+/* Style pour la face avant */
+.flip-card-front {
+    -fx-background-color: white;
+    -fx-border-radius: 8px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 2);
+}
+
+/* Style pour la face arrière (retournée à 180 degrés) */
+.flip-card-back {
+    -fx-background-color: #ffffff;
+    -fx-transform: rotateY(180deg);
+    -fx-border-radius: 8px;
+    -fx-effect: dropshadow(gaussian, rgb(17, 18, 60), 10, 0, 0, 2);
+}
+
+.event-duration {
+    -fx-font-style: italic;
+    -fx-text-fill: #d87769;
+    -fx-padding: 5px 0;
+}
+.event-title {
+    -fx-font-family: "Montserrat Bold";
+    -fx-font-size: 16px;
+    -fx-text-fill: #d87769;
+}
+.google-button {
+    -fx-background-color: #4285F4;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.google-button:hover {
+    -fx-background-color: #357AE8;
+}
+.event-details {
+    -fx-font-family: "Montserrat";
+    -fx-font-size: 12px;
+    -fx-text-fill: #11123c;
+}
+.event-category {
+    -fx-font-family: "Montserrat SemiBold";
+    -fx-font-size: 14px;
+    -fx-text-fill: #ffffff;
+    -fx-padding: 5px 10px;
+    -fx-background-color: rgb(216, 119, 105);
+    -fx-background-radius: 15px;
+}
+
+.search-container {
+    -fx-padding: 15px;
+    -fx-background-color: #f8f8f8;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 1);
+}
+
+.search-field {
+    -fx-background-color: white;
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+    -fx-border-color: #CFD3DE;
+    -fx-padding: 8 15;
+    -fx-font-size: 14px;
+}
+
+.search-button {
+    -fx-background-color: #d87769;
+    -fx-background-radius: 20;
+    -fx-min-width: 40px;
+    -fx-min-height: 40px;
+    -fx-cursor: hand;
+}
+
+
+.section-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+.button_retour {
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+}
+
+.button_retour:hover {
+    -fx-opacity: 0.8;
+}
+
+.map-container {
+    -fx-background-color: white;
+    -fx-border-color: #d0d0d0;
+    -fx-border-width: 1px;
+    -fx-border-radius: 4px;
+    -fx-min-height: 40px;
+    /* Permettre à ce conteneur de grandir automatiquement */
+    -fx-pref-height: 450px;
+}
+
+.form-field {
+    -fx-background-color: white;
+    -fx-border-color: #CFD3DE;
+    -fx-border-width: 1px;
+    -fx-border-radius: 4px;
+    -fx-padding: 8px;
+    -fx-pref-height: 30px;
+    -fx-min-height: 30px;
+}
+
+.form-field:focused {
+    -fx-border-color: #4285F4;
+    -fx-border-width: 2px;
+}
+
+/* Assurez-vous que la carte reste en dessous et ne se superpose pas */
+.map-container .web-view {
+    -fx-translate-y: 40px; /* Décaler vers le bas par rapport au TextField */
+    -fx-background-color: white;
+}
+
+.place-suggestions {
+    -fx-background-color: white;
+    -fx-border-color: #CFD3DE;
+    -fx-border-width: 1px;
+    -fx-border-radius: 0 0 5px 5px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 3);
+}
+
+.place-suggestions .list-cell {
+    -fx-padding: 8px;
+    -fx-font-size: 14px;
+}
+
+.place-suggestions .list-cell:hover {
+    -fx-background-color: #f0f0f0;
+    -fx-cursor: hand;
+}
+
+
+
+.web-view-container {
+    -fx-border-color: #CFD3DE;
+    -fx-border-width: 1px;
+    -fx-border-radius: 0 0 5px 5px;
+}
+
+.close-map-button {
+    -fx-background-color: rgba(255, 255, 255, 0.8);
+    -fx-text-fill: #555;
+    -fx-border-color: #ccc;
+    -fx-border-width: 1px;
+    -fx-border-radius: 3px;
+    -fx-padding: 3px 8px;
+    -fx-font-size: 11px;
+}
+
+.close-map-button:hover {
+    -fx-background-color: rgba(240, 240, 240, 0.9);
+    -fx-cursor: hand;
+}
+#autocomplete {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    position: absolute !important;
+    left: -9999px !important;
+}
+.calendar-container {
+    -fx-background-color: white;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);
+    -fx-padding: 0px;
+    -fx-border-insets: 0;
+    -fx-background-insets: 0;
+}
+
+.day-cell {
+    -fx-background-radius: 20px;
+    -fx-padding: 5px;
+    -fx-alignment: center;
+    -fx-pref-width: 40px;
+    -fx-pref-height: 40px;
+}
+
+.day-cell:hover {
+    -fx-background-color: #F0F8FF;
+    -fx-cursor: hand;
+}
+
+.day-cell-today {
+    -fx-background-color: #007BFF;
+}
+
+.day-cell-today .day-label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.day-cell-other-month .day-label {
+    -fx-text-fill: #AAAAAA;
+}
+
+.day-cell-has-events {
+    -fx-background-color: #F0F8FF;
+}
+
+.event-marker {
+    -fx-fill: #d87769;
+}
+
+.calendar-header {
+    -fx-spacing: 10px;
+    -fx-alignment: center;
+    -fx-padding: 5px;
+}
+
+.calendar-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+.calendar-nav-button {
+    -fx-background-color: transparent;
+    -fx-padding: 5px 10px;
+    -fx-cursor: hand;
+}
+
+.calendar-nav-button:hover {
+    -fx-background-color: #F0F0F0;
+    -fx-background-radius: 15px;
+}
+
+.weekday-header {
+    -fx-alignment: center;
+    -fx-padding: 5px 0;
+}
+
+.weekday-label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #777777;
+    -fx-pref-width: 30px;
+    -fx-alignment: center;
+}
+.clear-filter-button {
+    -fx-background-color: rgb(216, 119, 105);
+    -fx-background-radius: 15px;
+    -fx-padding: 3 5;
+    -fx-cursor: hand;
+}
+
+.clear-filter-button:hover {
+    -fx-background-color: rgba(216, 119, 105, 0.54);
+    -fx-background-radius: 3px;
+}
+
+.past-event-card {
+    -fx-background-color: rgba(255, 255, 255, 0.9);
+    -fx-background-radius: 8px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 1);
+    -fx-border-color: #e0e0e0;
+    -fx-border-radius: 8px;
+}
+
+.past-event-date {
+    -fx-text-fill: #d87769;
+    -fx-font-style: italic;
+}
+
+.archive-button {
+    -fx-background-color: #11123c;
+    -fx-text-fill: white;
+    -fx-background-radius: 4px;
+    -fx-padding: 5 10;
+    -fx-cursor: hand;
+}
+
+.details-button {
+    -fx-background-color: #d87769;
+    -fx-text-fill: white;
+    -fx-background-radius: 4px;
+    -fx-padding: 5 10;
+    -fx-cursor: hand;
+}
+
+.past-events-container {
+    -fx-padding: 10px;
+    -fx-background-color: transparent;
+}
+/*FEEDBACK*/
+/* Styles for feedback page */
+.review-card {
+    -fx-background-color: white;
+    -fx-background-radius: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 1);
+    -fx-padding: 15px;
+}
+
+.review-card:hover {
+    -fx-effect: dropshadow(gaussian, rgba(216, 119, 105, 0.3), 8, 0, 0, 2);
+    -fx-translate-y: -2px;
+    -fx-transition: all 0.3s ease;
+}
+
+.review-author {
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+    -fx-text-fill: #11123c;
+}
+
+.review-date {
+    -fx-font-style: italic;
+    -fx-text-fill: #645F71;
+    -fx-font-size: 12px;
+}
+
+.review-comment {
+    -fx-font-size: 14px;
+    -fx-text-fill: #333333;
+    -fx-wrap-text: true;
+}
+
+.star-rating {
+    -fx-spacing: 2px;
+}
+
+.star-filled {
+    -fx-fill: #f8ce0b;
+    -fx-effect: dropshadow(gaussian, rgba(248, 206, 11, 0.4), 3, 0, 0, 0);
+}
+
+.star-empty {
+    -fx-fill: #CCCCCC;
+}
+
+/* Dialog styles */
+.review-dialog {
+    -fx-background-color: white;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+    -fx-border-color: #CFD3DE;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 3);
+}
+
+.review-dialog-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #11123c;
+}
+
+.comment-area {
+    -fx-background-color: #f8f9fb;
+    -fx-border-color: #CFD3DE;
+    -fx-border-radius: 5px;
+    -fx-padding: 8px;
+}
+
+.comment-area:focused {
+    -fx-border-color: #d87769;
+}
+
+.rating-selector {
+    -fx-spacing: 5px;
+    -fx-cursor: hand;
+}
+
+.rating-instruction {
+    -fx-font-size: 14px;
+    -fx-text-fill: #645F71;
+}
+
+.review-submit-button {
+    -fx-background-color: #d87769;
+    -fx-text-fill: white;
+    -fx-background-radius: 20px;
+    -fx-padding: 8 20;
+    -fx-cursor: hand;
+}
+
+.review-submit-button:hover {
+    -fx-background-color: #b76458;
+}
+
+.review-cancel-button {
+    -fx-background-color: #CFD3DE;
+    -fx-text-fill: #11123c;
+    -fx-background-radius: 20px;
+    -fx-padding: 8 20;
+    -fx-cursor: hand;
+}
+
+.review-cancel-button:hover {
+    -fx-background-color: #bdc3d1;
 }
