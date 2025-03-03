@@ -501,10 +501,11 @@ loadChartData();
     /** 📌 Fonction pour afficher la personnalité avec une couleur dynamique */
     private void afficherPersonnalite() {
         try {
-            int TacheId = 5; // Remplace avec l'ID de l'Tache actuel
+            int TacheId = 5; // Remplace avec l'ID de Utilisateur
             String personnalite = serviceTache.analyserPersonnaliteUtilisateur(TacheId);
 
             lblPersonnalite.setText(personnalite);
+            lblPersonnalite.setWrapText(true);
             lblPersonnalite.setStyle("-fx-font-size: 18px; -fx-text-fill: #1b1b1b; -fx-font-weight: bold; -fx-text-alignment: center;");
 
             // 🎨 Appliquer une couleur en fonction de la personnalité
