@@ -17,130 +17,114 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0"
-            prefWidth="1100.0" styleClass="parent" stylesheets="@styles_new.css" xmlns="http://javafx.com/javafx/23.0.1"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ViewAllEventsController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" styleClass="parent" stylesheets="@styles_new.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ViewAllEventsController">
     <left>
         <!-- Sidebar qui s'étend au survol -->
-        <AnchorPane fx:id="sidebar" onMouseEntered="#expandSidebar" onMouseExited="#collapseSidebar" prefHeight="500.0"
-                    prefWidth="70.0" styleClass="sidebar">
+        <AnchorPane fx:id="sidebar" onMouseEntered="#expandSidebar" onMouseExited="#collapseSidebar" prefHeight="500.0" prefWidth="70.0" styleClass="sidebar">
             <children>
                 <!-- Conteneur global avec contraintes d'ancrage -->
-                <VBox layoutX="10.0" layoutY="165.0" prefHeight="600.0" prefWidth="87.2" spacing="15.0"
-                      AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-                      AnchorPane.topAnchor="0.0">
+                <VBox layoutX="10.0" layoutY="165.0" prefHeight="600.0" prefWidth="87.2" spacing="15.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <HBox>
                         <children>
-                            <Circle fill="DODGERBLUE" radius="28.0" stroke="BLACK" strokeType="INSIDE"/>
+                            <Circle fill="DODGERBLUE" radius="28.0" stroke="BLACK" strokeType="INSIDE" />
                             <Label fx:id="labelUser" alignment="CENTER" text="Label" textFill="WHITE" visible="false">
                                 <font>
-                                    <Font name="Open Sans Regular" size="12.0"/>
+                                    <Font name="Open Sans Regular" size="12.0" />
                                 </font>
                                 <HBox.margin>
-                                    <Insets bottom="15.0" left="15.0" right="15.0" top="15.0"/>
+                                    <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                                 </HBox.margin>
                             </Label>
                         </children>
                         <VBox.margin>
-                            <Insets bottom="50.0"/>
+                            <Insets bottom="50.0" />
                         </VBox.margin>
                     </HBox>
                     <!-- Options du menu -->
                     <VBox spacing="10.0">
                         <!-- Option SITEMAP -->
                         <HBox alignment="CENTER_LEFT" spacing="10" styleClass="menu-item">
-                            <Button fx:id="btnSitemap" mnemonicParsing="false" onAction="#handleSitemapClick"
-                                    styleClass="sidebar_opt" textFill="#e4e4e4">
+                            <Button fx:id="btnSitemap" mnemonicParsing="false" onAction="#handleSitemapClick" styleClass="sidebar_opt" textFill="#e4e4e4">
                                 <graphic>
-                                    <FontAwesomeIconView fill="#797878" glyphName="SITEMAP" size="1.5em"
-                                                         styleClass="sidebar_opt"/>
+                                    <FontAwesomeIconView fill="#797878" glyphName="SITEMAP" size="1.5em" styleClass="sidebar_opt" />
                                 </graphic>
                                 <HBox.margin>
-                                    <Insets left="5.0"/>
+                                    <Insets left="5.0" />
                                 </HBox.margin>
                                 <font>
-                                    <Font name="Open Sans Medium" size="12.0"/>
+                                    <Font name="Open Sans Medium" size="12.0" />
                                 </font>
                             </Button>
                         </HBox>
                         <!-- Option GIFT -->
                         <HBox alignment="CENTER_LEFT" spacing="10" styleClass="menu-item">
-                            <Button fx:id="btnGift" mnemonicParsing="false" onAction="#handleGiftClick"
-                                    styleClass="sidebar_opt" textFill="#e4e4e4">
+                            <Button fx:id="btnGift" mnemonicParsing="false" onAction="#handleGiftClick" styleClass="sidebar_opt" textFill="#e4e4e4">
                                 <graphic>
-                                    <FontAwesomeIconView fill="#797878" glyphName="GIFT" size="1.5em"
-                                                         styleClass="sidebar_opt"/>
+                                    <FontAwesomeIconView fill="#797878" glyphName="GIFT" size="1.5em" styleClass="sidebar_opt" />
                                 </graphic>
                                 <HBox.margin>
-                                    <Insets left="5.0"/>
+                                    <Insets left="5.0" />
                                 </HBox.margin>
                                 <font>
-                                    <Font name="Open Sans Medium" size="12.0"/>
+                                    <Font name="Open Sans Medium" size="12.0" />
                                 </font>
                             </Button>
                         </HBox>
                         <!-- Option HOME -->
                         <HBox alignment="CENTER_LEFT" spacing="10" styleClass="menu-item">
-                            <Button fx:id="btnHome" mnemonicParsing="false" onAction="#handleHomeClick"
-                                    styleClass="sidebar_opt" textFill="#e4e4e4">
+                            <Button fx:id="btnHome" mnemonicParsing="false" onAction="#handleHomeClick" styleClass="sidebar_opt" textFill="#e4e4e4">
                                 <graphic>
-                                    <FontAwesomeIconView fill="#797878" glyphName="HOME" size="1.5em"
-                                                         styleClass="sidebar_opt"/>
+                                    <FontAwesomeIconView fill="#797878" glyphName="HOME" size="1.5em" styleClass="sidebar_opt" />
                                 </graphic>
                                 <HBox.margin>
-                                    <Insets left="5.0"/>
+                                    <Insets left="5.0" />
                                 </HBox.margin>
                                 <font>
-                                    <Font name="Open Sans Medium" size="12.0"/>
+                                    <Font name="Open Sans Medium" size="12.0" />
                                 </font>
                             </Button>
                         </HBox>
                     </VBox>
                     <!-- Séparateur pour délimiter des sections -->
-                    <Separator/>
+                    <Separator />
                     <!-- Option additionnelle -->
                     <HBox alignment="CENTER_LEFT" spacing="10" styleClass="menu-item">
-                        <Button fx:id="btnHome1" mnemonicParsing="false" onAction="#handleHomeClick"
-                                styleClass="sidebar_opt" textFill="#e4e4e4">
+                        <Button fx:id="btnHome1" mnemonicParsing="false" onAction="#handleHomeClick" styleClass="sidebar_opt" textFill="#e4e4e4">
                             <graphic>
-                                <FontAwesomeIconView fill="#797878" glyphName="USER" size="1.5em"
-                                                     styleClass="sidebar_opt"/>
+                                <FontAwesomeIconView fill="#797878" glyphName="USER" size="1.5em" styleClass="sidebar_opt" />
                             </graphic>
                             <HBox.margin>
-                                <Insets left="5.0"/>
+                                <Insets left="5.0" />
                             </HBox.margin>
                             <font>
-                                <Font name="Open Sans Medium" size="12.0"/>
+                                <Font name="Open Sans Medium" size="12.0" />
                             </font>
                         </Button>
                     </HBox>
                     <Separator>
                         <VBox.margin>
-                            <Insets top="100.0"/>
+                            <Insets top="100.0" />
                         </VBox.margin>
                     </Separator>
                     <HBox alignment="CENTER_LEFT" spacing="10" styleClass="menu-item">
                         <children>
-                            <Button fx:id="btnLogout" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="14.0"
-                                    prefWidth="86.0" styleClass="sidebar_opt" stylesheets="@styles_new.css"
-                                    textFill="WHITE">
+                            <Button fx:id="btnLogout" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="14.0" prefWidth="86.0" styleClass="sidebar_opt" stylesheets="@styles_new.css" textFill="WHITE">
                                 <graphic>
-                                    <FontAwesomeIconView fill="#eaeaea" glyphName="POWER_OFF" selectionFill="#D87769"
-                                                         size="1.5em"/>
+                                    <FontAwesomeIconView fill="#eaeaea" glyphName="POWER_OFF" selectionFill="#D87769" size="1.5em" />
                                 </graphic>
                                 <font>
-                                    <Font name="Open Sans Regular" size="12.0"/>
+                                    <Font name="Open Sans Regular" size="12.0" />
                                 </font>
                             </Button>
                         </children>
                     </HBox>
                     <padding>
-                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0"/>
+                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                     </padding>
                 </VBox>
             </children>
             <BorderPane.margin>
-                <Insets left="5.0"/>
+                <Insets left="5.0" />
             </BorderPane.margin>
         </AnchorPane>
     </left>
@@ -153,45 +137,43 @@
                     <!-- En-tête -->
                     <HBox alignment="CENTER" spacing="15" styleClass="widget">
                         <padding>
-                            <Insets bottom="10" left="15" right="15" top="10"/>
+                            <Insets bottom="10" left="15" right="15" top="10" />
                         </padding>
                         <ImageView fitHeight="60.0" fitWidth="60.0" preserveRatio="true">
                             <image>
-                                <Image url="@images/Orchestra/Orchestra (1).png"/>
+                                <Image url="@images/Orchestra/Orchestra (1).png" />
                             </image>
                         </ImageView>
-                        <Separator orientation="VERTICAL"/>
+                        <Separator orientation="VERTICAL" />
                         <Label styleClass="welcome-text" text="Ravi de vous revoir !">
                             <font>
-                                <Font name="Montserrat-Regular" size="18.0"/>
+                                <Font name="Montserrat-Regular" size="18.0" />
                             </font>
                         </Label>
                         <!--                        <TextField fx:id="searchField" promptText="Chercher un evenement..." styleClass="search-field" />-->
-                        <Label styleClass="time-text" text="16:49 16/02/2025"/>
+                        <Label styleClass="time-text" text="16:49 16/02/2025" />
                     </HBox>
 
                     <!-- Barre de recherche en haut -->
                     <HBox alignment="CENTER" spacing="10" style="-fx-background-color: #ffffff;" styleClass="widget">
                         <padding>
-                            <Insets bottom="10" left="15" right="15" top="10"/>
+                            <Insets bottom="10" left="15" right="15" top="10" />
                         </padding>
-                        <TextField fx:id="searchField" promptText="Rechercher un événement..." styleClass="search-field"
-                                   HBox.hgrow="ALWAYS"/>
+                        <TextField fx:id="searchField" promptText="Rechercher un événement..." styleClass="search-field" HBox.hgrow="ALWAYS" />
                         <Button fx:id="searchButton" styleClass="search-button">
                             <graphic>
-                                <FontAwesomeIconView fill="WHITE" glyphName="SEARCH" size="1.2em"/>
+                                <FontAwesomeIconView fill="WHITE" glyphName="SEARCH" size="1.2em" />
                             </graphic>
                         </Button>
                     </HBox>
 
                     <!-- Section des catégories -->
                     <VBox spacing="10">
-                        <ScrollPane fitToHeight="true" hbarPolicy="ALWAYS" styleClass="transparent_bg"
-                                    vbarPolicy="NEVER">
+                        <ScrollPane fitToHeight="true" hbarPolicy="ALWAYS" styleClass="transparent_bg" vbarPolicy="NEVER">
                             <content>
                                 <HBox fx:id="categoriesContainer" spacing="10">
                                     <padding>
-                                        <Insets bottom="10" left="15" right="15" top="10"/>
+                                        <Insets bottom="10" left="15" right="15" top="10" />
                                     </padding>
                                 </HBox>
                             </content>
@@ -202,26 +184,26 @@
                     <!-- Conteneur des événements -->
                     <TilePane fx:id="eventsContainer" hgap="20" prefColumns="2" prefTileWidth="300" vgap="20">
                         <padding>
-                            <Insets bottom="10.0" left="15.0" top="10.0"/>
+                            <Insets bottom="10.0" left="15.0" top="10.0" />
                         </padding>
                         <VBox.margin>
-                            <Insets/>
+                            <Insets />
                         </VBox.margin>
                     </TilePane>
 
                     <!-- Pied de page -->
                     <HBox alignment="CENTER" spacing="20" styleClass="footer">
                         <padding>
-                            <Insets bottom="15" left="15" right="15" top="15"/>
+                            <Insets bottom="15" left="15" right="15" top="15" />
                         </padding>
-                        <Label styleClass="footer-text" text="À propos"/>
-                        <Label styleClass="footer-text" text="Contact"/>
-                        <Label styleClass="footer-text" text="Mentions légales"/>
+                        <Label styleClass="footer-text" text="À propos" />
+                        <Label styleClass="footer-text" text="Contact" />
+                        <Label styleClass="footer-text" text="Mentions légales" />
                     </HBox>
                 </VBox>
             </content>
             <BorderPane.margin>
-                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
             </BorderPane.margin>
         </ScrollPane>
     </center>
@@ -232,51 +214,43 @@
             <content>
                 <VBox spacing="15" styleClass="sidebar-right">
                     <padding>
-                        <Insets bottom="15" left="15" right="15" top="15"/>
+                        <Insets bottom="15" left="15" right="15" top="15" />
                     </padding>
                     <VBox styleClass="sidebar-section">
-                        <Label styleClass="section-title" text="Calendrier des événements" wrapText="true"/>
-                        <HBox fx:id="filterContainer" alignment="CENTER" minHeight="-Infinity" prefHeight="30.0"
-                              prefWidth="180.0" spacing="10" styleClass="pane" visible="false">
+                        <Label styleClass="section-title" text="Calendrier des événements" wrapText="true" />
+                        <HBox fx:id="filterContainer" alignment="CENTER" minHeight="-Infinity" prefHeight="30.0" prefWidth="180.0" spacing="10" styleClass="pane" visible="false">
                             <padding>
-                                <Insets bottom="10" left="15" right="15" top="10"/>
+                                <Insets bottom="10" left="15" right="15" top="10" />
                             </padding>
-                            <Label fx:id="activeFilterLabel" styleClass="filter-label"
-                                   text="Événements filtrés par date" visible="false"/>
-                            <Button fx:id="clearFilterButton" onAction="#clearFilter" styleClass="clear-filter-button"
-                                    visible="false">
+                            <Label fx:id="activeFilterLabel" styleClass="filter-label" text="Événements filtrés par date" visible="false" />
+                            <Button fx:id="clearFilterButton" onAction="#clearFilter" styleClass="clear-filter-button" visible="false">
                                 <graphic>
-                                    <FontAwesomeIconView fill="#ffffff" glyphName="TIMES" size="1.2em"/>
+                                    <FontAwesomeIconView fill="#ffffff" glyphName="TIMES" size="1.2em" />
                                 </graphic>
                             </Button>
                             <VBox.margin>
-                                <Insets bottom="5.0"/>
+                                <Insets bottom="5.0" />
                             </VBox.margin>
                         </HBox>
-                        <VBox fx:id="calendarContainer" maxWidth="Infinity" styleClass="calendar-container"
-                              VBox.vgrow="ALWAYS">
+                        <VBox fx:id="calendarContainer" maxWidth="Infinity" styleClass="calendar-container" VBox.vgrow="ALWAYS">
                             <VBox.margin>
-                                <Insets left="0" right="0"/>
+                                <Insets left="0" right="0" />
                             </VBox.margin>
                         </VBox>
                     </VBox>
                     <VBox prefWidth="180.0" styleClass="sidebar-section">
-                        <Label styleClass="section-title" text="Voir les retours sur les événements récents"
-                               wrapText="true"/>
-                        <ScrollPane fitToWidth="true" hbarPolicy="ALWAYS" styleClass="transparent_bg"
-                                    vbarPolicy="NEVER">
+                        <Label styleClass="section-title" text="Voir les retours sur les événements récents" wrapText="true" />
+                        <ScrollPane fitToWidth="true" hbarPolicy="ALWAYS" styleClass="transparent_bg" vbarPolicy="NEVER">
                             <content>
-                                <HBox fx:id="pastEventsContainer" spacing="10" styleClass="past-events-container"/>
+                                <HBox fx:id="pastEventsContainer" spacing="10" styleClass="past-events-container" />
                             </content>
                         </ScrollPane>
                     </VBox>
-                    <VBox styleClass="sidebar-section" prefWidth="180.0" VBox.vgrow="ALWAYS">
-                        <Label styleClass="section-title" text="Consulter les lieux des événements sur Maps"
-                               wrapText="true"/>
-                        <ScrollPane fitToWidth="true" hbarPolicy="ALWAYS" styleClass="transparent_bg"
-                                    vbarPolicy="NEVER">
+                    <VBox prefWidth="180.0" styleClass="sidebar-section" VBox.vgrow="ALWAYS">
+                        <Label styleClass="section-title" text="Consulter les lieux des événements sur Maps" wrapText="true" />
+                        <ScrollPane fitToWidth="true" hbarPolicy="ALWAYS" styleClass="transparent_bg" vbarPolicy="ALWAYS">
                             <content>
-                                <VBox fx:id="mapContainer" styleClass="map-container" VBox.vgrow="ALWAYS"/>
+                                <VBox fx:id="mapContainer" styleClass="map-container" VBox.vgrow="ALWAYS" />
                             </content>
                         </ScrollPane>
                     </VBox>
