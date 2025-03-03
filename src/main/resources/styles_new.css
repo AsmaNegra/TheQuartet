@@ -2,6 +2,32 @@
     -fx-background-color:#111441;
     -fx-background-radius: 30px;
 }
+.root {
+    -fx-background-color: #111441; /* Bleu vif */
+}
+
+.text-field {
+    -fx-text-fill: white;          /* Texte blanc */
+    -fx-font-weight: bold;         /* Texte en gras */
+    -fx-background-color: #111441; /* Bleu plus foncé pour les champs */
+    -fx-border-color: #ffffff;     /* Bordure blanche */
+    -fx-border-radius: 5px;
+    -fx-padding: 5px;
+}
+
+.button {
+    -fx-background-color: #ffcc00; /* Bouton jaune */
+    -fx-text-fill: #000000;        /* Texte noir */
+    -fx-font-weight: bold;
+    -fx-border-radius: 5px;
+    -fx-padding: 10px;
+}
+
+.button:hover {
+    -fx-background-color: #ffdd44; /* Bouton jaune clair au survol */
+}
+
+
 
 .sidebar {
     -fx-background-color: #111441;
@@ -274,9 +300,9 @@
 }
 
 /* Effet de retournement au survol */
-.flip-card-container:hover .flip-card-inner {
-    -fx-transform: rotateY(180deg);
-}
+/*.flip-card-container:hover .flip-card-inner {*/
+/*    -fx-transform: rotateY(180deg);*/
+/*}*/
 
 /* Styles communs pour les deux faces */
 .flip-card-front, .flip-card-back {
@@ -312,7 +338,15 @@
     -fx-font-size: 16px;
     -fx-text-fill: #d87769;
 }
+.google-button {
+    -fx-background-color: #4285F4;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
 
+.google-button:hover {
+    -fx-background-color: #357AE8;
+}
 .event-details {
     -fx-font-family: "Montserrat";
     -fx-font-size: 12px;
