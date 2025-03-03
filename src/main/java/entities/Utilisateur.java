@@ -11,6 +11,7 @@ public class Utilisateur {
     private String etat;
     private int note_organisateur;
     private String entreprise;
+    private String photoUrl;
     private List<Evenement> evenements;
 
 
@@ -46,6 +47,19 @@ public class Utilisateur {
         this.etat = etat;
         this.note_organisateur = note_organisateur;
         this.entreprise = entreprise;
+        this.evenements = evenements;
+    }
+    public Utilisateur(int utilisateurId, String nom, String email, String motDePasse, Role role, String etat,
+                       int note_organisateur, String entreprise, String photoUrl, List<Evenement> evenements) {
+        this.utilisateurId = utilisateurId;
+        this.nom = nom;
+        this.email = email;
+        this.motDePasse = motDePasse;
+        this.role = role;
+        this.etat = etat;
+        this.note_organisateur = note_organisateur;
+        this.entreprise = entreprise;
+        this.photoUrl = photoUrl;
         this.evenements = evenements;
     }
 
@@ -96,6 +110,14 @@ public class Utilisateur {
     public void setEtat(String etat) {
         this.etat = etat;
     }
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
+    }
+
 
     public int getNote_organisateur() {
         return note_organisateur;
