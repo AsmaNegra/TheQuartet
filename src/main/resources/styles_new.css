@@ -120,8 +120,9 @@
 }
 .Bg_login{
     -fx-background-size: cover; /* Scale to cover the pane */
-    -fx-background-image:url('/images/BGG.jpg') ;
-    -fx-background-repeat: no-repeat; /* Prevent tiling */
+    -fx-background-image:url('/images/backG.jpg') ;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
 }
 .search-field {
     -fx-background-color: white;

@@ -19,7 +19,7 @@ public class HomePage extends Application {
     public void start(Stage primaryStage) {
         try {
             //Parent root = FXMLLoader.load(getClass().getResource("/ViewAllEvents.fxml"));
-           Parent root = FXMLLoader.load(getClass().getResource("/Authentification.fxml"));
+           Parent root = FXMLLoader.load(getClass().getResource("/Ref.fxml"));
 
             Scene scene = new Scene(root);
             primaryStage.setScene(scene);

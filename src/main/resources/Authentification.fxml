@@ -33,7 +33,6 @@
 <!--   </children>-->
 <!--</AnchorPane>-->
 
-
 <AnchorPane prefHeight="600.0" prefWidth="1100.0" styleClass="Bg_login" stylesheets="@styles_new.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AuthentificationController">
    <children>
 
@@ -46,7 +45,7 @@
                      <children>
                         <ImageView fitHeight="124.0" fitWidth="103.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@images/Orchestra/Orchestra (1).png" />
+                              <Image url="@images/Orchestra/Orchestra%20dark.png" />
                            </image>
                         </ImageView>
                         <Label alignment="CENTER" prefHeight="27.0" prefWidth="570.0" styleClass="welcome-text" text="S'authentifier" textFill="WHITE">

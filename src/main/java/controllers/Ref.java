@@ -21,64 +21,88 @@ import java.io.IOException;
 public class Ref {
 
     @FXML
-    public Button btnLogout;
-    @FXML
-    private Button btnSitemap;
-    @FXML
-    private Button btnGift;
-    @FXML
-    private Button btnHome;
-    @FXML
-    private Button btnHome1;
-
-    @FXML
     private AnchorPane sidebar;
 
     @FXML
     private Label labelUser;
 
     @FXML
+    private Button btnTousEvenements, btnMesEvenements, btnLesFournisseurs, btnAdminEvenements, btnListUser, btnMyAccount, btnLogout;
+
+    @FXML
     void expandSidebar(MouseEvent event) {
-        // Animate sidebar expansion (e.g., from 70 to 200 pixels)
         Timeline expandTimeline = new Timeline();
         KeyValue widthValue = new KeyValue(sidebar.prefWidthProperty(), 200);
         KeyFrame keyFrame = new KeyFrame(Duration.millis(300), widthValue);
         expandTimeline.getKeyFrames().add(keyFrame);
         expandTimeline.play();
 
-        // Set the text for each button
-        btnSitemap.setText("Mes evenements");
-        btnGift.setText("Admin");
-        btnHome.setText("Tous les evenements");
-        btnHome1.setText("My Account");
-        btnLogout.setText("Logout");
+        btnTousEvenements.setText("Tous les événements");
+        btnMesEvenements.setText("Mes événements");
+        btnLesFournisseurs.setText("Les fournisseurs");
+        btnAdminEvenements.setText("Admin événements");
+        btnListUser.setText("Liste des utilisateurs");
+        btnMyAccount.setText("Mon compte");
+        btnLogout.setText("Déconnexion");
         labelUser.setVisible(true);
     }
 
     @FXML
     void collapseSidebar(MouseEvent event) {
-        // Animate sidebar collapse (e.g., back to 70 pixels)
         Timeline collapseTimeline = new Timeline();
         KeyValue widthValue = new KeyValue(sidebar.prefWidthProperty(), 70);
         KeyFrame keyFrame = new KeyFrame(Duration.millis(300), widthValue);
         collapseTimeline.getKeyFrames().add(keyFrame);
         collapseTimeline.play();
 
-        // Clear the text for each button
-        btnSitemap.setText("");
-        btnGift.setText("");
-        btnHome.setText("");
-        btnHome1.setText("");
+        btnTousEvenements.setText("");
+        btnMesEvenements.setText("");
+        btnLesFournisseurs.setText("");
+        btnAdminEvenements.setText("");
+        btnListUser.setText("");
+        btnMyAccount.setText("");
         btnLogout.setText("");
         labelUser.setVisible(false);
     }
 
-
+    @FXML
+    void handleTousEvenementsClick(ActionEvent event) {
+        navigateTo(event, "/ViewAllEvents.fxml");
+    }
 
     @FXML
-    void handleGiftClick(ActionEvent event) {
+    void handleMesEvenementsClick(ActionEvent event) {
+        navigateTo(event, "/EventOrganisation.fxml");
+    }
+
+    @FXML
+    void handleLesFournisseursClick(ActionEvent event) {
+        navigateTo(event, "/AdminFournisseur.fxml");
+    }
+
+    @FXML
+    void handleAdminEvenementsClick(ActionEvent event) {
+        navigateTo(event, "/EvenementAll.fxml");
+    }
+
+    @FXML
+    void handleListUserClick(ActionEvent event) {
+        navigateTo(event, "/AdminDashboard.fxml");
+    }
+
+    @FXML
+    void handleMyAccountClick(ActionEvent event) {
+        navigateTo(event, "/ViewUserInfo.fxml");
+    }
+
+    @FXML
+    void handleLogoutClick(ActionEvent event) {
+        navigateTo(event, "/Login.fxml");
+    }
+
+    private void navigateTo(ActionEvent event, String fxmlPath) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AdminFournisseur.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
             Parent root = loader.load();
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
@@ -87,43 +111,4 @@ public class Ref {
             e.printStackTrace();
         }
     }
-
-    @FXML
-    void handleHomeClick(ActionEvent event) {
-        try {
-
-           // FXMLLoader loader = new FXMLLoader(getClass().getResource("/Ref.fxml"));
-
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/ViewAllEvents.fxml"));
-
-            Parent root = loader.load();
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        }
-
-    @FXML
-    void handleSitemapClick(ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/EventOrganisation.fxml"));
-            Parent root = loader.load();
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void handleLogoutClick(ActionEvent event) {
-
-    }
-/////////////////////////////////////
 }
-
-
-
