@@ -1,173 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.scene.chart.PieChart?>
-<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Circle?>
-<?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" styleClass="parent" stylesheets="@styles_new.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AdminDashboardController">
-    <left>
-        <!-- Sidebar qui s'étend au survol -->
-        <AnchorPane fx:id="sidebar" onMouseEntered="#expandSidebar" onMouseExited="#collapseSidebar" prefHeight="500.0" prefWidth="70.0" styleClass="sidebar">
-            <children>
-                <!-- Conteneur global avec contraintes d'ancrage -->
-                <VBox layoutX="10.0" layoutY="165.0" prefHeight="600.0" prefWidth="87.2" spacing="15.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                    <HBox>
-                        <children>
-                            <Circle fill="DODGERBLUE" radius="28.0" stroke="BLACK" strokeType="INSIDE" />
-                            <Label fx:id="labelUser" alignment="CENTER" text="Admin" textFill="WHITE" visible="false">
-                                <font>
-                                    <Font name="Open Sans Regular" size="12.0" />
-                                </font>
-                                <HBox.margin>
-                                    <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
-                                </HBox.margin>
-                            </Label>
-                        </children>
-                        <VBox.margin>
-                            <Insets bottom="50.0" />
-                        </VBox.margin>
-                    </HBox>
-                    <!-- Options du menu -->
-                    <VBox spacing="10.0">
-                        <!-- Option SITEMAP -->
-                        <HBox alignment="CENTER_LEFT" spacing="10" styleClass="menu-item">
-                            <Button fx:id="btnSitemap" mnemonicParsing="false" onAction="#handleSitemapClick" styleClass="sidebar_opt" textFill="#e4e4e4">
-                                <graphic>
-                                    <FontAwesomeIconView fill="#797878" glyphName="SITEMAP" size="1.5em" styleClass="sidebar_opt" />
-                                </graphic>
-                                <HBox.margin>
-                                    <Insets left="5.0" />
-                                </HBox.margin>
-                                <font>
-                                    <Font name="Open Sans Medium" size="12.0" />
-                                </font>
-                            </Button>
-                        </HBox>
-                        <!-- Option GIFT -->
-                        <HBox alignment="CENTER_LEFT" spacing="10" styleClass="menu-item">
-                            <Button fx:id="btnGift" mnemonicParsing="false" onAction="#handleGiftClick" styleClass="sidebar_opt" textFill="#e4e4e4">
-                                <graphic>
-                                    <FontAwesomeIconView fill="#797878" glyphName="GIFT" size="1.5em" styleClass="sidebar_opt" />
-                                </graphic>
-                                <HBox.margin>
-                                    <Insets left="5.0" />
-                                </HBox.margin>
-                                <font>
-                                    <Font name="Open Sans Medium" size="12.0" />
-                                </font>
-                            </Button>
-                        </HBox>
-                        <!-- Option HOME -->
-                        <HBox alignment="CENTER_LEFT" spacing="10" styleClass="menu-item">
-                            <Button fx:id="btnHome" mnemonicParsing="false" onAction="#handleHomeClick" styleClass="sidebar_opt" textFill="#e4e4e4">
-                                <graphic>
-                                    <FontAwesomeIconView fill="#797878" glyphName="HOME" size="1.5em" styleClass="sidebar_opt" />
-                                </graphic>
-                                <HBox.margin>
-                                    <Insets left="5.0" />
-                                </HBox.margin>
-                                <font>
-                                    <Font name="Open Sans Medium" size="12.0" />
-                                </font>
-                            </Button>
-                        </HBox>
-                    </VBox>
-                    <!-- Séparateur pour délimiter des sections -->
-                    <Separator />
-                    <!-- Option additionnelle -->
-                    <HBox alignment="CENTER_LEFT" spacing="10" styleClass="menu-item">
-                        <Button fx:id="btnUser" mnemonicParsing="false" onAction="#handleUserClick" styleClass="sidebar_opt" textFill="#e4e4e4">
-                            <graphic>
-                                <FontAwesomeIconView fill="#797878" glyphName="USER" size="1.5em" styleClass="sidebar_opt" />
-                            </graphic>
-                            <HBox.margin>
-                                <Insets left="5.0" />
-                            </HBox.margin>
-                            <font>
-                                <Font name="Open Sans Medium" size="12.0" />
-                            </font>
-                        </Button>
-                    </HBox>
-                    <Separator>
-                        <VBox.margin>
-                            <Insets top="100.0" />
-                        </VBox.margin>
-                    </Separator>
-                    <HBox alignment="CENTER_LEFT" spacing="10" styleClass="menu-item">
-                        <children>
-                            <Button fx:id="btnLogout" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#handleLogout" prefHeight="14.0" prefWidth="86.0" styleClass="sidebar_opt" stylesheets="@styles_new.css" textFill="WHITE">
-                                <graphic>
-                                    <FontAwesomeIconView fill="#eaeaea" glyphName="POWER_OFF" selectionFill="#bc802d" size="1.5em" />
-                                </graphic>
-                                <font>
-                                    <Font name="Open Sans Regular" size="12.0" />
-                                </font>
-                            </Button>
-                        </children>
-                    </HBox>
-                    <padding>
-                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
-                    </padding>
-                </VBox>
-            </children>
-            <BorderPane.margin>
-                <Insets left="5.0" />
-            </BorderPane.margin>
-        </AnchorPane>
-    </left>
-    <center>
-        <!-- Zone centrale pour le contenu (redirection via changement de scène) -->
-        <AnchorPane fx:id="mainContent" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="549.0" prefWidth="843.0" styleClass="pane">
-            <children>
-                <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="500.0" prefWidth="843.2" styleClass="transparent_bg" stylesheets="@styles.css" vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
-                    <content>
-                        <VBox spacing="10" styleClass="pane">
-                            <StackPane>
-                                <Label styleClass="title" text="Gestion des Utilisateurs" />
-                            </StackPane>
+<AnchorPane prefHeight="600.0" prefWidth="800.0" styleClass="background_color" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AdminDashboardController">
+    <children>
+        <VBox spacing="10" styleClass="pane" AnchorPane.leftAnchor="20" AnchorPane.rightAnchor="20" AnchorPane.topAnchor="20" AnchorPane.bottomAnchor="20">
 
-                            <TableView fx:id="userTable" VBox.vgrow="ALWAYS">
-                                <columns>
-                                    <TableColumn fx:id="idColumn" text="ID" prefWidth="50" />
-                                    <TableColumn fx:id="nomColumn" text="Nom" prefWidth="120" />
-                                    <TableColumn fx:id="emailColumn" text="Email" prefWidth="150" />
-                                    <TableColumn fx:id="roleColumn" text="Rôle" prefWidth="100" />
-                                    <TableColumn fx:id="etatColumn" text="État" prefWidth="100" />
-                                    <TableColumn fx:id="entrepriseColumn" text="Entreprise" prefWidth="120" />
-                                    <TableColumn fx:id="actionColumn" text="Actions" prefWidth="120" />
-                                </columns>
-                            </TableView>
-                            <!-- Ajoutez ceci après le TableView et avant le HBox avec le bouton Retour -->
-                            <VBox alignment="CENTER" spacing="10" styleClass="pane">
-                                <Label text="Répartition des utilisateurs par rôle" styleClass="subtitle"/>
-                                <PieChart fx:id="pieChartUsers" legendVisible="true" labelsVisible="true" />
-                            </VBox>
-                            <HBox alignment="CENTER">
-                                <Button fx:id="btnRetour" text="Retour" onAction="#retour" styleClass="button-return" />
-                            </HBox>
+            <StackPane>
+                <Label styleClass="title" text="Gestion des Utilisateurs" />
+            </StackPane>
 
-                            <padding>
-                                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-                            </padding>
-                        </VBox>
-                    </content>
-                </ScrollPane>
-            </children>
-            <BorderPane.margin>
-                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-            </BorderPane.margin>
-        </AnchorPane>
-    </center>
-</BorderPane>
+            <TableView fx:id="userTable" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="idColumn" text="ID" prefWidth="50" />
+                    <TableColumn fx:id="nomColumn" text="Nom" prefWidth="120" />
+                    <TableColumn fx:id="emailColumn" text="Email" prefWidth="150" />
+                    <TableColumn fx:id="roleColumn" text="Rôle" prefWidth="100" />
+                    <TableColumn fx:id="etatColumn" text="État" prefWidth="100" />
+                    <TableColumn fx:id="entrepriseColumn" text="Entreprise" prefWidth="120" />
+                    <TableColumn fx:id="actionColumn" text="Actions" prefWidth="120" />
+                </columns>
+            </TableView>
+
+
+            <HBox alignment="CENTER">
+                <Button fx:id="btnRetour" text="Retour" onAction="#retour" styleClass="button-return" />
+            </HBox>
+        </VBox>
+    </children>
+</AnchorPane>
