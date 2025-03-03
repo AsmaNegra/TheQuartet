@@ -135,7 +135,7 @@
             <content>
                 <VBox spacing="20" styleClass="main-container">
                     <!-- En-tête -->
-                    <HBox alignment="CENTER" spacing="15" styleClass="widget">
+                    <HBox alignment="CENTER_LEFT" spacing="15" styleClass="widget">
                         <padding>
                             <Insets bottom="10" left="15" right="15" top="10" />
                         </padding>
@@ -145,13 +145,13 @@
                             </image>
                         </ImageView>
                         <Separator orientation="VERTICAL" />
-                        <Label styleClass="welcome-text" text="Ravi de vous revoir !">
+                        <Label prefHeight="23.0" prefWidth="199.0" styleClass="welcome-text" text="Ravi de vous revoir !">
                             <font>
                                 <Font name="Montserrat-Regular" size="18.0" />
                             </font>
                         </Label>
                         <!--                        <TextField fx:id="searchField" promptText="Chercher un evenement..." styleClass="search-field" />-->
-                        <Label styleClass="time-text" text="16:49 16/02/2025" />
+                        <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="18.0" prefWidth="336.0" styleClass="time-text" text="16:49 16/02/2025" />
                     </HBox>
 
                     <!-- Barre de recherche en haut -->
@@ -212,7 +212,7 @@
     <right>
         <ScrollPane fitToWidth="true" hbarPolicy="ALWAYS" styleClass="transparent_bg">
             <content>
-                <VBox spacing="15" styleClass="sidebar-right">
+                <VBox spacing="15" styleClass="pane">
                     <padding>
                         <Insets bottom="15" left="15" right="15" top="15" />
                     </padding>

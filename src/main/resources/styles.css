@@ -83,19 +83,19 @@
     -fx-background-color: transparent;
 }
 
-.task-form {
+.event-form {
     -fx-background-color: Transparent; /* White background with slight transparency */
 }
 
 /* Labels */
-.task-form Label {
+.event-form Label {
     -fx-font-size: 14px;
     -fx-text-fill: #5a5a5a;
     -fx-font-family: "Montserrat SemiBold";
 }
 
 /* Text Fields & TextArea */
-.task-form TextField, .task-form TextArea {
+.event-form TextField, .event-form TextArea {
     -fx-background-color: Transparent;
     -fx-border-color: #e0d7cc;
     -fx-border-radius: 8px;
@@ -105,12 +105,12 @@
 }
 
 /* TextArea Specific */
-.task-form TextArea {
+.event-form TextArea {
     -fx-pref-height: 60px; /* Adjust height for better usability */
 }
 
 /* ComboBoxes */
-.task-form ComboBox {
+.event-form ComboBox {
     -fx-background-color: rgba(255, 255, 255, 0.9);
     -fx-border-color: #e0d7cc;
     -fx-border-radius: 8px;
@@ -119,7 +119,7 @@
 }
 
 /* Date Picker */
-.task-form DatePicker {
+.event-form DatePicker {
     -fx-background-color: rgba(255, 255, 255, 0.9);
     -fx-border-color: #e0d7cc;
     -fx-border-radius: 8px;
@@ -129,18 +129,18 @@
 }
 
 /* Hover Effects */
-.task-form TextField:hover, .task-form TextArea:hover, .task-form ComboBox:hover, .task-form DatePicker:hover {
+.event-form TextField:hover, .event-form TextArea:hover, .event-form ComboBox:hover, .event-form DatePicker:hover {
     -fx-border-color: rgba(216, 119, 105, 0.54);
 }
 
 /* Focus Effects */
-.task-form TextField:focused, .task-form TextArea:focused, .task-form ComboBox:focused, .task-form DatePicker:focused {
+.event-form TextField:focused, .event-form TextArea:focused, .event-form ComboBox:focused, .event-form DatePicker:focused {
     -fx-border-color: #d87769;
     -fx-background-color: rgba(255, 255, 255, 1);
 }
 
 /* Submit Button */
-.task-form Button {
+.event-form Button {
 
     -fx-text-fill: white;
     -fx-font-size: 14px;
@@ -151,12 +151,12 @@
 }
 
 /* Submit Button Hover */
-.task-form Button:hover {
+.event-form Button:hover {
     -fx-background-color: #d87769;
 }
 
 /* Submit Button Pressed */
-.task-form Button:pressed {
+.event-form Button:pressed {
     -fx-background-color: #d87769;
 }
 

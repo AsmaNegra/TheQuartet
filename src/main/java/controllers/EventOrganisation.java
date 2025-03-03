@@ -589,6 +589,9 @@ loadChartData();
             e.printStackTrace();
         }
     }
+    public void refreshEvents(){
+        loadEvents();
+    }
     //////////////////////////////////////////////////////////////////////////
 /////////////////////////API CHARTS NOUR//////////////////////////////////////////
     private void loadChartData() {
@@ -596,9 +599,7 @@ loadChartData();
             // Retrieve KPI data from ServiceTache
             Map<String, Map<String, Object>> kpiData = serviceTache.getKpiFournisseurs();
 
-    public void refreshEvents(){
-        loadEvents();
-    }
+
 
             // Convert to List and sort by total tasks (Descending)
             List<Map.Entry<String, Map<String, Object>>> sortedList = new ArrayList<>(kpiData.entrySet());
