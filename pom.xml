@@ -80,7 +80,7 @@
             <version>2.11.0</version>
         </dependency>
 
-    </dependencies>
+
             <!-- OkHttp for making HTTP requests -->
             <dependency>
                 <groupId>com.squareup.okhttp3</groupId>
@@ -223,12 +223,7 @@
             <version>v3-rev20220715-2.0.0</version>
         </dependency>
 
-
-
-
-
-
-    </dependencies>
+</dependencies>
     <repositories>
         <repository>
             <id>google-maven</id>

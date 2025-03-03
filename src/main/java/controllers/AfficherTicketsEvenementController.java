@@ -196,7 +196,7 @@ public class AfficherTicketsEvenementController {
             ModifierTicketsController controller = loader.getController();
 
             // Pass selected ticket + tableView reference to update it later
-            controller.setTicket(selectedTicket, ticketsTable);
+            //   controller.setTicket(selectedTicket, ticketsTable);
 
             // Open modification window
             Stage stage = new Stage();

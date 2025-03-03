@@ -78,8 +78,6 @@ public class EventTache implements Initializable {
     @FXML
     private PieChart budgetPieChart;
 
-    @FXML
-    private AnchorPane sidebar;
     ////////////////
     @FXML
     private ListView<Utilisateur> ListeUtilisateur;
@@ -107,12 +105,11 @@ public class EventTache implements Initializable {
     private Label eventNameLabel;
     @FXML
     private Label eventDescriptionLabel;
+    @FXML
     private VBox TaskContainer1;
 
     @FXML
     private ScrollPane TaskList1;
-    @FXML
-    private Label eventDescriptionLabel;
     private GeminiClient client = new GeminiClient();
 
     private ServiceEvenement serviceEvenement = new ServiceEvenement();

@@ -121,10 +121,8 @@ loadChartData();
 //        refreshTimeline.play();
         try {
             // nbrEvents.setText(String.valueOf(serviceEvenement.getTotalEvenementsUtilisateur(utilisateurId)));
-            nbrTaches.setText(String.valueOf(serviceTache.getTotalTachesUtilisateur(5)));
-            nbrTachesRetard.setText(String.valueOf(serviceTache.getTachesEnRetardUtilisateur(5)));
-
-            // 🔹 Simulation pour le nombre de tickets (remplace avec une vraie fonction)
+            nbrTaches.setText(String.valueOf(serviceTache.getTotalTachesUtilisateur(1)));
+            nbrTachesRetard.setText(String.valueOf(serviceTache.getTachesEnRetardUtilisateur(1)));
          //   nbrTickets.setText(String.valueOf(getNombreTickets(utilisateurId)));
 
         } catch (SQLException e) {
