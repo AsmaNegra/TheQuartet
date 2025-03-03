@@ -247,12 +247,9 @@ public class ViewAllEventsController implements Initializable {
             e.printStackTrace();
         }
     }
-
     @FXML
     void handleHomeClick(ActionEvent event) {
         try {
-
-            //FXMLLoader loader = new FXMLLoader(getClass().getResource("/Ref.fxml"));
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/EvenementAll.fxml"));
             Parent root = loader.load();
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
