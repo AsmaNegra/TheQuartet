@@ -2,12 +2,24 @@ package controllers;
 
 import entities.Transaction;
 import entities.Utilisateur;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
+import javafx.util.Duration;
 import javafx.util.StringConverter;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.scene.control.cell.*;
@@ -15,6 +27,7 @@ import javafx.util.Callback;
 import services.ServiceTransaction;
 import services.ServiceUtilisateurEvenement;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.Comparator;
@@ -23,28 +36,20 @@ import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 public class AfficherTransactionUtilisateurController implements Initializable {
-
-    @FXML
-    private ComboBox<Utilisateur> utilisateurComboBox;
-    @FXML
-    private TableView<Transaction> transactionsTable;
-    @FXML
-    private TableColumn<Transaction, Integer> idColumn;
-    @FXML
-    private TableColumn<Transaction, Double> montantColumn;
-    @FXML
-    private TableColumn<Transaction, String> modePaiementColumn;
-    @FXML
-    private TableColumn<Transaction, String> datePaiementColumn;
-    @FXML
-    private TableColumn<Transaction, Void> actionsColumn;
-    @FXML
-    private TextField searchField;
-    @FXML
-    private ComboBox<String> sortComboBox;
-    @FXML
-    private Label messageLabel;
-
+    // Menu
+    @FXML private Button btnSitemap, btnGift, btnHome, btnHome1,btnRetour;
+    @FXML private AnchorPane sidebar;
+    ///////////////////////
+    @FXML private ComboBox<Utilisateur> utilisateurComboBox;
+    @FXML private TableView<Transaction> transactionsTable;
+    @FXML private TableColumn<Transaction, Integer> idColumn;
+    @FXML private TableColumn<Transaction, Double> montantColumn;
+    @FXML private TableColumn<Transaction, String> modePaiementColumn;
+    @FXML private TableColumn<Transaction, String> datePaiementColumn;
+    @FXML private TableColumn<Transaction, Void> actionsColumn;
+    @FXML private TextField searchField;
+    @FXML private ComboBox<String> sortComboBox;
+    @FXML private Label messageLabel;
     private final ServiceTransaction serviceTransaction = new ServiceTransaction();
     private final ServiceUtilisateurEvenement serviceUtilisateur = new ServiceUtilisateurEvenement();
     private ObservableList<Transaction> transactionsList = FXCollections.observableArrayList();
@@ -54,9 +59,7 @@ public class AfficherTransactionUtilisateurController implements Initializable {
         configurerColonnes();
         chargerUtilisateurs();
         configurerRechercheEtTri();
-
     }
-
     private void configurerColonnes() {
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id_transaction"));
         montantColumn.setCellValueFactory(new PropertyValueFactory<>("montant_total"));
@@ -65,7 +68,6 @@ public class AfficherTransactionUtilisateurController implements Initializable {
 
         actionsColumn.setCellFactory(getActionCellFactory());
     }
-
     private Callback<TableColumn<Transaction, Void>, TableCell<Transaction, Void>> getActionCellFactory() {
         return param -> new TableCell<>() {
             private final FontAwesomeIconView deleteIcon = new FontAwesomeIconView();
@@ -86,7 +88,6 @@ public class AfficherTransactionUtilisateurController implements Initializable {
             }
         };
     }
-
     private void confirmerSuppression(Transaction transaction) {
         Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
         confirmationAlert.setTitle("Confirmation de suppression");
@@ -99,7 +100,6 @@ public class AfficherTransactionUtilisateurController implements Initializable {
             }
         });
     }
-
     private void supprimerTransaction(Transaction transaction) {
         try {
             serviceTransaction.supprimer(transaction.getId_transaction());
@@ -110,7 +110,6 @@ public class AfficherTransactionUtilisateurController implements Initializable {
             e.printStackTrace();
         }
     }
-
     private void chargerUtilisateurs() {
         try {
             List<Utilisateur> utilisateurs = serviceUtilisateur.afficher();
@@ -139,7 +138,6 @@ public class AfficherTransactionUtilisateurController implements Initializable {
             e.printStackTrace();
         }
     }
-
     private void afficherTransactionsUtilisateur(Utilisateur utilisateur) {
         if (utilisateur == null) {
             transactionsList.clear();
@@ -153,9 +151,7 @@ public class AfficherTransactionUtilisateurController implements Initializable {
             List<Transaction> transactions = serviceTransaction.getTransactionsByUtilisateurId(utilisateur.getUtilisateurId());
             transactionsList.setAll(transactions);
             filteredTransactionsList.setAll(transactions);
-
             transactionsTable.setItems(filteredTransactionsList);
-
             if (transactions.isEmpty()) {
                 afficherMessageAvertissement("Aucune transaction trouvée pour cet utilisateur.");
             } else {
@@ -166,7 +162,6 @@ public class AfficherTransactionUtilisateurController implements Initializable {
             e.printStackTrace();
         }
     }
-
     private void configurerRechercheEtTri() {
         searchField.textProperty().addListener((observable, oldValue, newValue) -> filtrerTransactions());
 
@@ -174,7 +169,6 @@ public class AfficherTransactionUtilisateurController implements Initializable {
                 "Montant - Croissant", "Montant - Décroissant",
                 "Date - Croissant", "Date - Décroissant"
         );
-
         sortComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> trierTransactions());
     }
 
@@ -182,7 +176,6 @@ public class AfficherTransactionUtilisateurController implements Initializable {
         String searchText = searchField.getText().toLowerCase().trim();
 
         if (searchText.isEmpty()) {
-            // Si la barre de recherche est vide, rétablir toutes les transactions de l'utilisateur sélectionné
             filteredTransactionsList.setAll(transactionsList);
         } else {
             List<Transaction> filteredList = transactionsList.stream()
@@ -193,7 +186,6 @@ public class AfficherTransactionUtilisateurController implements Initializable {
 
             filteredTransactionsList.setAll(filteredList);
         }
-
         transactionsTable.setItems(filteredTransactionsList);
     }
     private void trierTransactions() {
@@ -216,7 +208,6 @@ public class AfficherTransactionUtilisateurController implements Initializable {
                     break;
             }
         }
-
         if (comparator != null) {
             FXCollections.sort(transactionsTable.getItems(), comparator);
         }
@@ -224,12 +215,77 @@ public class AfficherTransactionUtilisateurController implements Initializable {
     private void afficherMessageSucces(String message) {
         messageLabel.setText("✅ " + message);
     }
-
     private void afficherMessageAvertissement(String message) {
         messageLabel.setText("⚠️ " + message);
     }
-
     private void afficherMessageErreur(String message) {
         messageLabel.setText("❌ " + message);
     }
+    ////////////////////////////MENU///////////////////////////////////////////////////////////////////////
+    @FXML
+    void expandSidebar(MouseEvent event) {
+        Timeline expandTimeline = new Timeline();
+        KeyValue widthValue = new KeyValue(sidebar.prefWidthProperty(), 200);
+        KeyFrame keyFrame = new KeyFrame(Duration.millis(300), widthValue);
+        expandTimeline.getKeyFrames().add(keyFrame);
+        expandTimeline.play();
+        btnSitemap.setText("Mes evenements");
+        btnGift.setText("Admin");
+        btnHome.setText("Tous les evenements");
+        btnHome1.setText("My Account");
+    }
+    public void handleLogoutClick(ActionEvent event) {
+        System.out.println("Déconnexion...");
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.close();
+    }
+    @FXML
+    void collapseSidebar(MouseEvent event) {
+        Timeline collapseTimeline = new Timeline();
+        KeyValue widthValue = new KeyValue(sidebar.prefWidthProperty(), 70);
+        KeyFrame keyFrame = new KeyFrame(Duration.millis(300), widthValue);
+        collapseTimeline.getKeyFrames().add(keyFrame);
+        collapseTimeline.play();
+        btnSitemap.setText("");
+        btnGift.setText("");
+        btnHome.setText("");
+        btnHome1.setText("");
+    }
+    @FXML
+    void handleGiftClick(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AdminFournisseur.fxml"));
+            Parent root = loader.load();
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    @FXML
+    void handleHomeClick(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ViewAllEvents.fxml"));
+            Parent root = loader.load();
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    @FXML
+    void handleSitemapClick(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/EventOrganisation.fxml"));
+            Parent root = loader.load();
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    //////////////////////////////////////////////////////////////////////////
 }

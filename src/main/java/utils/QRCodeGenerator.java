@@ -18,7 +18,7 @@ public class QRCodeGenerator {
     public static String generateQRCode(String data, String fileName) throws IOException {
         int width = 300;
         int height = 300;
-        String directory = "qrcodes";  // 📂 Dossier où stocker les QR codes
+        String directory = "qrcodes";
         File dir = new File(directory);
         if (!dir.exists() && !dir.mkdirs()) {
             throw new IOException("❌ Impossible de créer le dossier des QR codes !");

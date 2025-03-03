@@ -213,7 +213,6 @@ public class ViewAllEventsController implements Initializable {
     //////////////////////MENU//////////////////////////
     @FXML
     void expandSidebar(MouseEvent event) {
-        // Animate sidebar expansion (e.g., from 70 to 200 pixels)
         Timeline expandTimeline = new Timeline();
         KeyValue widthValue = new KeyValue(sidebar.prefWidthProperty(), 200);
         KeyFrame keyFrame = new KeyFrame(Duration.millis(300), widthValue);
@@ -226,7 +225,6 @@ public class ViewAllEventsController implements Initializable {
     }
     @FXML
     void collapseSidebar(MouseEvent event) {
-        // Animate sidebar collapse (e.g., back to 70 pixels)
         Timeline collapseTimeline = new Timeline();
         KeyValue widthValue = new KeyValue(sidebar.prefWidthProperty(), 70);
         KeyFrame keyFrame = new KeyFrame(Duration.millis(300), widthValue);
@@ -254,8 +252,8 @@ public class ViewAllEventsController implements Initializable {
     void handleHomeClick(ActionEvent event) {
         try {
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Ref.fxml"));
-            //FXMLLoader loader = new FXMLLoader(getClass().getResource("/EvenementAll.fxml"));
+            //FXMLLoader loader = new FXMLLoader(getClass().getResource("/Ref.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/EvenementAll.fxml"));
             Parent root = loader.load();
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));

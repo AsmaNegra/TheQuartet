@@ -21,7 +21,7 @@ public class MailjetSender {
     private static final String FROM_EMAIL = "mariem.manai@esprit.tn";
     private static final String FROM_NAME = "Orchestra Support";
 
-    public static void sendTransactionEmail(String recipientEmail, Transaction transaction) {
+    public static void sendTransactionEmail(String recipientEmail, Transaction transaction, boolean reductionAppliquee) {
         try {
             if (recipientEmail == null || recipientEmail.isEmpty()) {
                 System.err.println("❌ Email du destinataire manquant !");
@@ -34,29 +34,36 @@ public class MailjetSender {
 
             // 🎟️ Générer les détails du ticket acheté
             Ticket ticket = transaction.getTicket();
-            String ticketDetails = "🎟 Ticket: " + ticket.getType() + "\n💰 Prix: " + ticket.getPrix() + " TND";
+            String ticketDetails = "🎟 Ticket: " + ticket.getType() + "\n💰 Prix initial: " + ticket.getPrix() + " TND";
 
-            // 🔹 Générer un QR Code avec un format lisible (ex: JSON)
-            String qrData = "{"
+            // 🔹 Vérifier et afficher la réduction appliquée
+            String reductionTexte = reductionAppliquee
+                    ? "🎉 Vous avez bénéficié d'une réduction de 20% sur ce paiement !"
+                    : "";
+            String montantTexte = String.format("%.2f TND", transaction.getMontant_total());
+
+            // 🔹 Générer un QR Code avec les détails JSON
+            String qrData = "L'équipe Orchestra vous remercie pour votre confiance , et voici les détails de votre transaction :"
                     + "\"Statut\": \"" + transaction.getStatut() + "\","
                     + "\"Ticket\": \"" + ticket.getType() + "\","
-                    + "\"Prix\": \"" + ticket.getPrix() + " TND\""
-                    + "}";
+                    + "\"Prix initial\": \"" + ticket.getPrix() + " TND\","
+                    + "\"Montant payé\": \"" + montantTexte + "\",";
 
-            // Générer le QR Code et l'enregistrer
+
+            // Générer et enregistrer le QR Code
             String qrFileName = "qr_" + transaction.getId_transaction() + ".png";
             String qrPath = QRCodeGenerator.generateQRCode(qrData, qrFileName);
 
-            // Convertir l'image en Base64 pour l'envoyer en pièce jointe
             File qrFile = new File(qrPath);
             String qrBase64 = Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(qrFile));
 
-            // 📩 Contenu HTML de l'email avec QR Code en pièce jointe (cid:qrCode)
+            // 📩 Contenu HTML de l'email avec QR Code
             String htmlContent = "<div style='background-color: #f8f9fa; padding: 20px; font-family: Arial, sans-serif; text-align: center;'>"
                     + "<div style='max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0px 4px 8px rgba(0,0,0,0.1);'>"
                     + "<h2 style='color: #003366;'>🎉 Paiement Confirmé 🎉</h2>"
                     + "<p>Merci pour votre achat ! Voici les détails de votre transaction :</p>"
-                    + "<p><strong>💰 Montant Total :</strong> " + transaction.getMontant_total() + " TND</p>"
+                    + "<p><strong>💰 Montant Total :</strong> " + montantTexte + "</p>"
+                    + (reductionAppliquee ? "<p style='color: green; font-weight: bold;'>" + reductionTexte + "</p>" : "")
                     + "<p><strong>💳 Mode de Paiement :</strong> " + transaction.getMode_paiement() + "</p>"
                     + "<p><strong>📅 Date de Paiement :</strong> " + formattedDate + "</p>"
                     + "<p><strong>🎟 Détails du ticket :</strong><br>" + ticketDetails.replace("\n", "<br>") + "</p>"
@@ -66,14 +73,11 @@ public class MailjetSender {
                     + "</div>"
                     + "</div>";
 
-            // Ajouter le QR Code en pièce jointe (Mailjet ne supporte pas `cid:` directement)
             JSONArray attachments = new JSONArray()
                     .put(new JSONObject()
                             .put("ContentType", "image/png")
                             .put("Filename", "qrCode.png")
                             .put("Base64Content", qrBase64));
-
-            // 📧 Construire la requête Mailjet
             JSONObject message = new JSONObject();
             message.put("From", new JSONObject().put("Email", FROM_EMAIL).put("Name", FROM_NAME));
             message.put("To", new JSONArray().put(new JSONObject().put("Email", recipientEmail).put("Name", "Client")));

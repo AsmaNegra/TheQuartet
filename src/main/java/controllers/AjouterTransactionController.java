@@ -193,6 +193,12 @@ public class AjouterTransactionController {
         montantTotalLabel.setText(String.format("%.2f TND", total));
         return total;
     }
+    private double calculerMontantTotalAvecReduction(int nombreTransactionsPayees, double prixTicket) {
+        if ((nombreTransactionsPayees + 1) % 4 == 0) {
+            return prixTicket * 0.8;
+        }
+        return prixTicket;
+    }
 
     @FXML
     private void passerALaCaisse() {
@@ -215,20 +221,26 @@ public class AjouterTransactionController {
             try {
                 Transaction transaction = new Transaction();
                 Utilisateur utilisateur = new Utilisateur();
-                utilisateur.setUtilisateurId(5);
+                utilisateur.setUtilisateurId(6);
                 transaction.setUtilisateur_id(utilisateur);
-
-                // Ajouter uniquement un ticket
                 transaction.setTicket(panier.get(0));
-                transaction.setMontant_total(calculerMontantTotal());
+
+                int nombreTransactionsPayees = serviceTransaction.compterTransactionsPayees(utilisateur.getUtilisateurId());
+                boolean reductionAppliquee = ((nombreTransactionsPayees + 1) % 4 == 0);
+                double montantTotal = calculerMontantTotalAvecReduction(nombreTransactionsPayees, transaction.getTicket().getPrix());
+
+                transaction.setMontant_total(montantTotal); // ✅ Appliquer la réduction à la transaction
                 transaction.setMode_paiement("Carte Bancaire");
                 transaction.setDate_paiement(new Timestamp(System.currentTimeMillis()));
 
-                serviceTransaction.ajouter(transaction);
+                serviceTransaction.ajouter(transaction); // 💾 Enregistrer en base AVEC la réduction appliquée
+                Transaction transactionSauvegardee = serviceTransaction.getTransactionById(transaction.getId_transaction());
+                System.out.println("Montant enregistré en base : " + transactionSauvegardee.getMontant_total());
                 panier.clear();
                 panierTable.refresh();
-                messageLabel.setText("✅ Transaction enregistrée avec succès !");
-                ouvrirFenetrePaiement(transaction);
+                messageLabel.setText("✅ Transaction enregistrée avec succès ! Montant payé : " + montantTotal + " TND");
+                transaction.setMontant_total(montantTotal);
+                ouvrirFenetrePaiement(transaction, reductionAppliquee);
 
             } catch (SQLException e) {
                 messageLabel.setText("❌ Erreur lors de la transaction.");
@@ -236,20 +248,20 @@ public class AjouterTransactionController {
             }
         }
     }
-    private void ouvrirFenetrePaiement(Transaction transaction) {
+
+    private void ouvrirFenetrePaiement(Transaction transaction, boolean reductionAppliquee) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/paiement.fxml"));
             Parent root = loader.load();
             PaiementController paiementController = loader.getController();
-            paiementController.setTransactionDetails(transaction);
+            paiementController.setTransactionDetails(transaction, reductionAppliquee);
             Stage stage = new Stage();
-            stage.setTitle("Paiement - Stripe");
             stage.setScene(new Scene(root));
-            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setTitle("Paiement");
             stage.showAndWait();
         } catch (IOException e) {
+            System.err.println("❌ ERREUR : Le fichier paiement.fxml est introuvable !");
             e.printStackTrace();
-            System.out.println("❌ ERREUR : Le fichier paiement.fxml est introuvable !");
         }
     }
 

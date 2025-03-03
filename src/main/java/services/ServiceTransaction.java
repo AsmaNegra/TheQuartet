@@ -19,7 +19,6 @@ public class ServiceTransaction implements IService<Transaction> {
     }
 
     public void ajouter(Transaction transaction) throws SQLException {
-        // ✅ Vérifier que l'utilisateur existe
         String checkUtilisateurQuery = "SELECT * FROM utilisateur WHERE utilisateur_id = ?";
         try (PreparedStatement pst = connection.prepareStatement(checkUtilisateurQuery)) {
             pst.setInt(1, transaction.getUtilisateur_id().getUtilisateurId());
@@ -28,13 +27,10 @@ public class ServiceTransaction implements IService<Transaction> {
                 throw new SQLException("❌ Utilisateur non trouvé.");
             }
         }
-
-        // ✅ Vérifier que **seul un ticket** est associé
         if (transaction.getTicket() == null) {
             throw new SQLException("❌ La transaction doit contenir un seul ticket.");
         }
 
-        // ✅ Vérifier que le ticket existe et est disponible
         Ticket ticket = transaction.getTicket();
         String checkTicketQuery = "SELECT * FROM ticket WHERE id_ticket = ? AND nb_tickets > 0";
         try (PreparedStatement pst = connection.prepareStatement(checkTicketQuery)) {
@@ -45,10 +41,7 @@ public class ServiceTransaction implements IService<Transaction> {
             }
         }
 
-        // ✅ Définir le montant total de la transaction (prix du seul ticket)
         transaction.setMontant_total(ticket.getPrix());
-
-        // ✅ Insérer la transaction
         String insertTransactionQuery = "INSERT INTO transaction (utilisateur_id, montant_total, mode_paiement, date_paiement, statut) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement pst = connection.prepareStatement(insertTransactionQuery, Statement.RETURN_GENERATED_KEYS)) {
             pst.setInt(1, transaction.getUtilisateur_id().getUtilisateurId());
@@ -57,15 +50,11 @@ public class ServiceTransaction implements IService<Transaction> {
             pst.setTimestamp(4, transaction.getDate_paiement());
             pst.setString(5, transaction.getStatut());
             pst.executeUpdate();
-
-            // ✅ Récupérer l'ID généré
             ResultSet generatedKeys = pst.getGeneratedKeys();
             if (generatedKeys.next()) {
                 transaction.setId_transaction(generatedKeys.getInt(1));
                 System.out.println("✅ Transaction ajoutée avec succès avec l'ID: " + transaction.getId_transaction());
             }
-
-            // ✅ Ajouter **un seul ticket** à la transaction
             ServiceTransactionTicket serviceTransactionTicket = new ServiceTransactionTicket();
             serviceTransactionTicket.ajouterTicketTransaction(transaction);
         }
@@ -77,15 +66,12 @@ public class ServiceTransaction implements IService<Transaction> {
 
     @Override
     public void supprimer(int id) throws SQLException {
-
     }
 
     @Override
     public List<Transaction> afficher() throws SQLException {
         return List.of();
     }
-
-    // ✅ Modification pour récupérer un **seul ticket** par transaction
     public Ticket getTicketByTransactionId(int transactionId) throws SQLException {
         String query = "SELECT t.* FROM ticket t " +
                 "INNER JOIN ticket_transaction tt ON t.id_ticket = tt.ticket_id " +
@@ -157,7 +143,7 @@ public class ServiceTransaction implements IService<Transaction> {
                 );
             }
         }
-        return null; // 🚨 Retourne null si aucune transaction trouvée
+        return null;
     }
     public List<Transaction> getTransactionsByUtilisateurId(int utilisateurId) throws SQLException {
         List<Transaction> transactions = new ArrayList<>();
@@ -169,15 +155,9 @@ public class ServiceTransaction implements IService<Transaction> {
 
             while (rs.next()) {
                 int transactionId = rs.getInt("id_transaction");
-
-                // Récupérer l'utilisateur associé à la transaction
                 ServiceUtilisateurEvenement serviceUtilisateur = new ServiceUtilisateurEvenement();
                 Utilisateur utilisateur = serviceUtilisateur.getUtilisateurById(utilisateurId);
-
-                // Récupérer les tickets associés à cette transaction
                 Ticket ticket= getTicketByTransactionId(transactionId);
-
-                // Construire l'objet Transaction
                 Transaction transaction = new Transaction(
                         transactionId,
                         utilisateur,
@@ -192,5 +172,17 @@ public class ServiceTransaction implements IService<Transaction> {
             }
         }
         return transactions;
+    }
+
+    public int compterTransactionsPayees(int utilisateurId) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM transaction WHERE utilisateur_id = ? AND statut = 'Payée'";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, utilisateurId);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        }
+        return 0;
     }
 }

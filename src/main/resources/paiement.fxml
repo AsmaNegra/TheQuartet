@@ -15,11 +15,13 @@
     <VBox alignment="CENTER" layoutX="50.0" layoutY="11.0" prefHeight="406.0" prefWidth="443.0" spacing="10" styleClass="background_color" stylesheets="@styles_new.css" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="30.0">
         <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" stylesheets="@styles_new.css" text="Paiement Sécurisé" />
 
-        <TextField fx:id="amountField" prefHeight="34.0" prefWidth="443.0" promptText="Montant" styleClass="pane" stylesheets="@styles_new.css" />
+        <HBox prefHeight="35.0" prefWidth="443.0" spacing="10">
+            <Label prefHeight="25.0" prefWidth="100.0" stylesheets="@styles_new.css" text="Montant Total:" />
+            <Label fx:id="amountLabel" prefHeight="35.0" prefWidth="333.0" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-background-color: #E8E8E8; -fx-padding: 5px; -fx-border-radius: 5px;" stylesheets="@styles_new.css" text="Montant Total : " />        </HBox>
         <!-- Champ Numéro de Carte -->
         <HBox prefHeight="35.0" prefWidth="443.0" spacing="10">
             <Label prefHeight="25.0" prefWidth="100.0" stylesheets="@styles_new.css" text="Numéro de carte:" />
-            <TextField fx:id="cardNumberField" prefHeight="25.0" prefWidth="150.0" promptText="1234 5678 9012 3456" styleClass="pane" stylesheets="@styles_new.css" />
+            <TextField fx:id="cardNumberField" prefHeight="27.0" prefWidth="332.0" promptText="1234 5678 9012 3456" styleClass="pane" stylesheets="@styles_new.css" />
         </HBox>
 
         <!-- Champs Date d'Expiration et Code CVC -->
@@ -27,7 +29,7 @@
             <Label prefHeight="25.0" prefWidth="100.0" stylesheets="@styles_new.css" text="Expiration:" />
             <TextField fx:id="expirationField" prefHeight="25.0" prefWidth="100.0" promptText="MM/YY" styleClass="pane" stylesheets="@styles_new.css" />
             <Label prefHeight="25.0" prefWidth="100.0" stylesheets="@styles_new.css" text="       CVC:" textAlignment="CENTER" />
-            <TextField fx:id="cvcField" prefHeight="25.0" prefWidth="100.0" promptText="CVC" styleClass="pane" stylesheets="@styles_new.css" />
+            <TextField fx:id="cvcField" prefHeight="27.0" prefWidth="110.0" promptText="CVC" styleClass="pane" stylesheets="@styles_new.css" />
         </HBox>
          <TextField fx:id="emailField" prefHeight="25.0" prefWidth="100.0" promptText="Email" styleClass="pane" stylesheets="@styles_new.css" />
 
