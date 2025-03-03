@@ -13,6 +13,7 @@ import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.oauth2.Oauth2;
 import com.google.api.services.oauth2.model.Userinfo;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,7 +23,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class GoogleAuthService {
-    private static final String APPLICATION_NAME = "Votre Nom d'Application";
+    private static final String APPLICATION_NAME = "Orchestra";
     private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
     private static final String TOKENS_DIRECTORY_PATH = "tokens";
     private static final List<String> SCOPES = Arrays.asList(
@@ -38,10 +39,31 @@ public class GoogleAuthService {
         this.serviceUtilisateur = new ServiceUtilisateur();
     }
 
+    // Méthode pour effacer les jetons stockés et forcer une nouvelle authentification
+    public void clearTokens() {
+        try {
+            File tokensFolder = new File(TOKENS_DIRECTORY_PATH);
+            if (tokensFolder.exists() && tokensFolder.isDirectory()) {
+                File[] files = tokensFolder.listFiles();
+                if (files != null) {
+                    for (File file : files) {
+                        file.delete();
+                    }
+                }
+                tokensFolder.delete();
+            }
+        } catch (Exception e) {
+            System.err.println("Erreur lors de la suppression des jetons: " + e.getMessage());
+        }
+    }
+
     /**
-     * Crée un flux d'autorisation et retourne les informations de l'utilisateur
+     * Récupère les infos utilisateur Google après authentification OAuth2
      */
     public Userinfo getUserInfo() throws IOException {
+        // Supprime les jetons précédents pour forcer une nouvelle authentification
+        clearTokens();
+
         // Charge les secrets du client
         InputStream in = GoogleAuthService.class.getResourceAsStream(CREDENTIALS_FILE_PATH);
         if (in == null) {
@@ -49,13 +71,19 @@ public class GoogleAuthService {
         }
         GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(in));
 
-        // Construit le flux et le récupérateur de jetons
+        // Construit le flux d'autorisation
         GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
                 httpTransport, JSON_FACTORY, clientSecrets, SCOPES)
                 .setDataStoreFactory(new FileDataStoreFactory(new java.io.File(TOKENS_DIRECTORY_PATH)))
                 .setAccessType("offline")
                 .build();
-        LocalServerReceiver receiver = new LocalServerReceiver.Builder().setPort(8888).build();
+
+        // Configuration du serveur local pour la réception du code d'autorisation
+        LocalServerReceiver receiver = new LocalServerReceiver.Builder()
+                .setPort(8888)
+                .build();
+
+        // Autorise l'utilisateur et obtient les credentials
         Credential credential = new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
 
         // Crée le service OAuth2 pour obtenir les informations utilisateur
@@ -63,6 +91,7 @@ public class GoogleAuthService {
                 .setApplicationName(APPLICATION_NAME)
                 .build();
 
+        // Exécute la requête pour obtenir les informations de l'utilisateur
         return oauth2.userinfo().get().execute();
     }
 }

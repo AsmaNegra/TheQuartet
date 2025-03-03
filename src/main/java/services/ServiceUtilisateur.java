@@ -111,18 +111,25 @@ public class ServiceUtilisateur implements IService<Utilisateur> {
     public Utilisateur inscrireAvecGoogle(String nom, String email, String photoUrl) throws SQLException {
         // Vérifier si l'utilisateur existe déjà
         if (emailExists(email)) {
-            // Si l'utilisateur existe, le récupérer et le retourner
-            return recupererUtilisateurParEmail(email);
+            // Si l'utilisateur existe, le récupérer
+            Utilisateur utilisateur = recupererUtilisateurParEmail(email);
+
+            // Ne mettez PAS à jour la session automatiquement
+            // L'utilisateur doit toujours entrer son mot de passe
+
+            return utilisateur;
         }
 
-        // Générer un mot de passe aléatoire qui sera hashé (l'utilisateur ne l'utilisera pas)
-        String motDePasseAleatoire = BCrypt.hashpw(generateRandomPassword(), BCrypt.gensalt());
+        // Pour les nouveaux utilisateurs seulement:
+        // Option 1: Générer un mot de passe aléatoire et demander à l'utilisateur de le changer
+        String motDePasseTemporaire = generateRandomPassword();
+        String motDePasseHashe = BCrypt.hashpw(motDePasseTemporaire, BCrypt.gensalt());
 
         // Créer un nouvel utilisateur avec le rôle PARTICIPANT par défaut
         Utilisateur nouvelUtilisateur = new Utilisateur();
         nouvelUtilisateur.setNom(nom);
         nouvelUtilisateur.setEmail(email);
-        nouvelUtilisateur.setMotDePasse(motDePasseAleatoire);
+        nouvelUtilisateur.setMotDePasse(motDePasseHashe);
         nouvelUtilisateur.setRole(Role.PARTICIPANT);
         nouvelUtilisateur.setEtat("actif");
         nouvelUtilisateur.setNote_organisateur(0);

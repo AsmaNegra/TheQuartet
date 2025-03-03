@@ -1,5 +1,6 @@
 package controllers;
 
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
@@ -40,7 +42,13 @@ public class InscriptionController implements Initializable {
     private TextField email_field;
 
     @FXML
-    private TextField mdp_field;
+    private PasswordField mdp_field;
+
+    @FXML
+    private TextField mdp_field_visible;
+
+    @FXML
+    private FontAwesomeIconView eye_icon;
 
     @FXML
     private Button btn_inscrire;
@@ -65,13 +73,40 @@ public class InscriptionController implements Initializable {
 
     private File selectedImageFile;
     private String photoUrl;
+    private boolean passwordVisible = false;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // Ajouter un écouteur pour le champ de mot de passe
         mdp_field.textProperty().addListener((observable, oldValue, newValue) -> {
             updatePasswordStrength(newValue);
+            mdp_field_visible.setText(newValue);
         });
+
+        // Ajouter un écouteur pour le champ de mot de passe visible
+        mdp_field_visible.textProperty().addListener((observable, oldValue, newValue) -> {
+            updatePasswordStrength(newValue);
+            mdp_field.setText(newValue);
+        });
+    }
+
+    @FXML
+    void togglePasswordVisibility(MouseEvent event) {
+        passwordVisible = !passwordVisible;
+
+        if (passwordVisible) {
+            // Afficher le mot de passe
+            mdp_field_visible.setText(mdp_field.getText());
+            mdp_field_visible.setVisible(true);
+            mdp_field.setVisible(false);
+            eye_icon.setGlyphName("EYE_SLASH");
+        } else {
+            // Masquer le mot de passe
+            mdp_field.setText(mdp_field_visible.getText());
+            mdp_field.setVisible(true);
+            mdp_field_visible.setVisible(false);
+            eye_icon.setGlyphName("EYE");
+        }
     }
 
     @FXML
@@ -207,7 +242,7 @@ public class InscriptionController implements Initializable {
 
             String nom = nom_field.getText().trim();
             String email = email_field.getText().trim();
-            String motDePasse = mdp_field.getText().trim();
+            String motDePasse = passwordVisible ? mdp_field_visible.getText().trim() : mdp_field.getText().trim();
 
             // Hacher le mot de passe avant de le stocker
             String motDePasseHashe = hashPassword(motDePasse);
@@ -306,16 +341,26 @@ public class InscriptionController implements Initializable {
         }
 
         // Validation du mot de passe
-        if (mdp_field.getText().trim().isEmpty()) {
+        String motDePasse = passwordVisible ? mdp_field_visible.getText().trim() : mdp_field.getText().trim();
+        if (motDePasse.isEmpty()) {
             errors.append("- Le mot de passe est requis\n");
-            mdp_field.setStyle("-fx-border-color: red");
+            if (passwordVisible) {
+                mdp_field_visible.setStyle("-fx-border-color: red");
+            } else {
+                mdp_field.setStyle("-fx-border-color: red");
+            }
             isValid = false;
-        } else if (!validatePassword(mdp_field.getText().trim())) {
+        } else if (!validatePassword(motDePasse)) {
             errors.append("- Le mot de passe doit contenir au moins 8 caractères, incluant une majuscule, une minuscule et un chiffre\n");
-            mdp_field.setStyle("-fx-border-color: red");
+            if (passwordVisible) {
+                mdp_field_visible.setStyle("-fx-border-color: red");
+            } else {
+                mdp_field.setStyle("-fx-border-color: red");
+            }
             isValid = false;
         } else {
             mdp_field.setStyle("");
+            mdp_field_visible.setStyle("");
         }
 
         // Validation du rôle
@@ -346,6 +391,8 @@ public class InscriptionController implements Initializable {
         nom_field.clear();
         email_field.clear();
         mdp_field.clear();
+        mdp_field_visible.clear();
+
         if (rolegrp.getSelectedToggle() != null) {
             rolegrp.getSelectedToggle().setSelected(false);
         }
@@ -354,11 +401,18 @@ public class InscriptionController implements Initializable {
         nom_field.setStyle("");
         email_field.setStyle("");
         mdp_field.setStyle("");
+        mdp_field_visible.setStyle("");
 
         // Réinitialiser la barre de progression
         passwordStrengthBar.setProgress(0.0);
         passwordStrengthLabel.setText("Faible");
         passwordStrengthBar.setStyle("-fx-accent: red;");
+
+        // Réinitialiser l'affichage du mot de passe
+        mdp_field.setVisible(true);
+        mdp_field_visible.setVisible(false);
+        eye_icon.setGlyphName("EYE");
+        passwordVisible = false;
 
         // Réinitialiser l'image
         image_preview.setImage(null);

@@ -18,6 +18,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import entities.Role;
 import entities.Utilisateur;
+import org.mindrot.jbcrypt.BCrypt;
 import services.GoogleAuthService;
 import services.ServiceUtilisateur;
 
@@ -61,13 +62,19 @@ public class AuthentificationController {
             googleAuthService = new GoogleAuthService();
         } catch (GeneralSecurityException | IOException e) {
             e.printStackTrace();
-            showAlert(AlertType.ERROR, "Erreur", "Impossible d'initialiser le service Google");
+            // Log le message d'erreur spécifique
+            System.err.println("Erreur d'initialisation du service Google: " + e.getMessage());
+            showAlert(AlertType.ERROR, "Erreur d'initialisation",
+                    "Impossible d'initialiser le service Google: " + e.getMessage());
         }
     }
 
     @FXML
     void connectWithGoogle(ActionEvent event) {
         try {
+            // Créer une nouvelle instance de GoogleAuthService à chaque connexion
+            googleAuthService = new GoogleAuthService();
+
             // Obtenir les informations utilisateur de Google
             Userinfo userInfo = googleAuthService.getUserInfo();
 
@@ -76,48 +83,106 @@ public class AuthentificationController {
             String nom = userInfo.getName();
             String photoUrl = userInfo.getPicture();
 
-            // Inscrire ou connecter l'utilisateur
-            Utilisateur utilisateur = serviceUtilisateur.inscrireAvecGoogle(nom, email, photoUrl);
+            // Vérifier si l'utilisateur existe déjà
+            boolean userExists = serviceUtilisateur.emailExists(email);
+            Utilisateur utilisateur;
 
-            if (utilisateur != null) {
-                // Sauvegarder l'utilisateur dans la session
+            if (userExists) {
+                // Si l'utilisateur existe, le récupérer
+                utilisateur = serviceUtilisateur.recupererUtilisateurParEmail(email);
+
+                // Définir l'utilisateur dans la session
                 UserSession.getInstance().setUtilisateur(utilisateur);
 
-                // Rediriger en fonction du rôle (même logique que dans la méthode connect)
-                FXMLLoader loader;
-                Parent root;
-                String roleMsg = "";
-
-                if (utilisateur.getRole() == Role.ADMIN) {
-                    loader = new FXMLLoader(getClass().getResource("/EvenementAll.fxml"));
-                    roleMsg = "administrateur";
-                } else if (utilisateur.getRole() == Role.PARTICIPANT) {
-                    loader = new FXMLLoader(getClass().getResource("/ViewAllEvents.fxml"));
-                    roleMsg = "participant";
-                } else if (utilisateur.getRole() == Role.ORGANISATEUR) {
-                    loader = new FXMLLoader(getClass().getResource("/EventOrganisation.fxml"));
-                    roleMsg = "organisateur";
-                } else {
-                    showAlert(AlertType.ERROR, "Erreur", "Rôle inconnu");
-                    return;
-                }
-
-                root = loader.load();
-
-                Scene scene = new Scene(root);
-                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                stage.setScene(scene);
-                stage.show();
-
-                showAlert(AlertType.INFORMATION, "Connexion réussie",
-                        "Bienvenue " + utilisateur.getNom() + " en tant que " + roleMsg);
+                // Naviguer vers la page appropriée selon le rôle
+                navigateBasedOnRole(utilisateur, event);
             } else {
-                showAlert(AlertType.ERROR, "Erreur", "Impossible de récupérer les informations de l'utilisateur");
+                // Créer un nouveau compte
+                String tempPassword = generateRandomPassword(8);
+
+                utilisateur = new Utilisateur();
+                utilisateur.setNom(nom);
+                utilisateur.setEmail(email);
+                utilisateur.setMotDePasse(BCrypt.hashpw(tempPassword, BCrypt.gensalt()));
+                utilisateur.setRole(Role.PARTICIPANT);
+                utilisateur.setEtat("actif");
+                utilisateur.setNote_organisateur(0);
+                utilisateur.setEntreprise("");
+                utilisateur.setPhotoUrl(photoUrl != null ? photoUrl : "default_profile.png");
+
+                // Ajouter l'utilisateur
+                serviceUtilisateur.ajouter(utilisateur);
+
+                // Définir l'utilisateur dans la session
+                UserSession.getInstance().setUtilisateur(utilisateur);
+
+                // Afficher le mot de passe temporaire
+                showAlert(AlertType.INFORMATION, "Compte créé",
+                        "Votre compte a été créé avec succès.\n" +
+                                "Votre mot de passe temporaire est: " + tempPassword + "\n" +
+                                "Veuillez changer votre mot de passe après la connexion.");
+
+                // Naviguer vers la page appropriée
+                navigateBasedOnRole(utilisateur, event);
             }
         } catch (IOException | SQLException e) {
             e.printStackTrace();
-            showAlert(AlertType.ERROR, "Erreur", "Erreur lors de la connexion Google: " + e.getMessage());
+            showAlert(AlertType.ERROR, "Erreur de connexion",
+                    "Erreur lors de la connexion Google: " + e.getMessage());
+        } catch (GeneralSecurityException e) {
+            e.printStackTrace();
+            showAlert(AlertType.ERROR, "Erreur de sécurité",
+                    "Problème avec les certificats ou les accès Google: " + e.getMessage());
         }
+    }
+
+    // Méthode utilitaire pour naviguer en fonction du rôle de l'utilisateur
+    private void navigateBasedOnRole(Utilisateur utilisateur, ActionEvent event) {
+        try {
+            FXMLLoader loader;
+            Parent root;
+            String roleMsg = "";
+
+            if (utilisateur.getRole() == Role.ADMIN) {
+                loader = new FXMLLoader(getClass().getResource("/AdminFournisseur.fxml"));
+                roleMsg = "administrateur";
+            } else if (utilisateur.getRole() == Role.PARTICIPANT) {
+                loader = new FXMLLoader(getClass().getResource("/ViewAllEvents.fxml"));
+                roleMsg = "participant";
+            } else if (utilisateur.getRole() == Role.ORGANISATEUR) {
+                loader = new FXMLLoader(getClass().getResource("/EventOrganisation.fxml"));
+                roleMsg = "organisateur";
+            } else {
+                showAlert(AlertType.ERROR, "Erreur", "Rôle inconnu");
+                return;
+            }
+
+            root = loader.load();
+            Scene scene = new Scene(root);
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+
+            // Afficher un message de bienvenue
+            showAlert(AlertType.INFORMATION, "Connexion réussie",
+                    "Bienvenue " + utilisateur.getNom() + " en tant que " + roleMsg);
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert(AlertType.ERROR, "Erreur de navigation",
+                    "Impossible de charger la page: " + e.getMessage());
+        }
+    }
+
+    // Méthode utilitaire pour générer un mot de passe aléatoire
+    private String generateRandomPassword(int length) {
+        String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()";
+        StringBuilder sb = new StringBuilder();
+        java.util.Random random = new java.util.Random();
+        for (int i = 0; i < length; i++) {
+            int index = random.nextInt(chars.length());
+            sb.append(chars.charAt(index));
+        }
+        return sb.toString();
     }
 
 
@@ -173,7 +238,7 @@ public class AuthentificationController {
 
                 if (utilisateur.getRole() == Role.ADMIN) {
                     // Rediriger vers la vue pour l'admin
-                    loader = new FXMLLoader(getClass().getResource("/EvenementAll.fxml"));
+                    loader = new FXMLLoader(getClass().getResource("/AdminFournisseur.fxml"));
                     roleMsg = "administrateur";
                 } else if (utilisateur.getRole() == Role.PARTICIPANT) {
                     // Rediriger vers la vue pour le participant
@@ -249,7 +314,7 @@ public class AuthentificationController {
 //        }
 //    }
 
-//    @FXML
+    //    @FXML
 //    void revenir(ActionEvent event) {
 //        try {
 //            Parent root = FXMLLoader.load(getClass().getResource("/Accueil.fxml"));

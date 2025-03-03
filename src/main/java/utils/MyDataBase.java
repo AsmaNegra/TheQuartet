@@ -4,7 +4,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class MyDataBase {
-    private final String URL ="jdbc:mysql://localhost:3306/orchestra-1";
+    private final String URL ="jdbc:mysql://localhost:3306/orch";
     private final String USER ="root";
     private final String PSW="";
     private Connection connection ;

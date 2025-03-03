@@ -1,68 +1,171 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.scene.text.*?>
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.web.*?>
 
-<AnchorPane prefHeight="600.0" prefWidth="600.0" stylesheets="@styles_new.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.InscriptionController">
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="600.0" prefWidth="1100.0" styleClass="Bg_login" stylesheets="@styles_new.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.InscriptionController">
     <children>
-        <HBox alignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0">
-            <Label text="Créer un compte" textFill="WHITE">
-                <font>
-                    <Font size="18.0" />
-                </font>
-            </Label>
-        </HBox>
-
-        <Label text="Nom:" textFill="WHITE" AnchorPane.leftAnchor="150.0" AnchorPane.topAnchor="100.0" />
-        <TextField fx:id="nom_field" AnchorPane.leftAnchor="260.0" AnchorPane.rightAnchor="150.0" AnchorPane.topAnchor="100.0" />
-
-        <Label text="Email:" textFill="WHITE" AnchorPane.leftAnchor="150.0" AnchorPane.topAnchor="150.0" />
-        <TextField fx:id="email_field" AnchorPane.leftAnchor="260.0" AnchorPane.rightAnchor="150.0" AnchorPane.topAnchor="150.0" />
-
-        <Label text="Mot de passe:" textFill="WHITE" AnchorPane.leftAnchor="150.0" AnchorPane.topAnchor="200.0" />
-        <PasswordField fx:id="mdp_field" AnchorPane.leftAnchor="260.0" AnchorPane.rightAnchor="150.0" AnchorPane.topAnchor="200.0" />
-
-        <HBox alignment="CENTER_LEFT" AnchorPane.leftAnchor="260.0" AnchorPane.rightAnchor="150.0" AnchorPane.topAnchor="235.0">
+        <AnchorPane styleClass="Bg_login" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
-                <ProgressBar fx:id="passwordStrengthBar" prefHeight="20.0" prefWidth="150.0" progress="0.0" />
-                <Label fx:id="passwordStrengthLabel" text="Faible" textFill="WHITE" />
+                <HBox alignment="CENTER" styleClass="login_pane" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="270.0" AnchorPane.rightAnchor="270.0" AnchorPane.topAnchor="70.0">
+                    <children>
+                        <VBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0" spacing="10.0">
+                            <children>
+                                <ImageView fitHeight="124.0" fitWidth="103.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@images/Orchestra/Orchestra (1).png" />
+                                    </image>
+                                </ImageView>
+                                <Label alignment="CENTER" prefHeight="27.0" prefWidth="570.0" styleClass="welcome-text" text="Créer un compte" textFill="WHITE">
+                                    <font>
+                                        <Font name="Open Sans Bold" size="25.0" />
+                                    </font>
+                                </Label>
+
+                                <!-- Champ Nom -->
+                                <HBox alignment="CENTER" spacing="10.0">
+                                    <children>
+                                        <Label styleClass="welcome-text" text="Nom :" textFill="WHITE">
+                                            <HBox.margin>
+                                                <Insets right="25.0" />
+                                            </HBox.margin>
+                                            <font>
+                                                <Font size="14.0" />
+                                            </font>
+                                        </Label>
+                                        <TextField fx:id="nom_field" prefHeight="26.0" prefWidth="180.0" />
+                                    </children>
+                                    <VBox.margin>
+                                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                    </VBox.margin>
+                                </HBox>
+
+                                <!-- Champ Email -->
+                                <HBox alignment="CENTER" spacing="10.0">
+                                    <children>
+                                        <Label styleClass="welcome-text" text="Email :" textFill="WHITE">
+                                            <HBox.margin>
+                                                <Insets right="25.0" />
+                                            </HBox.margin>
+                                            <font>
+                                                <Font size="14.0" />
+                                            </font>
+                                        </Label>
+                                        <TextField fx:id="email_field" prefHeight="26.0" prefWidth="180.0" />
+                                    </children>
+                                    <VBox.margin>
+                                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                    </VBox.margin>
+                                </HBox>
+
+                                <!-- Champ Mot de passe -->
+                                <HBox alignment="CENTER" spacing="10.0">
+                                    <children>
+                                        <Label styleClass="welcome-text" text="Mot de passe :" textFill="WHITE">
+                                            <font>
+                                                <Font size="14.0" />
+                                            </font>
+                                        </Label>
+                                        <!-- Container pour les deux champs (un seul sera visible à la fois) -->
+                                        <AnchorPane prefHeight="26.0" prefWidth="180.0">
+                                            <children>
+                                                <PasswordField fx:id="mdp_field" prefHeight="26.0" prefWidth="180.0" />
+                                                <TextField fx:id="mdp_field_visible" prefHeight="26.0" prefWidth="180.0" visible="false" />
+                                            </children>
+                                        </AnchorPane>
+                                        <FontAwesomeIconView fx:id="eye_icon" glyphName="EYE" onMouseClicked="#togglePasswordVisibility" size="18" style="-fx-cursor: hand;" />
+                                    </children>
+                                    <VBox.margin>
+                                        <Insets bottom="5.0" left="10.0" right="10.0" top="10.0" />
+                                    </VBox.margin>
+                                </HBox>
+
+                                <!-- Barre de progression mot de passe -->
+                                <HBox alignment="CENTER" spacing="10.0">
+                                    <children>
+                                        <ProgressBar fx:id="passwordStrengthBar" prefWidth="180.0" progress="0.0" />
+                                        <Label fx:id="passwordStrengthLabel" text="Faible" textFill="RED" />
+                                    </children>
+                                    <VBox.margin>
+                                        <Insets bottom="10.0" />
+                                    </VBox.margin>
+                                </HBox>
+
+                                <!-- Choix du rôle -->
+                                <HBox alignment="CENTER" spacing="30.0">
+                                    <children>
+                                        <Label styleClass="welcome-text" text="Rôle :" textFill="WHITE">
+                                            <font>
+                                                <Font size="14.0" />
+                                            </font>
+                                        </Label>
+                                        <RadioButton mnemonicParsing="false" text="Organisateur" textFill="WHITE">
+                                            <toggleGroup>
+                                                <ToggleGroup fx:id="rolegrp" />
+                                            </toggleGroup>
+                                        </RadioButton>
+                                        <RadioButton mnemonicParsing="false" text="Participant" textFill="WHITE" toggleGroup="$rolegrp" />
+                                    </children>
+                                    <VBox.margin>
+                                        <Insets bottom="10.0" top="10.0" />
+                                    </VBox.margin>
+                                </HBox>
+
+                                <!-- Photo de profil -->
+                                <HBox alignment="CENTER" spacing="10.0">
+                                    <children>
+                                        <Label styleClass="welcome-text" text="Photo de profil :" textFill="WHITE">
+                                            <font>
+                                                <Font size="14.0" />
+                                            </font>
+                                        </Label>
+                                        <Button fx:id="btn_choisir_image" mnemonicParsing="false" onAction="#choisirImage" styleClass="button_crud" text="Choisir une image" />
+                                    </children>
+                                    <VBox.margin>
+                                        <Insets bottom="5.0" top="10.0" />
+                                    </VBox.margin>
+                                </HBox>
+
+                                <!-- Label du chemin de l'image et prévisualisation -->
+                                <Label fx:id="image_path_label" text="Aucun fichier sélectionné" textFill="WHITE" />
+                                <ImageView fx:id="image_preview" fitHeight="80.0" fitWidth="80.0" preserveRatio="true" />
+
+                                <!-- Boutons -->
+                                <VBox alignment="CENTER" spacing="10.0">
+                                    <children>
+                                        <HBox alignment="CENTER" spacing="15.0">
+                                            <children>
+                                                <Button fx:id="btn_inscrire" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#saveutili" prefHeight="40.0" styleClass="button_crud" text="S'inscrire" />
+                                                <Button fx:id="btn_annuler" mnemonicParsing="false" onAction="#annuler" prefHeight="40.0" prefWidth="116.0" styleClass="button_crud" text="Annuler" />
+                                            </children>
+                                        </HBox>
+                                    </children>
+                                    <VBox.margin>
+                                        <Insets top="20.0" />
+                                    </VBox.margin>
+                                </VBox>
+                            </children>
+                            <padding>
+                                <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+                            </padding>
+                        </VBox>
+                    </children>
+                </HBox>
             </children>
-        </HBox>
-
-        <Label text="Role:" textFill="WHITE" AnchorPane.leftAnchor="150.0" AnchorPane.topAnchor="270.0" />
-        <HBox alignment="CENTER" spacing="30.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="150.0" AnchorPane.topAnchor="270.0">
-            <children>
-                <RadioButton layoutX="260.0" layoutY="270.0" mnemonicParsing="false" text="Organisateur" textFill="WHITE">
-                    <toggleGroup>
-                        <ToggleGroup fx:id="rolegrp" />
-                    </toggleGroup>
-                </RadioButton>
-                <RadioButton layoutX="380.0" layoutY="270.0" mnemonicParsing="false" text="Participant" textFill="WHITE" toggleGroup="$rolegrp" />
-            </children>
-        </HBox>
-
-        <!-- Ajout de la section pour l'image de profil -->
-        <Label text="Photo de profil:" textFill="WHITE" AnchorPane.leftAnchor="150.0" AnchorPane.topAnchor="310.0" />
-        <HBox alignment="CENTER_LEFT" spacing="10.0" AnchorPane.leftAnchor="260.0" AnchorPane.rightAnchor="150.0" AnchorPane.topAnchor="310.0">
-            <children>
-                <Button fx:id="btn_choisir_image" mnemonicParsing="false" onAction="#choisirImage" text="Choisir une image" />
-                <Label fx:id="image_path_label" text="Aucun fichier sélectionné" textFill="WHITE" />
-            </children>
-        </HBox>
-        <ImageView fx:id="image_preview" fitHeight="100.0" fitWidth="100.0" preserveRatio="true" AnchorPane.leftAnchor="260.0" AnchorPane.topAnchor="340.0" />
-<!--        <Label text="CAPTCHA:" textFill="WHITE" AnchorPane.leftAnchor="150.0" AnchorPane.topAnchor="410.0" />-->
-<!--        <HBox alignment="CENTER_LEFT" spacing="10.0" AnchorPane.leftAnchor="260.0" AnchorPane.rightAnchor="150.0" AnchorPane.topAnchor="410.0">-->
-<!--            <children>-->
-<!--                <WebView fx:id="captchaWebView" prefHeight="80.0" prefWidth="250.0" />-->
-<!--            </children>-->
-<!--        </HBox>-->
-
-
-        <Button fx:id="btn_inscrire" mnemonicParsing="false" onAction="#saveutili" prefHeight="31.0" styleClass="button_crud" text="S'inscrire" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="150.0" AnchorPane.topAnchor="460.0" />
-        <Button fx:id="btn_annuler" mnemonicParsing="false" onAction="#annuler" prefHeight="31.0" styleClass="button_crud" text="Annuler" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="150.0" AnchorPane.topAnchor="510.0" />
+        </AnchorPane>
     </children>
 </AnchorPane>
