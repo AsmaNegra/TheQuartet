@@ -143,6 +143,53 @@ public class DetailsEvenementController2 {
         }
     }
 
+    @FXML
+    public void ReserverTicket(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjouterTransaction.fxml"));
+            Parent root = loader.load();
+
+            // Récupérer le contrôleur de la nouvelle vue
+            AjouterTransactionController transactionController = loader.getController();
+
+            // Passer l'événement courant au contrôleur de transaction
+            if (transactionController != null) {
+                transactionController.setCurrentEvenement(currentEvenement);
+            } else {
+                System.err.println("Erreur : Impossible de charger AjouterTransactionController.");
+                return;
+            }
+
+            // Obtenir la scène actuelle à partir du bouton ou d'un composant de la vue courante
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            System.err.println("Erreur lors du chargement de l'interface AjouterTransaction.fxml");
+            e.printStackTrace();
+        }
+    }
+
+//    public void ReserverTicket(ActionEvent event) {
+//        try {
+//            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjouterTransaction.fxml"));
+//            Parent root = loader.load();
+//            AjouterTransactionController transactionController = loader.getController();
+//            if (transactionController != null) {
+//                transactionController.setCurrentEvenement(event);
+//                transactionController.updateUI();
+//            } else {
+//                System.err.println("Erreur : Impossible de charger AjouterTransactionController.");
+//            }
+//            Stage stage = (Stage) eventsContainer.getScene().getWindow();
+//            stage.setScene(new Scene(root));
+//            stage.show();
+//        } catch (IOException e) {
+//            System.err.println("Erreur lors du chargement de l'interface AjouterTransaction.fxml");
+//            e.printStackTrace();
+//        }
+//    }
+
     // Ajoutez une classe interne pour la communication avec JavaScript
     public class JavaConnector {
         public void onLocationFound(boolean success, String name, String address) {

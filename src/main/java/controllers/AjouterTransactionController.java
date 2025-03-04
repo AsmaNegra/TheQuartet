@@ -221,7 +221,8 @@ public class AjouterTransactionController {
             try {
                 Transaction transaction = new Transaction();
                 Utilisateur utilisateur = new Utilisateur();
-                utilisateur.setUtilisateurId(6);
+//                utilisateur.setUtilisateurId(6);
+                utilisateur.setUtilisateurId(1);
                 transaction.setUtilisateur_id(utilisateur);
                 transaction.setTicket(panier.get(0));
 

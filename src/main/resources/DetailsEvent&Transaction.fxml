@@ -190,6 +190,11 @@
                                     <Label style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #11123c;" text="Description" />
                                     <Separator />
                                     <Label fx:id="eventDescriptionLabel" styleClass="event-details" text="Description de l'événement..." wrapText="true" />
+                           <Button fx:id="ReserverTicket" alignment="CENTER" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#ReserverTicket" prefHeight="26.0" prefWidth="144.0" styleClass="button_crud" stylesheets="@styles_new.css" text="Reserver Ticket">
+                              <VBox.margin>
+                                 <Insets left="700.0" />
+                              </VBox.margin>
+                           </Button>
                                     <VBox.margin>
                                         <Insets bottom="15.0" />
                                     </VBox.margin>

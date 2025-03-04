@@ -3,6 +3,7 @@ package controllers;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import entities.Evenement;
+
 import javafx.animation.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -34,6 +35,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import services.ServiceEvenement;
 import services.ServiceTache;
+import services.ServiceTransaction;
 
 import java.io.File;
 import java.io.IOException;
@@ -90,7 +92,8 @@ public class EventOrganisation {
     private Timeline refreshTimeline;
 
     private ServiceEvenement serviceEvenement = new ServiceEvenement();
-///////CHARTS NOUR////
+    private ServiceTransaction serviceTransaction = new ServiceTransaction();
+    ///////CHARTS NOUR////
     @FXML
     private BarChart<String, Number> taskChart;
 
@@ -111,37 +114,36 @@ public class EventOrganisation {
 
     @FXML
     private StackPane circleContainer;
+
     ////////
     @FXML
     public void initialize() {
         loadEvents();
-loadChartData();
+        loadChartData();
 //        refreshTimeline = new Timeline(new KeyFrame(Duration.seconds(1), event-> loadEvents()));
 //        refreshTimeline.setCycleCount(Timeline.INDEFINITE);
 //        refreshTimeline.play();
         try {
-             nbrEvents.setText(String.valueOf(serviceEvenement.getTotalEvenementsUtilisateur(1)));
+            nbrEvents.setText(String.valueOf(serviceEvenement.getTotalEvenementsUtilisateur(1)));
             nbrTaches.setText(String.valueOf(serviceTache.getTotalTachesUtilisateur(1)));
-          nbrTachesRetard.setText(String.valueOf(serviceTache.getTachesEnRetardUtilisateur(1)));
-         // nbrTickets.setText(String.valueOf(getNombreTickets(utilisateurId)));
+            nbrTachesRetard.setText(String.valueOf(serviceTache.getTachesEnRetardUtilisateur(1)));
+            int nombreTickets = serviceTransaction.getNombreTickets(1); // Utilisez 1 ou l'ID utilisateur approprié
+            nbrTickets.setText(String.valueOf(nombreTickets));
 
         } catch (SQLException e) {
             e.printStackTrace();
-           // nbrEvents.setText("Erreur");
+            // nbrEvents.setText("Erreur");
             nbrTaches.setText("Erreur");
             nbrTachesRetard.setText("Erreur");
-          //  nbrTickets.setText("Erreur");
-        }
-
-
-}
-
-    public void stopRefresh() {
-        if(refreshTimeline != null) {
-            refreshTimeline.stop();
+            //  nbrTickets.setText("Erreur");
         }
     }
 
+    public void stopRefresh() {
+        if (refreshTimeline != null) {
+            refreshTimeline.stop();
+        }
+    }
 
 
     @FXML
@@ -163,7 +165,6 @@ loadChartData();
             e.printStackTrace();
         }
     }
-
 
 
     private void loadEvents() {
@@ -381,7 +382,6 @@ loadChartData();
     }
 
 
-
     public void supprimerEvenement(ActionEvent event, Evenement evenement) {
         // Demander confirmation avant la suppression
         Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
@@ -431,7 +431,7 @@ loadChartData();
             modifStage.setScene(new Scene(root));
 
             // Définir le propriétaire et la modalité
-            modifStage.initOwner(((Node)event.getSource()).getScene().getWindow());
+            modifStage.initOwner(((Node) event.getSource()).getScene().getWindow());
             modifStage.initModality(Modality.WINDOW_MODAL);
 
             // Ajouter un écouteur pour détecter quand la fenêtre se ferme
@@ -479,7 +479,6 @@ loadChartData();
             System.err.println("Erreur lors du chargement de l'image: " + imagePath + "\n" + e.getMessage());
         }
     }
-
 
 
     public void ajouterEvenement(ActionEvent actionEvent) {
@@ -547,7 +546,6 @@ loadChartData();
     }
 
 
-
     @FXML
     void handleGiftClick(ActionEvent event) {
         try {
@@ -587,16 +585,17 @@ loadChartData();
             e.printStackTrace();
         }
     }
-    public void refreshEvents(){
+
+    public void refreshEvents() {
         loadEvents();
     }
+
     //////////////////////////////////////////////////////////////////////////
 /////////////////////////API CHARTS NOUR//////////////////////////////////////////
     private void loadChartData() {
         try {
             // Retrieve KPI data from ServiceTache
             Map<String, Map<String, Object>> kpiData = serviceTache.getKpiFournisseurs();
-
 
 
             // Convert to List and sort by total tasks (Descending)
@@ -634,7 +633,9 @@ loadChartData();
         }
     }
 
-    /** 📌 Animation to make bars grow from bottom to top */
+    /**
+     * 📌 Animation to make bars grow from bottom to top
+     */
     private void animateBars() {
         for (XYChart.Series<String, Number> series : taskChart.getData()) {
             for (XYChart.Data<String, Number> data : series.getData()) {
@@ -648,6 +649,7 @@ loadChartData();
             }
         }
     }
+
     //////////////////////////////////////////////////////
     /////////////DISCOVER YOUR PERSONALITY/////////////////
     @FXML
@@ -664,7 +666,9 @@ loadChartData();
         pause.play();
     }
 
-    /** 📌 Animation de pulsation du cercle */
+    /**
+     * 📌 Animation de pulsation du cercle
+     */
     private void animateLoading() {
         ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(0.5), circleContainer);
         scaleTransition.setFromX(1);
@@ -676,7 +680,9 @@ loadChartData();
         scaleTransition.play();
     }
 
-    /** 📌 Fonction pour afficher la personnalité avec une couleur dynamique */
+    /**
+     * 📌 Fonction pour afficher la personnalité avec une couleur dynamique
+     */
     private void afficherPersonnalite() {
         try {
             int TacheId = 5; // Remplace avec l'ID de Utilisateur

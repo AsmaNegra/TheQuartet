@@ -184,4 +184,36 @@ public class ServiceTransaction implements IService<Transaction> {
         }
         return 0;
     }
+
+    /**
+     * Count the total number of tickets purchased for events associated with a specific user
+     *
+     * @param utilisateurId The ID of the user
+     * @return The total number of tickets
+     * @throws SQLException If a database access error occurs
+     */
+    public int getNombreTickets(int utilisateurId) throws SQLException {
+        Connection connection = MyDataBase.getInstance().getConnection();
+        String query = "SELECT COUNT(t.id_transaction) AS nombre_total_transactions " +
+            "FROM transaction t " +
+            "JOIN ticket_transaction tt ON t.id_transaction = tt.transaction_id " +
+            "JOIN ticket tk ON tt.ticket_id = tk.id_ticket " +
+            "JOIN evenement e ON tk.evenement_id = e.evenement_id " +
+            "JOIN utilisateur_evenement ue ON e.evenement_id = ue.evenement_id " +
+            "WHERE ue.utilisateur_id = ?";
+
+        try (PreparedStatement pst = connection.prepareStatement(query)) {
+            pst.setInt(1, utilisateurId);
+            ResultSet rs = pst.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt("nombre_total_transactions");
+            }
+        } catch (SQLException e) {
+            System.err.println("Erreur lors du comptage des tickets: " + e.getMessage());
+            throw e;
+        }
+
+        return 0;
+    }
 }
