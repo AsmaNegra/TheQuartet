@@ -187,7 +187,7 @@
                                 <ComboBox fx:id="statutComboBox" prefHeight="26.0" prefWidth="510.0" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.vgrow="ALWAYS">
                                     <items>
                                         <FXCollections fx:factory="observableArrayList">
-                                            <String fx:value="En attente" />
+                                            <String fx:value="A faire" />
                                             <String fx:value="En cours" />
                                             <String fx:value="Terminée" />
                                         </FXCollections>

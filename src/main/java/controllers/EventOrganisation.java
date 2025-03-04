@@ -685,9 +685,9 @@ public class EventOrganisation {
      */
     private void afficherPersonnalite() {
         try {
-            int TacheId = 5; // Remplace avec l'ID de Utilisateur
+            int TacheId = 1; // Remplace avec l'ID de Utilisateur
             String personnalite = serviceTache.analyserPersonnaliteUtilisateur(TacheId);
-
+//C
             lblPersonnalite.setText(personnalite);
             lblPersonnalite.setWrapText(true);
             lblPersonnalite.setStyle("-fx-font-size: 18px; -fx-text-fill: #1b1b1b; -fx-font-weight: bold; -fx-text-alignment: center;");
