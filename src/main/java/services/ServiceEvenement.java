@@ -240,5 +240,20 @@ public class ServiceEvenement implements IService<Evenement>{
         }
         return evenements;
     }
+    public int getTotalEvenementsUtilisateur(int utilisateurId) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM utilisateur_evenement ue " +
+                "JOIN evenement e ON ue.evenement_id = e.evenement_id " +
+                "WHERE ue.utilisateur_id = ?";
 
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, utilisateurId);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        }
+
+        return 0;
+    }
 }

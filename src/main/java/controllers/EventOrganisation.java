@@ -120,10 +120,10 @@ loadChartData();
 //        refreshTimeline.setCycleCount(Timeline.INDEFINITE);
 //        refreshTimeline.play();
         try {
-            // nbrEvents.setText(String.valueOf(serviceEvenement.getTotalEvenementsUtilisateur(utilisateurId)));
+             nbrEvents.setText(String.valueOf(serviceEvenement.getTotalEvenementsUtilisateur(1)));
             nbrTaches.setText(String.valueOf(serviceTache.getTotalTachesUtilisateur(1)));
-            nbrTachesRetard.setText(String.valueOf(serviceTache.getTachesEnRetardUtilisateur(1)));
-         //   nbrTickets.setText(String.valueOf(getNombreTickets(utilisateurId)));
+          nbrTachesRetard.setText(String.valueOf(serviceTache.getTachesEnRetardUtilisateur(1)));
+         // nbrTickets.setText(String.valueOf(getNombreTickets(utilisateurId)));
 
         } catch (SQLException e) {
             e.printStackTrace();

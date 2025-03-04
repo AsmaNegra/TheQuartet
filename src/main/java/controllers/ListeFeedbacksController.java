@@ -145,15 +145,16 @@ public class ListeFeedbacksController {
 
     private void setupActionsColumn() {
         actionsColumn.setCellFactory(param -> new TableCell<>() {
-            private final Button modifierBtn = new Button("Modifier");
+          //  private final Button modifierBtn = new Button("Modifier");
+
             private final Button supprimerBtn = new Button("Supprimer");
-            private final HBox box = new HBox(5, modifierBtn, supprimerBtn);
+            private final HBox box = new HBox(5,  supprimerBtn);
 
             {
-                modifierBtn.setOnAction(event -> {
-                    Feedback feedback = getTableView().getItems().get(getIndex());
-                    modifierFeedback(feedback);
-                });
+//                modifierBtn.setOnAction(event -> {
+//                    Feedback feedback = getTableView().getItems().get(getIndex());
+//                    modifierFeedback(feedback);
+//                });
 
                 supprimerBtn.setOnAction(event -> {
                     Feedback feedback = getTableView().getItems().get(getIndex());
