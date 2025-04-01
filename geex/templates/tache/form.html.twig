@@ -1,0 +1,84 @@
+<div class="geex-content__modal__form active">
+  <div class="geex-content__modal__form__header">
+    <h3 class="geex-content__modal__form__title">Ajouter une nouvelle tâche</h3>
+    <button class="geex-content__modal__form__close">
+      <i class="uil uil-times"></i>
+    </button>
+  </div>
+
+  {{ form_start(form, {'attr': {'class': 'geex-content__modal__form__wrapper'}}) }}
+
+  <div class="geex-content__modal__form__item">
+    {{ form_widget(form.nom, {'attr': {'class': 'geex-content__modal__form__input', 'placeholder': 'Nom de la tâche'}}) }}
+  </div>
+
+  <div class="geex-content__modal__form__item">
+    {{ form_widget(form.description, {'attr': {'class': 'geex-content__modal__form__input geex-content__modal__form__input--textarea', 'placeholder': 'Description'}}) }}
+  </div>
+
+  <div class="geex-content__modal__form__item">
+    {{ form_widget(form.statut, {'attr': {'class': 'geex-content__modal__form__input'}}) }}
+  </div>
+
+  <div class="geex-content__modal__form__item">
+    {{ form_widget(form.dateLimite, {'attr': {'class': 'geex-content__modal__form__input'}}) }}
+  </div>
+
+  <!-- Priorité personnalisée -->
+  <div class="geex-content__modal__form__item">
+    <h4 class="geex-content__modal__form__item__title">Priorité</h4>
+    <div class="geex-content__form__single__box">
+      <div class="form-check danger">
+        {{ form_widget(form.priorite, {'id': 'priorite_high', 'value': 'High'}) }}
+        <label class="form-check-label" for="priorite_high">Haute</label>
+      </div>
+      <div class="form-check warning">
+        {{ form_widget(form.priorite, {'id': 'priorite_medium', 'value': 'Medium'}) }}
+        <label class="form-check-label" for="priorite_medium">Moyenne</label>
+      </div>
+      <div class="form-check success">
+        {{ form_widget(form.priorite, {'id': 'priorite_low', 'value': 'Low'}) }}
+        <label class="form-check-label" for="priorite_low">Basse</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="geex-content__modal__form__item">
+    {{ form_widget(form.userAssocie, {'attr': {'class': 'geex-content__modal__form__input', 'placeholder': 'Utilisateur associé'}}) }}
+  </div>
+
+  <div class="geex-content__modal__form__item">
+    {{ form_widget(form.fournisseurId, {'attr': {'class': 'geex-content__modal__form__input', 'placeholder': 'ID du fournisseur'}}) }}
+  </div>
+
+  <!-- Slider + champ -->
+  <div class="geex-content__modal__form__item">
+    <label for="tache_budget">Budget (€)</label>
+    <div class="geex-content__form__single__box">
+      <input type="range" min="0" max="10000" step="10" value="0" id="tache_budget" />
+      {{ form_widget(form.budget, {'attr': {'id': 'tache_budget_text', 'class': 'form-control'}}) }}
+    </div>
+  </div>
+
+  <div class="geex-content__modal__form__item">
+    <button type="submit" class="geex-content__modal__form__submit">Ajouter</button>
+  </div>
+
+  {{ form_end(form) }}
+</div>
+
+<script>
+  const slider = document.getElementById("tache_budget");
+  const input = document.getElementById("tache_budget_text");
+
+  slider.addEventListener("input", () => {
+    input.value = slider.value;
+  });
+
+  input.addEventListener("input", () => {
+    const val = parseInt(input.value);
+    if (!isNaN(val) && val >= 0 && val <= 10000) {
+      slider.value = val;
+    }
+  });
+</script>

@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Premium Symfony Admin & Dashboard Template" />
+    <meta name="author" content="PXICELSTHEMES" />
+
+    <!-- Site Tiltle -->
+    <title>Geex - Symfony Responsive Admin & Dashboard Template</title>
+
+    <!-- Site favicon -->
+    <link rel="shortcut icon" href="assets/images/favicon.svg" />
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Custom Style -->
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css" />
+</head>
+
+<body class="antialiased font-nunito text-black text-base">
+    <!-- Start Main Content -->
+    <div class="flex">
+        <!-- Start Sidebar -->
+        <nav class="sidebar fixed top-0 bottom-0 z-40 flex-none w-[240px] border-r border-black/10 transition-all duration-300 md:block hidden">
+            <div class="bg-white h-full">
+                <!-- Start Logo -->
+                <div class="flex px-4 py-4">
+                    <a href="../html/index.html" class="main-logo flex-1 w-full">
+                        <img src="assets/images/logo-dark.svg" class="h-7 mx-auto" alt="logo" />
+                    </a>
+                </div>
+                <!-- End Logo -->
+                <!-- Start Menu -->
+                <ul class="relative h-[calc(100vh-74px)] flex flex-col gap-1 overflow-y-auto overflow-x-hidden p-4 py-0" x-data="{ activeMenu: 'apps' }">
+                    <li>
+                        <a href="#intro" class="mb-1 py-1 flex items-center overflow-hidden whitespace-nowrap rounded-md gap-1 text-black px-2 hover:bg-purple/10 hover:text-purple">Introduction</a>
+                    </li>
+                    <li>
+                        <a href="#insto" class="mb-1 py-1 flex items-center overflow-hidden whitespace-nowrap rounded-md gap-1 text-black px-2 hover:bg-purple/10 hover:text-purple">Installation</a>
+                    </li>
+                    <li>
+                        <a href="#structure" class="mb-1 py-1 flex items-center overflow-hidden whitespace-nowrap rounded-md gap-1 text-black px-2 hover:bg-purple/10 hover:text-purple">Structure</a>
+                    </li>
+                    <li>
+                        <a href="#css" class="mb-1 py-1 flex items-center overflow-hidden whitespace-nowrap rounded-md gap-1 text-black px-2 hover:bg-purple/10 hover:text-purple">Css & Javascript</a>
+                    </li>
+                    <li>
+                        <a href="#cre" class="mb-1 py-1 flex items-center overflow-hidden whitespace-nowrap rounded-md gap-1 text-black px-2 hover:bg-purple/10 hover:text-purple">Credit & Resources</a>
+                    </li>
+                    <li>
+                        <a href="#support" class="mb-1 py-1 flex items-center overflow-hidden whitespace-nowrap rounded-md gap-1 text-black px-2 hover:bg-purple/10 hover:text-purple">Support</a>
+                    </li>
+                    <li>
+                        <a href="#change" class="mb-1 py-1 flex items-center overflow-hidden whitespace-nowrap rounded-md gap-1 text-black px-2 hover:bg-purple/10 hover:text-purple">Change Log</a>
+                    </li>
+                </ul>
+                <!-- End Menu -->
+            </div>
+        </nav>
+        <!-- End sidebar -->
+
+        <!-- Start Content Area -->
+        <div class="flex-1 md:ml-[240px]">
+            <div class="border-b border-black/10 py-4 px-7 flex items-center justify-between">
+                <p class="font-bold text-lg">Geex Symfony Documentation 1.0.0</p>
+            </div>
+            <!-- Start Content -->
+            <div class="h-[calc(100vh-73px)] overflow-y-auto overflow-x-hidden">
+                <div class="p-4 sm:p-7 !pb-0 min-h-[calc(100vh-145px)]">
+                    <div class="grid grid-cols-1 gap-7">
+                        <div class="border border-black/10 p-5 rounded-md" id="intro">
+                            <div class="mb-5">
+                                <p class="text-xl font-semibold text-black">Thank you very much for your purchase!</p>
+                            </div>
+                            <div class="rounded bg-[#01ba9a]/10 px-6 py-3 text-[#01ba9a]">
+                                <p>If you have any questions that are beyond the scope of this documentation, please feel free to email or contact us via our Support Page : <a href = "https://codecanyon.net/user/pixcelsthemes"><b>Support</b></a></p>
+                            </div>
+                        </div>
+                        <div class="border border-black/10 p-5 rounded-md">
+                            <div class="mb-5">
+                                <p class="text-xl font-semibold text-black">Introduction</p>
+                            </div>
+                            <div>
+                                <p class="text-base leading-[1.8]"><b>Geex:</b>  Unveiling the ultimate <b>Symfony Responsive Admin & Dashboard Template!</b> With an array of stunning designs and a sleek full-screen layout, Geex is your gateway to effortless admin dashboards, Banking Dashboard, Crypto Dashboard, CRM Dashboard and beyond. <b>Featuring dynamic dark/light modes, RTL/LTR support and customizable layouts</b>, Geex empowers you to elevate your app to new heights. Embrace innovation and style –<b>Geex</b> is the way to go!</p>
+                            </div>
+                        </div>
+                        <div class="border border-black/10 p-5 rounded-md" id="insto">
+                            <div class="mb-5">
+                                <p class="text-xl font-semibold text-black">Installation</p>
+                            </div>
+                            <div>
+                                <p class="text-base font-semibold">This guide will walk you through the installation process and prerequisites to get your admin dashboard up and running smoothly.</p>                               
+                                <ul class="mt-3 list-decimal list-inside space-y-1.5">
+                                    <li><b>Install PHP:</b>
+                                        <ul>
+                                            <li>If you're using XAMPP, WAMP, or MAMP, PHP should already be included. Make sure your server environment (Apache, Nginx, etc.) is configured to work with PHP. If PHP is not installed, you can download it from the official PHP website:<a href="https://www.php.net/downloads"><code class="text-[#e83e8c]"> PHP Downloads.</code></a></li>
+                                        </ul>
+                                    </li> 
+                                    <li><b>Install Composer:</b>
+                                        <ul>
+                                            <li>We recommend installing Composer globally. If it is not already installed, you can download and install Composer from the official website: <a href="https://getcomposer.org/download/"><code class="text-[#e83e8c]">Composer.org</code></a>.</li>
+                                        </ul>
+                                    </li> 
+                                    <li><b>Install Symfony CLI:</b>
+                                        <ul>
+                                            <li>Symfony CLI is a tool that helps you develop applications locally.</li>
+                                            <li>Download and run the installer from <a href="https://symfony.com/download"><code class="text-[#e83e8c]">Symfony CLI official.</code></a></li>
+                                        </ul>
+                                    </li> 
+                                    <li><b>Download and Extract the Zip File:</b>
+                                        <ul>
+                                            <li>Download and extract zip file, then navigate to the extracted directory.</li>
+                                        </ul>
+                                    </li>
+                                    <li><b>Install Dependencies:</b>
+                                        <ul>
+                                            <li>Run the following command to install the required PHP packages using Composer</li>
+                                            <li><code class="text-[#e83e8c]">composer install</code></li>
+                                        </ul>
+                                    </li>     
+                                    <li><b>Start the Symfony Server</b>
+                                        <ul>
+                                            <li>Run the following command to start the Symfony local server</li>
+                                            <li><code class="text-[#e83e8c]">symfony server:start </code></li>
+                                            <li>If you wish to run the project locally on different Port.</li>
+                                            <li><code class="text-[#e83e8c]">symfony server:start --port=8001</code></li>
+                                        </ul>
+                                    </li>                                
+                                    <li><b>Open Your Application in a Browser</b>
+                                        <ul>
+                                            <li>Open a web browser and navigate to</li>
+                                            <li><a href="http://127.0.0.1:8000"><code class="text-[#e83e8c]">http://127.0.0.1:{PORT}</code></a></li>
+                                        </ul>
+                                    </li>      
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="border border-black/10 p-5 rounded-md" id="structure">
+                            <div class="mb-5">
+                                <p class="text-xl font-semibold text-black">File Structure</p>
+                            </div>
+                            <div class="overflow-x-auto w-full">
+                                <pre class="prettyprint">
+├── <img src="assets/images/folder.svg" class="w-4 inline-block"> Geex/
+│   ├── <img src="assets/images/folder.svg" class="w-4 inline-block"> bin/
+│   ├── <img src="assets/images/folder.svg" class="w-4 inline-block"> config/
+│   │   │   ├── <img src="assets/images/folder.svg" class="w-4 inline-block"> packages/
+│   │   │   ├── <img src="assets/images/folder.svg" class="w-4 inline-block"> routes/
+│   │   │   ├── <img src="assets/images/file.svg" class="w-4 inline-block"> bundles.php
+│   │   │   ├── <img src="assets/images/file.svg" class="w-4 inline-block"> preload.php
+│   │   │   ├── <img src="assets/images/file.svg" class="w-4 inline-block"> routes.yaml
+│   │   │   └── <img src="assets/images/file.svg" class="w-4 inline-block"> services.yaml
+│   ├── <img src="assets/images/folder.svg" class="w-4 inline-block"> public/
+│   │   │   ├── <img src="assets/images/folder.svg" class="w-4 inline-block"> assets/
+│   │   │   │   ├── <img src="assets/images/folder.svg" class="w-4 inline-block"> css/
+│   │   │   │   ├── <img src="assets/images/folder.svg" class="w-4 inline-block"> fonts/
+│   │   │   │   ├── <img src="assets/images/folder.svg" class="w-4 inline-block"> icons/
+│   │   │   │   ├── <img src="assets/images/folder.svg" class="w-4 inline-block"> img/
+│   │   │   │   ├── <img src="assets/images/folder.svg" class="w-4 inline-block"> js/
+│   │   │   │   ├── <img src="assets/images/folder.svg" class="w-4 inline-block"> vendor/
+│   │   │   │   └── <img src="assets/images/file.svg" class="w-4 inline-block"> index.php
+│   ├── <img src="assets/images/folder.svg" class="w-4 inline-block"> src/
+│   │   │   ├── <img src="assets/images/folder.svg" class="w-4 inline-block"> Controller/
+│   │   │   │   ├── <img src="assets/images/file.svg" class="w-4 inline-block"> AppController.php
+│   │   │   │   ├── <img src="assets/images/file.svg" class="w-4 inline-block"> FeturesController.php
+│   │   │   │   ├── <img src="assets/images/file.svg" class="w-4 inline-block"> HomeController.php
+│   │   │   │   └── <img src="assets/images/file.svg" class="w-4 inline-block"> PagesController.php
+│   │   │   └── <img src="assets/images/file.svg" class="w-4 inline-block"> Kernel.php
+│   ├── <img src="assets/images/folder.svg" class="w-4 inline-block"> templates/
+│   │   │   ├── <img src="assets/images/folder.svg" class="w-4 inline-block"> app
+│   │   │   ├── <img src="assets/images/folder.svg" class="w-4 inline-block"> features
+│   │   │   ├── <img src="assets/images/folder.svg" class="w-4 inline-block"> home
+│   │   │   ├── <img src="assets/images/folder.svg" class="w-4 inline-block"> pages
+│   │   │   ├── <img src="assets/images/folder.svg" class="w-4 inline-block"> partials
+│   │   │   └── <img src="assets/images/file.svg" class="w-4 inline-block"> base.html.twig
+│   ├── <img src="assets/images/folder.svg" class="w-4 inline-block"> var/
+│   │   │   ├── <img src="assets/images/folder.svg" class="w-4 inline-block"> cache
+│   │   │   └── <img src="assets/images/folder.svg" class="w-4 inline-block"> log
+│   ├── <img src="assets/images/file.svg" class="w-4 inline-block"> .env
+│   ├── <img src="assets/images/file.svg" class="w-4 inline-block"> composer.json
+├── <img src="assets/images/folder.svg" class="w-4 inline-block"> Documentation/
+│   └── index.html - Index file for documentation.
+                                    </pre>
+                            </div>
+                        </div>
+                        <div class="border border-black/10 p-5 rounded-md">
+                            <div class="mb-5">
+                                <p class="text-xl font-semibold text-black">base.html.twig Structure</p>
+                            </div>
+                            <div class="text-sm">
+                        <!-- HTML generated using hilite.me --><div style="background: #f0f3f3; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot; dir=&quot;ltr&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;title&gt;{% block title %}{% endblock %}&lt;/title&gt;
+    &lt;link rel=&quot;icon&quot; type=&quot;image/png&quot; sizes=&quot;16x16&quot; href=&quot;{{asset(&#39;assets/img/favicon.svg&#39;)}}&quot;&gt;
+    {% block stylesheets %}
+    
+    
+    &lt;link href=&quot;https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+
+    &lt;!-- inject:css--&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;{{asset(&#39;assets/vendor/css/bootstrap/bootstrap.css&#39;)}}&quot;&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://unpkg.com/swiper/swiper-bundle.min.css&quot;&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/apexcharts@3.27.0/dist/apexcharts.min.css&quot;&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;{{asset(&#39;assets/css/style.css&#39;)}}&quot;&gt;
+    &lt;!-- endinject --&gt;
+  
+    &lt;!-- Fonts --&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/@iconscout/unicons@4.0.8/css/line.min.css&quot;&gt;
+    
+    &lt;script&gt;
+        // Render localStorage JS:
+        if (localStorage.theme) document.documentElement.setAttribute(&quot;data-theme&quot;, localStorage.theme);
+        if (localStorage.layout) document.documentElement.setAttribute(&quot;data-nav&quot;, localStorage.navbar);
+        if (localStorage.layout) document.documentElement.setAttribute(&quot;dir&quot;, localStorage.layout);
+    &lt;/script&gt;	
+    
+    {% endblock %}
+
+&lt;/head&gt;
+&lt;body class=&quot;geex-dashboard&quot;&gt;
+
+     {% include &quot;./partials/header.html.twig&quot; %}    
+     
+    &lt;main class=&quot;geex-main-content&quot;&gt;
+         
+        {% include &quot;./partials/sidebar.html.twig&quot; %}    
+         
+        {% include &quot;./partials/customizer.html.twig&quot; %}    
+        
+        &lt;div class=&quot;geex-content&quot;&gt;
+            
+            &lt;div class=&quot;geex-content__header&quot;&gt;
+                &lt;div class=&quot;geex-content__header__content&quot;&gt;
+                    &lt;h2 class=&quot;geex-content__header__title&quot;&gt;{% block mainHeader %}{% endblock %}&lt;/h2&gt;
+                    &lt;p class=&quot;geex-content__header__subtitle&quot;&gt;{% block content %}{% endblock %}&lt;/p&gt;
+                &lt;/div&gt;
+                
+                {% include &quot;./partials/contentHeader.html.twig&quot; %}    
+               
+            &lt;/div&gt;
+                
+            {% block body %}{% endblock %}
+        &lt;/div&gt;
+    &lt;/main&gt;
+
+    {% block javascripts %}
+    &lt;!-- inject:js--&gt;
+    &lt;script src=&quot;{{asset(&#39;assets/vendor/js/jquery/jquery-3.5.1.min.js&#39;)}}&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;{{asset(&#39;assets/vendor/js/jquery/jquery-ui.js&#39;)}}&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;{{asset(&#39;assets/vendor/js/bootstrap/bootstrap.min.js&#39;)}}&quot;&gt;&lt;/script&gt;
+
+    &lt;script src=&quot;https://fullcalendar.io/releases/fullcalendar/3.9.0/lib/moment.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://fullcalendar.io/releases/fullcalendar/3.9.0/fullcalendar.min.js&quot;&gt;&lt;/script&gt;
+
+    &lt;script src=&quot;https://unpkg.com/swiper/swiper-bundle.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/apexcharts@3.27.0/dist/apexcharts.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;{{asset(&#39;assets/js/main.js&#39;)}}&quot;&gt;&lt;/script&gt;
+    &lt;!-- endinject--&gt;
+    {% endblock %}
+&lt;/body&gt;
+&lt;/html&gt;
+</pre></div>
+
+
+
+
+
+                            </div>
+                        </div>
+                        <div class="border border-black/10 p-5 rounded-md" id="css">
+                            <div class="mb-4">
+                                <p class="text-xl font-semibold text-black">CSS</p>
+                            </div>
+                            <p class="font-semibold">Geex Built with latest version of CSS3.</p>
+                            <div class="overflow-x-auto w-full mt-3">
+                                <table class="w-full m-0 border whitespace-nowrap border-[#dee2e6]">
+                                    <thead>
+                                        <tr class="text-left">
+                                            <th class="p-3 border border-[#dee2e6]">File Name</th>
+                                            <th class="p-3 border border-[#dee2e6]">Details</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="p-3 border border-[#dee2e6]"><code class="text-[#e83e8c]">vendor/css/bootstrap/bootstrap.css</code></td>
+                                            <td class="p-3 border border-[#dee2e6]">Bootstrap CSS</td>
+                                            </tr>
+                                            <tr>
+                                            <td class="p-3 border border-[#dee2e6]"><code class="text-[#e83e8c]">https://unpkg.com/swiper/swiper-bundle.min.css</code></td>
+                                            <td class="p-3 border border-[#dee2e6]">Swiper-bundle CSS</td>
+                                            </tr>
+                                            <tr>
+                                            <td class="p-3 border border-[#dee2e6]"><code class="text-[#e83e8c]">https://cdn.jsdelivr.net/npm/@iconscout/unicons@4.0.8/css/line.min.css</code></td>
+                                            <td class="p-3 border border-[#dee2e6]">Line CSS</td>
+                                            </tr>
+                                            <tr>
+                                            <td class="p-3 border border-[#dee2e6]"><code class="text-[#e83e8c]">https://cdn.jsdelivr.net/npm/apexcharts@3.27.0/dist/apexcharts.min.css</code></td>
+                                            <td class="p-3 border border-[#dee2e6]">Apex chart CSS</td>
+                                            </tr>
+                                            <tr>
+                                            <td class="p-3 border border-[#dee2e6]"><code class="text-[#e83e8c]">css/style.css</code></td>
+                                            <td class="p-3 border border-[#dee2e6]">Geex CSS</td>
+                                            </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="border border-black/10 p-5 rounded-md">
+                            <div class="mb-5">
+                                <p class="text-xl font-semibold text-black">Javascript</p>
+                            </div>
+                            <p class="font-semibold">Geex Built with Javascript</p>
+                            <div class="overflow-x-auto w-full mt-4">
+                                <table class="w-full m-0 border whitespace-nowrap border-[#dee2e6]">
+                                    <thead>
+                                        <tr class="text-left">
+                                            <th class="p-3 border border-[#dee2e6]">File Name</th>
+                                            <th class="p-3 border border-[#dee2e6]">Details</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="p-3 border border-[#dee2e6]"><code class="text-[#e83e8c]">vendor/js/jquery/jquery-3.5.1.min.js</code></td>
+                                            <td class="p-3 border border-[#dee2e6]">Jquery js</td>
+                                            </tr>
+                                            <tr>
+                                            <td class="p-3 border border-[#dee2e6]"><code class="text-[#e83e8c]">vendor/js/bootstrap/bootstrap.min.js</code></td>
+                                            <td class="p-3 border border-[#dee2e6]">Bootstrap js file</td>
+                                            </tr>
+                                            <tr>
+                                            <td class="p-3 border border-[#dee2e6]"><code class="text-[#e83e8c]">https://unpkg.com/swiper/swiper-bundle.min.js</code></td>
+                                            <td class="p-3 border border-[#dee2e6]">Swiper js file</td>
+                                            </tr>
+                                            <tr>
+                                            <td class="p-3 border border-[#dee2e6]"><code class="text-[#e83e8c]">https://cdn.jsdelivr.net/npm/apexcharts@3.27.0/dist/apexcharts.min.js</code></td>
+                                            <td class="p-3 border border-[#dee2e6]">Apexcharts js file</td>
+                                            </tr>
+                                            <tr>
+                                            <td class="p-3 border border-[#dee2e6]"><code class="text-[#e83e8c]">js/main.js</code></td>
+                                            <td class="p-3 border border-[#dee2e6]">Geex Custom js file</td>
+                                            </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="border border-black/10 p-5 rounded-md" id="cre">
+                            <div class="mb-5">
+                                <p class="text-xl font-semibold text-black">Credits & Official Documentation</p>
+                            </div>
+                            <p class="font-semibold">I've used the following resources as listed. These are some awesome creation and I am really thankful to the respective community.</p>
+                            <div class="overflow-x-auto w-full mt-6">
+                                <table class="w-full m-0 border whitespace-nowrap border-[#dee2e6]">
+                                    <thead>
+                                        <tr class="text-left">
+                                            <th class="p-3 border border-[#dee2e6]">File Name</th>
+                                            <th class="p-3 border border-[#dee2e6]">Details</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="p-3 border border-[#dee2e6]"><code class="text-[#e83e8c]">Bootstrap</code></td>
+                                            <td class="p-3 border border-[#dee2e6]"><a href="https://getbootstrap.com/">bootstrap v5.0.2</a></td>
+                                        </tr>
+                                         <tr>
+                                            <td class="p-3 border border-[#dee2e6]"><code class="text-[#e83e8c]">Jquery</code></td>
+                                            <td class="p-3 border border-[#dee2e6]"><a href="https://jquery.com/">jquery v3.5.1</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="p-3 border border-[#dee2e6]"><code class="text-[#e83e8c]">ApexCharts</code></td>
+                                            <td class="p-3 border border-[#dee2e6]"><a href="https://apexcharts.com/">ApexCharts v3.35.1</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="p-3 border border-[#dee2e6]"><code class="text-[#e83e8c]">FullCalendar</code></td>
+                                            <td class="p-3 border border-[#dee2e6]"><a href="https://fullcalendar.io/">FullCalendar v5.2.0</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="p-3 border border-[#dee2e6]"><code class="text-[#e83e8c]">Swiper js</code></td>
+                                            <td class="p-3 border border-[#dee2e6]"><a href="https://unpkg.com/">Swiper v11.0.6</a></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="border border-black/10 p-5 rounded-md" id="support">
+                            <div class="mb-5">
+                                <p class="text-xl font-semibold text-black">Support</p>
+                            </div>
+                            <div class="mt-3">
+                                <div class="mt-3">
+                                        <p>Once again thank you for purchasing the theme. I am always avaialble to help you. If you have any suggestion or feature to make it more better, I am requesting you to contact me, I'll try my best to add them in future updates.
+                                        </p>
+                                        
+                                        <a target="_blank" href="https://codecanyon.net/user/pixcelsthemes">Pixcels Themes</a>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="border border-black/10 p-5 rounded-md" id="change">
+                            <div class="mb-5">
+                                <p class="text-xl font-semibold text-black">Changelog</p>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-xl"><span class="text-purple">1.0.0</span> - 25<sup>th</sup> June 2024</h4>
+                                <h5 class="mt-4 font-bold">General</h5>
+                                <p class="text-muted mt-1"><span class="bg-purple h-2 w-2 mr-2 relative -top-[2px] rounded-full inline-block"></span> Initial Released</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <footer class="p-7 bg-white flex items-center justify-between">
+                    <p class="text-xs text-black/40">&copy; 2024 Geex</p>
+                </footer>
+            </div>
+            <!-- End Content -->
+        </div>
+        <!-- End Content Area -->
+    </div>
+    <!-- End Main Content -->
+</body>
+
+</html>
