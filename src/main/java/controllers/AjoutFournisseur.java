@@ -163,7 +163,7 @@ public class AjoutFournisseur {
             Fournisseur fournisseur = new Fournisseur();
             fournisseur.setNom(nomField.getText());
             fournisseur.setTypeService(typeServiceComboBox.getValue());
-            fournisseur.setNum_tel(Integer.parseInt(numTelField.getText()));
+            fournisseur.setNum_tel(numTelField.getText());
 
             GeminiClient client = new GeminiClient();
             String etatContrat;

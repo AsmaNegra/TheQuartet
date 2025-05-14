@@ -456,7 +456,7 @@ public class Main {
 
 
             // Création d'un fournisseur
-            Fournisseur fournisseur = new Fournisseur("Sonorisation Pro", "Matériel audio", "Contrat signé", 1);
+            Fournisseur fournisseur = new Fournisseur("Sonorisation Pro", "Matériel audio", "Contrat signé", "1");
 
             // Ajout du fournisseur
             serviceFournisseur.ajouter(fournisseur);

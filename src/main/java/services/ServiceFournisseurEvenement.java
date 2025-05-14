@@ -74,7 +74,7 @@ public class ServiceFournisseurEvenement {
                         rs.getString("nom"),
                         rs.getString("type_service"),
                         rs.getString("contrat"),
-                        rs.getInt("num_tel")
+                        rs.getString("num_tel")
                 ));
             }
         } catch (SQLException e) {
@@ -129,7 +129,7 @@ public class ServiceFournisseurEvenement {
                         rs.getString("nom"),
                         rs.getString("type_service"),
                         rs.getString("contrat"),
-                        rs.getInt("num_tel")
+                        rs.getString("num_tel")
                 ));
             }
         }

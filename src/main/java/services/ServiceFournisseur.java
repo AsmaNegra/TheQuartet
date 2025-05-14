@@ -1,7 +1,7 @@
 package services;
 
-import entities.Fournisseur;
-import utils.MyDataBase;
+import entities.*;
+import utils.*;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ public class ServiceFournisseur implements IService<Fournisseur> {
         preparedStatement.setString(1, fournisseur.getNom());
         preparedStatement.setString(2, fournisseur.getTypeService());
         preparedStatement.setString(3, fournisseur.getContrat());
-        preparedStatement.setInt(4, fournisseur.getNum_tel()); // Added num_tel
+        preparedStatement.setString(4, fournisseur.getNum_tel()); // Added num_tel
 
         preparedStatement.executeUpdate();
         System.out.println("✅ Fournisseur ajouté avec succès !");
@@ -40,7 +40,7 @@ public class ServiceFournisseur implements IService<Fournisseur> {
         preparedStatement.setString(1, fournisseur.getNom());
         preparedStatement.setString(2, fournisseur.getTypeService());
         preparedStatement.setString(3, fournisseur.getContrat());
-        preparedStatement.setInt(4, fournisseur.getNum_tel()); // Added num_tel
+        preparedStatement.setString(4, fournisseur.getNum_tel()); // Added num_tel
         preparedStatement.setInt(5, fournisseur.getFournisseurId());
 
         int rowsUpdated = preparedStatement.executeUpdate();
@@ -82,7 +82,7 @@ public class ServiceFournisseur implements IService<Fournisseur> {
                     resultSet.getString("nom"),
                     resultSet.getString("type_service"),
                     resultSet.getString("contrat"),
-                    resultSet.getInt("num_tel") // Added num_tel
+                    resultSet.getString("num_tel") // Added num_tel
             );
 
             fournisseurs.add(fournisseur);
@@ -121,7 +121,7 @@ public class ServiceFournisseur implements IService<Fournisseur> {
                     resultSet.getString("nom"),
                     resultSet.getString("type_service"),
                     resultSet.getString("contrat"),
-                    resultSet.getInt("num_tel") // Added num_tel
+                    resultSet.getString("num_tel") // Added num_tel
             );
         } else {
             System.out.println("⚠ Aucun fournisseur trouve avec l'ID : " + id);
@@ -156,7 +156,7 @@ public class ServiceFournisseur implements IService<Fournisseur> {
                     resultSet.getString("nom"),
                     resultSet.getString("type_service"),
                     resultSet.getString("contrat"),
-                    resultSet.getInt("num_tel")
+                    resultSet.getString("num_tel")
             );
             fournisseurs.add(fournisseur);
         }
@@ -183,7 +183,7 @@ public class ServiceFournisseur implements IService<Fournisseur> {
                     resultSet.getString("nom"),
                     resultSet.getString("type_service"),
                     resultSet.getString("contrat"),
-                    resultSet.getInt("num_tel")
+                    resultSet.getString("num_tel")
             );
 
             fournisseurs.add(fournisseur);

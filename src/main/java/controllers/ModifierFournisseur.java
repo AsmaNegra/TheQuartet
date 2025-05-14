@@ -89,7 +89,7 @@ public class ModifierFournisseur {
             selectedFournisseur.setNom(nomField.getText());
             selectedFournisseur.setTypeService(typeServiceComboBox.getValue());
             selectedFournisseur.setContrat(contratComboBox.getValue());
-            selectedFournisseur.setNum_tel(Integer.parseInt(numTelField.getText()));
+            selectedFournisseur.setNum_tel(numTelField.getText());
              // Call service to update the database
             System.out.println(selectedFournisseur);
             serviceFournisseur.modifier(selectedFournisseur);

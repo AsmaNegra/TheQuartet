@@ -5,12 +5,12 @@ public class Fournisseur {
     private String nom;
     private String typeService;
     private String contrat;
-    private int num_tel; // Added field
+    private String num_tel; // Added field
 
     // Constructors
     public Fournisseur() {}
 
-    public Fournisseur(int fournisseurId, String nom, String typeService, String contrat, int num_tel) {
+    public Fournisseur(int fournisseurId, String nom, String typeService, String contrat, String num_tel) {
         this.fournisseurId = fournisseurId;
         this.nom = nom;
         this.typeService = typeService;
@@ -18,7 +18,7 @@ public class Fournisseur {
         this.num_tel = num_tel; // Added initialization
     }
 
-    public Fournisseur(String nom, String typeService, String contrat, int num_tel) {
+    public Fournisseur(String nom, String typeService, String contrat, String num_tel) {
         this.nom = nom;
         this.typeService = typeService;
         this.contrat = contrat;
@@ -39,8 +39,8 @@ public class Fournisseur {
     public void setContrat(String contrat) { this.contrat = contrat; }
 
     // Added getter and setter for num_tel
-    public int getNum_tel() { return num_tel; }
-    public void setNum_tel(int num_tel) { this.num_tel = num_tel; }
+    public String getNum_tel() { return num_tel; }
+    public void setNum_tel(String num_tel) { this.num_tel = num_tel; }
 
     @Override
     public String toString() {
