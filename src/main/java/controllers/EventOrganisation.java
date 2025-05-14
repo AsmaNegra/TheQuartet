@@ -685,7 +685,7 @@ public class EventOrganisation {
      */
     private void afficherPersonnalite() {
         try {
-            int TacheId = 5; // Remplace avec l'ID de Utilisateur
+            int TacheId = 1; // Remplace avec l'ID de Utilisateur
             String personnalite = serviceTache.analyserPersonnaliteUtilisateur(TacheId);
 
             lblPersonnalite.setText(personnalite);

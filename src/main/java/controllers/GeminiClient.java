@@ -113,7 +113,7 @@ public class GeminiClient {
 
             if (taskName != null && taskDescription != null) {
                 // Ajout de valeurs par défaut
-                String statut = "En attente"; // Tâche par défaut en attente
+                String statut = "A faire"; // Tâche par défaut en attente
                 String priorite = "Moyenne"; // Priorité par défaut
                 Date dateLimite = new Date(); // Date limite par défaut (aujourd'hui)
 

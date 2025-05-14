@@ -178,7 +178,7 @@ public class ConfirmerTache {
             selectedTask.setStatut(statutComboBox.getValue());
             selectedTask.setUserAssocie(userAssocieComboBox.getValue());
             selectedTask.setFournisseur(fournisseur);
-
+selectedTask.setBudget(100);
             serviceTache.ajouter(selectedTask);
             System.out.println("✅ Tâche mise à jour avec succès !");
 

@@ -494,15 +494,15 @@ public List<Tache> trierTachesParPriorite(int evenementId) throws SQLException {
             double tauxCompletion = (double) tachesTerminees / totalTaches * 100;
 
             if (tauxCompletion >= 90) {
-                return "🏆 Champion ultime ! Toujours au top, un modèle d'organisation.";
+                return "🏆 Champion ultime ! Toujours au top.";
             } else if (tauxCompletion >= 75) {
                 return "🔥 Travailleur acharné ! Peu de choses lui échappent.";
             } else if (tauxCompletion >= 50) {
-                return "⚖ Équilibré, mais peut mieux faire. Parfois efficace, parfois distrait.";
+                return "⚖ Équilibré, mais peut mieux faire.";
             } else if (tauxCompletion >= 25) {
                 return "⏳ Procrastinateur... il repousse souvent ses tâches.";
             } else {
-                return "🐢 Fainéant légendaire... toujours en retard et rarement productif.";
+                return "🐢 Fainéant légendaire... rarement productif.";
             }
         }
 
